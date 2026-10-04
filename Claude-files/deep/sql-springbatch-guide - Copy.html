@@ -1,0 +1,2037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SQL Complete Guide + Spring Batch — DBMS, RDBMS vs NoSQL, Joins, Window Functions, Performance Tuning, Batch Processing</title>
+<style>
+  @page { size: A4; margin: 18mm 15mm 18mm 15mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Arial, sans-serif; color: #1a1a1a; font-size: 11.5px; line-height: 1.55; }
+  a { text-decoration: none; color: #3949ab; }
+  h1, h2, h3, h4 { color: #283593; font-family: Arial, sans-serif; page-break-after: avoid; }
+  h1 { font-size: 22px; border-bottom: 3px solid #283593; padding-bottom: 6px; margin-top: 0; }
+  h2 { font-size: 17px; border-bottom: 1px solid #c5cae9; padding-bottom: 4px; margin-top: 26px; }
+  h3 { font-size: 14px; color: #b03a2e; margin-top: 18px; }
+  h4 { font-size: 12.5px; color: #444; margin-top: 12px; }
+  .section { page-break-before: always; }
+  .cover { page-break-after: always; text-align: center; padding-top: 78px; }
+  .cover h1 { font-size: 28px; border: none; }
+  .cover h3 { color: #333; font-weight: normal; font-size: 15px; margin-top: 14px;}
+  .cover .tag { margin-top: 38px; font-size: 13px; color: #666; }
+  .toc { page-break-after: always; }
+  .toc ol { line-height: 1.7; font-size: 10.3px; }
+  code, pre { font-family: Consolas, "Courier New", monospace; }
+  code { background: #f1f1f1; padding: 1px 5px; border-radius: 3px; color: #a4141d; }
+  pre { background: #1e1e1e; color: #d4d4d4; padding: 10px 12px; border-radius: 6px; overflow-x: auto; font-size: 10.5px; line-height: 1.5; page-break-inside: avoid; white-space: pre-wrap; word-wrap: break-word; }
+  pre .c1 { color: #6a9955; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0 16px 0; font-size: 11px; }
+  th, td { border: 1px solid #e6e6e6; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #f5f5f5; color: #283593; }
+  tr:nth-child(even) { background: #f9fafc; }
+  .box { background: #f8f9fb; border: 1px solid #cdd6e6; border-radius: 6px; padding: 10px 14px; margin: 10px 0; }
+  .warn { background: #fff4e5; border: 1px solid #f0c36d; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .tip { background: #e8f6ee; border: 1px solid #7fc79a; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .qa { border-left: 3px solid #283593; padding-left: 10px; margin: 10px 0 16px 0; page-break-inside: avoid; }
+  .qa .q { font-weight: bold; color: #283593; }
+  .qa .a { margin-top: 4px; }
+  .qa .scenario { margin-top: 4px; font-style: italic; color: #555; }
+  .diagram { background: #fff; border: 1px dashed #7986cb; border-radius: 8px; padding: 16px; margin: 14px 0; page-break-inside: avoid; }
+  .diagram .title { font-weight: bold; color: #283593; margin-bottom: 10px; text-align:center; }
+  .flow-row { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+  .node { border: 2px solid #283593; background: #e8eaf6; border-radius: 6px; padding: 8px 12px; font-weight: bold; text-align: center; font-size: 11px; min-width: 90px; }
+  .node.alt { border-color: #b03a2e; background: #fdeceb; }
+  .node.green { border-color: #1e8449; background: #eafaf1; }
+  .node.gray { border-color: #666; background: #eee; }
+  .node.purple { border-color: #8e44ad; background: #f5eefc; }
+  .arrow { font-size: 20px; color: #283593; font-weight: bold; }
+  .arrow-down { font-size: 20px; color: #283593; text-align: center; }
+  .pagebreak { page-break-before: always; }
+  ul, ol { margin-top: 4px; }
+  li { margin-bottom: 3px; }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover">
+  <h1>SQL — The Complete Guide</h1>
+  <h3>DBMS Foundations • RDBMS vs NoSQL • Every SQL Topic End to End</h3>
+  <h3>Joins • Subqueries • Window Functions • Indexes • Transactions • Performance Tuning • Advanced SQL</h3>
+  <h3>Plus: Spring Batch — Real-Time Batch Processing Architecture</h3>
+  <div class="tag">A practical, simple-language, end-to-end reference for interview preparation and real-world implementation</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+<h1>Table of Contents</h1>
+<ol>
+<li>Before SQL — What Is a DBMS and Why We Need One</li>
+<li>RDBMS vs NoSQL — Full Comparison With Real-Time Scenarios</li>
+<li>Introduction to SQL and Relational Databases</li>
+<li>DDL, DML, DCL, TCL — The Four SQL Command Categories</li>
+<li>SELECT, WHERE, ORDER BY</li>
+<li>GROUP BY, HAVING, DISTINCT</li>
+<li>LIMIT / FETCH FIRST / TOP</li>
+<li>INNER JOIN</li>
+<li>LEFT JOIN &amp; RIGHT JOIN</li>
+<li>FULL OUTER JOIN, SELF JOIN &amp; CROSS JOIN</li>
+<li>Subqueries — Single Row, Multiple Row, Correlated</li>
+<li>EXISTS vs IN vs NOT EXISTS vs NOT IN</li>
+<li>Aggregate Functions (COUNT, SUM, AVG, MIN, MAX)</li>
+<li>String Functions</li>
+<li>Date Functions</li>
+<li>NULL Handling Functions</li>
+<li>Window Functions — Introduction &amp; PARTITION BY</li>
+<li>ROW_NUMBER, RANK &amp; DENSE_RANK</li>
+<li>LEAD, LAG, FIRST_VALUE &amp; LAST_VALUE</li>
+<li>Set Operators — UNION, UNION ALL, INTERSECT, EXCEPT/MINUS</li>
+<li>Database Objects — Tables, Views &amp; Materialized Views</li>
+<li>Database Objects — Sequences &amp; Synonyms</li>
+<li>Indexes Deep Dive</li>
+<li>Constraints</li>
+<li>Transactions &amp; ACID Properties</li>
+<li>COMMIT, ROLLBACK, SAVEPOINT &amp; Transaction Lifecycle</li>
+<li>Concurrency, Locking &amp; Deadlocks</li>
+<li>Isolation Levels &amp; Read Phenomena</li>
+<li>Query Optimization &amp; Execution Plans</li>
+<li>Indexing Strategy &amp; SQL Tuning</li>
+<li>Common Table Expressions (CTE) &amp; Recursive CTE</li>
+<li>Temporary Tables &amp; the MERGE Statement</li>
+<li>Stored Procedures, Functions &amp; Triggers</li>
+<li>Real-Time SQL Development in Organizations</li>
+<li>Common SQL Issues &amp; Real-Time Scenarios</li>
+<li>SQL Interview Questions &amp; Answers (Most Important Topics)</li>
+<li>What Is Batch Processing and Why We Need It (Real-Time)</li>
+<li>Introduction to Spring Batch</li>
+<li>Spring Batch Architecture</li>
+<li>Spring Batch Core Concepts — Job, Step, ItemReader, ItemProcessor, ItemWriter</li>
+<li>Spring Batch — Real Implementation Example (End to End)</li>
+<li>Chunk-Oriented vs Tasklet Processing</li>
+<li>Scaling Spring Batch — Partitioning, Multi-Threading &amp; Parallel Steps</li>
+<li>Scheduling, Restart, Retry &amp; Skip Logic</li>
+<li>Spring Batch Real-Time Scenarios &amp; Issues</li>
+<li>Spring Batch Interview Questions &amp; Answers</li>
+<li>Final Summary &amp; Cheat Sheet</li>
+</ol>
+</div>
+
+<!-- 1. BEFORE SQL - DBMS -->
+<div class="section">
+<h1>1. Before SQL — What Is a DBMS and Why We Need One</h1>
+
+<h2>1.1 Life Before Databases</h2>
+<div class="box">Before database systems, applications stored data in flat files (CSV, plain text) — simple, but with no built-in way to enforce data integrity, handle concurrent access safely, or query efficiently across large volumes of data.</div>
+
+<h2>1.2 Real Problems Flat Files Caused</h2>
+<table>
+<tr><th>Problem</th><th>Why It Hurt</th></tr>
+<tr><td>No concurrent access control</td><td>Two programs writing to the same file at once could corrupt data</td></tr>
+<tr><td>No data integrity enforcement</td><td>Nothing stopped duplicate IDs, invalid references, or missing required fields</td></tr>
+<tr><td>No efficient querying</td><td>Finding one record meant scanning the entire file line by line</td></tr>
+<tr><td>No relationships between data</td><td>Connecting "customer" data to "orders" data required manual, error-prone file-matching logic</td></tr>
+<tr><td>No transaction safety</td><td>A crash mid-write could leave a file in a half-updated, corrupted state</td></tr>
+</table>
+
+<h2>1.3 What a DBMS Is</h2>
+<div class="box">A DBMS (Database Management System) is software that manages data storage, retrieval, security, concurrency, and integrity for you — instead of each application reinventing file handling, the DBMS provides a structured, reliable, and queryable way to store and access data.</div>
+
+<h2>1.4 Types of DBMS</h2>
+<table>
+<tr><th>Type</th><th>Data Model</th><th>Real Examples</th></tr>
+<tr><td>Relational (RDBMS)</td><td>Structured tables with rows/columns, related via keys</td><td>MySQL, PostgreSQL, Oracle, SQL Server</td></tr>
+<tr><td>NoSQL — Document</td><td>Flexible JSON-like documents</td><td>MongoDB, CouchDB</td></tr>
+<tr><td>NoSQL — Key-Value</td><td>Simple key-to-value pairs</td><td>Redis, DynamoDB</td></tr>
+<tr><td>NoSQL — Column-Family</td><td>Wide-column, optimized for huge write volumes</td><td>Cassandra, HBase</td></tr>
+<tr><td>NoSQL — Graph</td><td>Nodes and relationships as first-class concepts</td><td>Neo4j</td></tr>
+</table>
+<div class="tip">This guide focuses on <b>SQL</b> — the language used to interact with Relational Database Management Systems (RDBMS) — since it remains the backbone of most real-world Java/Spring Boot enterprise applications, with NoSQL used for specific, complementary use cases (Section 2).</div>
+</div>
+
+<!-- 2. RDBMS VS NOSQL -->
+<div class="section">
+<h1>2. RDBMS vs NoSQL — Full Comparison With Real-Time Scenarios</h1>
+
+<h2>2.1 The Core Philosophical Difference</h2>
+<div class="diagram">
+<div class="title">RDBMS vs NoSQL — Structure</div>
+<div class="flow-row">
+<div class="node">RDBMS: Fixed schema, tables with rows/columns, strong relationships via foreign keys</div>
+<div class="node green">NoSQL: Flexible/schemaless, documents/key-values/wide-columns, relationships often denormalized</div>
+</div>
+</div>
+
+<h2>2.2 Full Comparison Table</h2>
+<table>
+<tr><th>Aspect</th><th>RDBMS</th><th>NoSQL</th></tr>
+<tr><td>Schema</td><td>Fixed, strictly defined upfront</td><td>Flexible/dynamic, can evolve per document</td></tr>
+<tr><td>Consistency Model</td><td>Strong consistency (ACID)</td><td>Often eventual consistency (BASE), though some support strong consistency too</td></tr>
+<tr><td>Relationships</td><td>First-class — foreign keys, joins</td><td>Usually denormalized/embedded, joins are limited or absent</td></tr>
+<tr><td>Scaling</td><td>Traditionally vertical (bigger server); horizontal scaling is harder</td><td>Built for horizontal scaling (sharding across many servers) from the start</td></tr>
+<tr><td>Query Language</td><td>SQL — standardized, powerful, declarative</td><td>Varies by product (MongoDB query syntax, CQL for Cassandra, etc.)</td></tr>
+<tr><td>Transactions</td><td>Full ACID transactions across multiple tables/rows</td><td>Limited or single-document transactions historically (improving in modern versions)</td></tr>
+<tr><td>Best fit</td><td>Complex relational data, strong consistency needs (banking, financial records)</td><td>Massive scale, flexible/evolving schemas, high write throughput (logs, IoT, catalogs)</td></tr>
+</table>
+
+<h2>2.3 Real-Time Scenario — RDBMS</h2>
+<div class="box"><b>Banking core system (Accounts, Cards, Loans):</b> requires strict ACID transactions (a fund transfer must be fully atomic), strong relational integrity (an Account must reference a valid Customer), and regulatory-grade consistency — RDBMS (PostgreSQL/Oracle) is the clear right choice. Losing a single cent due to eventual consistency is unacceptable in banking.</div>
+
+<h2>2.4 Real-Time Scenario — NoSQL</h2>
+<div class="box"><b>Product catalog for an e-commerce platform:</b> millions of products with wildly varying attributes (a shirt has size/color, a laptop has RAM/CPU) — a rigid RDBMS schema would need constant migrations. MongoDB's flexible document model lets each product store exactly the attributes it needs, and the catalog needs to scale horizontally to handle huge read traffic — a great NoSQL fit.</div>
+<div class="box"><b>IoT sensor data / application logs:</b> extremely high write volume, simple structure, rarely needs complex joins — Cassandra's column-family model and horizontal write scaling handles this far better than a single RDBMS instance would.</div>
+
+<h2>2.5 Real Organizations Often Use Both Together (Polyglot Persistence)</h2>
+<div class="diagram">
+<div class="title">Real Polyglot Persistence — Banking Example</div>
+<div class="flow-row">
+<div class="node green">PostgreSQL: Accounts, Cards, Loans (strict ACID)</div>
+<div class="node purple">Redis: Session/cache data (fast key-value)</div>
+<div class="node alt">Elasticsearch: Transaction search/logs (full-text search at scale)</div>
+</div>
+</div>
+<div class="tip"><b>Interview one-liner:</b> "RDBMS and NoSQL aren't competitors to pick once for an entire company — real organizations use RDBMS for strongly relational, transactional core data, and NoSQL for specific use cases (flexible catalogs, massive write-scale logs, caching) where its trade-offs are actually a better fit."</div>
+</div>
+
+<!-- 3. INTRO TO SQL -->
+<div class="section">
+<h1>3. Introduction to SQL and Relational Databases</h1>
+
+<h2>3.1 What SQL Is</h2>
+<div class="box">SQL (Structured Query Language) is the standard language for defining, querying, and managing data in a relational database — despite different RDBMS vendors having their own extensions/dialects, the core SQL syntax is remarkably consistent across MySQL, PostgreSQL, Oracle, and SQL Server.</div>
+
+<h2>3.2 Core Relational Concepts</h2>
+<table>
+<tr><th>Concept</th><th>Meaning</th></tr>
+<tr><td>Table</td><td>A structured collection of rows, each with the same set of columns</td></tr>
+<tr><td>Row (Record/Tuple)</td><td>One single entry in a table</td></tr>
+<tr><td>Column (Field/Attribute)</td><td>One piece of data each row has, with a defined data type</td></tr>
+<tr><td>Primary Key</td><td>A column (or set of columns) uniquely identifying each row (Section 24)</td></tr>
+<tr><td>Foreign Key</td><td>A column referencing a primary key in another table, enforcing relationships (Section 24)</td></tr>
+<tr><td>Schema</td><td>The overall structure — tables, columns, relationships, constraints</td></tr>
+</table>
+
+<h2>3.3 The Banking Example Schema Used Throughout This Guide</h2>
+<pre>customer(id, name, email, city, created_date)
+account(id, customer_id, balance, status, account_type, created_date)
+card(id, account_id, card_number, limit_amount, status)
+loan(id, customer_id, amount, interest_rate, status, approved_date)
+transaction(id, account_id, amount, transaction_type, transaction_date)
+</pre>
+<div class="tip">All examples throughout this guide use this same consistent banking schema — customer, account, card, loan, transaction — so every query builds intuitively on a schema you already understand.</div>
+</div>
+
+<!-- 4. DDL DML DCL TCL -->
+<div class="section">
+<h1>4. DDL, DML, DCL, TCL — The Four SQL Command Categories</h1>
+
+<h2>4.1 The Four Categories, Visualized</h2>
+<div class="diagram">
+<div class="title">SQL Command Categories</div>
+<div class="flow-row">
+<div class="node">DDL<br/>Define structure</div>
+<div class="node green">DML<br/>Manipulate data</div>
+<div class="node purple">DCL<br/>Control access</div>
+<div class="node alt">TCL<br/>Control transactions</div>
+</div>
+</div>
+
+<h2>4.2 DDL (Data Definition Language)</h2>
+<pre>CREATE TABLE account (
+    id BIGSERIAL PRIMARY KEY,
+    customer_id BIGINT NOT NULL REFERENCES customer(id),
+    balance NUMERIC(15,2) NOT NULL DEFAULT 0,
+    status VARCHAR(20) NOT NULL
+);
+
+ALTER TABLE account ADD COLUMN account_type VARCHAR(20);
+ALTER TABLE account DROP COLUMN account_type;
+
+DROP TABLE account;              <span class="c1">-- removes the table AND all its data, structure gone entirely</span>
+TRUNCATE TABLE transaction;      <span class="c1">-- removes ALL rows fast, keeps the table structure intact</span>
+</pre>
+<table>
+<tr><th>Command</th><th>Purpose</th></tr>
+<tr><td>CREATE</td><td>Creates a new table/view/index/other database object</td></tr>
+<tr><td>ALTER</td><td>Modifies an existing object's structure</td></tr>
+<tr><td>DROP</td><td>Permanently removes an object and its data</td></tr>
+<tr><td>TRUNCATE</td><td>Quickly removes all rows from a table (faster than DELETE, can't be rolled back in most databases, resets identity counters)</td></tr>
+</table>
+
+<h2>4.3 DML (Data Manipulation Language)</h2>
+<pre>SELECT * FROM account WHERE status = 'ACTIVE';
+INSERT INTO account (customer_id, balance, status) VALUES (55, 5000.00, 'ACTIVE');
+UPDATE account SET balance = balance - 500 WHERE id = 1001;
+DELETE FROM account WHERE id = 1001;
+</pre>
+
+<h2>4.4 DCL (Data Control Language)</h2>
+<pre>GRANT SELECT, INSERT ON account TO app_readonly_role;
+REVOKE INSERT ON account FROM app_readonly_role;
+</pre>
+<div class="box">DCL controls WHO can do WHAT — real organizations use this to enforce least-privilege access, e.g., a reporting/analytics service account might only ever be granted SELECT, never INSERT/UPDATE/DELETE.</div>
+
+<h2>4.5 TCL (Transaction Control Language)</h2>
+<pre>BEGIN;                                  <span class="c1">-- start a transaction</span>
+UPDATE account SET balance = balance - 500 WHERE id = 1001;
+UPDATE account SET balance = balance + 500 WHERE id = 1002;
+COMMIT;                                  <span class="c1">-- make the changes permanent</span>
+<span class="c1">-- or: ROLLBACK; to undo everything since BEGIN</span>
+</pre>
+<div class="tip">Full transaction detail (ACID, SAVEPOINT, isolation levels) is covered in depth in Sections 24-28 — this section just establishes TCL as the fourth command category alongside DDL/DML/DCL.</div>
+</div>
+
+<!-- 5. SELECT WHERE ORDER BY -->
+<div class="section">
+<h1>5. SELECT, WHERE, ORDER BY</h1>
+
+<h2>5.1 The Basic SELECT Statement</h2>
+<pre>SELECT id, balance, status FROM account;              <span class="c1">-- specific columns (always prefer this over SELECT *)</span>
+SELECT * FROM account;                                  <span class="c1">-- all columns — avoid in production code, fine for ad-hoc exploration</span>
+SELECT DISTINCT status FROM account;                    <span class="c1">-- unique values only (Section 6.3)</span>
+</pre>
+
+<h2>5.2 WHERE — Filtering Rows</h2>
+<pre>SELECT * FROM account WHERE status = 'ACTIVE';
+SELECT * FROM account WHERE balance &gt; 10000;
+SELECT * FROM account WHERE balance BETWEEN 1000 AND 5000;
+SELECT * FROM account WHERE status IN ('ACTIVE', 'PENDING');
+SELECT * FROM customer WHERE email LIKE '%@gmail.com';       <span class="c1">-- pattern match</span>
+SELECT * FROM account WHERE closed_date IS NULL;              <span class="c1">-- never use "= NULL", always IS NULL</span>
+SELECT * FROM account WHERE status = 'ACTIVE' AND balance &gt; 5000;
+SELECT * FROM account WHERE status = 'ACTIVE' OR status = 'PENDING';
+SELECT * FROM account WHERE NOT status = 'CLOSED';
+</pre>
+<table>
+<tr><th>Operator</th><th>Meaning</th></tr>
+<tr><td>= , != (or &lt;&gt;), &lt;, &gt;, &lt;=, &gt;=</td><td>Standard comparison operators</td></tr>
+<tr><td>BETWEEN x AND y</td><td>Inclusive range check</td></tr>
+<tr><td>IN (a, b, c)</td><td>Matches any value in the list</td></tr>
+<tr><td>LIKE</td><td>Pattern matching — <code>%</code> = any characters, <code>_</code> = one character</td></tr>
+<tr><td>IS NULL / IS NOT NULL</td><td>Null checks — SQL's three-valued logic means <code>= NULL</code> never matches anything</td></tr>
+<tr><td>AND / OR / NOT</td><td>Logical combinators</td></tr>
+</table>
+
+<h2>5.3 ORDER BY — Sorting Results</h2>
+<pre>SELECT * FROM account ORDER BY balance DESC;                       <span class="c1">-- highest balance first</span>
+SELECT * FROM account ORDER BY status ASC, balance DESC;            <span class="c1">-- multi-column sort</span>
+SELECT * FROM customer ORDER BY city NULLS LAST;                    <span class="c1">-- control where NULLs appear in sort order</span>
+</pre>
+<div class="tip"><b>Real scenario:</b> "A support dashboard listing 'accounts to review' sorts by <code>ORDER BY risk_score DESC, balance DESC</code> — highest risk, highest balance accounts always appear first, so the team's limited review time is spent where it matters most."</div>
+</div>
+
+<!-- 6. GROUP BY HAVING DISTINCT -->
+<div class="section">
+<h1>6. GROUP BY, HAVING, DISTINCT</h1>
+
+<h2>6.1 GROUP BY — Aggregating Rows Into Groups</h2>
+<pre>SELECT status, COUNT(*) AS account_count
+FROM account
+GROUP BY status;
+<span class="c1">-- Result: ACTIVE | 4200,  CLOSED | 850,  PENDING | 60</span>
+
+SELECT customer_id, SUM(balance) AS total_balance
+FROM account
+GROUP BY customer_id;
+</pre>
+<div class="box">Every column in the SELECT list that ISN'T inside an aggregate function (COUNT, SUM, etc.) MUST appear in the GROUP BY clause — this is one of the most common real SQL errors for beginners.</div>
+
+<h2>6.2 HAVING — Filtering AFTER Grouping (vs WHERE Which Filters BEFORE)</h2>
+<pre>SELECT customer_id, SUM(balance) AS total_balance
+FROM account
+GROUP BY customer_id
+HAVING SUM(balance) &gt; 100000;         <span class="c1">-- can't use WHERE here — aggregates don't exist until AFTER grouping</span>
+
+<span class="c1">-- Combining WHERE (filters individual rows first) and HAVING (filters the resulting groups)</span>
+SELECT customer_id, COUNT(*) AS active_accounts
+FROM account
+WHERE status = 'ACTIVE'
+GROUP BY customer_id
+HAVING COUNT(*) &gt; 1;                  <span class="c1">-- customers with MORE THAN ONE active account</span>
+</pre>
+<div class="diagram">
+<div class="title">Real SQL Execution Order (Not Written Order!)</div>
+<div class="flow-row">
+<div class="node">FROM</div><div class="arrow">→</div><div class="node">WHERE</div><div class="arrow">→</div><div class="node green">GROUP BY</div><div class="arrow">→</div><div class="node alt">HAVING</div><div class="arrow">→</div><div class="node">SELECT</div><div class="arrow">→</div><div class="node">ORDER BY</div>
+</div>
+</div>
+<div class="tip"><b>Very common interview question:</b> WHERE filters individual rows BEFORE grouping happens; HAVING filters the resulting GROUPS after aggregation — you cannot use an aggregate function like <code>SUM()</code> inside a WHERE clause because at that stage, grouping hasn't happened yet.</div>
+
+<h2>6.3 DISTINCT — Removing Duplicates</h2>
+<pre>SELECT DISTINCT status FROM account;                          <span class="c1">-- unique statuses only</span>
+SELECT DISTINCT city, status FROM customer JOIN account ...;   <span class="c1">-- unique COMBINATIONS of both columns</span>
+SELECT COUNT(DISTINCT customer_id) FROM account;                <span class="c1">-- count of unique customers who have at least one account</span>
+</pre>
+</div>
+
+<!-- 7. LIMIT FETCH FIRST TOP -->
+<div class="section">
+<h1>7. LIMIT / FETCH FIRST / TOP</h1>
+
+<h2>7.1 Database-Specific Row-Limiting Syntax</h2>
+<table>
+<tr><th>Database</th><th>Syntax</th></tr>
+<tr><td>PostgreSQL / MySQL</td><td><code>SELECT * FROM account ORDER BY balance DESC LIMIT 10;</code></td></tr>
+<tr><td>SQL Server</td><td><code>SELECT TOP 10 * FROM account ORDER BY balance DESC;</code></td></tr>
+<tr><td>Oracle / ANSI SQL Standard</td><td><code>SELECT * FROM account ORDER BY balance DESC FETCH FIRST 10 ROWS ONLY;</code></td></tr>
+</table>
+
+<h2>7.2 Combining With OFFSET for Pagination</h2>
+<pre><span class="c1">-- PostgreSQL/MySQL — page 3, 20 rows per page (skip the first 40 rows)</span>
+SELECT * FROM account ORDER BY id LIMIT 20 OFFSET 40;
+
+<span class="c1">-- ANSI Standard equivalent</span>
+SELECT * FROM account ORDER BY id OFFSET 40 ROWS FETCH NEXT 20 ROWS ONLY;
+</pre>
+<div class="warn"><b>Real performance gotcha:</b> Large OFFSET values (e.g., <code>OFFSET 500000</code>) are slow — the database still has to scan and discard all 500,000 skipped rows internally. For genuinely deep pagination at scale, real systems use <b>keyset pagination</b> instead: <code>WHERE id &gt; :lastSeenId ORDER BY id LIMIT 20</code>, which uses an index seek instead of scanning/discarding rows.</div>
+</div>
+
+<!-- 8. INNER JOIN -->
+<div class="section">
+<h1>8. INNER JOIN</h1>
+
+<h2>8.1 What INNER JOIN Does</h2>
+<div class="box">INNER JOIN returns only rows that have a MATCH in BOTH tables — if a customer has no accounts, or an account somehow has no valid customer, neither appears in the result at all.</div>
+<div class="diagram">
+<div class="title">INNER JOIN — Only the Overlap</div>
+<div class="flow-row">
+<div class="node">Customer</div><div class="node alt">∩ INNER JOIN ∩</div><div class="node">Account</div>
+</div>
+<div class="flow-row"><div class="node green">Result = only customers WITH accounts, matched to their accounts</div></div>
+</div>
+
+<h2>8.2 Real Query</h2>
+<pre>SELECT c.name, a.balance, a.status
+FROM customer c
+INNER JOIN account a ON c.id = a.customer_id
+WHERE a.status = 'ACTIVE';
+
+<span class="c1">-- Joining three tables — a very common real pattern</span>
+SELECT c.name, a.balance, l.amount AS loan_amount, l.status AS loan_status
+FROM customer c
+INNER JOIN account a ON c.id = a.customer_id
+INNER JOIN loan l ON c.id = l.customer_id
+WHERE l.status = 'ACTIVE';
+</pre>
+<div class="tip"><b>Real scenario:</b> "Our 'active customers with active accounts' report uses INNER JOIN deliberately — customers who never opened an account (perhaps abandoned signup) should NOT appear in this specific report at all, which is exactly INNER JOIN's behavior."</div>
+</div>
+
+<!-- 9. LEFT JOIN RIGHT JOIN -->
+<div class="section">
+<h1>9. LEFT JOIN &amp; RIGHT JOIN</h1>
+
+<h2>9.1 LEFT JOIN — Keep Everything From the Left Table</h2>
+<div class="box">LEFT JOIN returns ALL rows from the left (first) table, plus matching rows from the right table — if there's no match, the right table's columns come back as NULL instead of the row disappearing entirely.</div>
+<div class="diagram">
+<div class="title">LEFT JOIN — Everything on the Left, Matched Where Possible</div>
+<div class="flow-row"><div class="node green">ALL Customers (even those with ZERO accounts)</div></div>
+<div class="arrow-down">↓ LEFT JOIN Account</div>
+<div class="flow-row"><div class="node">Matched account data, or NULL if the customer has no account</div></div>
+</div>
+<pre>SELECT c.name, a.balance
+FROM customer c
+LEFT JOIN account a ON c.id = a.customer_id;
+<span class="c1">-- customers with NO accounts still appear, with a.balance shown as NULL</span>
+
+<span class="c1">-- Real use: find customers who have NEVER opened an account</span>
+SELECT c.name
+FROM customer c
+LEFT JOIN account a ON c.id = a.customer_id
+WHERE a.id IS NULL;    <span class="c1">-- the "anti-join" pattern — extremely common real-world use of LEFT JOIN</span>
+</pre>
+
+<h2>9.2 RIGHT JOIN — The Mirror Image</h2>
+<pre>SELECT c.name, a.balance
+FROM customer c
+RIGHT JOIN account a ON c.id = a.customer_id;
+<span class="c1">-- returns ALL accounts, even ones with a broken/orphaned customer_id (rare with proper foreign keys)</span>
+</pre>
+<div class="tip"><b>Real-world note:</b> RIGHT JOIN is functionally identical to swapping the table order and using LEFT JOIN — most real organizations standardize on <b>always using LEFT JOIN</b> for readability/consistency, and simply never write RIGHT JOIN in practice, even though it's valid SQL.</div>
+</div>
+
+<!-- 10. FULL OUTER SELF CROSS -->
+<div class="section">
+<h1>10. FULL OUTER JOIN, SELF JOIN &amp; CROSS JOIN</h1>
+
+<h2>10.1 FULL OUTER JOIN</h2>
+<div class="box">Returns ALL rows from BOTH tables — matched where possible, with NULLs on whichever side has no match. Combines the effect of LEFT JOIN and RIGHT JOIN together.</div>
+<pre>SELECT c.name, a.balance
+FROM customer c
+FULL OUTER JOIN account a ON c.id = a.customer_id;
+<span class="c1">-- shows: customers with no accounts (NULL balance), AND any orphaned accounts (NULL name)</span>
+</pre>
+<div class="warn">MySQL does not support <code>FULL OUTER JOIN</code> directly — it's emulated using <code>LEFT JOIN ... UNION ... RIGHT JOIN</code>. PostgreSQL, SQL Server, and Oracle all support it natively.</div>
+
+<h2>10.2 SELF JOIN — Joining a Table to Itself</h2>
+<div class="box">Used when rows in the SAME table have a relationship to each other — e.g., an "employee" table where each employee has a "manager_id" pointing to another row in the same table.</div>
+<pre>SELECT e.name AS employee_name, m.name AS manager_name
+FROM employee e
+LEFT JOIN employee m ON e.manager_id = m.id;
+<span class="c1">-- the SAME table, aliased twice (e and m), to represent two different "roles" of the same data</span>
+
+<span class="c1">-- Banking example — find pairs of accounts belonging to the same customer</span>
+SELECT a1.id AS account_1, a2.id AS account_2, a1.customer_id
+FROM account a1
+JOIN account a2 ON a1.customer_id = a2.customer_id AND a1.id &lt; a2.id;
+</pre>
+
+<h2>10.3 CROSS JOIN — Every Combination (Cartesian Product)</h2>
+<div class="box">Returns every possible combination of rows from both tables — if Table A has 5 rows and Table B has 3 rows, CROSS JOIN produces 15 rows. Rarely used directly for reporting, but useful for generating combinations.</div>
+<pre>SELECT p.product_name, m.month_name
+FROM product p
+CROSS JOIN month_lookup m;
+<span class="c1">-- generates one row per product PER month — useful for building a complete report template</span>
+<span class="c1">-- that later gets LEFT JOINed against actual sales data, ensuring months with $0 sales still appear</span>
+</pre>
+<div class="warn"><b>Real accidental gotcha:</b> Forgetting the <code>ON</code> condition in a JOIN (or writing <code>FROM table_a, table_b</code> with no WHERE linking them) accidentally produces a CROSS JOIN — a classic real-world bug that silently multiplies your result set size and can look like "duplicate data" without an obvious cause.</div>
+</div>
+
+<!-- 11. SUBQUERIES -->
+<div class="section">
+<h1>11. Subqueries — Single Row, Multiple Row, Correlated</h1>
+
+<h2>11.1 Single Row Subquery</h2>
+<div class="box">Returns exactly ONE row/value — safe to use with <code>=</code>, <code>&gt;</code>, <code>&lt;</code>, etc.</div>
+<pre>SELECT * FROM account
+WHERE balance &gt; (SELECT AVG(balance) FROM account);
+<span class="c1">-- accounts with an above-average balance</span>
+</pre>
+
+<h2>11.2 Multiple Row Subquery</h2>
+<div class="box">Returns MULTIPLE rows — must be used with <code>IN</code>, <code>ANY</code>, <code>ALL</code>, or <code>EXISTS</code>, never bare <code>=</code>/<code>&gt;</code>.</div>
+<pre>SELECT * FROM customer
+WHERE id IN (SELECT customer_id FROM loan WHERE status = 'ACTIVE');
+<span class="c1">-- customers who have at least one active loan</span>
+
+SELECT * FROM account
+WHERE balance &gt; ALL (SELECT balance FROM account WHERE status = 'CLOSED');
+<span class="c1">-- accounts with a balance greater than EVERY closed account's balance</span>
+</pre>
+
+<h2>11.3 Correlated Subquery</h2>
+<div class="box">A correlated subquery references a column from the OUTER query — it's effectively re-executed once for each row of the outer query, unlike a normal subquery which runs once independently.</div>
+<pre>SELECT c.name,
+       (SELECT COUNT(*) FROM account a WHERE a.customer_id = c.id) AS account_count
+FROM customer c;
+<span class="c1">-- the inner subquery runs ONCE PER customer row, referencing that row's specific c.id each time</span>
+
+<span class="c1">-- Correlated subquery in a WHERE clause</span>
+SELECT * FROM account a
+WHERE balance &gt; (
+    SELECT AVG(balance) FROM account a2 WHERE a2.customer_id = a.customer_id
+);
+<span class="c1">-- accounts with an above-average balance COMPARED ONLY TO THAT SAME CUSTOMER'S OTHER accounts</span>
+</pre>
+<div class="warn"><b>Real performance note:</b> Correlated subqueries can be slow on large tables since they conceptually re-run per outer row — real query tuning often rewrites a correlated subquery as a JOIN with GROUP BY, or uses a window function (Section 17) instead, which the database can usually execute far more efficiently in a single pass.</div>
+</div>
+
+<!-- 12. EXISTS VS IN -->
+<div class="section">
+<h1>12. EXISTS vs IN vs NOT EXISTS vs NOT IN</h1>
+
+<h2>12.1 EXISTS and IN — Functionally Similar, Different Performance Characteristics</h2>
+<pre><span class="c1">-- Using IN</span>
+SELECT * FROM customer c
+WHERE c.id IN (SELECT customer_id FROM account WHERE status = 'ACTIVE');
+
+<span class="c1">-- Using EXISTS — often preferred, especially on large tables</span>
+SELECT * FROM customer c
+WHERE EXISTS (SELECT 1 FROM account a WHERE a.customer_id = c.id AND a.status = 'ACTIVE');
+</pre>
+<table>
+<tr><th>Aspect</th><th>IN</th><th>EXISTS</th></tr>
+<tr><td>How it works</td><td>Builds the full subquery result list first, then checks membership</td><td>Stops checking as soon as ONE matching row is found (short-circuits)</td></tr>
+<tr><td>Performance on large subquery result sets</td><td>Can be slower — must materialize the whole list</td><td>Usually faster — doesn't need the full list, just "does at least one match exist?"</td></tr>
+<tr><td>NULL handling</td><td><b>Dangerous</b> — see Section 12.2</td><td>Safe — unaffected by NULLs in the subquery</td></tr>
+</table>
+
+<h2>12.2 The NOT IN + NULL Trap (A Very Common Real Bug)</h2>
+<div class="warn"><b>Critical gotcha:</b> If the subquery in a <code>NOT IN</code> can return even ONE NULL value, the ENTIRE outer query returns ZERO rows — silently, with no error. This has caused real production bugs where a report mysteriously returned empty results.</div>
+<pre><span class="c1">-- DANGEROUS — if ANY account.customer_id is NULL (e.g., an orphaned/bad record), this returns NOTHING at all</span>
+SELECT * FROM customer
+WHERE id NOT IN (SELECT customer_id FROM account);
+
+<span class="c1">-- SAFE FIX 1 — filter out NULLs explicitly in the subquery</span>
+SELECT * FROM customer
+WHERE id NOT IN (SELECT customer_id FROM account WHERE customer_id IS NOT NULL);
+
+<span class="c1">-- SAFE FIX 2 (preferred) — use NOT EXISTS instead, which is immune to this NULL trap entirely</span>
+SELECT * FROM customer c
+WHERE NOT EXISTS (SELECT 1 FROM account a WHERE a.customer_id = c.id);
+</pre>
+<div class="tip"><b>Real-world guidance:</b> Because of this NULL trap, many experienced SQL developers default to <b>NOT EXISTS</b> over <b>NOT IN</b> as a blanket rule, unless they're 100% certain the subquery's column can never contain NULL.</div>
+</div>
+
+<!-- 13. AGGREGATE FUNCTIONS -->
+<div class="section">
+<h1>13. Aggregate Functions (COUNT, SUM, AVG, MIN, MAX)</h1>
+
+<h2>13.1 The Five Core Aggregate Functions</h2>
+<pre>SELECT COUNT(*) FROM account;                          <span class="c1">-- total row count, including NULLs</span>
+SELECT COUNT(closed_date) FROM account;                 <span class="c1">-- counts only NON-NULL closed_date values</span>
+SELECT COUNT(DISTINCT customer_id) FROM account;        <span class="c1">-- count of unique customers</span>
+SELECT SUM(balance) FROM account WHERE status = 'ACTIVE';
+SELECT AVG(balance) FROM account;
+SELECT MIN(balance), MAX(balance) FROM account;
+</pre>
+
+<h2>13.2 Aggregates Combined With GROUP BY (Recap From Section 6)</h2>
+<pre>SELECT account_type, COUNT(*) AS total, SUM(balance) AS total_balance, AVG(balance) AS avg_balance
+FROM account
+GROUP BY account_type
+ORDER BY total_balance DESC;
+</pre>
+
+<h2>13.3 Real Report Query — Multiple Aggregates Together</h2>
+<pre>SELECT
+    c.city,
+    COUNT(DISTINCT c.id) AS total_customers,
+    COUNT(a.id) AS total_accounts,
+    SUM(a.balance) AS total_deposits,
+    ROUND(AVG(a.balance), 2) AS avg_balance
+FROM customer c
+LEFT JOIN account a ON c.id = a.customer_id
+GROUP BY c.city
+HAVING COUNT(a.id) &gt; 10
+ORDER BY total_deposits DESC;
+</pre>
+<div class="tip"><b>Real scenario:</b> "Our regional performance dashboard runs exactly this style of query nightly — aggregating deposits/customer counts per city — feeding a Grafana panel the business team checks every morning to spot underperforming branches."</div>
+</div>
+
+<!-- 14. STRING FUNCTIONS -->
+<div class="section">
+<h1>14. String Functions</h1>
+<table>
+<tr><th>Function</th><th>Purpose</th><th>Example</th></tr>
+<tr><td>CONCAT / ||</td><td>Joins strings together</td><td><code>CONCAT(first_name, ' ', last_name)</code></td></tr>
+<tr><td>UPPER / LOWER</td><td>Case conversion</td><td><code>UPPER(email)</code></td></tr>
+<tr><td>TRIM / LTRIM / RTRIM</td><td>Removes whitespace</td><td><code>TRIM(name)</code></td></tr>
+<tr><td>LENGTH / LEN</td><td>String length</td><td><code>LENGTH(card_number)</code></td></tr>
+<tr><td>SUBSTRING</td><td>Extracts part of a string</td><td><code>SUBSTRING(card_number, 13, 4)</code> — last 4 digits</td></tr>
+<tr><td>REPLACE</td><td>Replaces a substring</td><td><code>REPLACE(phone, '-', '')</code></td></tr>
+<tr><td>LPAD / RPAD</td><td>Pads a string to a fixed length</td><td><code>LPAD(account_id::text, 10, '0')</code></td></tr>
+<tr><td>POSITION / INSTR</td><td>Finds a substring's position</td><td><code>POSITION('@' IN email)</code></td></tr>
+</table>
+
+<h2>14.1 Real Query — Masking Sensitive Data</h2>
+<pre>SELECT
+    CONCAT('****-****-****-', SUBSTRING(card_number, 13, 4)) AS masked_card_number
+FROM card;
+<span class="c1">-- real security practice — never display full card numbers in reports/dashboards</span>
+</pre>
+
+<h2>14.2 Real Query — Data Cleanup</h2>
+<pre>UPDATE customer SET email = LOWER(TRIM(email)) WHERE email != LOWER(TRIM(email));
+<span class="c1">-- normalizes inconsistent email casing/whitespace before enforcing a unique constraint (Section 24)</span>
+</pre>
+</div>
+
+<!-- 15. DATE FUNCTIONS -->
+<div class="section">
+<h1>15. Date Functions</h1>
+<table>
+<tr><th>Function</th><th>Purpose</th><th>Example</th></tr>
+<tr><td>NOW() / CURRENT_TIMESTAMP</td><td>Current date and time</td><td><code>SELECT NOW();</code></td></tr>
+<tr><td>CURRENT_DATE</td><td>Current date only</td><td><code>SELECT CURRENT_DATE;</code></td></tr>
+<tr><td>DATE_PART / EXTRACT</td><td>Extracts a specific part (year, month, day)</td><td><code>EXTRACT(YEAR FROM created_date)</code></td></tr>
+<tr><td>DATEADD / + INTERVAL</td><td>Adds/subtracts time</td><td><code>created_date + INTERVAL '30 days'</code></td></tr>
+<tr><td>DATEDIFF / (date1 - date2)</td><td>Difference between two dates</td><td><code>closed_date - opened_date</code></td></tr>
+<tr><td>TO_CHAR / FORMAT</td><td>Formats a date as a string</td><td><code>TO_CHAR(created_date, 'YYYY-MM-DD')</code></td></tr>
+<tr><td>TO_DATE / CAST</td><td>Parses a string into a date</td><td><code>TO_DATE('2026-01-15', 'YYYY-MM-DD')</code></td></tr>
+</table>
+
+<h2>15.1 Real Query — Monthly Report Grouping</h2>
+<pre>SELECT
+    EXTRACT(YEAR FROM transaction_date) AS txn_year,
+    EXTRACT(MONTH FROM transaction_date) AS txn_month,
+    COUNT(*) AS txn_count,
+    SUM(amount) AS total_amount
+FROM transaction
+GROUP BY EXTRACT(YEAR FROM transaction_date), EXTRACT(MONTH FROM transaction_date)
+ORDER BY txn_year, txn_month;
+</pre>
+
+<h2>15.2 Real Query — Finding Overdue Loans</h2>
+<pre>SELECT * FROM loan
+WHERE status = 'ACTIVE'
+  AND next_payment_date &lt; CURRENT_DATE;
+<span class="c1">-- loans past their due date — a real, frequently scheduled batch report (connects to Spring Batch, Section 37+)</span>
+
+SELECT * FROM account
+WHERE created_date &gt;= CURRENT_DATE - INTERVAL '90 days';
+<span class="c1">-- accounts opened in the last 90 days</span>
+</pre>
+</div>
+
+<!-- 16. NULL HANDLING FUNCTIONS -->
+<div class="section">
+<h1>16. NULL Handling Functions</h1>
+
+<h2>16.1 Why NULL Handling Functions Matter</h2>
+<div class="box">NULL represents "unknown/missing," and arithmetic/comparisons involving NULL don't behave like normal values — <code>NULL + 5</code> is NULL, not 5; <code>NULL = NULL</code> evaluates to unknown (not true). Dedicated functions let you handle these cases explicitly and safely.</div>
+
+<h2>16.2 COALESCE — The Most Important One</h2>
+<pre>SELECT COALESCE(nickname, first_name, 'Unknown') AS display_name
+FROM customer;
+<span class="c1">-- returns the FIRST non-null value in the list — extremely common real pattern for fallback defaults</span>
+
+SELECT SUM(COALESCE(discount_amount, 0)) FROM orders;
+<span class="c1">-- treats NULL discount as 0 instead of breaking the SUM</span>
+</pre>
+
+<h2>16.3 NULLIF — The Inverse Idea</h2>
+<pre>SELECT amount / NULLIF(quantity, 0) AS unit_price FROM orders;
+<span class="c1">-- NULLIF returns NULL if quantity=0, converting a potential division-by-zero ERROR into a safe NULL result</span>
+</pre>
+
+<h2>16.4 IS NULL / IS NOT NULL vs = NULL (Recap From Section 5.2)</h2>
+<pre>SELECT * FROM account WHERE closed_date IS NULL;       <span class="c1">-- correct</span>
+SELECT * FROM account WHERE closed_date = NULL;         <span class="c1">-- WRONG — always returns zero rows, silently</span>
+</pre>
+
+<h2>16.5 Database-Specific Equivalents</h2>
+<table>
+<tr><th>Function</th><th>Database</th><th>Behavior</th></tr>
+<tr><td>ISNULL(x, default)</td><td>SQL Server</td><td>Similar to COALESCE but only takes 2 arguments</td></tr>
+<tr><td>NVL(x, default)</td><td>Oracle</td><td>Oracle's equivalent of COALESCE for 2 arguments</td></tr>
+<tr><td>COALESCE(x, y, z, ...)</td><td>ANSI Standard — works everywhere</td><td>Preferred for portability, accepts any number of arguments</td></tr>
+</table>
+<div class="tip"><b>Real scenario:</b> "Our customer display name logic uses <code>COALESCE(preferred_name, first_name, 'Customer')</code> — this single expression gracefully handles three real data states: a customer who set a preferred name, one who didn't, and defensively falls back to a generic label if even first_name is somehow missing."</div>
+</div>
+
+<!-- 17. WINDOW FUNCTIONS INTRO -->
+<div class="section">
+<h1>17. Window Functions — Introduction &amp; PARTITION BY</h1>
+
+<h2>17.1 What Makes Window Functions Different From GROUP BY</h2>
+<div class="box">GROUP BY collapses multiple rows into ONE summary row per group, losing the individual row details. Window functions calculate an aggregate/ranking value <b>per row</b>, while still keeping every individual row in the result — the "window" is the set of related rows the calculation considers for each row.</div>
+<div class="diagram">
+<div class="title">GROUP BY vs Window Function</div>
+<div class="flow-row"><div class="node gray">GROUP BY: 100 rows → 5 summary rows (detail lost)</div></div>
+<div class="arrow-down">— vs —</div>
+<div class="flow-row"><div class="node green">Window Function: 100 rows → still 100 rows, each with an added calculated column</div></div>
+</div>
+
+<h2>17.2 The OVER Clause and PARTITION BY</h2>
+<pre>SELECT
+    customer_id,
+    account_id,
+    balance,
+    SUM(balance) OVER (PARTITION BY customer_id) AS customer_total_balance
+FROM account;
+<span class="c1">-- each row still shows its own account's balance, PLUS that customer's TOTAL across all their accounts</span>
+<span class="c1">-- PARTITION BY resets the calculation separately for each customer_id group — like a "mini GROUP BY" per row</span>
+</pre>
+<table>
+<tr><th>Result Row</th><th>customer_id</th><th>balance</th><th>customer_total_balance</th></tr>
+<tr><td>1</td><td>55</td><td>2000</td><td>7000</td></tr>
+<tr><td>2</td><td>55</td><td>5000</td><td>7000</td></tr>
+<tr><td>3</td><td>88</td><td>3000</td><td>3000</td></tr>
+</table>
+<div class="tip"><b>Real scenario:</b> "A customer dashboard shows each individual account's balance next to that customer's total combined balance across all accounts — exactly what <code>PARTITION BY customer_id</code> provides in a single query, without needing a separate subquery join."</div>
+
+<h2>17.3 Window Function Syntax Structure</h2>
+<pre>function_name() OVER (
+    PARTITION BY column1        <span class="c1">-- optional: groups rows for the calculation (like GROUP BY, but keeps rows)</span>
+    ORDER BY column2            <span class="c1">-- optional: defines the order within each partition (needed for ranking/LEAD/LAG)
+</span>)
+</pre>
+</div>
+
+<!-- 18. ROW_NUMBER RANK DENSE_RANK -->
+<div class="section">
+<h1>18. ROW_NUMBER, RANK &amp; DENSE_RANK</h1>
+
+<h2>18.1 The Three Ranking Functions Compared</h2>
+<pre>SELECT
+    customer_id,
+    balance,
+    ROW_NUMBER() OVER (ORDER BY balance DESC) AS row_num,
+    RANK()       OVER (ORDER BY balance DESC) AS rank_num,
+    DENSE_RANK() OVER (ORDER BY balance DESC) AS dense_rank_num
+FROM account;
+</pre>
+<table>
+<tr><th>balance</th><th>ROW_NUMBER</th><th>RANK</th><th>DENSE_RANK</th></tr>
+<tr><td>5000</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td>4000</td><td>2</td><td>2</td><td>2</td></tr>
+<tr><td>4000 (tie)</td><td>3</td><td>2</td><td>2</td></tr>
+<tr><td>3000</td><td>4</td><td>4</td><td>3</td></tr>
+</table>
+<div class="box"><b>ROW_NUMBER:</b> always unique, sequential, no gaps, no ties (arbitrary tiebreak order for equal values). <b>RANK:</b> ties share the same rank, but the NEXT rank SKIPS numbers (2, 2, then jumps to 4). <b>DENSE_RANK:</b> ties share the same rank, but the NEXT rank does NOT skip (2, 2, then 3).</div>
+
+<h2>18.2 Real Use Case — Top N Per Group (Extremely Common Real Pattern)</h2>
+<pre>SELECT * FROM (
+    SELECT
+        customer_id,
+        account_id,
+        balance,
+        ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY balance DESC) AS rn
+    FROM account
+) ranked
+WHERE rn = 1;
+<span class="c1">-- returns each customer's SINGLE highest-balance account — "top 1 per group" is one of the most common real SQL patterns</span>
+</pre>
+
+<h2>18.3 Real Use Case — Deduplication</h2>
+<pre>DELETE FROM customer
+WHERE id IN (
+    SELECT id FROM (
+        SELECT id, ROW_NUMBER() OVER (PARTITION BY email ORDER BY created_date) AS rn
+        FROM customer
+    ) t
+    WHERE rn &gt; 1
+);
+<span class="c1">-- keeps the EARLIEST record per duplicate email, deletes the rest — a real data-cleanup pattern</span>
+</pre>
+<div class="tip"><b>Interview tip:</b> "ROW_NUMBER + PARTITION BY" is one of the single most useful, most frequently asked SQL patterns in real interviews — it solves "top N per group," deduplication, and pagination-within-groups all with the same core technique.</div>
+</div>
+
+<!-- 19. LEAD LAG FIRST_VALUE LAST_VALUE -->
+<div class="section">
+<h1>19. LEAD, LAG, FIRST_VALUE &amp; LAST_VALUE</h1>
+
+<h2>19.1 LAG — Looking at the PREVIOUS Row</h2>
+<pre>SELECT
+    account_id,
+    transaction_date,
+    amount,
+    LAG(amount) OVER (PARTITION BY account_id ORDER BY transaction_date) AS previous_amount,
+    amount - LAG(amount) OVER (PARTITION BY account_id ORDER BY transaction_date) AS change_from_previous
+FROM transaction;
+<span class="c1">-- compares each transaction to the PREVIOUS one for the SAME account, in date order</span>
+</pre>
+
+<h2>19.2 LEAD — Looking at the NEXT Row</h2>
+<pre>SELECT
+    account_id,
+    transaction_date,
+    amount,
+    LEAD(transaction_date) OVER (PARTITION BY account_id ORDER BY transaction_date) AS next_transaction_date,
+    LEAD(transaction_date) OVER (PARTITION BY account_id ORDER BY transaction_date) - transaction_date AS days_until_next
+FROM transaction;
+<span class="c1">-- calculates the gap in days until this account's NEXT transaction — great for detecting dormant accounts</span>
+</pre>
+
+<h2>19.3 FIRST_VALUE and LAST_VALUE</h2>
+<pre>SELECT
+    account_id,
+    transaction_date,
+    amount,
+    FIRST_VALUE(amount) OVER (PARTITION BY account_id ORDER BY transaction_date) AS first_transaction_amount,
+    LAST_VALUE(amount) OVER (
+        PARTITION BY account_id ORDER BY transaction_date
+        RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+    ) AS last_transaction_amount
+FROM transaction;
+</pre>
+<div class="warn"><b>Real gotcha with LAST_VALUE:</b> By default, the "window frame" only extends up to the CURRENT row, so <code>LAST_VALUE</code> without an explicit frame clause often just returns the current row's own value, not the actual last value in the whole partition. You must explicitly specify <code>RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING</code> to get the true last value across the entire partition.</div>
+
+<h2>19.4 Real Scenario — Detecting a Customer's First Deposit vs Later Activity</h2>
+<pre>SELECT customer_id, transaction_date, amount,
+       CASE WHEN transaction_date = FIRST_VALUE(transaction_date) OVER (
+                PARTITION BY customer_id ORDER BY transaction_date)
+            THEN 'FIRST_DEPOSIT' ELSE 'SUBSEQUENT' END AS deposit_type
+FROM transaction
+WHERE transaction_type = 'DEPOSIT';
+</pre>
+<div class="tip"><b>Real scenario:</b> "Our fraud detection query uses <code>LAG(amount)</code> partitioned by account to flag any transaction that's more than 10x the previous transaction's amount for that same account — a simple but effective real-time anomaly signal built entirely with a window function, no separate application code needed."</div>
+</div>
+
+<!-- 20. SET OPERATORS -->
+<div class="section">
+<h1>20. Set Operators — UNION, UNION ALL, INTERSECT, EXCEPT/MINUS</h1>
+
+<h2>20.1 UNION vs UNION ALL</h2>
+<pre>SELECT customer_id FROM account WHERE status = 'ACTIVE'
+UNION
+SELECT customer_id FROM loan WHERE status = 'ACTIVE';
+<span class="c1">-- UNION removes duplicate customer_ids appearing in both — an implicit DISTINCT, which has a performance cost</span>
+
+SELECT customer_id FROM account WHERE status = 'ACTIVE'
+UNION ALL
+SELECT customer_id FROM loan WHERE status = 'ACTIVE';
+<span class="c1">-- UNION ALL keeps ALL rows including duplicates — faster, since no de-duplication work is needed</span>
+</pre>
+<div class="warn"><b>Real performance rule:</b> Always use <code>UNION ALL</code> instead of <code>UNION</code> unless you specifically need duplicates removed — the implicit de-duplication in plain UNION requires an internal sort/hash operation that can be genuinely expensive on large result sets.</div>
+
+<h2>20.2 INTERSECT — Rows in BOTH Result Sets</h2>
+<pre>SELECT customer_id FROM account WHERE status = 'ACTIVE'
+INTERSECT
+SELECT customer_id FROM loan WHERE status = 'ACTIVE';
+<span class="c1">-- customers who have BOTH an active account AND an active loan</span>
+</pre>
+
+<h2>20.3 EXCEPT (PostgreSQL/SQL Server) / MINUS (Oracle) — Rows in the First, NOT in the Second</h2>
+<pre><span class="c1">-- PostgreSQL / SQL Server</span>
+SELECT customer_id FROM customer
+EXCEPT
+SELECT customer_id FROM account;
+<span class="c1">-- customers with NO account at all — an alternative to the LEFT JOIN ... WHERE IS NULL anti-join pattern (Section 9.1)</span>
+
+<span class="c1">-- Oracle equivalent</span>
+SELECT customer_id FROM customer
+MINUS
+SELECT customer_id FROM account;
+</pre>
+
+<h2>20.4 Set Operator Rules (Important)</h2>
+<ul>
+<li>Both queries must return the <b>same number of columns</b>, with compatible data types in the same order.</li>
+<li>Column names in the final result come from the <b>first</b> query's column names/aliases.</li>
+<li>Only ONE <code>ORDER BY</code> is allowed, at the very end of the entire combined statement.</li>
+</ul>
+</div>
+
+<!-- 21. TABLES VIEWS MATERIALIZED VIEWS -->
+<div class="section">
+<h1>21. Database Objects — Tables, Views &amp; Materialized Views</h1>
+
+<h2>21.1 Views — A Saved, Reusable Query</h2>
+<div class="box">A View is a virtual table defined by a stored SELECT query — it doesn't store data itself, it just re-runs its underlying query every time it's queried, always reflecting the current live data.</div>
+<pre>CREATE VIEW active_customer_summary AS
+SELECT c.id, c.name, COUNT(a.id) AS account_count, SUM(a.balance) AS total_balance
+FROM customer c
+JOIN account a ON c.id = a.customer_id
+WHERE a.status = 'ACTIVE'
+GROUP BY c.id, c.name;
+
+SELECT * FROM active_customer_summary WHERE total_balance &gt; 50000;
+<span class="c1">-- queries the view just like a normal table — but it's really running the underlying JOIN/GROUP BY every time</span>
+</pre>
+<table>
+<tr><th>Benefit</th><th>Why It Helps</th></tr>
+<tr><td>Simplifies complex queries</td><td>Hides a complicated JOIN/aggregation behind a simple, reusable name</td></tr>
+<tr><td>Security/access control</td><td>Can expose only specific columns/rows to certain users, hiding sensitive underlying columns</td></tr>
+<tr><td>Consistency</td><td>Business logic for "what counts as an active customer" lives in ONE place, not repeated across many queries</td></tr>
+</table>
+
+<h2>21.2 Materialized Views — Views That Actually Store Data</h2>
+<div class="box">Unlike a regular View, a Materialized View physically STORES the query's result set on disk — much faster to query (no re-computation each time), but the data can become stale until it's explicitly refreshed.</div>
+<pre>CREATE MATERIALIZED VIEW monthly_deposit_summary AS
+SELECT EXTRACT(YEAR FROM transaction_date) AS yr, EXTRACT(MONTH FROM transaction_date) AS mo,
+       SUM(amount) AS total_deposits
+FROM transaction
+WHERE transaction_type = 'DEPOSIT'
+GROUP BY EXTRACT(YEAR FROM transaction_date), EXTRACT(MONTH FROM transaction_date);
+
+REFRESH MATERIALIZED VIEW monthly_deposit_summary;   <span class="c1">-- must be run periodically (often via a scheduled job) to update the stored data</span>
+</pre>
+<table>
+<tr><th>Aspect</th><th>View</th><th>Materialized View</th></tr>
+<tr><td>Data freshness</td><td>Always live/current (re-runs the query every time)</td><td>Can be stale until manually/scheduled refreshed</td></tr>
+<tr><td>Query speed</td><td>As slow as the underlying query itself</td><td>Very fast — pre-computed and stored</td></tr>
+<tr><td>Best fit</td><td>Simplifying/securing access to live data</td><td>Expensive aggregations/reports that don't need up-to-the-second freshness (e.g., a nightly dashboard)</td></tr>
+</table>
+<div class="tip"><b>Real scenario:</b> "Our executive dashboard's 'monthly deposits by branch' report used to take 8 seconds to load, running a heavy aggregation query live on every page view. Converting it to a Materialized View refreshed once nightly via a scheduled job (Spring Batch, Section 37+) dropped load time to under 50ms — completely acceptable since the business only needs yesterday's numbers, not up-to-the-second accuracy, for this specific report."</div>
+</div>
+
+<!-- 22. SEQUENCES SYNONYMS -->
+<div class="section">
+<h1>22. Database Objects — Sequences &amp; Synonyms</h1>
+
+<h2>22.1 Sequences — Generating Unique Numbers</h2>
+<div class="box">A Sequence is a database object that generates a guaranteed unique, typically incrementing number — commonly used to generate primary key values, especially in databases like Oracle/PostgreSQL where auto-increment isn't a plain column attribute like MySQL's AUTO_INCREMENT.</div>
+<pre>CREATE SEQUENCE account_id_seq START WITH 1000 INCREMENT BY 1;
+
+SELECT nextval('account_id_seq');   <span class="c1">-- PostgreSQL syntax — returns the next unique value, e.g., 1000, then 1001, etc.</span>
+
+CREATE TABLE account (
+    id BIGINT PRIMARY KEY DEFAULT nextval('account_id_seq'),
+    balance NUMERIC(15,2)
+);
+</pre>
+<div class="tip">This connects directly back to <code>GenerationType.SEQUENCE</code> in the JDBC/Hibernate/JPA guide (Section 9.2) — Hibernate can be configured to pre-allocate a batch of sequence values at once, enabling efficient JDBC batch inserts, unlike <code>GenerationType.IDENTITY</code> which requires a round trip per row.</div>
+
+<h2>22.2 Synonyms — Alternate Names for Database Objects</h2>
+<div class="box">A Synonym is an alias for another database object (a table, view, or even an object in a different schema/database) — lets you reference a long or remote object name with a short, simple, stable name, and can hide the real underlying location if it changes later.</div>
+<pre>CREATE SYNONYM active_accounts FOR reporting_schema.vw_active_account_summary;
+
+SELECT * FROM active_accounts;   <span class="c1">-- simpler than typing the fully-qualified schema.object name every time</span>
+</pre>
+<div class="box">Synonyms are most commonly used in Oracle-heavy enterprise environments to abstract cross-schema or cross-database references, letting the underlying physical location change without breaking every query that references it.</div>
+</div>
+
+<!-- 23. INDEXES DEEP DIVE -->
+<div class="section">
+<h1>23. Indexes Deep Dive</h1>
+
+<h2>23.1 What an Index Is — The Book Index Analogy</h2>
+<div class="box">A database index is exactly like a book's index page — instead of reading every single page (a "full table scan") to find a topic, you look it up in the index and jump directly to the right page. An index is a separate, sorted data structure pointing to the actual row locations, dramatically speeding up lookups at the cost of extra storage and slightly slower writes.</div>
+
+<h2>23.2 Clustered vs Non-Clustered Index</h2>
+<table>
+<tr><th></th><th>Clustered Index</th><th>Non-Clustered Index</th></tr>
+<tr><td>Physical data order</td><td>The table's ACTUAL data rows are physically stored in this index's order</td><td>A separate structure with pointers back to the actual row locations</td></tr>
+<tr><td>How many per table</td><td>Only ONE per table (data can only be physically sorted one way)</td><td>Many allowed per table</td></tr>
+<tr><td>Typical default</td><td>Usually automatically created on the Primary Key</td><td>Created explicitly for other frequently-queried columns</td></tr>
+<tr><td>Real analogy</td><td>A phone book — physically sorted by last name</td><td>An index at the back of a textbook — separate from the actual page content, just pointers</td></tr>
+</table>
+
+<h2>23.3 Composite Index (Multi-Column)</h2>
+<pre>CREATE INDEX idx_account_customer_status ON account(customer_id, status);
+<span class="c1">-- helps queries filtering by customer_id ALONE, or by customer_id AND status TOGETHER</span>
+<span class="c1">-- does NOT help a query filtering by status ALONE — column order in a composite index matters enormously!</span>
+</pre>
+<div class="warn"><b>Critical real-world rule — the "leftmost prefix" rule:</b> A composite index on <code>(customer_id, status)</code> can be used for queries filtering on <code>customer_id</code> alone, or <code>customer_id + status</code> together — but CANNOT be used to efficiently filter on <code>status</code> alone. Always order composite index columns starting with the ones most commonly used alone or as the primary filter.</div>
+
+<h2>23.4 Unique Index</h2>
+<pre>CREATE UNIQUE INDEX idx_customer_email ON customer(email);
+<span class="c1">-- enforces no two customers can share the same email, AND speeds up lookups by email — two benefits in one</span>
+</pre>
+
+<h2>23.5 Covering Index</h2>
+<div class="box">A Covering Index includes ALL the columns a query needs (in the SELECT, WHERE, and ORDER BY) directly within the index itself — the database can answer the query entirely from the index, without ever touching the actual table data ("index-only scan"), which is extremely fast.</div>
+<pre><span class="c1">-- Query needing customer_id, status, and balance</span>
+SELECT customer_id, status, balance FROM account WHERE customer_id = 55;
+
+<span class="c1">-- A covering index includes ALL needed columns — PostgreSQL's INCLUDE clause adds non-key columns</span>
+CREATE INDEX idx_account_covering ON account(customer_id) INCLUDE (status, balance);
+</pre>
+
+<h2>23.6 Index Scan vs Index Seek (vs Full Table Scan)</h2>
+<table>
+<tr><th>Access Method</th><th>What Happens</th><th>Real Trigger</th></tr>
+<tr><td>Full Table Scan</td><td>Reads EVERY row in the table, checking each one</td><td>No usable index exists for the query's filter condition</td></tr>
+<tr><td>Index Scan</td><td>Reads through the ENTIRE index structure, still checking many entries</td><td>The index exists but isn't very selective, or a large portion of the table matches</td></tr>
+<tr><td>Index Seek</td><td>Jumps DIRECTLY to the matching entries using the index's sorted structure — the fastest option</td><td>A highly selective, well-designed index exists exactly matching the query's filter</td></tr>
+</table>
+<div class="tip"><b>Interview tip:</b> "Index Seek" is what you WANT to see in an execution plan for a selective query — "Full Table Scan" on a large table is usually a red flag prompting you to check whether an appropriate index exists (Section 28-29 cover reading execution plans in depth).</div>
+
+<h2>23.7 The Real Cost of Indexes (Not Free!)</h2>
+<div class="warn">Every index speeds up reads but slows down writes (INSERT/UPDATE/DELETE must also update every index on the table) and consumes additional disk space. Real database design deliberately balances the number of indexes against actual query patterns — indexing every single column "just in case" is a common real-world anti-pattern that degrades write performance for little read benefit.</div>
+</div>
+
+<!-- 24. CONSTRAINTS -->
+<div class="section">
+<h1>24. Constraints</h1>
+
+<h2>24.1 The Full Constraint Reference</h2>
+<table>
+<tr><th>Constraint</th><th>Purpose</th><th>Real Example</th></tr>
+<tr><td>PRIMARY KEY</td><td>Uniquely identifies each row; implies NOT NULL + UNIQUE automatically</td><td><code>id BIGINT PRIMARY KEY</code></td></tr>
+<tr><td>FOREIGN KEY</td><td>Enforces that a column's value must exist in another table's primary key</td><td><code>customer_id BIGINT REFERENCES customer(id)</code></td></tr>
+<tr><td>UNIQUE</td><td>Ensures no two rows share the same value in this column</td><td><code>email VARCHAR(100) UNIQUE</code></td></tr>
+<tr><td>CHECK</td><td>Enforces a custom business rule/condition on the column's value</td><td><code>CHECK (balance &gt;= 0)</code></td></tr>
+<tr><td>DEFAULT</td><td>Provides an automatic value when none is explicitly given on insert</td><td><code>status VARCHAR(20) DEFAULT 'ACTIVE'</code></td></tr>
+<tr><td>NOT NULL</td><td>Requires the column to always have a value</td><td><code>customer_id BIGINT NOT NULL</code></td></tr>
+</table>
+
+<h2>24.2 Real Full Table Definition Using All Constraints Together</h2>
+<pre>CREATE TABLE account (
+    id BIGINT PRIMARY KEY DEFAULT nextval('account_id_seq'),
+    customer_id BIGINT NOT NULL REFERENCES customer(id),
+    balance NUMERIC(15,2) NOT NULL DEFAULT 0 CHECK (balance &gt;= 0),
+    account_type VARCHAR(20) NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
+    account_number VARCHAR(20) UNIQUE NOT NULL,
+    created_date TIMESTAMP NOT NULL DEFAULT NOW()
+);
+</pre>
+
+<h2>24.3 Foreign Key Referential Actions</h2>
+<pre>CREATE TABLE account (
+    ...
+    customer_id BIGINT REFERENCES customer(id)
+        ON DELETE RESTRICT      <span class="c1">-- prevents deleting a customer who still has accounts (SAFEST for financial data)</span>
+        ON UPDATE CASCADE       <span class="c1">-- if a customer's id somehow changes, automatically update all referencing accounts</span>
+);
+</pre>
+<table>
+<tr><th>Action</th><th>Behavior</th></tr>
+<tr><td>RESTRICT / NO ACTION</td><td>Blocks the delete/update if any referencing rows exist — the safest default for critical data</td></tr>
+<tr><td>CASCADE</td><td>Automatically deletes/updates referencing rows too — dangerous for financial/audit-critical relationships (recap of the Cascade danger from the JPA guide, Section 11.3)</td></tr>
+<tr><td>SET NULL</td><td>Sets the foreign key column to NULL on the referencing rows instead of deleting them</td></tr>
+</table>
+<div class="warn"><b>Real-world guidance:</b> For financially/legally significant relationships (like Customer → Account), <code>ON DELETE RESTRICT</code> is almost always the correct choice — you want deleting a Customer with existing Accounts to fail loudly and force a deliberate, reviewed process, not silently cascade-delete critical financial records.</div>
+</div>
+
+<!-- 25. TRANSACTIONS AND ACID -->
+<div class="section">
+<h1>25. Transactions &amp; ACID Properties</h1>
+
+<h2>25.1 What a Transaction Is</h2>
+<div class="box">A transaction is a group of one or more SQL statements that must execute as a single, indivisible unit — either ALL of them succeed and are saved permanently, or NONE of them are, even if something fails halfway through.</div>
+
+<h2>25.2 ACID — The Four Guarantees</h2>
+<div class="diagram">
+<div class="title">ACID Properties</div>
+<div class="flow-row">
+<div class="node">Atomicity<br/>All or nothing</div>
+<div class="node green">Consistency<br/>Valid state to valid state</div>
+<div class="node purple">Isolation<br/>Concurrent transactions don't interfere</div>
+<div class="node alt">Durability<br/>Committed = permanent, survives crashes</div>
+</div>
+</div>
+<table>
+<tr><th>Property</th><th>Meaning</th><th>Real Banking Example</th></tr>
+<tr><td>Atomicity</td><td>A transaction either fully completes or fully fails — no partial results</td><td>A fund transfer's debit AND credit both happen, or NEITHER happens — never just one</td></tr>
+<tr><td>Consistency</td><td>A transaction moves the database from one valid state to another, never violating constraints</td><td>An account balance can never go negative if a CHECK constraint enforces it, even mid-transaction</td></tr>
+<tr><td>Isolation</td><td>Concurrent transactions don't see each other's uncommitted intermediate changes (level configurable — Section 28)</td><td>Two simultaneous transfers on the same account don't corrupt each other's calculations</td></tr>
+<tr><td>Durability</td><td>Once committed, data survives even a server crash immediately afterward</td><td>A confirmed payment is never "lost" due to a server restarting a millisecond after commit</td></tr>
+</table>
+<div class="tip"><b>Interview one-liner:</b> "ACID is the set of guarantees a relational database transaction provides — Atomicity (all-or-nothing), Consistency (valid state to valid state), Isolation (concurrent transactions don't interfere), and Durability (committed data survives crashes) — together making transactions safe to build financial/critical systems on."</div>
+</div>
+
+<!-- 26. COMMIT ROLLBACK SAVEPOINT -->
+<div class="section">
+<h1>26. COMMIT, ROLLBACK, SAVEPOINT &amp; Transaction Lifecycle</h1>
+
+<h2>26.1 The Full Transaction Lifecycle</h2>
+<div class="diagram">
+<div class="title">Transaction Lifecycle</div>
+<div class="flow-row"><div class="node">BEGIN / START TRANSACTION</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">Execute statements (INSERT/UPDATE/DELETE)</div></div>
+<div class="arrow-down">↓ everything succeeds → COMMIT   |   something fails → ROLLBACK</div>
+<div class="flow-row">
+<div class="node purple">COMMIT<br/>changes made permanent</div>
+<div class="node alt">ROLLBACK<br/>changes undone entirely</div>
+</div>
+</div>
+
+<h2>26.2 Real Transaction Example</h2>
+<pre>BEGIN;
+
+UPDATE account SET balance = balance - 500 WHERE id = 1001;
+UPDATE account SET balance = balance + 500 WHERE id = 1002;
+
+<span class="c1">-- if both updates succeeded without error:</span>
+COMMIT;
+
+<span class="c1">-- if anything went wrong (e.g., account 1001's balance would go negative, violating a CHECK constraint):</span>
+ROLLBACK;   <span class="c1">-- undoes BOTH updates completely, as if neither ever happened</span>
+</pre>
+
+<h2>26.3 SAVEPOINT — Partial Rollback Within a Transaction</h2>
+<pre>BEGIN;
+
+UPDATE account SET balance = balance - 500 WHERE id = 1001;
+SAVEPOINT after_debit;
+
+UPDATE account SET balance = balance + 500 WHERE id = 1002;
+
+<span class="c1">-- if something specifically about the SECOND update needs undoing, without losing the first:</span>
+ROLLBACK TO SAVEPOINT after_debit;   <span class="c1">-- undoes only the credit, keeps the debit intact</span>
+
+<span class="c1">-- then continue the transaction, perhaps crediting a different account instead</span>
+UPDATE account SET balance = balance + 500 WHERE id = 1003;
+COMMIT;
+</pre>
+<div class="tip"><b>Real scenario:</b> "Our batch loan disbursement process uses a SAVEPOINT after validating and reserving funds, but before actually crediting the customer's account — if the credit step fails due to a downstream validation issue, we roll back to that savepoint and retry the credit with corrected data, without having to redo the entire fund-reservation step from scratch."</div>
+</div>
+
+<!-- 27. CONCURRENCY LOCKING DEADLOCKS -->
+<div class="section">
+<h1>27. Concurrency, Locking &amp; Deadlocks</h1>
+
+<h2>27.1 Why Locking Is Necessary</h2>
+<div class="box">When multiple transactions try to read/write the same data at the same time, the database uses locks to prevent conflicting operations from corrupting each other — e.g., two simultaneous transfers debiting the same account must not both read the same starting balance and both subtract from it independently.</div>
+
+<h2>27.2 Types of Locks</h2>
+<table>
+<tr><th>Lock Type</th><th>Behavior</th></tr>
+<tr><td>Shared Lock (Read Lock)</td><td>Multiple transactions can hold it simultaneously — allows concurrent reads, blocks writes</td></tr>
+<tr><td>Exclusive Lock (Write Lock)</td><td>Only ONE transaction can hold it — blocks both reads and writes from others until released</td></tr>
+<tr><td>Row-Level Lock</td><td>Locks only the specific row(s) being modified — the common, more granular default in modern RDBMS</td></tr>
+<tr><td>Table-Level Lock</td><td>Locks the ENTIRE table — much more restrictive, used for certain bulk/DDL operations</td></tr>
+</table>
+
+<h2>27.3 What a Deadlock Is</h2>
+<div class="warn">A deadlock happens when Transaction A holds a lock Transaction B needs, WHILE Transaction B holds a lock Transaction A needs — neither can proceed, each waiting on the other forever, until the database detects this cycle and forcibly kills one of them (rolling it back) to break the deadlock.</div>
+<div class="diagram">
+<div class="title">Deadlock Scenario</div>
+<div class="flow-row">
+<div class="node alt">Transaction A: locks Account 1001, wants to lock Account 1002</div>
+<div class="node alt">Transaction B: locks Account 1002, wants to lock Account 1001</div>
+</div>
+<div class="arrow-down">↓ neither can proceed — circular wait</div>
+<div class="flow-row"><div class="node gray">Database detects the deadlock, kills one transaction (rollback), the other proceeds</div></div>
+</div>
+
+<h2>27.4 Real Example Causing a Deadlock</h2>
+<pre><span class="c1">-- Transaction A</span>
+BEGIN;
+UPDATE account SET balance = balance - 100 WHERE id = 1001;   <span class="c1">-- locks row 1001</span>
+UPDATE account SET balance = balance + 100 WHERE id = 1002;   <span class="c1">-- waits for row 1002's lock...</span>
+
+<span class="c1">-- Transaction B (running at nearly the same time)</span>
+BEGIN;
+UPDATE account SET balance = balance - 50 WHERE id = 1002;    <span class="c1">-- locks row 1002</span>
+UPDATE account SET balance = balance + 50 WHERE id = 1001;    <span class="c1">-- waits for row 1001's lock... DEADLOCK!</span>
+</pre>
+
+<h2>27.5 The Real Fix — Consistent Lock Ordering</h2>
+<div class="box">The standard real-world fix is to ALWAYS acquire locks in the same, consistent order across every transaction (e.g., always lock the lower account ID first) — this eliminates the circular wait condition that causes deadlocks entirely.</div>
+<pre><span class="c1">-- BOTH transactions now update in the SAME order (lower ID first) — no deadlock possible</span>
+UPDATE account SET balance = balance - :amount WHERE id = LEAST(:id1, :id2);
+UPDATE account SET balance = balance + :amount WHERE id = GREATEST(:id1, :id2);
+</pre>
+<div class="tip"><b>Real scenario:</b> "Our fund transfer service used to occasionally throw deadlock exceptions under high concurrent load when two transfers happened to involve the same two accounts in opposite order. Sorting account IDs before acquiring locks (always updating the lower ID first) eliminated the deadlocks entirely — a simple, well-known real-world fix."</div>
+</div>
+
+<!-- 28. ISOLATION LEVELS READ PHENOMENA -->
+<div class="section">
+<h1>28. Isolation Levels &amp; Read Phenomena</h1>
+
+<h2>28.1 The Three Core Read Phenomena</h2>
+<ul>
+<li><b>Dirty Read:</b> Transaction A reads data that Transaction B has changed but NOT yet committed — if B rolls back, A read data that never really existed.</li>
+<li><b>Non-Repeatable Read:</b> Transaction A reads the same row twice within one transaction, but gets DIFFERENT values because Transaction B updated and committed that row in between.</li>
+<li><b>Phantom Read:</b> Transaction A runs the same query twice, but gets a DIFFERENT NUMBER OF ROWS because Transaction B inserted/deleted a matching row in between.</li>
+</ul>
+
+<h2>28.2 The Four Standard Isolation Levels</h2>
+<table>
+<tr><th>Isolation Level</th><th>Dirty Read</th><th>Non-Repeatable Read</th><th>Phantom Read</th><th>Performance</th></tr>
+<tr><td>READ UNCOMMITTED</td><td>Possible</td><td>Possible</td><td>Possible</td><td>Fastest, least safe</td></tr>
+<tr><td>READ COMMITTED (default in PostgreSQL, SQL Server, Oracle)</td><td>Prevented</td><td>Possible</td><td>Possible</td><td>Good balance, most common default</td></tr>
+<tr><td>REPEATABLE READ (default in MySQL/InnoDB)</td><td>Prevented</td><td>Prevented</td><td>Possible (mostly, DB-dependent)</td><td>Slower, more locking</td></tr>
+<tr><td>SERIALIZABLE</td><td>Prevented</td><td>Prevented</td><td>Prevented</td><td>Slowest, most locking/retries, but fully safe</td></tr>
+</table>
+
+<h2>28.3 Real Code — Setting Isolation Level Explicitly</h2>
+<pre>SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+BEGIN;
+<span class="c1">-- used sparingly, for critical operations where correctness matters more than throughput</span>
+SELECT SUM(balance) FROM account WHERE customer_id = 55;
+<span class="c1">-- ... perform reconciliation logic based on this sum ...</span>
+COMMIT;
+</pre>
+
+<h2>28.4 Real Scenario — Choosing the Right Isolation Level</h2>
+<div class="tip"><b>Real scenario:</b> "Our standard account transfer operations run at the database's default READ COMMITTED isolation for good throughput under normal load. Our monthly interest calculation batch job — which reads and aggregates across the ENTIRE accounts table and cannot tolerate phantom reads (new accounts appearing mid-calculation) — explicitly runs at SERIALIZABLE isolation, accepting the performance cost for guaranteed correctness during that one critical, infrequent process."</div>
+<div class="box">This directly parallels the same isolation-level discussion in the Spring &amp; Spring Boot guide (Section 44) and the JDBC/Hibernate/JPA guide (Section 17) — the database concept is identical; Spring's <code>@Transactional(isolation = ...)</code> attribute simply sets this same database-level isolation setting from application code.</div>
+</div>
+
+<!-- 29. QUERY OPTIMIZATION EXECUTION PLANS -->
+<div class="section">
+<h1>29. Query Optimization &amp; Execution Plans</h1>
+
+<h2>29.1 What an Execution Plan Is</h2>
+<div class="box">An Execution Plan (or Query Plan) shows EXACTLY how the database intends to execute a query — which indexes it will use (or not use), what order it joins tables in, and an estimated "cost" for each step. Reading execution plans is the single most important real-world skill for diagnosing slow queries.</div>
+
+<h2>29.2 Real EXPLAIN / EXPLAIN ANALYZE Usage</h2>
+<pre><span class="c1">-- PostgreSQL</span>
+EXPLAIN ANALYZE
+SELECT * FROM account WHERE customer_id = 55 AND status = 'ACTIVE';
+
+<span class="c1">-- Real simplified output to look for:</span>
+<span class="c1">Seq Scan on account (cost=0.00..1850.00 rows=42 width=64) (actual time=12.500..45.200 rows=3 loops=1)</span>
+<span class="c1">  Filter: (customer_id = 55 AND status = 'ACTIVE')</span>
+<span class="c1">  Rows Removed by Filter: 49997</span>
+</pre>
+<div class="warn"><b>What this output reveals:</b> <code>Seq Scan</code> means a FULL TABLE SCAN happened — the database read all ~50,000 rows and discarded 49,997 of them, just to find 3 matching rows. This is a huge red flag pointing directly at a missing index on <code>(customer_id, status)</code>.</div>
+
+<h2>29.3 The Same Query, After Adding the Right Index</h2>
+<pre>CREATE INDEX idx_account_customer_status ON account(customer_id, status);
+
+EXPLAIN ANALYZE
+SELECT * FROM account WHERE customer_id = 55 AND status = 'ACTIVE';
+
+<span class="c1">Index Scan using idx_account_customer_status on account
+  (cost=0.29..8.31 rows=3 width=64) (actual time=0.020..0.025 rows=3 loops=1)</span>
+<span class="c1">-- cost dropped from 1850 to 8.31 — roughly 200x cheaper, and actual time dropped from 45ms to 0.025ms</span>
+</pre>
+
+<h2>29.4 Key Execution Plan Terms to Recognize</h2>
+<table>
+<tr><th>Term</th><th>Meaning</th></tr>
+<tr><td>Seq Scan / Full Table Scan</td><td>Reads every row — usually bad on large tables unless intentionally returning most/all rows</td></tr>
+<tr><td>Index Scan / Index Seek</td><td>Uses an index to find matching rows efficiently — usually good</td></tr>
+<tr><td>Nested Loop Join</td><td>For each row in one table, scans the other — efficient for small result sets, bad for large ones</td></tr>
+<tr><td>Hash Join</td><td>Builds an in-memory hash table from one side, then probes it — efficient for larger joins</td></tr>
+<tr><td>Sort</td><td>An explicit sort operation — can be expensive on large result sets, sometimes avoidable with a matching index</td></tr>
+<tr><td>Cost</td><td>The optimizer's ESTIMATED relative expense of a step — not a real time unit, but useful for comparing plans</td></tr>
+<tr><td>Actual Time / Actual Rows</td><td>What genuinely happened when EXPLAIN ANALYZE really executed the query (vs just estimating)</td></tr>
+</table>
+<div class="tip"><b>Interview tip:</b> <code>EXPLAIN</code> alone shows the database's ESTIMATED plan without running the query; <code>EXPLAIN ANALYZE</code> actually EXECUTES the query and shows real timing/row-count data alongside the estimates — a big real-world gap between estimated and actual rows often signals outdated table statistics needing a refresh (<code>ANALYZE table_name;</code>).</div>
+</div>
+
+<!-- 30. INDEXING STRATEGY SQL TUNING -->
+<div class="section">
+<h1>30. Indexing Strategy &amp; SQL Tuning</h1>
+
+<h2>30.1 A Real, Practical Indexing Strategy Checklist</h2>
+<ul>
+<li>Index columns used frequently in <code>WHERE</code>, <code>JOIN ON</code>, and <code>ORDER BY</code> clauses.</li>
+<li>For composite indexes, put the most selective/most commonly-filtered-alone column FIRST (leftmost prefix rule, Section 23.3).</li>
+<li>Don't over-index — every index slows down INSERT/UPDATE/DELETE and consumes storage; only add indexes that serve real, measured query patterns.</li>
+<li>Periodically review and drop unused indexes (most databases can report index usage statistics).</li>
+<li>Keep table statistics up to date (<code>ANALYZE</code>/auto-vacuum) so the query planner makes good decisions.</li>
+</ul>
+
+<h2>30.2 Common SQL Anti-Patterns That Prevent Index Usage</h2>
+<pre><span class="c1">-- BAD — a function on the indexed column prevents the index from being used at all</span>
+SELECT * FROM account WHERE UPPER(status) = 'ACTIVE';
+
+<span class="c1">-- GOOD — store data pre-normalized (e.g., always uppercase), or use a functional index</span>
+CREATE INDEX idx_account_status_upper ON account(UPPER(status));
+
+<span class="c1">-- BAD — a leading wildcard prevents most index types from helping</span>
+SELECT * FROM customer WHERE name LIKE '%smith';
+
+<span class="c1">-- BETTER — a trailing wildcard CAN use a standard index</span>
+SELECT * FROM customer WHERE name LIKE 'smith%';
+
+<span class="c1">-- BAD — implicit type conversion on the indexed column can silently disable index usage</span>
+SELECT * FROM account WHERE account_number = 12345;   <span class="c1">-- if account_number is VARCHAR, this forces a conversion</span>
+
+<span class="c1">-- GOOD — match the data type exactly</span>
+SELECT * FROM account WHERE account_number = '12345';
+</pre>
+
+<h2>30.3 Real SQL Tuning Workflow</h2>
+<ol>
+<li>Identify the slow query (via slow query logs, APM traces, or user complaints).</li>
+<li>Run <code>EXPLAIN ANALYZE</code> to see the actual execution plan.</li>
+<li>Look for Seq Scans on large tables, unexpectedly high actual row counts, or expensive Sort/Hash operations.</li>
+<li>Check for missing indexes matching the query's actual filter/join/sort columns.</li>
+<li>Check for anti-patterns (functions on indexed columns, leading wildcards, type mismatches) blocking index usage.</li>
+<li>Add/adjust indexes, re-run EXPLAIN ANALYZE to confirm the plan improved.</li>
+<li>Validate the fix under realistic data volume and concurrency, not just a small local dataset.</li>
+</ol>
+<div class="tip"><b>Real scenario:</b> "A 'search accounts by customer name' feature was timing out under real production data volume — <code>WHERE UPPER(customer_name) LIKE '%' || UPPER(:search) || '%'</code> used both a function on the column AND a leading wildcard, defeating any standard index entirely. We introduced PostgreSQL's <code>pg_trgm</code> extension with a trigram GIN index specifically designed for this kind of flexible text search pattern, restoring sub-100ms search performance."</div>
+</div>
+
+<!-- 31. CTE RECURSIVE CTE -->
+<div class="section">
+<h1>31. Common Table Expressions (CTE) &amp; Recursive CTE</h1>
+
+<h2>31.1 What a CTE Is</h2>
+<div class="box">A CTE (defined with <code>WITH</code>) is a named, temporary result set that exists only for the duration of ONE query — it makes complex queries far more readable by breaking them into logical, named steps, similar to defining a local variable in code.</div>
+<pre>WITH active_high_value_customers AS (
+    SELECT customer_id, SUM(balance) AS total_balance
+    FROM account
+    WHERE status = 'ACTIVE'
+    GROUP BY customer_id
+    HAVING SUM(balance) &gt; 100000
+)
+SELECT c.name, ahvc.total_balance
+FROM active_high_value_customers ahvc
+JOIN customer c ON c.id = ahvc.customer_id
+ORDER BY ahvc.total_balance DESC;
+</pre>
+
+<h2>31.2 Multiple CTEs Chained Together</h2>
+<pre>WITH monthly_totals AS (
+    SELECT customer_id, EXTRACT(MONTH FROM transaction_date) AS mo, SUM(amount) AS total
+    FROM transaction GROUP BY customer_id, EXTRACT(MONTH FROM transaction_date)
+),
+customer_averages AS (
+    SELECT customer_id, AVG(total) AS avg_monthly_total
+    FROM monthly_totals GROUP BY customer_id
+)
+SELECT c.name, ca.avg_monthly_total
+FROM customer_averages ca
+JOIN customer c ON c.id = ca.customer_id
+WHERE ca.avg_monthly_total &gt; 5000;
+</pre>
+
+<h2>31.3 Recursive CTE — Traversing Hierarchical Data</h2>
+<div class="box">A Recursive CTE repeatedly references itself to walk through hierarchical/tree-structured data (organizational charts, category trees, a "manager chain") — something a plain non-recursive query cannot express at all.</div>
+<pre>WITH RECURSIVE employee_hierarchy AS (
+    <span class="c1">-- Anchor member: the starting point (the top-level manager)</span>
+    SELECT id, name, manager_id, 1 AS level
+    FROM employee
+    WHERE manager_id IS NULL
+
+    UNION ALL
+
+    <span class="c1">-- Recursive member: joins back to the CTE itself, one level deeper each time</span>
+    SELECT e.id, e.name, e.manager_id, eh.level + 1
+    FROM employee e
+    JOIN employee_hierarchy eh ON e.manager_id = eh.id
+)
+SELECT * FROM employee_hierarchy ORDER BY level, name;
+<span class="c1">-- returns the ENTIRE reporting chain, from the top down, with a computed "level" depth for each person</span>
+</pre>
+<div class="tip"><b>Real scenario:</b> "Our loan product catalog has nested categories (Personal Loans → Secured → Home Equity). A Recursive CTE lets us fetch a category and ALL its descendant sub-categories in one query, regardless of how many levels deep the hierarchy goes — without hardcoding a fixed number of JOIN levels."</div>
+</div>
+
+<!-- 32. TEMP TABLES MERGE -->
+<div class="section">
+<h1>32. Temporary Tables &amp; the MERGE Statement</h1>
+
+<h2>32.1 Temporary Tables — Real Use</h2>
+<div class="box">A Temporary Table exists only for the duration of a session/transaction and is automatically dropped afterward — useful for breaking a very complex multi-step calculation into intermediate stages, especially in stored procedures/batch jobs.</div>
+<pre>CREATE TEMP TABLE temp_high_risk_accounts AS
+SELECT id, customer_id, balance
+FROM account
+WHERE balance &gt; 100000 AND status = 'ACTIVE';
+
+<span class="c1">-- use it like a normal table for the rest of this session</span>
+SELECT c.name, t.balance
+FROM temp_high_risk_accounts t
+JOIN customer c ON c.id = t.customer_id;
+
+<span class="c1">-- automatically dropped when the session ends (or explicitly: DROP TABLE temp_high_risk_accounts;)</span>
+</pre>
+
+<h2>32.2 The MERGE Statement — "Upsert" (Insert or Update)</h2>
+<div class="box">MERGE lets you INSERT a row if it doesn't exist, or UPDATE it if it does — all in ONE statement, avoiding a separate "check then insert/update" round trip and the race condition risk that comes with it.</div>
+<pre>MERGE INTO account_balance_snapshot AS target
+USING (SELECT id AS account_id, balance FROM account WHERE status = 'ACTIVE') AS source
+ON target.account_id = source.account_id
+WHEN MATCHED THEN
+    UPDATE SET balance = source.balance, snapshot_date = CURRENT_DATE
+WHEN NOT MATCHED THEN
+    INSERT (account_id, balance, snapshot_date)
+    VALUES (source.account_id, source.balance, CURRENT_DATE);
+</pre>
+<div class="box">PostgreSQL's equivalent (before native MERGE support in newer versions) is <code>INSERT ... ON CONFLICT ... DO UPDATE</code>: <code>INSERT INTO account_balance_snapshot (account_id, balance) VALUES (:id, :balance) ON CONFLICT (account_id) DO UPDATE SET balance = EXCLUDED.balance;</code></div>
+<div class="tip"><b>Real scenario:</b> "Our nightly balance-snapshot batch job (Spring Batch, Section 39-40) processes millions of accounts — using MERGE/UPSERT instead of a separate SELECT-then-INSERT-or-UPDATE per row eliminates both a race condition risk under concurrent writes AND an extra round trip per row, meaningfully speeding up the batch."</div>
+</div>
+
+<!-- 33. STORED PROCEDURES FUNCTIONS TRIGGERS -->
+<div class="section">
+<h1>33. Stored Procedures, Functions &amp; Triggers</h1>
+
+<h2>33.1 Stored Procedures</h2>
+<div class="box">A Stored Procedure is a named, precompiled block of SQL/procedural logic stored IN the database, callable by name — can accept parameters, contain control flow (IF/LOOP), and perform multiple statements/transactions as one unit.</div>
+<pre>CREATE OR REPLACE PROCEDURE transfer_funds(
+    p_from_id BIGINT, p_to_id BIGINT, p_amount NUMERIC
+)
+LANGUAGE plpgsql AS $$
+BEGIN
+    UPDATE account SET balance = balance - p_amount WHERE id = p_from_id;
+    UPDATE account SET balance = balance + p_amount WHERE id = p_to_id;
+
+    IF (SELECT balance FROM account WHERE id = p_from_id) &lt; 0 THEN
+        RAISE EXCEPTION 'Insufficient funds for transfer';
+    END IF;
+END;
+$$;
+
+CALL transfer_funds(1001, 1002, 500);
+</pre>
+
+<h2>33.2 Functions (User-Defined)</h2>
+<div class="box">A Function is similar to a Stored Procedure but must RETURN a value, and can be used directly inside a SELECT statement — Procedures generally cannot.</div>
+<pre>CREATE OR REPLACE FUNCTION calculate_interest(p_principal NUMERIC, p_rate NUMERIC, p_years INT)
+RETURNS NUMERIC LANGUAGE plpgsql AS $$
+BEGIN
+    RETURN p_principal * POWER(1 + p_rate / 100, p_years) - p_principal;
+END;
+$$;
+
+SELECT id, calculate_interest(balance, 5.5, 1) AS projected_interest FROM account;
+</pre>
+
+<h2>33.3 Triggers</h2>
+<div class="box">A Trigger automatically fires a piece of logic in response to a table event (INSERT/UPDATE/DELETE) — without the application explicitly calling anything, useful for enforcing rules or auditing that must NEVER be bypassed, even by direct SQL.</div>
+<pre>CREATE OR REPLACE FUNCTION log_balance_change() RETURNS TRIGGER AS $$
+BEGIN
+    IF OLD.balance != NEW.balance THEN
+        INSERT INTO balance_audit_log (account_id, old_balance, new_balance, changed_at)
+        VALUES (NEW.id, OLD.balance, NEW.balance, NOW());
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_balance_audit
+AFTER UPDATE ON account
+FOR EACH ROW
+EXECUTE FUNCTION log_balance_change();
+<span class="c1">-- fires AUTOMATICALLY on every balance change, from ANY source — application code, a manual SQL fix, anything</span>
+</pre>
+
+<h2>33.4 Real-World Trade-Offs — Where Should Logic Live?</h2>
+<table>
+<tr><th>Aspect</th><th>Logic in Application Code (Spring Boot)</th><th>Logic in Database (Procedures/Triggers)</th></tr>
+<tr><td>Version control / code review</td><td>Natural fit — reviewed like any other code, in the same repo</td><td>Often separate deployment process, easier to lose track of/forget</td></tr>
+<tr><td>Testability</td><td>Easy — standard unit/integration testing tools</td><td>Harder — requires specialized database testing tooling</td></tr>
+<tr><td>Portability</td><td>Database-agnostic (mostly)</td><td>Tied to one specific database vendor's procedural language (PL/pgSQL, T-SQL, PL/SQL)</td></tr>
+<tr><td>Guaranteed enforcement</td><td>Can be bypassed by anyone running raw SQL directly</td><td>Cannot be bypassed — fires no matter HOW the data was changed</td></tr>
+<tr><td>Real-world guidance</td><td>Preferred default for most business logic in modern microservices</td><td>Reserved for genuinely database-level concerns: strict audit trails, critical invariants that must never be bypassed even by direct SQL access</td></tr>
+</table>
+<div class="tip"><b>Interview tip:</b> Modern microservices architectures generally push business logic INTO the application layer (Spring Boot service classes) rather than the database, for testability, version control, and portability — triggers/procedures are reserved for cases where enforcement must be absolutely guaranteed regardless of how data is modified.</div>
+</div>
+
+<!-- 34. REAL TIME SQL DEVELOPMENT -->
+<div class="section">
+<h1>34. Real-Time SQL Development in Organizations</h1>
+
+<h2>34.1 The Full Real-World SQL Development Checklist</h2>
+<ol>
+<li><b>Design the schema</b> with real query patterns in mind — indexes aren't an afterthought, they're planned alongside the schema.</li>
+<li><b>Write every schema change as a versioned migration</b> (Flyway/Liquibase) — reviewed via pull request like any other code.</li>
+<li><b>Write queries defensively</b> — explicit column lists (never <code>SELECT *</code> in application code), parameterized queries (never string-concatenated SQL, to prevent SQL injection).</li>
+<li><b>Test with realistic data volume,</b> not just a handful of local rows — many performance issues only appear at real scale.</li>
+<li><b>Run EXPLAIN ANALYZE</b> on any new or modified query touching a large table before merging.</li>
+<li><b>Add automated tests</b> covering both the happy path and edge cases (NULLs, empty result sets, boundary values).</li>
+<li><b>Monitor slow query logs in production</b> continuously, not just during initial development.</li>
+<li><b>Review index usage periodically</b> — drop unused indexes, add new ones as query patterns evolve.</li>
+</ol>
+
+<h2>34.2 Real SQL Injection Prevention (Non-Negotiable)</h2>
+<pre><span class="c1">-- NEVER build SQL by string concatenation with user input:</span>
+String sql = "SELECT * FROM account WHERE customer_id = " + userInput;   <span class="c1">// SQL INJECTION VULNERABILITY</span>
+
+<span class="c1">-- ALWAYS use parameterized queries / prepared statements:</span>
+PreparedStatement stmt = conn.prepareStatement("SELECT * FROM account WHERE customer_id = ?");
+stmt.setLong(1, customerId);   <span class="c1">// the driver handles safe escaping — injection becomes impossible</span>
+
+<span class="c1">// Spring Data JPA/JdbcTemplate — parameterization is automatic and built in by default</span>
+@Query("SELECT a FROM Account a WHERE a.customerId = :customerId")
+List&lt;Account&gt; findByCustomerId(@Param("customerId") Long customerId);
+</pre>
+
+<h2>34.3 Real Organization Query Review Standards</h2>
+<ul>
+<li>No <code>SELECT *</code> in application code — always list explicit columns needed.</li>
+<li>No unparameterized/string-concatenated SQL — non-negotiable security rule.</li>
+<li>Every new list/report query reviewed for pagination — never fetch unbounded result sets.</li>
+<li>Every query joining more than 2 tables reviewed for its execution plan before merging.</li>
+<li>Every schema migration reviewed by at least one other engineer, checking for missing indexes on new foreign keys.</li>
+</ul>
+</div>
+
+<!-- 35. COMMON SQL ISSUES SCENARIOS -->
+<div class="section">
+<h1>35. Common SQL Issues &amp; Real-Time Scenarios</h1>
+<table>
+<tr><th>Issue</th><th>Cause</th><th>Real Solution</th></tr>
+<tr><td>Report suddenly returns zero rows</td><td>NOT IN subquery encountered a NULL value (Section 12.2)</td><td>Use NOT EXISTS instead, or explicitly filter NULLs from the subquery</td></tr>
+<tr><td>Query results seem "multiplied"/duplicated</td><td>An accidental CROSS JOIN from a missing/incorrect JOIN condition (Section 10.3)</td><td>Always double-check every JOIN has a correct, complete ON condition</td></tr>
+<tr><td>Slow query despite an index existing</td><td>A function or type mismatch on the indexed column prevents index usage (Section 30.2)</td><td>Rewrite the predicate to avoid wrapping the column in a function; match data types exactly</td></tr>
+<tr><td>Deadlocks under concurrent load</td><td>Transactions acquiring locks on the same rows in different orders</td><td>Enforce a consistent lock acquisition order across all transactions (Section 27.5)</td></tr>
+<tr><td>GROUP BY error: "column must appear in GROUP BY"</td><td>A non-aggregated column in SELECT that isn't in the GROUP BY clause</td><td>Add the column to GROUP BY, or wrap it in an aggregate function if that's really the intent</td></tr>
+<tr><td>Pagination becomes slower on later pages</td><td>Large OFFSET values forcing the database to scan and discard many rows</td><td>Switch to keyset pagination (WHERE id &gt; :lastId) for deep pagination (Section 7.2)</td></tr>
+<tr><td>Data inconsistency after a "seemingly successful" batch update</td><td>No transaction wrapping multiple related statements — a partial failure left data half-updated</td><td>Wrap related statements in an explicit transaction with COMMIT/ROLLBACK (Section 26)</td></tr>
+<tr><td>Materialized view showing stale data</td><td>REFRESH MATERIALIZED VIEW not scheduled/run recently</td><td>Schedule a regular refresh job (often via Spring Batch, Section 37+), or switch to a regular View if freshness matters more than speed</td></tr>
+<tr><td>Composite index not being used by a query</td><td>The query filters only on a non-leading column of the composite index (leftmost prefix rule violation, Section 23.3)</td><td>Reorder the index columns to match the actual query pattern, or add a second index for that specific filter</td></tr>
+<tr><td>Application intermittently fails with "could not serialize access" errors</td><td>SERIALIZABLE isolation causing transaction conflicts/retries under concurrent load</td><td>Add application-level retry logic for serialization failures, or reconsider whether SERIALIZABLE is truly needed for that operation</td></tr>
+</table>
+</div>
+
+<!-- 36. SQL INTERVIEW Q&A -->
+<div class="section">
+<h1>36. SQL Interview Questions &amp; Answers (Most Important Topics)</h1>
+
+<div class="qa"><div class="q">Q1. What is the difference between DDL, DML, DCL, and TCL?</div>
+<div class="a">DDL (CREATE, ALTER, DROP) defines database structure. DML (SELECT, INSERT, UPDATE, DELETE) manipulates data. DCL (GRANT, REVOKE) controls access permissions. TCL (COMMIT, ROLLBACK, SAVEPOINT) controls transaction boundaries.</div></div>
+
+<div class="qa"><div class="q">Q2. Explain the difference between WHERE and HAVING.</div>
+<div class="a">WHERE filters individual rows BEFORE grouping/aggregation happens. HAVING filters the resulting GROUPS after aggregation — you can't use an aggregate function like SUM() in a WHERE clause because grouping hasn't occurred yet at that stage of query execution.</div></div>
+
+<div class="qa"><div class="q">Q3. Explain the differences between INNER JOIN, LEFT JOIN, and FULL OUTER JOIN with examples.</div>
+<div class="a">INNER JOIN returns only rows matching in both tables. LEFT JOIN returns ALL rows from the left table, with NULLs for unmatched right-table columns. FULL OUTER JOIN returns all rows from both tables, matched where possible, NULL on whichever side lacks a match.</div>
+<div class="scenario">Real scenario: finding customers with no accounts uses LEFT JOIN + WHERE account.id IS NULL — an "anti-join" pattern.</div></div>
+
+<div class="qa"><div class="q">Q4. What's the difference between EXISTS and IN, and why might EXISTS be safer?</div>
+<div class="a">Functionally similar for simple cases, but IN with NOT IN has a dangerous NULL trap — if the subquery returns even one NULL, the entire outer NOT IN query silently returns zero rows. NOT EXISTS is immune to this and is generally preferred for that reason, plus it often performs better since it short-circuits on the first match.</div></div>
+
+<div class="qa"><div class="q">Q5. What is a correlated subquery, and how is it different from a regular subquery?</div>
+<div class="a">A correlated subquery references a column from the outer query, effectively re-executing once per outer row, whereas a regular subquery runs once independently. Correlated subqueries can be slower on large tables and are often rewritable as a JOIN or window function for better performance.</div></div>
+
+<div class="qa"><div class="q">Q6. Explain ROW_NUMBER, RANK, and DENSE_RANK with an example involving ties.</div>
+<div class="a">All three assign a rank based on ORDER BY within a window. ROW_NUMBER always gives unique sequential numbers even for ties. RANK gives the same rank to ties but skips subsequent numbers (1,2,2,4). DENSE_RANK gives the same rank to ties without skipping (1,2,2,3).</div>
+<div class="scenario">Real scenario: "top N per group" (e.g., each customer's highest-balance account) is typically solved with ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY balance DESC) = 1.</div></div>
+
+<div class="qa"><div class="q">Q7. What are LEAD and LAG used for?</div>
+<div class="a">LAG looks at a previous row's value, LEAD looks at a future row's value, both within a PARTITION BY/ORDER BY window — commonly used to compare a transaction to the previous one (e.g., detecting a sudden spike), or calculate the time gap until the next event.</div></div>
+
+<div class="qa"><div class="q">Q8. Difference between UNION and UNION ALL, and which should you default to?</div>
+<div class="a">UNION removes duplicate rows across both result sets (implicit de-duplication, has a real performance cost). UNION ALL keeps all rows including duplicates and is faster. Default to UNION ALL unless you specifically need duplicates removed.</div></div>
+
+<div class="qa"><div class="q">Q9. What is the difference between a clustered and non-clustered index?</div>
+<div class="a">A clustered index physically orders the table's actual data rows according to the index — only one per table. A non-clustered index is a separate structure with pointers back to the actual rows — many are allowed per table.</div></div>
+
+<div class="qa"><div class="q">Q10. Explain the "leftmost prefix" rule for composite indexes.</div>
+<div class="a">A composite index on (A, B) can efficiently serve queries filtering on A alone, or A and B together, but NOT queries filtering on B alone — the index columns must be used starting from the leftmost column for the index to help.</div></div>
+
+<div class="qa"><div class="q">Q11. What is the difference between a View and a Materialized View?</div>
+<div class="a">A View is a stored query, re-executed live every time it's queried — always current but only as fast as the underlying query. A Materialized View physically stores the result set, making it much faster to query but potentially stale until explicitly refreshed.</div></div>
+
+<div class="qa"><div class="q">Q12. Explain ACID properties.</div>
+<div class="a">Atomicity (all statements in a transaction succeed or none do), Consistency (a transaction always leaves the database in a valid state honoring all constraints), Isolation (concurrent transactions don't interfere with each other's intermediate state, per the configured isolation level), Durability (once committed, data survives even a crash).</div></div>
+
+<div class="qa"><div class="q">Q13. What is a deadlock, and how do you prevent it in real applications?</div>
+<div class="a">A deadlock occurs when two transactions each hold a lock the other needs, creating a circular wait that never resolves on its own until the database forcibly kills one transaction. Prevented by always acquiring locks on shared resources in the same, consistent order across all transactions.</div></div>
+
+<div class="qa"><div class="q">Q14. Explain the difference between dirty read, non-repeatable read, and phantom read.</div>
+<div class="a">Dirty read: reading another transaction's uncommitted changes. Non-repeatable read: re-reading the same row within a transaction gives a different value because another transaction committed a change in between. Phantom read: re-running the same query gives a different NUMBER of rows because another transaction inserted/deleted a matching row in between.</div></div>
+
+<div class="qa"><div class="q">Q15. What isolation level would you use for a critical financial reconciliation query, and why?</div>
+<div class="a">SERIALIZABLE — it's the only level preventing all three read phenomena (dirty, non-repeatable, and phantom reads), guaranteeing the aggregation reflects a single, consistent snapshot even under heavy concurrent activity, accepting the performance/locking cost for correctness in that specific critical, infrequent operation.</div></div>
+
+<div class="qa"><div class="q">Q16. How do you diagnose and fix a slow SQL query in production?</div>
+<div class="a">Identify the slow query via slow query logs or APM traces, run EXPLAIN ANALYZE to see the actual execution plan, look for full table scans or unexpectedly high actual row counts, check for missing indexes or SQL anti-patterns (functions on indexed columns, leading wildcards, type mismatches) blocking index usage, then add/adjust indexes and re-verify the plan improved.</div>
+<div class="scenario">Real scenario: a UPPER(status) filter prevented index usage entirely — rewriting the predicate or adding a functional index restored fast performance.</div></div>
+
+<div class="qa"><div class="q">Q17. What is a CTE, and what's the difference between a regular CTE and a Recursive CTE?</div>
+<div class="a">A CTE (WITH clause) is a named, temporary result set scoped to one query, improving readability by breaking complex queries into logical named steps. A Recursive CTE references itself repeatedly to traverse hierarchical/tree-structured data (like an org chart or category tree), which a non-recursive query cannot express.</div></div>
+
+<div class="qa"><div class="q">Q18. What does the MERGE statement do, and why is it useful?</div>
+<div class="a">MERGE (or UPSERT) inserts a row if it doesn't exist or updates it if it does, in a single atomic statement — avoiding a separate check-then-insert-or-update round trip and the race condition risk that comes with doing it as two separate steps under concurrent access.</div></div>
+
+<div class="qa"><div class="q">Q19. When would you put logic in a database Trigger/Stored Procedure versus application code?</div>
+<div class="a">Application code is preferred for most business logic — easier to test, version control, and keep portable. Triggers/procedures are reserved for concerns that must be absolutely guaranteed regardless of how data is modified (e.g., an audit trail that must fire even if someone runs raw SQL directly, bypassing the application entirely).</div></div>
+
+<div class="qa"><div class="q">Q20. Describe a real SQL performance issue you've diagnosed and fixed end to end.</div>
+<div class="a">A search feature timed out under real production volume because the query wrapped the search column in UPPER() and used a leading wildcard LIKE pattern, both of which defeated standard indexing. Diagnosed via EXPLAIN ANALYZE showing a full sequential scan, then fixed by introducing a trigram index (pg_trgm) specifically designed for flexible text search, restoring sub-100ms performance under real data volume.</div></div>
+</div>
+
+<!-- 37. WHAT IS BATCH PROCESSING -->
+<div class="section">
+<h1>37. What Is Batch Processing and Why We Need It (Real-Time)</h1>
+
+<h2>37.1 The Problem Batch Processing Solves</h2>
+<div class="box">Not every operation should happen synchronously in response to a user's HTTP request — processing millions of records (calculating interest for every account, generating monthly statements, reconciling transactions with a payment gateway) would take far too long and would time out a real-time API call. Batch processing handles large volumes of data in scheduled, automated, resilient bulk operations, decoupled from any single user request.</div>
+
+<h2>37.2 Real Banking Examples of Batch Jobs</h2>
+<table>
+<tr><th>Batch Job</th><th>Why It's a Batch, Not a Live API Call</th></tr>
+<tr><td>Nightly interest calculation across all accounts</td><td>Touches millions of rows, must run consistently and only once per day, no user waits for it live</td></tr>
+<tr><td>Monthly account statement generation (PDF/email)</td><td>Bulk generation for every customer, scheduled at a specific time, not user-triggered per request</td></tr>
+<tr><td>End-of-day transaction reconciliation with a payment network</td><td>Compares millions of transactions against an external file, needs error handling/retry at scale</td></tr>
+<tr><td>Loan repayment due-date reminders</td><td>Scans the entire loan table for due dates, sends bulk notifications</td></tr>
+<tr><td>Data migration/cleanup jobs</td><td>One-time or periodic bulk transformation of large datasets</td></tr>
+</table>
+
+<h2>37.3 Why Not Just Write a Simple Loop in Java?</h2>
+<div class="warn">A naive <code>for</code> loop over millions of database rows in a single method has real problems: no restart capability if it crashes at row 800,000 (must start over from row 1), no built-in retry/skip logic for individual bad records, no chunked/transactional processing (all-or-nothing on a huge dataset is fragile), and no standardized way to monitor progress or scale via parallelism. Spring Batch was built specifically to solve all of these production-grade concerns.</div>
+
+<h2>37.4 Batch Processing vs Real-Time Processing vs Stream Processing</h2>
+<table>
+<tr><th>Style</th><th>Latency</th><th>Real Example</th></tr>
+<tr><td>Real-Time (Synchronous API)</td><td>Milliseconds — user is actively waiting</td><td>GET /accounts/1001 balance check</td></tr>
+<tr><td>Batch Processing</td><td>Minutes to hours, scheduled — no one is actively waiting</td><td>Nightly interest calculation across all accounts</td></tr>
+<tr><td>Stream Processing</td><td>Near-real-time, continuous, event-by-event</td><td>Kafka consumer reacting to each transaction event as it happens</td></tr>
+</table>
+</div>
+
+<!-- 38. INTRODUCTION TO SPRING BATCH -->
+<div class="section">
+<h1>38. Introduction to Spring Batch</h1>
+
+<h2>38.1 What Spring Batch Is</h2>
+<div class="box">Spring Batch is a lightweight, comprehensive framework for building robust, production-grade batch applications — providing reusable building blocks for reading, processing, and writing large volumes of data, with built-in transaction management, restart/retry/skip logic, and job monitoring, all as a natural extension of the Spring ecosystem.</div>
+
+<h2>38.2 Real Dependency</h2>
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-batch&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</pre>
+
+<h2>38.3 What Spring Batch Gives You Out of the Box</h2>
+<ul>
+<li>A metadata schema (job_execution, step_execution tables) tracking every job run, its status, start/end time, and exact progress.</li>
+<li>Automatic restart from the last successful point after a failure — never reprocess already-completed chunks.</li>
+<li>Chunk-oriented processing with automatic transaction boundaries per chunk.</li>
+<li>Built-in retry and skip logic for individual problematic records, without failing the entire job.</li>
+<li>Listeners/hooks at every stage (job, step, chunk, item) for logging, metrics, and custom logic.</li>
+<li>Scaling options — parallel steps, multi-threaded steps, partitioning across multiple workers (Section 42).</li>
+</ul>
+<div class="tip"><b>Interview one-liner:</b> "Spring Batch is to batch processing what Spring Data JPA is to the data access layer — it provides a robust, standardized framework so teams don't repeatedly hand-roll fragile, non-restartable, non-monitored batch loops themselves."</div>
+</div>
+
+<!-- 39. SPRING BATCH ARCHITECTURE -->
+<div class="section">
+<h1>39. Spring Batch Architecture</h1>
+
+<h2>39.1 The Full Architecture Diagram</h2>
+<div class="diagram">
+<div class="title">Spring Batch Architecture</div>
+<div class="flow-row"><div class="node purple">JobLauncher — triggers a Job to run</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">Job — the overall batch process (e.g., "Nightly Interest Calculation")</div></div>
+<div class="arrow-down">↓ made up of one or more</div>
+<div class="flow-row">
+<div class="node green">Step 1: Read Accounts</div><div class="node green">Step 2: Calculate Interest</div><div class="node green">Step 3: Generate Statements</div>
+</div>
+<div class="arrow-down">↓ each Step (chunk-oriented) runs</div>
+<div class="flow-row">
+<div class="node">ItemReader<br/>reads one item at a time</div><div class="arrow">→</div><div class="node alt">ItemProcessor<br/>transforms/validates each item</div><div class="arrow">→</div><div class="node">ItemWriter<br/>writes a CHUNK of items together</div>
+</div>
+<div class="arrow-down">↓ all tracked in</div>
+<div class="flow-row"><div class="node gray">JobRepository — metadata tables recording every execution, status, and progress</div></div>
+</div>
+
+<h2>39.2 The JobRepository — Why It's Central to Everything</h2>
+<div class="box">The JobRepository persists metadata about every job run to a database (job_instance, job_execution, step_execution, execution_context tables) — this is precisely what enables Spring Batch's restart capability: if a job fails at chunk 4,000 of 10,000, restarting it picks up exactly where it left off, using this stored progress information, instead of reprocessing everything from scratch.</div>
+</div>
+
+<!-- 40. SPRING BATCH CORE CONCEPTS -->
+<div class="section">
+<h1>40. Spring Batch Core Concepts — Job, Step, ItemReader, ItemProcessor, ItemWriter</h1>
+
+<h2>40.1 Job — The Overall Batch Process</h2>
+<pre>@Configuration
+public class InterestCalculationJobConfig {
+
+    @Bean
+    public Job interestCalculationJob(JobRepository jobRepository, Step calculateInterestStep) {
+        return new JobBuilder("interestCalculationJob", jobRepository)
+            .start(calculateInterestStep)
+            .build();
+    }
+}
+</pre>
+
+<h2>40.2 Step — One Logical Phase Within a Job</h2>
+<pre>@Bean
+public Step calculateInterestStep(JobRepository jobRepository,
+                                   PlatformTransactionManager transactionManager,
+                                   ItemReader&lt;Account&gt; reader,
+                                   ItemProcessor&lt;Account, Account&gt; processor,
+                                   ItemWriter&lt;Account&gt; writer) {
+    return new StepBuilder("calculateInterestStep", jobRepository)
+        .&lt;Account, Account&gt;chunk(500, transactionManager)   <span class="c1">// process 500 records, then commit as one transaction</span>
+        .reader(reader)
+        .processor(processor)
+        .writer(writer)
+        .build();
+}
+</pre>
+
+<h2>40.3 ItemReader — Reading Data From a Source</h2>
+<pre>@Bean
+public JdbcCursorItemReader&lt;Account&gt; accountReader(DataSource dataSource) {
+    return new JdbcCursorItemReaderBuilder&lt;Account&gt;()
+        .name("accountReader")
+        .dataSource(dataSource)
+        .sql("SELECT id, balance, interest_rate FROM account WHERE status = 'ACTIVE'")
+        .rowMapper((rs, rowNum) -&gt; new Account(rs.getLong("id"), rs.getBigDecimal("balance"), rs.getBigDecimal("interest_rate")))
+        .build();
+}
+<span class="c1">// Other real reader types: FlatFileItemReader (CSV files), JpaPagingItemReader, StaxEventItemReader (XML)</span>
+</pre>
+
+<h2>40.4 ItemProcessor — Transforming/Validating Each Item</h2>
+<pre>@Bean
+public ItemProcessor&lt;Account, Account&gt; interestProcessor() {
+    return account -&gt; {
+        BigDecimal interest = account.getBalance()
+            .multiply(account.getInterestRate())
+            .divide(BigDecimal.valueOf(100));
+        account.setBalance(account.getBalance().add(interest));
+
+        if (account.getBalance().compareTo(BigDecimal.ZERO) &lt; 0) {
+            return null;   <span class="c1">// returning null FILTERS this item out — it's simply skipped, not written</span>
+        }
+        return account;
+    };
+}
+</pre>
+
+<h2>40.5 ItemWriter — Writing a Chunk of Processed Items</h2>
+<pre>@Bean
+public JdbcBatchItemWriter&lt;Account&gt; accountWriter(DataSource dataSource) {
+    return new JdbcBatchItemWriterBuilder&lt;Account&gt;()
+        .dataSource(dataSource)
+        .sql("UPDATE account SET balance = :balance WHERE id = :id")
+        .beanMapped()
+        .build();
+    <span class="c1">// writes the ENTIRE chunk (500 items) in one efficient batch SQL operation, then commits</span>
+}
+</pre>
+<div class="tip"><b>Interview tip:</b> The reader/processor work ONE ITEM AT A TIME, but the writer receives and writes an ENTIRE CHUNK together — this chunk-oriented design is exactly what enables efficient JDBC batching and clean transaction boundaries per chunk, rather than one transaction per individual row.</div>
+</div>
+
+<!-- 41. SPRING BATCH REAL IMPLEMENTATION -->
+<div class="section">
+<h1>41. Spring Batch — Real Implementation Example (End to End)</h1>
+
+<h2>41.1 Complete Real Job — Monthly Statement Generation</h2>
+<pre>@Configuration
+@RequiredArgsConstructor
+public class StatementGenerationJobConfig {
+    private final JobRepository jobRepository;
+    private final PlatformTransactionManager transactionManager;
+    private final DataSource dataSource;
+
+    @Bean
+    public Job statementGenerationJob(Step readAccountsStep, Step generateStatementsStep) {
+        return new JobBuilder("statementGenerationJob", jobRepository)
+            .start(readAccountsStep)
+            .next(generateStatementsStep)   <span class="c1">// Steps run in sequence — Step 2 only starts after Step 1 fully completes</span>
+            .build();
+    }
+
+    @Bean
+    public Step generateStatementsStep(ItemReader&lt;Account&gt; reader,
+                                        ItemProcessor&lt;Account, Statement&gt; processor,
+                                        ItemWriter&lt;Statement&gt; writer) {
+        return new StepBuilder("generateStatementsStep", jobRepository)
+            .&lt;Account, Statement&gt;chunk(200, transactionManager)
+            .reader(reader)
+            .processor(processor)
+            .writer(writer)
+            .faultTolerant()
+            .skip(StatementGenerationException.class)
+            .skipLimit(50)                 <span class="c1">// tolerate up to 50 bad records before failing the whole step (Section 43)</span>
+            .retry(TransientDataAccessException.class)
+            .retryLimit(3)
+            .listener(new StatementStepListener())
+            .build();
+    }
+}
+
+@Component
+public class StatementStepListener implements StepExecutionListener {
+    @Override
+    public ExitStatus afterStep(StepExecution stepExecution) {
+        log.info("Step {} completed: read={}, written={}, skipped={}",
+            stepExecution.getStepName(), stepExecution.getReadCount(),
+            stepExecution.getWriteCount(), stepExecution.getSkipCount());
+        return stepExecution.getExitStatus();
+    }
+}
+</pre>
+
+<h2>41.2 Triggering the Job (Real Scheduled Trigger)</h2>
+<pre>@Component
+@RequiredArgsConstructor
+public class MonthlyStatementScheduler {
+    private final JobLauncher jobLauncher;
+    private final Job statementGenerationJob;
+
+    @Scheduled(cron = "0 0 2 1 * *")   <span class="c1">// 2 AM on the 1st of every month</span>
+    public void runMonthlyStatements() throws Exception {
+        JobParameters params = new JobParametersBuilder()
+            .addLocalDateTime("runDateTime", LocalDateTime.now())   <span class="c1">// unique params ensure each run is a NEW JobInstance</span>
+            .toJobParameters();
+        jobLauncher.run(statementGenerationJob, params);
+    }
+}
+</pre>
+<div class="tip"><b>Real scenario:</b> "Our monthly statement job processes 2 million accounts in chunks of 200, with fault tolerance skipping up to 50 individually bad records (e.g., a customer with a malformed email preventing PDF delivery) without failing the entire multi-hour job — those 50 skipped records are logged and handled manually the next morning, while the other 1,999,950 statements go out successfully overnight."</div>
+</div>
+
+<!-- 42. CHUNK VS TASKLET -->
+<div class="section">
+<h1>42. Chunk-Oriented vs Tasklet Processing</h1>
+
+<h2>42.1 Chunk-Oriented Processing (Recap)</h2>
+<div class="box">Chunk-oriented processing (Reader → Processor → Writer, in chunks) is the standard model for "read many records, transform each, write in batches" style work — the vast majority of real batch jobs use this model.</div>
+
+<h2>42.2 Tasklet — For Simple, Single-Operation Steps</h2>
+<div class="box">A Tasklet is a simpler alternative for a Step that doesn't fit the read-process-write pattern — a single method executed once (or in a loop) per Step, useful for simple operations like "delete old temp files," "call a single stored procedure," or "send one summary notification email."</div>
+<pre>@Bean
+public Step cleanupTempFilesStep(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+    return new StepBuilder("cleanupTempFilesStep", jobRepository)
+        .tasklet((contribution, chunkContext) -&gt; {
+            Files.deleteIfExists(Path.of("/tmp/batch-staging-file.csv"));
+            return RepeatStatus.FINISHED;   <span class="c1">// tells Spring Batch this Tasklet's work is done</span>
+        }, transactionManager)
+        .build();
+}
+</pre>
+
+<h2>42.3 Chunk vs Tasklet — When to Use Which</h2>
+<table>
+<tr><th>Aspect</th><th>Chunk-Oriented</th><th>Tasklet</th></tr>
+<tr><td>Best fit</td><td>Reading/transforming/writing many records</td><td>A single simple operation, or custom control flow not fitting read-process-write</td></tr>
+<tr><td>Built-in batching/commit intervals</td><td>Yes — automatic, based on chunk size</td><td>No — you control the transaction boundary and logic yourself</td></tr>
+<tr><td>Real example</td><td>Calculating interest for 2 million accounts</td><td>Cleaning up a staging file, or calling one stored procedure once</td></tr>
+</table>
+</div>
+
+<!-- 43. SCALING SPRING BATCH -->
+<div class="section">
+<h1>43. Scaling Spring Batch — Partitioning, Multi-Threading &amp; Parallel Steps</h1>
+
+<h2>43.1 Why Scaling Matters for Batch Jobs</h2>
+<div class="box">A single-threaded job processing 10 million rows sequentially might take hours — real organizations need these jobs to complete within a defined batch window (e.g., overnight before markets reopen), which often requires parallelizing the work across multiple threads or even multiple machines.</div>
+
+<h2>43.2 Multi-Threaded Step (Simplest Scaling Option)</h2>
+<pre>@Bean
+public Step calculateInterestStep(...) {
+    return new StepBuilder("calculateInterestStep", jobRepository)
+        .&lt;Account, Account&gt;chunk(500, transactionManager)
+        .reader(reader)
+        .processor(processor)
+        .writer(writer)
+        .taskExecutor(new SimpleAsyncTaskExecutor("batch-thread"))   <span class="c1">// processes multiple chunks concurrently within one Step</span>
+        .throttleLimit(8)                                              <span class="c1">// max 8 concurrent chunk-processing threads</span>
+        .build();
+}
+</pre>
+<div class="warn"><b>Real gotcha:</b> Multi-threaded steps require a thread-safe ItemReader (most standard readers like <code>JdbcPagingItemReader</code> are, but <code>JdbcCursorItemReader</code> is NOT) — always verify reader thread-safety before enabling this, or use partitioning instead (Section 43.3).</div>
+
+<h2>43.3 Partitioning — Splitting Work Across Multiple Independent Workers</h2>
+<div class="diagram">
+<div class="title">Partitioned Step — Splitting a Range of Accounts</div>
+<div class="flow-row"><div class="node purple">Partitioner: splits account IDs into 4 ranges</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+<div class="node green">Worker 1: IDs 1-250,000</div><div class="node green">Worker 2: IDs 250,001-500,000</div><div class="node green">Worker 3: IDs 500,001-750,000</div><div class="node green">Worker 4: IDs 750,001-1,000,000</div>
+</div>
+</div>
+<pre>@Bean
+public Step partitionedInterestStep(Step calculateInterestStep, Partitioner accountRangePartitioner) {
+    return new StepBuilder("partitionedInterestStep", jobRepository)
+        .partitioner("calculateInterestStep", accountRangePartitioner)
+        .step(calculateInterestStep)
+        .gridSize(4)                          <span class="c1">// split the work into 4 independent partitions</span>
+        .taskExecutor(new SimpleAsyncTaskExecutor())
+        .build();
+}
+
+public class AccountRangePartitioner implements Partitioner {
+    @Override
+    public Map&lt;String, ExecutionContext&gt; partition(int gridSize) {
+        Map&lt;String, ExecutionContext&gt; partitions = new HashMap&lt;&gt;();
+        long rangeSize = 1_000_000 / gridSize;
+        for (int i = 0; i &lt; gridSize; i++) {
+            ExecutionContext context = new ExecutionContext();
+            context.putLong("minId", i * rangeSize + 1);
+            context.putLong("maxId", (i + 1) * rangeSize);
+            partitions.put("partition" + i, context);
+        }
+        return partitions;
+    }
+}
+</pre>
+<div class="tip"><b>Real scenario:</b> "Our nightly interest calculation job partitions 5 million accounts into 10 parallel workers, each processing its own ID range independently and concurrently — this cut total job runtime from 3.5 hours down to about 25 minutes, comfortably fitting our overnight batch window."</div>
+
+<h2>43.4 Parallel Steps (When Steps Are Truly Independent)</h2>
+<pre>@Bean
+public Job parallelJob(Step generateStatementsStep, Step sendComplianceReportStep) {
+    Flow statementFlow = new FlowBuilder&lt;Flow&gt;("statementFlow").start(generateStatementsStep).build();
+    Flow complianceFlow = new FlowBuilder&lt;Flow&gt;("complianceFlow").start(sendComplianceReportStep).build();
+
+    return new JobBuilder("parallelJob", jobRepository)
+        .start(new FlowBuilder&lt;Flow&gt;("splitFlow").split(new SimpleAsyncTaskExecutor())
+            .add(statementFlow, complianceFlow)   <span class="c1">// these two ENTIRELY UNRELATED steps run simultaneously</span>
+            .build())
+        .end()
+        .build();
+}
+</pre>
+</div>
+
+<!-- 44. SCHEDULING RESTART RETRY SKIP -->
+<div class="section">
+<h1>44. Scheduling, Restart, Retry &amp; Skip Logic</h1>
+
+<h2>44.1 Scheduling — Real Options</h2>
+<table>
+<tr><th>Option</th><th>Real Use</th></tr>
+<tr><td>Spring's @Scheduled with cron expressions</td><td>Simple, in-application scheduling for single-instance batch triggers</td></tr>
+<tr><td>Azure DevOps / Kubernetes CronJob</td><td>Infrastructure-level scheduling, decoupled from the application's own uptime</td></tr>
+<tr><td>Dedicated schedulers (Quartz, Control-M)</td><td>Enterprise-grade scheduling with complex dependency chains across many jobs/systems</td></tr>
+</table>
+
+<h2>44.2 Restart — Why It Works Automatically</h2>
+<div class="box">Because the JobRepository (Section 39.2) tracks exactly which chunks completed successfully, re-launching a FAILED job with the SAME JobParameters automatically resumes from the last successfully committed chunk — completed work is never redone.</div>
+<pre>@Scheduled(cron = "0 0 2 * * *")
+public void runNightlyJob() throws Exception {
+    JobParameters params = new JobParametersBuilder()
+        .addString("runDate", LocalDate.now().toString())   <span class="c1">// SAME params every day for the SAME logical run — enables restart if it failed earlier today</span>
+        .toJobParameters();
+    jobLauncher.run(nightlyInterestJob, params);
+}
+</pre>
+<div class="warn"><b>Real gotcha:</b> If a job completes SUCCESSFULLY, Spring Batch will REFUSE to run it again with the exact same JobParameters (a <code>JobInstanceAlreadyCompleteException</code>) — this is intentional, preventing accidental double-processing. Genuinely wanting to re-run a completed job (e.g., for testing) requires adding a unique parameter, like a timestamp.</div>
+
+<h2>44.3 Retry — Handling Transient Failures</h2>
+<pre>.faultTolerant()
+.retry(TransientDataAccessException.class)   <span class="c1">// e.g., a brief database connection blip</span>
+.retryLimit(3)
+</pre>
+<div class="box">Retry re-attempts an individual FAILED ITEM a limited number of times before giving up on it — appropriate for genuinely transient issues (a momentary network/database hiccup), not for permanent data problems (a malformed record will fail identically every retry).</div>
+
+<h2>44.4 Skip — Tolerating a Limited Number of Bad Records</h2>
+<pre>.faultTolerant()
+.skip(DataValidationException.class)     <span class="c1">// e.g., a specific customer record has invalid/missing data</span>
+.skipLimit(100)                            <span class="c1">// tolerate up to 100 total skips before failing the whole step</span>
+.noSkip(FileNotFoundException.class)      <span class="c1">// but NEVER skip this — a missing input file is a fatal condition</span>
+</pre>
+<div class="tip"><b>Real scenario:</b> "Our monthly statement job skips (rather than fails entirely) any individual customer record with a malformed email address, up to a limit of 100 skips — those specific accounts are logged to a follow-up table for manual review the next morning, while the job completes successfully for the other 99.995% of customers instead of the whole multi-hour run failing over a handful of bad records."</div>
+</div>
+
+<!-- 45. SPRING BATCH REAL SCENARIOS ISSUES -->
+<div class="section">
+<h1>45. Spring Batch Real-Time Scenarios &amp; Issues</h1>
+<table>
+<tr><th>Issue</th><th>Cause</th><th>Real Solution</th></tr>
+<tr><td>Job runs but reprocesses everything from scratch after a crash</td><td>Different JobParameters used on retry, creating a NEW JobInstance instead of resuming the failed one</td><td>Use the SAME JobParameters (e.g., same runDate string) when relaunching after a genuine failure</td></tr>
+<tr><td>"JobInstanceAlreadyCompleteException" when re-running for testing</td><td>Spring Batch refuses to rerun a job that already completed successfully with identical parameters</td><td>Add a unique parameter (timestamp) when deliberately re-running a completed job for testing purposes</td></tr>
+<tr><td>Multi-threaded step produces corrupted/duplicate data</td><td>A non-thread-safe ItemReader used with a taskExecutor</td><td>Use a thread-safe reader (JdbcPagingItemReader) or switch to partitioning instead</td></tr>
+<tr><td>One bad record fails the entire multi-hour job</td><td>No fault tolerance (skip/retry) configured</td><td>Add .faultTolerant().skip(...).skipLimit(...) for genuinely tolerable, isolated bad records</td></tr>
+<tr><td>Batch job runs past its allotted overnight window</td><td>Single-threaded processing of a very large dataset</td><td>Partition the work across multiple parallel workers (Section 43.3)</td></tr>
+<tr><td>Database connection pool exhausted during a large batch run</td><td>Batch job's connection pool conflicting with the application's regular connection pool</td><td>Use a dedicated, appropriately-sized connection pool/datasource specifically for batch processing</td></tr>
+<tr><td>Retry keeps failing on a permanently bad record</td><td>Retry configured for a non-transient error type (e.g., a data validation failure, not a network blip)</td><td>Use skip (not retry) for genuinely invalid data; reserve retry strictly for transient infrastructure issues</td></tr>
+<tr><td>Job metadata tables growing unbounded over time</td><td>No cleanup/archival policy for old job_execution/step_execution history</td><td>Periodically archive or purge old batch metadata according to a defined retention policy</td></tr>
+</table>
+</div>
+
+<!-- 46. SPRING BATCH INTERVIEW Q&A -->
+<div class="section">
+<h1>46. Spring Batch Interview Questions &amp; Answers</h1>
+
+<div class="qa"><div class="q">Q1. What is Spring Batch, and why not just write a plain Java loop for bulk processing?</div>
+<div class="a">Spring Batch is a framework for robust, production-grade batch processing, providing restart capability, chunk-based transaction management, retry/skip logic, and monitoring out of the box — a plain loop lacks all of this, meaning a crash partway through requires reprocessing everything from scratch, with no standardized error handling at scale.</div></div>
+
+<div class="qa"><div class="q">Q2. Explain the relationship between Job, Step, and chunk-oriented processing.</div>
+<div class="a">A Job is the overall batch process, made up of one or more Steps executed in sequence (or in parallel). A chunk-oriented Step reads items one at a time via an ItemReader, transforms each via an ItemProcessor, and writes an entire chunk together via an ItemWriter, committing one transaction per chunk.</div></div>
+
+<div class="qa"><div class="q">Q3. How does Spring Batch enable restart after a failure?</div>
+<div class="a">The JobRepository persists metadata about every job/step execution, including exactly which chunks completed successfully. Relaunching a failed job with the SAME JobParameters resumes from the last successfully committed chunk instead of reprocessing already-completed work.</div></div>
+
+<div class="qa"><div class="q">Q4. What's the difference between chunk-oriented processing and a Tasklet?</div>
+<div class="a">Chunk-oriented processing is for reading/transforming/writing many records via the Reader-Processor-Writer pattern. A Tasklet is a simpler, single-method Step for operations that don't fit that pattern, like cleaning up a file or calling one stored procedure.</div></div>
+
+<div class="qa"><div class="q">Q5. What is the difference between retry and skip in Spring Batch?</div>
+<div class="a">Retry re-attempts a failed item a limited number of times, appropriate for transient issues like a brief database connection blip. Skip tolerates a limited number of permanently bad items by excluding them from processing (up to a configured skipLimit) so the overall job can still succeed despite a handful of genuinely invalid records.</div></div>
+
+<div class="qa"><div class="q">Q6. How do you scale a Spring Batch job to process millions of records faster?</div>
+<div class="a">Options include multi-threaded steps (processing multiple chunks concurrently within one step, requiring a thread-safe reader), partitioning (splitting the data into independent ranges processed in parallel by separate worker steps), and running genuinely independent steps in parallel via a split flow.</div>
+<div class="scenario">Real scenario: partitioning 5 million accounts into 10 parallel workers cut a nightly interest calculation job from 3.5 hours to about 25 minutes.</div></div>
+
+<div class="qa"><div class="q">Q7. Why would a multi-threaded step corrupt data, and how do you avoid it?</div>
+<div class="a">Some ItemReaders (like JdbcCursorItemReader) aren't thread-safe — using them with a taskExecutor across multiple threads can cause corrupted or duplicated reads. The fix is using a thread-safe reader (like JdbcPagingItemReader) or switching to partitioning, which gives each worker its own independent reader instance entirely.</div></div>
+
+<div class="qa"><div class="q">Q8. What happens if you try to rerun a Spring Batch job that already completed successfully with the same parameters?</div>
+<div class="a">Spring Batch throws a JobInstanceAlreadyCompleteException — this is intentional, preventing accidental double-processing of the same logical batch run. To deliberately rerun (e.g., for testing), you must supply a new/unique JobParameter.</div></div>
+
+<div class="qa"><div class="q">Q9. How would you design a batch job to process 10 million records without failing entirely due to a handful of bad records?</div>
+<div class="a">Configure fault tolerance with .faultTolerant().skip(SpecificException.class).skipLimit(N) — this tolerates up to N individually bad records (logging them for follow-up) while letting the job successfully complete for all other valid records, rather than failing the entire multi-hour run over a small number of edge cases.</div></div>
+
+<div class="qa"><div class="q">Q10. How does Spring Batch fit into a real organization's overall architecture alongside microservices, APIs, and databases?</div>
+<div class="a">Spring Batch typically runs as its own scheduled job (or a dedicated batch-processing service) reading from and writing to the same core databases used by the real-time microservices, often triggered by Kubernetes CronJobs or an enterprise scheduler, and monitored via the same Actuator/Prometheus/Grafana observability stack used for the rest of the platform — handling the large-volume, non-interactive workloads that real-time APIs are not designed for.</div></div>
+</div>
+
+<!-- 47. FINAL SUMMARY -->
+<div class="section">
+<h1>47. Final Summary &amp; Cheat Sheet</h1>
+<div class="box">
+<p><b>DBMS foundations:</b> flat files lacked integrity/concurrency/query power — a DBMS solves this; RDBMS suits strongly relational, transactional data (banking cores), NoSQL suits flexible-schema/high-write-scale needs (catalogs, logs) — real organizations use both together (polyglot persistence).</p>
+<p><b>SQL fundamentals:</b> DDL/DML/DCL/TCL categorize every SQL command; SELECT/WHERE/GROUP BY/HAVING follow a strict logical execution order distinct from written order.</p>
+<p><b>Joins &amp; subqueries:</b> INNER for matches-only, LEFT for "everything plus matches," NOT EXISTS is safer than NOT IN due to the NULL trap.</p>
+<p><b>Window functions</b> (ROW_NUMBER, RANK, LAG/LEAD, PARTITION BY) solve "top N per group," deduplication, and row-to-row comparisons elegantly, without collapsing detail like GROUP BY does.</p>
+<p><b>Indexes:</b> the single biggest real-world performance lever — understand the leftmost-prefix rule, and always verify actual index usage via EXPLAIN ANALYZE rather than assuming.</p>
+<p><b>Transactions:</b> ACID guarantees make relational databases safe for financial systems; choose isolation levels deliberately, and prevent deadlocks via consistent lock ordering.</p>
+<p><b>Advanced SQL:</b> CTEs (including recursive) improve readability and enable hierarchical queries; MERGE/UPSERT avoids race conditions in insert-or-update logic; keep business logic in application code by default, reserving triggers/procedures for guaranteed, unbypassable enforcement.</p>
+<p><b>Spring Batch:</b> the production-grade framework for large-volume, scheduled, restartable, fault-tolerant batch processing — chunk-oriented Job/Step/Reader/Processor/Writer architecture, with partitioning and multi-threading for real scale, and skip/retry for graceful handling of imperfect real-world data.</p>
+</div>
+
+<h2>47.1 Quick Cheat Sheet</h2>
+<table>
+<tr><th>Term</th><th>One-Line Meaning</th></tr>
+<tr><td>RDBMS vs NoSQL</td><td>Strict relational/ACID vs flexible-schema/horizontally-scalable</td></tr>
+<tr><td>DDL / DML / DCL / TCL</td><td>Structure / Data / Access / Transaction command categories</td></tr>
+<tr><td>WHERE vs HAVING</td><td>Filters rows before grouping vs filters groups after aggregation</td></tr>
+<tr><td>NOT EXISTS vs NOT IN</td><td>NOT EXISTS is immune to the NULL trap that silently breaks NOT IN</td></tr>
+<tr><td>ROW_NUMBER / RANK / DENSE_RANK</td><td>Unique sequential / ties-skip-numbers / ties-no-skip ranking</td></tr>
+<tr><td>Composite Index Leftmost Rule</td><td>Only usable starting from its leftmost column(s)</td></tr>
+<tr><td>ACID</td><td>Atomicity, Consistency, Isolation, Durability</td></tr>
+<tr><td>Deadlock Fix</td><td>Always acquire locks in a consistent, agreed order</td></tr>
+<tr><td>Execution Plan</td><td>Shows exactly how a query will run — the primary SQL tuning tool</td></tr>
+<tr><td>CTE / Recursive CTE</td><td>Named temporary result set / self-referencing for hierarchical data</td></tr>
+<tr><td>MERGE / UPSERT</td><td>Insert-or-update in one atomic, race-condition-free statement</td></tr>
+<tr><td>Spring Batch Job/Step</td><td>Overall process / one logical phase within it</td></tr>
+<tr><td>Chunk-Oriented Processing</td><td>Read-Process one at a time, Write an entire chunk together</td></tr>
+<tr><td>Partitioning</td><td>Splits a large dataset across independent parallel workers</td></tr>
+<tr><td>Skip vs Retry</td><td>Tolerate permanently bad records vs re-attempt transient failures</td></tr>
+</table>
+
+<div class="tip">Use this guide alongside the JDBC/Hibernate/Spring Data JPA guide, the Spring &amp; Spring Boot guide, the Microservices guide, and the Observability &amp; Monitoring guide — together they cover the complete real-world Java full-stack developer journey from raw SQL and database fundamentals, through the ORM/data-access layer, to building, scaling, and batch-processing production-grade Spring Boot systems.</div>
+</div>
+
+</body>
+</html>
+

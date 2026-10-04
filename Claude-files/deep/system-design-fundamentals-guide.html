@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>System Design Fundamentals for Java Full Stack, React &amp; Cloud Developers — Complete Guide</title>
+<style>
+  @page { size: A4; margin: 18mm 15mm 18mm 15mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Arial, sans-serif; color: #1a1a1a; font-size: 11.5px; line-height: 1.55; }
+  a { text-decoration: none; color: #ff8f00; }
+  h1, h2, h3, h4 { color: #ff6f00; font-family: Arial, sans-serif; page-break-after: avoid; }
+  h1 { font-size: 22px; border-bottom: 3px solid #ff6f00; padding-bottom: 6px; margin-top: 0; }
+  h2 { font-size: 17px; border-bottom: 1px solid #ffe082; padding-bottom: 4px; margin-top: 26px; }
+  h3 { font-size: 14px; color: #b03a2e; margin-top: 18px; }
+  h4 { font-size: 12.5px; color: #444; margin-top: 12px; }
+  .section { page-break-before: always; }
+  .cover { page-break-after: always; text-align: center; padding-top: 76px; }
+  .cover h1 { font-size: 26px; border: none; }
+  .cover h3 { color: #333; font-weight: normal; font-size: 14px; margin-top: 12px;}
+  .cover .tag { margin-top: 34px; font-size: 13px; color: #666; }
+  .toc { page-break-after: always; }
+  .toc ol { line-height: 1.75; font-size: 10.8px; }
+  code, pre { font-family: Consolas, "Courier New", monospace; }
+  code { background: #f1f1f1; padding: 1px 5px; border-radius: 3px; color: #a4141d; }
+  pre { background: #1e1e1e; color: #d4d4d4; padding: 10px 12px; border-radius: 6px; overflow-x: auto; font-size: 10.3px; line-height: 1.45; page-break-inside: avoid; white-space: pre-wrap; word-wrap: break-word; }
+  pre .c1 { color: #6a9955; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0 16px 0; font-size: 11px; }
+  th, td { border: 1px solid #e6e6e6; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #f5f5f5; color: #ff6f00; }
+  tr:nth-child(even) { background: #f9fafc; }
+  .box { background: #f8f9fb; border: 1px solid #cdd6e6; border-radius: 6px; padding: 10px 14px; margin: 10px 0; }
+  .warn { background: #fff4e5; border: 1px solid #f0c36d; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .tip { background: #e8f6ee; border: 1px solid #7fc79a; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .qa { border-left: 3px solid #ff6f00; padding-left: 10px; margin: 10px 0 16px 0; page-break-inside: avoid; }
+  .qa .q { font-weight: bold; color: #ff6f00; }
+  .qa .a { margin-top: 4px; }
+  .qa .scenario { margin-top: 4px; font-style: italic; color: #555; }
+  .diagram { background: #fff; border: 1px dashed #ffca28; border-radius: 8px; padding: 16px; margin: 14px 0; page-break-inside: avoid; }
+  .diagram .title { font-weight: bold; color: #ff6f00; margin-bottom: 10px; text-align:center; }
+  .flow-row { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+  .node { border: 2px solid #ff6f00; background: #fff8e1; border-radius: 6px; padding: 8px 12px; font-weight: bold; text-align: center; font-size: 11px; min-width: 90px; }
+  .node.alt { border-color: #b03a2e; background: #fdeceb; }
+  .node.green { border-color: #1e8449; background: #eafaf1; }
+  .node.gray { border-color: #666; background: #eee; }
+  .node.purple { border-color: #8e44ad; background: #f5eefc; }
+  .arrow { font-size: 20px; color: #ff6f00; font-weight: bold; }
+  .arrow-down { font-size: 20px; color: #ff6f00; text-align: center; }
+  .pagebreak { page-break-before: always; }
+  ul, ol { margin-top: 4px; }
+  li { margin-bottom: 3px; }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover">
+  <h1>System Design Fundamentals</h1>
+  <h3>For Java Full Stack, React &amp; Cloud Developers</h3>
+  <h3>Load Balancing • Caching • Sharding • Replication • CAP Theorem • Microservices</h3>
+  <h3>Circuit Breakers • Rate Limiting • Kafka • Saga • CQRS • Event Sourcing</h3>
+  <h3>Observability • High Availability &amp; Disaster Recovery</h3>
+  <div class="tag">20 core system design topics, explained in simple terms with real examples, diagrams, and interview Q&amp;A</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+<h1>Table of Contents</h1>
+<ol>
+<li>Introduction — Why System Design Matters for a Java Full Stack Developer</li>
+<li>Load Balancer</li>
+<li>API Gateway</li>
+<li>Caching (Redis)</li>
+<li>Database Sharding</li>
+<li>Database Replication</li>
+<li>CAP Theorem</li>
+<li>Consistency Models</li>
+<li>Horizontal vs Vertical Scaling</li>
+<li>Microservices Architecture</li>
+<li>Service Discovery (Eureka)</li>
+<li>Circuit Breaker Pattern</li>
+<li>Rate Limiting</li>
+<li>Message Queues (Kafka / RabbitMQ)</li>
+<li>Event-Driven Architecture</li>
+<li>Distributed Transactions (Saga)</li>
+<li>CQRS Pattern</li>
+<li>Event Sourcing</li>
+<li>Distributed Caching</li>
+<li>Observability (Logs, Metrics, Traces)</li>
+<li>High Availability &amp; Disaster Recovery</li>
+<li>Content Delivery Network (CDN)</li>
+<li>Consistent Hashing</li>
+<li>Database Indexing</li>
+<li>Idempotency &amp; Idempotent APIs</li>
+<li>Health Checks, Readiness Probes &amp; Blue-Green/Canary Deployments</li>
+<li>Back-of-the-Envelope Capacity Estimation</li>
+<li>Putting It All Together — A Complete System Design Example</li>
+<li>Interview Questions &amp; Real-Time Scenarios Across All Topics</li>
+<li>Common System Design Issues &amp; Real Fixes</li>
+<li>Final Summary &amp; Cheat Sheet</li>
+</ol>
+</div>
+
+<!-- 1. INTRODUCTION -->
+<div class="section">
+<h1>1. Introduction — Why System Design Matters for a Java Full Stack Developer</h1>
+
+<h2>1.1 What "System Design" Actually Means</h2>
+<div class="box">System design is the skill of deciding HOW the pieces of a real application fit together at scale — not writing a single class, but deciding: should this be one service or many? Where does data live, and how many copies? What happens when a server crashes? How do we handle 10x more traffic tomorrow? These 20 topics are the standard vocabulary every system design interview and real production architecture decision draws from.</div>
+
+<h2>1.2 How This Guide Is Organized</h2>
+<div class="box">Each of the 20 topics (Sections 2-21) follows the same structure: a simple-terms explanation, WHY it's needed (the real problem it solves), a real diagram, how it applies specifically to a Java/Spring Boot + React + Cloud stack, a concrete example, real-time scenarios, and interview Q&amp;A — exactly matching how these topics are actually asked about in real interviews and needed in real architecture discussions.</div>
+
+<h2>1.3 The Running Example Used Throughout</h2>
+<div class="box">To keep every topic concrete, this guide uses one consistent running example: <b>"ShopNow"</b> — an e-commerce platform with a React frontend, Spring Boot microservices (Order, Payment, Inventory, Notification), running on Kubernetes in Azure — exactly the kind of system these 20 topics combine to build.</div>
+<div class="tip">This guide deliberately keeps each topic focused and example-driven for interview readiness; for even deeper implementation detail on several of these topics (Microservices, Kafka, Redis, Observability, Kubernetes), see the other guides in this same documentation set, cross-referenced throughout.</div>
+</div>
+
+<!-- 2. LOAD BALANCER -->
+<div class="section">
+<h1>2. Load Balancer</h1>
+
+<h2>2.1 Simple Explanation</h2>
+<div class="box">A Load Balancer sits in front of multiple identical server instances and decides which one handles each incoming request — like a traffic cop directing cars into whichever lane is least congested, instead of every car funneling into one lane.</div>
+
+<h2>2.2 Why It's Needed</h2>
+<div class="warn">Without a load balancer, all traffic hits ONE server — that server becomes both a performance bottleneck (can't handle more traffic than one machine allows) and a single point of failure (if it crashes, the entire application goes down).</div>
+
+<h2>2.3 Real Diagram</h2>
+<div class="diagram">
+<div class="title">Load Balancer — ShopNow Example</div>
+<div class="flow-row"><div class="node">Thousands of Users</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">Load Balancer (Azure Load Balancer / NGINX)</div></div>
+<div class="arrow-down">↓ distributes across</div>
+<div class="flow-row">
+<div class="node green">Order Service Pod 1</div><div class="node green">Order Service Pod 2</div><div class="node green">Order Service Pod 3</div>
+</div>
+</div>
+
+<h2>2.4 Java/Spring Boot + React + Cloud Application</h2>
+<table>
+<tr><th>Layer</th><th>Real Implementation</th></tr>
+<tr><td>Cloud infrastructure</td><td>Azure Load Balancer (Layer 4) or Application Gateway (Layer 7) in front of AKS pods</td></tr>
+<tr><td>Kubernetes-native</td><td>A Kubernetes Service (type: LoadBalancer or ClusterIP behind an Ingress) automatically load-balances across pod replicas</td></tr>
+<tr><td>Spring Boot side</td><td>Every pod runs the identical Spring Boot JAR — completely stateless, so ANY instance can handle ANY request (critical requirement, Section 9)</td></tr>
+<tr><td>React side</td><td>The frontend never knows or cares which specific backend instance served its request — it just calls one stable URL</td></tr>
+</table>
+
+<h2>2.5 Load Balancing Algorithms</h2>
+<table>
+<tr><th>Algorithm</th><th>How It Works</th><th>Real Use</th></tr>
+<tr><td>Round Robin</td><td>Cycles through instances in order</td><td>Simple default when all instances are equally capable</td></tr>
+<tr><td>Least Connections</td><td>Sends traffic to the instance with the fewest active connections</td><td>Better when request processing times vary significantly</td></tr>
+<tr><td>Weighted</td><td>Some instances get more traffic than others based on assigned weight</td><td>Gradually shifting traffic to a new, more powerful instance type</td></tr>
+<tr><td>IP Hash / Sticky Sessions</td><td>The same client always routes to the same instance</td><td>Legacy apps needing session affinity (generally avoided in modern stateless design)</td></tr>
+</table>
+
+<h2>2.6 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "During ShopNow's Black Friday sale, traffic increased 20x. Because Order Service pods are stateless and sit behind a Load Balancer + Horizontal Pod Autoscaler, Kubernetes automatically scaled from 4 pods to 40, and the Load Balancer immediately started distributing traffic across all of them — no code change, no manual intervention, the architecture simply absorbed the spike."</div>
+
+<h2>2.7 Related Concept: Forward Proxy vs Reverse Proxy</h2>
+<div class="box">A <b>Forward Proxy</b> sits in front of CLIENTS, hiding who the client is from the server (e.g., a corporate proxy that all employee traffic goes through before reaching the internet). A <b>Reverse Proxy</b> sits in front of SERVERS, hiding how many/which servers exist from the client — a Load Balancer is actually a specific type of reverse proxy, and tools like NGINX or an API Gateway (Section 3) are also reverse proxies with extra capabilities layered on top (SSL termination, caching, routing).</div>
+<div class="diagram">
+<div class="title">Forward Proxy vs Reverse Proxy</div>
+<div class="flow-row"><div class="node">Client</div><div class="arrow">→</div><div class="node purple">Forward Proxy (hides the client)</div><div class="arrow">→</div><div class="node">Internet / Server</div></div>
+<div class="flow-row"><div class="node">Client</div><div class="arrow">→</div><div class="node alt">Reverse Proxy (hides the servers)</div><div class="arrow">→</div><div class="node green">Server 1</div><div class="node green">Server 2</div></div>
+</div>
+<div class="tip"><b>Real scenario:</b> "ShopNow's NGINX layer in front of its Kubernetes Ingress is a reverse proxy — it terminates SSL/TLS once at the edge (so individual Spring Boot pods don't each need to manage certificates) and then forwards plain HTTP internally to whichever healthy pod the Load Balancer selects."</div>
+
+<h2>2.8 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. What's the difference between Layer 4 and Layer 7 load balancing?</div>
+<div class="a">Layer 4 balances based on IP/port only (fast, protocol-agnostic); Layer 7 balances based on full HTTP details (URL path, headers), enabling smart routing like sending /orders/* to one service and /payments/* to another.</div></div>
+<div class="qa"><div class="q">Q2. Why must backend services be stateless for load balancing to work well?</div>
+<div class="a">If a service stores session state in its own local memory, a client routed to a DIFFERENT instance on their next request won't find that state — stateless services (with any needed state externalized to Redis/a database) let ANY instance handle ANY request interchangeably.</div></div>
+</div>
+
+<!-- 3. API GATEWAY -->
+<div class="section">
+<h1>3. API Gateway</h1>
+
+<h2>3.1 Simple Explanation</h2>
+<div class="box">An API Gateway is a single front door that all client requests pass through before reaching any backend microservice — it handles routing, authentication, and rate limiting centrally, so individual microservices don't each have to implement these concerns themselves.</div>
+
+<h2>3.2 Why It's Needed</h2>
+<div class="warn">Without a gateway, the React frontend would need to know the address of EVERY microservice individually, implement authentication logic repeatedly, and every service would need its own rate limiting — a maintenance nightmare as the number of services grows.</div>
+
+<h2>3.3 Real Diagram</h2>
+<div class="diagram">
+<div class="title">API Gateway — ShopNow Example</div>
+<div class="flow-row"><div class="node">React App: calls ONE base URL, api.shopnow.com</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">API Gateway (Spring Cloud Gateway / Azure APIM)<br/>validates JWT, applies rate limit, routes by path</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+<div class="node green">/orders/* → Order Service</div><div class="node green">/payments/* → Payment Service</div><div class="node green">/inventory/* → Inventory Service</div>
+</div>
+</div>
+
+<h2>3.4 Java/Spring Boot + React + Cloud Application</h2>
+<pre><span class="c1">// Real Spring Cloud Gateway route configuration</span>
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: order-route
+          uri: lb://ORDER-SERVICE
+          predicates: [ Path=/orders/** ]
+        - id: payment-route
+          uri: lb://PAYMENT-SERVICE
+          predicates: [ Path=/payments/** ]
+</pre>
+<div class="box">Full real implementation detail (JWT validation, rate limiting policies) is covered in the Microservices guide, Section 12, and the API Development guide, Section 21. React always talks to this ONE gateway URL — it never needs to know that "Order Service" and "Payment Service" are even separate deployments.</div>
+
+<h2>3.5 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "ShopNow onboarded a new partner needing API access — instead of modifying every single microservice, the team configured ONE new rate-limiting policy in the API Gateway scoped to that partner's API key, live in minutes, with zero code changes to any backend service."</div>
+
+<h2>3.6 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. What's the difference between an API Gateway and a Load Balancer?</div>
+<div class="a">A Load Balancer distributes traffic across identical instances of ONE service. An API Gateway routes traffic to DIFFERENT services based on the request, plus handles cross-cutting concerns (auth, rate limiting) — many real Gateways use a Load Balancer internally for each service they route to.</div></div>
+<div class="qa"><div class="q">Q2. What happens if the API Gateway itself goes down?</div>
+<div class="a">It becomes a single point of failure for the whole system — real production Gateways run as multiple replicas behind their own load balancer, exactly like any other stateless service, to avoid this risk.</div></div>
+</div>
+
+<!-- 4. CACHING REDIS -->
+<div class="section">
+<h1>4. Caching (Redis)</h1>
+
+<h2>4.1 Simple Explanation</h2>
+<div class="box">Caching stores a copy of frequently-needed data somewhere much faster to access than its original source (usually a database) — like keeping today's most-used files on your desk instead of walking to the archive room every single time.</div>
+
+<h2>4.2 Why It's Needed</h2>
+<div class="warn">Every database query costs time and database resources — if the same data (e.g., a product catalog page) is requested thousands of times per minute, re-querying the database every single time wastes resources and adds unnecessary latency.</div>
+
+<h2>4.3 Real Diagram</h2>
+<div class="diagram">
+<div class="title">Cache-Aside Pattern — ShopNow Product Page</div>
+<div class="flow-row"><div class="node">Request: GET /products/1001</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node alt">Check Redis first</div></div>
+<div class="arrow-down">↓ MISS (first request)</div>
+<div class="flow-row"><div class="node">Query Database</div><div class="arrow">→</div><div class="node green">Store result in Redis</div><div class="arrow">→</div><div class="node">Return to client</div></div>
+<div class="arrow-down">↓ NEXT request for the SAME product</div>
+<div class="flow-row"><div class="node purple">Redis HIT — instant response, database never touched</div></div>
+</div>
+
+<h2>4.4 Java/Spring Boot + React + Cloud Application</h2>
+<pre>@Cacheable(cacheNames = "products", key = "#id")
+public ProductDto getProduct(Long id) {
+    return mapper.toDto(productRepository.findById(id).orElseThrow());
+}
+</pre>
+<div class="box">Full production-grade Redis implementation (cache providers, TTL, eviction, the critical per-JVM-cache multi-instance gotcha) is covered in complete depth in the Spring &amp; Spring Boot guide, Section 52-53, and the Web/Network/Redis guide, Sections 23-35. On the React side, caching also happens client-side via libraries like React Query, avoiding even the network round-trip for recently-fetched data.</div>
+
+<h2>4.5 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "ShopNow's product catalog page load time dropped from 200ms to 4ms after adding Redis caching with a 10-minute TTL — since product details rarely change minute-to-minute, the small staleness window was a trivial trade-off for a 50x speed improvement and dramatically reduced database load."</div>
+
+<h2>4.6 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. What is cache invalidation, and why is it considered hard?</div>
+<div class="a">Knowing exactly WHEN cached data has become stale and must be refreshed — hard because any write path bypassing the normal cache-eviction logic (e.g., a direct database fix) leaves stale data being served until the TTL naturally expires.</div></div>
+<div class="qa"><div class="q">Q2. Why must Redis (not a local in-memory cache) be used in a multi-instance microservices deployment?</div>
+<div class="a">A local per-JVM cache means each of the (e.g.) 10 running pod replicas has its OWN separate cache — an update on one pod is invisible to the other 9, causing inconsistent results depending on which pod serves a request; Redis provides one shared cache all instances see consistently.</div></div>
+</div>
+
+<!-- 5. DATABASE SHARDING -->
+<div class="section">
+<h1>5. Database Sharding</h1>
+
+<h2>5.1 Simple Explanation</h2>
+<div class="box">Sharding splits ONE large database's data across MULTIPLE separate database instances, each holding a SUBSET of the total rows — like splitting one giant phone book alphabetically across several smaller books (A-H in book 1, I-P in book 2) instead of one massive book everyone has to search through.</div>
+
+<h2>5.2 Why It's Needed</h2>
+<div class="warn">A single database server has physical limits — CPU, memory, disk I/O — once a table grows to hundreds of millions of rows, even well-indexed queries slow down, and vertical scaling (Section 8) alone eventually hits a hardware ceiling.</div>
+
+<h2>5.3 Real Diagram</h2>
+<div class="diagram">
+<div class="title">Sharding ShopNow's Orders Table by Customer ID</div>
+<div class="flow-row"><div class="node">Order Service receives a request for customer_id = 88452</div></div>
+<div class="arrow-down">↓ Shard Key: customer_id % 4</div>
+<div class="flow-row">
+<div class="node green">Shard 0<br/>customers 0,4,8...</div><div class="node green">Shard 1<br/>customers 1,5,9...</div><div class="node alt">Shard 2 ← routed here<br/>customers 2,6,10...</div><div class="node green">Shard 3<br/>customers 3,7,11...</div>
+</div>
+</div>
+
+<h2>5.4 Sharding Strategies</h2>
+<table>
+<tr><th>Strategy</th><th>How It Works</th><th>Real Trade-Off</th></tr>
+<tr><td>Range-Based</td><td>Shard by a value range (e.g., customer IDs 1-1M in shard 1, 1M-2M in shard 2)</td><td>Simple, but can create "hot shards" if data isn't evenly distributed across ranges</td></tr>
+<tr><td>Hash-Based</td><td>Shard key is hashed, result determines which shard (e.g., customer_id % number_of_shards)</td><td>Even distribution, but re-sharding (adding more shards) requires re-hashing and moving significant data</td></tr>
+<tr><td>Directory-Based</td><td>A lookup table maps each key to its shard explicitly</td><td>Most flexible (easy to rebalance), but the lookup table itself becomes a critical dependency</td></tr>
+</table>
+
+<h2>5.5 Java/Spring Boot Application</h2>
+<div class="box">Spring Boot applications typically implement sharding via a custom <code>AbstractRoutingDataSource</code> that picks the correct shard's DataSource based on the current request's shard key (e.g., customer ID), or by using a database/proxy layer (like Vitess for MySQL) that handles shard routing transparently below the application layer.</div>
+
+<h2>5.6 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "ShopNow's single Orders database grew to 2 billion rows, and even indexed queries started taking seconds. Sharding by customer_id across 8 shards brought each shard down to a manageable ~250 million rows, restoring millisecond query times — the trade-off was that any query needing data across MULTIPLE customers (like a company-wide sales report) now requires querying all 8 shards and aggregating results in application code."</div>
+
+<h2>5.7 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. What's the biggest challenge sharding introduces?</div>
+<div class="a">Cross-shard queries/joins become much harder — a query needing data spanning multiple shards must query each shard separately and combine results in application code, since the database itself can no longer join across shard boundaries.</div></div>
+<div class="qa"><div class="q">Q2. How do you choose a good shard key?</div>
+<div class="a">Pick a key that distributes data evenly (avoiding hot shards) and matches the MOST common query pattern (e.g., "get all orders for this customer" — sharding by customer_id keeps that query within one shard, avoiding expensive cross-shard fan-out).</div></div>
+</div>
+
+<!-- 6. DATABASE REPLICATION -->
+<div class="section">
+<h1>6. Database Replication</h1>
+
+<h2>6.1 Simple Explanation</h2>
+<div class="box">Replication keeps multiple COPIES of the same data on different database servers — unlike sharding (which SPLITS data across servers), replication DUPLICATES the same data for redundancy and read scalability.</div>
+
+<h2>6.2 Why It's Needed</h2>
+<div class="warn">A single database server is a single point of failure (if it crashes, the whole app loses data access) and a read bottleneck (every single read query hits the same one server). Replication solves both.</div>
+
+<h2>6.3 Real Diagram</h2>
+<div class="diagram">
+<div class="title">Master-Replica Replication — ShopNow</div>
+<div class="flow-row"><div class="node purple">Primary/Master DB (handles ALL writes)</div></div>
+<div class="arrow-down">↓ replicates changes to</div>
+<div class="flow-row"><div class="node green">Read Replica 1</div><div class="node green">Read Replica 2</div><div class="node green">Read Replica 3</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">Order Service reads (browsing order history) → Replicas</div><div class="node alt">Order Service writes (placing a new order) → Primary</div></div>
+</div>
+
+<h2>6.4 Synchronous vs Asynchronous Replication</h2>
+<table>
+<tr><th>Type</th><th>How It Works</th><th>Trade-Off</th></tr>
+<tr><td>Synchronous</td><td>The write isn't considered complete until it's confirmed on the replica(s) too</td><td>Strong consistency, but slower writes (waiting for network round trip to replicas)</td></tr>
+<tr><td>Asynchronous</td><td>The write completes on the primary immediately; replicas catch up shortly after</td><td>Faster writes, but a brief window where replicas have stale data ("replication lag")</td></tr>
+</table>
+
+<h2>6.5 Java/Spring Boot Application</h2>
+<pre><span class="c1">// Real Spring Boot read/write splitting using multiple DataSources</span>
+@Bean
+@Primary
+public DataSource writeDataSource() { return primaryDbConfig(); }
+
+@Bean
+public DataSource readDataSource() { return replicaDbConfig(); }
+
+@Transactional(readOnly = true)   <span class="c1">// hints the routing layer to use the READ replica</span>
+public List&lt;OrderDto&gt; getOrderHistory(Long customerId) { ... }
+</pre>
+
+<h2>6.6 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "A customer places an order (written to the Primary), then IMMEDIATELY refreshes their order history page — if that read hits a replica with even 200ms of replication lag, the new order might briefly not appear, confusing the customer. ShopNow's fix: force reads immediately following a write for the SAME user to temporarily route to the Primary for a short window, then fall back to replicas afterward."</div>
+
+<h2>6.7 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. What is replication lag, and why does it matter?</div>
+<div class="a">The delay between a write completing on the primary and that change becoming visible on a replica — it matters because a read immediately following a write might hit a replica that hasn't caught up yet, returning stale data (a real consistency trade-off, connecting directly to the CAP Theorem, Section 7).</div></div>
+</div>
+
+<!-- 7. CAP THEOREM -->
+<div class="section">
+<h1>7. CAP Theorem</h1>
+
+<h2>7.1 Simple Explanation</h2>
+<div class="box">CAP Theorem states that a distributed database system can only guarantee TWO of these THREE properties at the same time: <b>Consistency</b> (every read sees the latest write), <b>Availability</b> (every request gets a response, even if not the latest data), and <b>Partition Tolerance</b> (the system keeps working even if network communication between nodes breaks).</div>
+
+<h2>7.2 Why It's Needed (as a Concept)</h2>
+<div class="box">Network partitions (communication failures between servers) WILL happen in any real distributed system — CAP Theorem forces architects to consciously decide: when a partition occurs, do we sacrifice Consistency (keep serving requests with possibly-stale data) or Availability (refuse to respond rather than risk incorrect data)?</div>
+
+<h2>7.3 Real Diagram</h2>
+<div class="diagram">
+<div class="title">CAP Theorem — The Forced Trade-Off During a Network Partition</div>
+<div class="flow-row"><div class="node alt">Network Partition Occurs — Node A and Node B can't communicate</div></div>
+<div class="arrow-down">↓ a write happens on Node A</div>
+<div class="flow-row">
+<div class="node green">CP Choice: Node B refuses to serve reads (unavailable) until it can confirm it has the latest data</div>
+<div class="node purple">AP Choice: Node B serves reads anyway, using its (possibly stale) local data</div>
+</div>
+</div>
+
+<h2>7.4 Real Systems and Their CAP Choice</h2>
+<table>
+<tr><th>System</th><th>CAP Choice</th><th>Real Reasoning</th></tr>
+<tr><td>Traditional RDBMS (single primary, e.g., banking core ledger)</td><td>CP</td><td>A bank absolutely cannot show an incorrect balance — consistency is non-negotiable, even if it means brief unavailability during a failover</td></tr>
+<tr><td>Cassandra / DynamoDB</td><td>AP (tunable)</td><td>A product catalog can tolerate showing slightly stale data (an old price for a few seconds) rather than being unavailable entirely</td></tr>
+<tr><td>MongoDB (default config)</td><td>CP-leaning</td><td>Prioritizes consistency by default, configurable toward AP for specific use cases</td></tr>
+</table>
+
+<h2>7.5 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "ShopNow's Payment Service (backed by a strongly consistent relational database) chooses CP — during a network partition, it would rather briefly reject payment requests than risk double-charging or losing a transaction. ShopNow's Product Recommendation Service (backed by a NoSQL store) chooses AP — showing a slightly outdated recommendation is a far better trade-off than the recommendations widget breaking the entire page."</div>
+
+<h2>7.6 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. Does CAP Theorem mean you must choose CA (Consistency + Availability) and ignore Partition Tolerance?</div>
+<div class="a">No — in any REAL distributed system, network partitions are inevitable, so Partition Tolerance isn't really optional; the real-world choice is between CP and AP specifically WHEN a partition occurs, not a genuine three-way free choice.</div></div>
+<div class="qa"><div class="q">Q2. How would you decide whether a specific microservice should favor CP or AP?</div>
+<div class="a">Ask: "What's worse — showing slightly stale data, or the service being unavailable?" Financial/inventory-critical services usually favor CP; content/recommendation/catalog-type services usually favor AP.</div></div>
+</div>
+
+<!-- 8. CONSISTENCY MODELS -->
+<div class="section">
+<h1>8. Consistency Models</h1>
+
+<h2>8.1 Simple Explanation</h2>
+<div class="box">Consistency models describe exactly WHAT GUARANTEE a system gives about seeing the latest data — ranging from "you always see the absolute latest write, instantly" (strong consistency) to "you'll eventually see it, just maybe not immediately" (eventual consistency).</div>
+
+<h2>8.2 The Main Consistency Models</h2>
+<table>
+<tr><th>Model</th><th>Guarantee</th><th>Real Example</th></tr>
+<tr><td>Strong Consistency</td><td>Every read immediately reflects the most recent write, everywhere</td><td>A bank account balance — must always be exactly correct</td></tr>
+<tr><td>Eventual Consistency</td><td>Given enough time with no new writes, all replicas WILL converge to the same value — but there's a window where they might differ</td><td>A social media "like count" — briefly showing slightly different counts to different users is acceptable</td></tr>
+<tr><td>Read-Your-Own-Writes Consistency</td><td>A user always sees their OWN most recent write immediately, even if other users might briefly see stale data</td><td>You update your profile picture and see it change instantly, even if a friend viewing your profile sees the old one for a few seconds</td></tr>
+<tr><td>Causal Consistency</td><td>Operations that are causally related (a reply to a comment) are seen in the correct order by everyone, though unrelated operations may not be</td><td>Chat applications — replies never appear before the message they're replying to</td></tr>
+</table>
+
+<h2>8.3 Real Diagram</h2>
+<div class="diagram">
+<div class="title">Eventual Consistency — ShopNow Product Review Count</div>
+<div class="flow-row"><div class="node">User submits a new review</div></div>
+<div class="arrow-down">↓ written to Node A immediately</div>
+<div class="flow-row"><div class="node green">Node A: review count = 101 (updated instantly)</div></div>
+<div class="arrow-down">↓ replicated asynchronously, takes a moment</div>
+<div class="flow-row"><div class="node alt">Node B: review count = 100 (briefly stale) → eventually becomes 101</div></div>
+</div>
+
+<h2>8.4 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "ShopNow's review count uses eventual consistency (a NoSQL store) — a brief delay before a new review count appears to ALL users is completely acceptable. ShopNow's inventory count during checkout uses strong consistency (via pessimistic locking in the relational Inventory database) — showing an item as available when it's actually sold out would create a genuinely bad customer experience and an operational headache."</div>
+
+<h2>8.5 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. Why would a system deliberately choose eventual consistency over strong consistency?</div>
+<div class="a">Strong consistency typically requires more coordination between nodes (higher latency, lower availability during partitions), while eventual consistency allows much higher availability and performance — the right choice depends entirely on whether the specific data can tolerate brief staleness.</div></div>
+</div>
+
+<!-- 9. HORIZONTAL VS VERTICAL SCALING -->
+<div class="section">
+<h1>9. Horizontal vs Vertical Scaling</h1>
+
+<h2>9.1 Simple Explanation</h2>
+<div class="box"><b>Vertical Scaling</b> means making ONE server bigger/more powerful (more CPU, more RAM). <b>Horizontal Scaling</b> means adding MORE servers running the same application, sharing the load between them — like hiring more cashiers (horizontal) versus giving one cashier superhuman speed (vertical).</div>
+
+<h2>9.2 Real Diagram</h2>
+<div class="diagram">
+<div class="title">Vertical vs Horizontal Scaling — ShopNow Order Service</div>
+<div class="flow-row">
+<div class="node gray">Vertical: 1 pod, upgraded from 2 CPU/4GB to 8 CPU/16GB</div>
+</div>
+<div class="flow-row">
+<div class="node green">Horizontal: 4 pods, each still 2 CPU/4GB, load-balanced together</div>
+</div>
+</div>
+
+<h2>9.3 Full Comparison</h2>
+<table>
+<tr><th>Aspect</th><th>Vertical Scaling</th><th>Horizontal Scaling</th></tr>
+<tr><td>Implementation</td><td>Resize the existing server/VM</td><td>Add more identical server/pod instances</td></tr>
+<tr><td>Upper limit</td><td>Hard ceiling — eventually no bigger hardware exists</td><td>Practically limitless — keep adding more instances</td></tr>
+<tr><td>Downtime to scale</td><td>Often requires a restart (resizing a VM)</td><td>None — new instances just join the pool</td></tr>
+<tr><td>Fault tolerance</td><td>Still one server — a single point of failure</td><td>Naturally fault-tolerant — one instance failing doesn't take down the whole service</td></tr>
+<tr><td>Application requirement</td><td>None — works with any application, even stateful ones</td><td>Requires the application to be stateless (Section 2.4) to work correctly</td></tr>
+<tr><td>Cost model</td><td>Cost increases non-linearly at the high end (premium hardware)</td><td>Cost scales more linearly and predictably with commodity instances</td></tr>
+</table>
+
+<h2>9.4 Java/Spring Boot + Kubernetes Application</h2>
+<div class="box">Kubernetes' Horizontal Pod Autoscaler (Docker &amp; Kubernetes guide, Section 23) is horizontal scaling automated — adding more Spring Boot pod replicas as CPU/memory utilization rises. Vertical scaling in Kubernetes means increasing a pod's CPU/memory resource requests/limits — still possible, but real cloud-native architectures lean heavily toward horizontal scaling as the primary strategy.</div>
+
+<h2>9.5 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "ShopNow initially tried vertical scaling — upgrading their single Order Service VM repeatedly during growth. They eventually hit the largest available VM size on Azure and STILL needed more capacity for Black Friday — this hard ceiling is exactly why they re-architected to run multiple horizontally-scaled Spring Boot pods behind a load balancer instead, removing any future capacity ceiling."</div>
+
+<h2>9.6 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. Why is horizontal scaling generally preferred in modern cloud-native architectures?</div>
+<div class="a">It has no hard ceiling, provides natural fault tolerance (one instance failing doesn't take down the service), and requires no downtime to add capacity — the trade-off is that it requires the application to be designed as stateless from the start.</div></div>
+</div>
+
+<!-- 10. MICROSERVICES ARCHITECTURE -->
+<div class="section">
+<h1>10. Microservices Architecture</h1>
+
+<h2>10.1 Simple Explanation</h2>
+<div class="box">Microservices architecture splits one large application into many small, independently deployable services, each owning a specific business capability — instead of one giant ShopNow application, there's a separate Order Service, Payment Service, Inventory Service, each with its own codebase, database, and deployment lifecycle.</div>
+
+<h2>10.2 Real Diagram</h2>
+<div class="diagram">
+<div class="title">ShopNow Microservices Architecture</div>
+<div class="flow-row"><div class="node purple">API Gateway</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+<div class="node green">Order Service<br/>+ own DB</div><div class="node green">Payment Service<br/>+ own DB</div><div class="node green">Inventory Service<br/>+ own DB</div>
+</div>
+</div>
+
+<h2>10.3 Why It's Needed</h2>
+<div class="box">Independent deployment (release Payment Service without touching Order Service), independent scaling (scale only Inventory Service during a flash sale), and team autonomy (different teams own different services without stepping on each other) — full complete depth already covered in the dedicated Microservices guide.</div>
+
+<h2>10.4 Monolith vs Microservices Quick Recap</h2>
+<table>
+<tr><th>Aspect</th><th>Monolith</th><th>Microservices</th></tr>
+<tr><td>Deployment</td><td>One unit, all-or-nothing</td><td>Independent per service</td></tr>
+<tr><td>Database</td><td>Usually shared</td><td>Database per service (Section 5's sharding, applied per-service)</td></tr>
+<tr><td>Communication</td><td>In-process method calls</td><td>Network calls (REST/Kafka) — this entire guide's topics (Sections 11-13, 15) exist to handle the complexity this introduces</td></tr>
+</table>
+
+<h2>10.5 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "ShopNow's Inventory Service needs to scale to 30 replicas during a flash sale, while Payment Service only ever needs 5 — in a monolith, you'd have to scale the ENTIRE application together, wasting resources; as separate microservices, each scales independently to exactly what it needs."</div>
+
+<h2>10.6 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. What's the single biggest trade-off microservices introduce compared to a monolith?</div>
+<div class="a">Distributed systems complexity — network latency, partial failures, and data consistency across services that used to be simple in-process concerns in a monolith become real engineering challenges requiring dedicated patterns (Circuit Breaker, Saga, Service Discovery — all covered in this guide).</div></div>
+</div>
+
+<!-- 11. SERVICE DISCOVERY EUREKA -->
+<div class="section">
+<h1>11. Service Discovery (Eureka)</h1>
+
+<h2>11.1 Simple Explanation</h2>
+<div class="box">In a dynamic environment where service instances start, stop, and scale constantly (especially in Kubernetes), Service Discovery lets services find each other BY NAME rather than by hardcoded IP addresses that would break the moment an instance restarts with a new IP.</div>
+
+<h2>11.2 Real Diagram</h2>
+<div class="diagram">
+<div class="title">Eureka Service Discovery — ShopNow</div>
+<div class="flow-row">
+<div class="node green">Order Service</div><div class="node green">Payment Service</div><div class="node green">Inventory Service</div>
+</div>
+<div class="arrow-down">↓ register + heartbeat every 30s</div>
+<div class="flow-row"><div class="node purple">Eureka Server (Registry)</div></div>
+<div class="arrow-down">↓ Order Service asks: "where is Payment Service?"</div>
+<div class="flow-row"><div class="node alt">Eureka returns the current list of healthy Payment Service instances</div></div>
+</div>
+
+<h2>11.3 Java/Spring Boot Application</h2>
+<pre>@FeignClient(name = "payment-service")   <span class="c1">// "payment-service" resolved via Eureka automatically — no hardcoded IP anywhere</span>
+public interface PaymentFeignClient {
+    @PostMapping("/payments") PaymentResponse process(@RequestBody PaymentRequest request);
+}
+</pre>
+<div class="box">Full real Eureka setup (server/client configuration, health check integration) is covered in complete depth in the Microservices guide, Section 11. Note that in a Kubernetes-native deployment, Kubernetes' own built-in DNS-based service discovery often replaces or complements Eureka, since Kubernetes already solves this exact problem at the platform level.</div>
+
+<h2>11.4 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "When Payment Service scales from 2 to 8 pods during a sale, Eureka's registry reflects all 8 healthy instances within seconds — Order Service's Feign client automatically load-balances across all of them, with zero manual configuration change needed anywhere."</div>
+
+<h2>11.5 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. What happens if Eureka itself goes down?</div>
+<div class="a">Eureka clients cache the last known registry locally, so brief Eureka downtime doesn't immediately break existing service-to-service calls — but new service instances can't register until Eureka recovers, so Eureka itself is usually run as a small, highly available cluster.</div></div>
+</div>
+
+<!-- 12. CIRCUIT BREAKER -->
+<div class="section">
+<h1>12. Circuit Breaker Pattern</h1>
+
+<h2>12.1 Simple Explanation</h2>
+<div class="box">A Circuit Breaker monitors calls to a downstream service — if that service starts failing repeatedly, the breaker "opens" and immediately fails fast (without even attempting the call) for a period, giving the struggling service time to recover, instead of piling on more requests it can't handle.</div>
+
+<h2>12.2 Why It's Needed</h2>
+<div class="warn">Without a Circuit Breaker, if Payment Service becomes slow/unresponsive, Order Service keeps calling it and waiting — eventually Order Service's own threads get exhausted waiting, and IT becomes unresponsive too, cascading the failure across the whole system.</div>
+
+<h2>12.3 Real Diagram</h2>
+<div class="diagram">
+<div class="title">Circuit Breaker States</div>
+<div class="flow-row">
+<div class="node green">CLOSED (calls flow normally)</div><div class="arrow">→ too many failures →</div><div class="node alt">OPEN (calls fail instantly, no real attempt)</div>
+</div>
+<div class="arrow-down">↓ after a wait period</div>
+<div class="flow-row"><div class="node">HALF_OPEN (a few trial calls allowed)</div></div>
+<div class="arrow-down">↓ trial succeeds → CLOSED again | trial fails → back to OPEN</div>
+</div>
+
+<h2>12.4 Java/Spring Boot Application (Resilience4j)</h2>
+<pre>@CircuitBreaker(name = "paymentService", fallbackMethod = "paymentFallback")
+public PaymentResponse processPayment(PaymentRequest request) {
+    return paymentFeignClient.process(request);
+}
+
+public PaymentResponse paymentFallback(PaymentRequest request, Throwable t) {
+    return PaymentResponse.pending("Payment queued for retry — service temporarily unavailable");
+}
+</pre>
+<div class="box">Full detail on Resilience4j configuration, combining Circuit Breaker with Retry/Bulkhead/Timeout, is covered in the Microservices guide, Section 18 and Section 40.</div>
+
+<h2>12.5 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "When ShopNow's third-party payment gateway had a 10-minute outage, the Circuit Breaker opened after detecting the failure pattern — Order Service immediately started returning a graceful 'payment queued' fallback response instead of hanging on every checkout attempt, keeping the rest of the site fully responsive throughout the outage."</div>
+
+<h2>12.6 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. How is a Circuit Breaker different from just adding a timeout?</div>
+<div class="a">A timeout limits how long ONE call waits, but still makes every single call and waits for it to fail every time. A Circuit Breaker tracks the FAILURE RATE over time and, once a threshold is crossed, stops even attempting calls for a period — failing fast without wasting resources on calls likely to fail anyway.</div></div>
+</div>
+
+<!-- 13. RATE LIMITING -->
+<div class="section">
+<h1>13. Rate Limiting</h1>
+
+<h2>13.1 Simple Explanation</h2>
+<div class="box">Rate Limiting caps how many requests a client (a user, an API key, an IP address) can make within a time window — like a "one ticket per person per hour" rule at a busy amusement park ride, preventing any single visitor from monopolizing capacity.</div>
+
+<h2>13.2 Why It's Needed</h2>
+<div class="warn">Without rate limiting, a buggy client stuck in a retry loop, a traffic spike, or a malicious/abusive client could overwhelm a service, degrading the experience for every OTHER legitimate user.</div>
+
+<h2>13.3 Real Diagram</h2>
+<div class="diagram">
+<div class="title">Rate Limiting — ShopNow API Gateway</div>
+<div class="flow-row"><div class="node">Partner API Key: 95 requests this minute</div></div>
+<div class="arrow-down">↓ 96th request arrives</div>
+<div class="flow-row"><div class="node alt">Gateway checks: limit is 100/minute — still allowed</div></div>
+<div class="arrow-down">↓ 101st request in the same minute</div>
+<div class="flow-row"><div class="node gray">Gateway REJECTS with 429 Too Many Requests</div></div>
+</div>
+
+<h2>13.4 Rate Limiting Algorithms</h2>
+<table>
+<tr><th>Algorithm</th><th>How It Works</th></tr>
+<tr><td>Token Bucket</td><td>Tokens refill at a fixed rate; each request consumes a token, rejected once the bucket is empty</td></tr>
+<tr><td>Sliding Window</td><td>Counts requests in a rolling time window, rejecting once the limit is exceeded</td></tr>
+<tr><td>Fixed Window</td><td>Simple counter reset every fixed interval — can allow bursts right at window boundaries</td></tr>
+</table>
+
+<h2>13.5 Java/Spring Boot Application (Redis-Backed)</h2>
+<pre>@Service
+@RequiredArgsConstructor
+public class RateLimiterService {
+    private final RedisTemplate&lt;String, String&gt; redisTemplate;
+
+    public boolean isAllowed(String apiKey, int maxPerMinute) {
+        String key = "ratelimit:" + apiKey;
+        Long count = redisTemplate.opsForValue().increment(key);
+        if (count == 1) redisTemplate.expire(key, Duration.ofMinutes(1));
+        return count &lt;= maxPerMinute;
+    }
+}
+</pre>
+
+<h2>13.6 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "A ShopNow partner's integration had a bug causing it to retry every failed request instantly in a tight loop — without rate limiting, this would have overwhelmed the Order Service. The Gateway's rate limit rejected the excess requests with 429s, protecting the rest of the platform while the partner's team fixed their retry logic."</div>
+
+<h2>13.7 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. Where should rate limiting be enforced — the client, the Gateway, or each individual service?</div>
+<div class="a">Primarily at the API Gateway (centralized, consistent enforcement across all services, Section 3) — individual services MAY add their own additional limits for especially expensive operations, but relying on the client to self-limit is never sufficient since a malicious or buggy client won't respect it.</div></div>
+</div>
+
+<!-- 14. MESSAGE QUEUES -->
+<div class="section">
+<h1>14. Message Queues (Kafka / RabbitMQ)</h1>
+
+<h2>14.1 Simple Explanation</h2>
+<div class="box">A Message Queue lets one service send a message that ANOTHER service processes later, independently — like leaving a voicemail instead of requiring the other person to answer the phone live right now.</div>
+
+<h2>14.2 Why It's Needed</h2>
+<div class="box">Decouples services in time — the sender doesn't need the receiver to be available RIGHT NOW, and doesn't need to wait for it to finish processing before moving on, unlike a direct synchronous REST call.</div>
+
+<h2>14.3 Real Diagram</h2>
+<div class="diagram">
+<div class="title">Message Queue — ShopNow Order Notification</div>
+<div class="flow-row"><div class="node green">Order Service: order placed</div></div>
+<div class="arrow-down">↓ publishes a message, moves on immediately</div>
+<div class="flow-row"><div class="node purple">Kafka Topic: order-events</div></div>
+<div class="arrow-down">↓ Notification Service consumes WHENEVER it's ready</div>
+<div class="flow-row"><div class="node">Notification Service: sends confirmation email (even if this takes 3 seconds, Order Service already responded to the customer)</div></div>
+</div>
+
+<h2>14.4 Kafka vs RabbitMQ</h2>
+<table>
+<tr><th>Aspect</th><th>Kafka</th><th>RabbitMQ</th></tr>
+<tr><td>Model</td><td>Distributed commit log — durable, replayable event stream</td><td>Traditional message queue/broker (AMQP)</td></tr>
+<tr><td>Throughput</td><td>Very high, built for massive event streaming</td><td>Good for moderate throughput, flexible routing</td></tr>
+<tr><td>Message replay</td><td>Yes — consumers can rewind and reprocess history</td><td>No — once consumed/acked, typically gone</td></tr>
+<tr><td>Best fit</td><td>Event-driven architecture, event sourcing, high-volume streams</td><td>Task queues, simpler routing needs</td></tr>
+</table>
+
+<h2>14.5 Java/Spring Boot Application</h2>
+<pre>@Service
+@RequiredArgsConstructor
+public class OrderEventPublisher {
+    private final KafkaTemplate&lt;String, OrderPlacedEvent&gt; kafkaTemplate;
+    public void publish(OrderPlacedEvent event) {
+        kafkaTemplate.send("order-events", event.getOrderId().toString(), event);
+    }
+}
+
+@Component
+public class NotificationListener {
+    @KafkaListener(topics = "order-events", groupId = "notification-service")
+    public void handle(OrderPlacedEvent event) {
+        emailService.sendOrderConfirmation(event);
+    }
+}
+</pre>
+
+<h2>14.6 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "During a flash sale, ShopNow's email provider slowed down significantly — because Notification Service consumes from Kafka asynchronously, order PLACEMENT was completely unaffected; emails simply queued up in Kafka and were sent a few minutes later than usual once the email provider recovered, with zero impact on the actual checkout experience."</div>
+
+<h2>14.7 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. When would you choose Kafka over RabbitMQ?</div>
+<div class="a">When you need very high throughput, message replay capability (reprocessing historical events), or you're building a genuinely event-driven architecture (Section 15) with multiple independent consumers of the same event stream — RabbitMQ is a better fit for simpler task-queue style workloads.</div></div>
+</div>
+
+<!-- 15. EVENT DRIVEN ARCHITECTURE -->
+<div class="section">
+<h1>15. Event-Driven Architecture</h1>
+
+<h2>15.1 Simple Explanation</h2>
+<div class="box">Instead of services calling each other directly, services publish EVENTS ("something happened") and other interested services subscribe and react independently — nobody has to explicitly tell every interested party, they just listen for events they care about.</div>
+
+<h2>15.2 Real Diagram</h2>
+<div class="diagram">
+<div class="title">Event-Driven — "Order Placed" Ripple Effect</div>
+<div class="flow-row"><div class="node green">Order Service: publishes OrderPlacedEvent</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">Kafka Topic</div></div>
+<div class="arrow-down">↓ consumed independently by</div>
+<div class="flow-row">
+<div class="node">Inventory Service: reserve stock</div><div class="node">Notification Service: send confirmation</div><div class="node">Analytics Service: update dashboards</div>
+</div>
+</div>
+
+<h2>15.3 Why It's Needed</h2>
+<div class="box">Order Service doesn't need to know Inventory, Notification, or Analytics services even exist — new consumers can be added later with ZERO changes to Order Service, and if one consumer is temporarily down, the others are completely unaffected.</div>
+
+<h2>15.4 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "When ShopNow added a new 'Loyalty Points' feature, they simply subscribed a new Loyalty Service to the EXISTING order-events topic — Order Service required zero code changes or redeployment, exactly demonstrating the decoupling this architecture is designed to provide."</div>
+
+<h2>15.5 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. What's the main trade-off of event-driven architecture compared to direct synchronous calls?</div>
+<div class="a">Consistency becomes eventual, not immediate — for a brief window, a downstream consumer may not yet know about an event; this is an acceptable trade-off for side effects (notifications, analytics) but requires careful design (Saga pattern, Section 16) for operations needing stronger guarantees.</div></div>
+</div>
+
+<!-- 16. DISTRIBUTED TRANSACTIONS SAGA -->
+<div class="section">
+<h1>16. Distributed Transactions (Saga)</h1>
+
+<h2>16.1 Simple Explanation</h2>
+<div class="box">In a monolith, "create order + charge payment + reserve inventory" was ONE local database transaction. Across microservices with separate databases, there's no single transaction spanning all three — the Saga pattern replaces it with a SEQUENCE of local transactions, each with a defined "undo" (compensating) action if a later step fails.</div>
+
+<h2>16.2 Real Diagram</h2>
+<div class="diagram">
+<div class="title">Saga — ShopNow "Place Order" Happy Path</div>
+<div class="flow-row">
+<div class="node green">1. Order Service: create order (PENDING)</div><div class="arrow">→</div><div class="node green">2. Inventory Service: reserve stock</div><div class="arrow">→</div><div class="node green">3. Payment Service: charge card</div><div class="arrow">→</div><div class="node green">4. Order Service: mark CONFIRMED</div>
+</div>
+</div>
+<div class="diagram">
+<div class="title">Saga — Failure &amp; Compensation</div>
+<div class="flow-row">
+<div class="node green">1. Order created</div><div class="arrow">→</div><div class="node green">2. Stock reserved</div><div class="arrow">→</div><div class="node alt">3. Payment FAILS</div>
+</div>
+<div class="arrow-down">↓ compensating transactions trigger, in reverse order</div>
+<div class="flow-row">
+<div class="node gray">Inventory Service: release reserved stock</div><div class="node gray">Order Service: mark order CANCELLED</div>
+</div>
+</div>
+
+<h2>16.3 Choreography vs Orchestration</h2>
+<table>
+<tr><th>Style</th><th>How It Works</th><th>Best For</th></tr>
+<tr><td>Choreography</td><td>Each service reacts to events independently, no central coordinator</td><td>Simple 2-3 step sagas, highly decoupled teams</td></tr>
+<tr><td>Orchestration</td><td>A dedicated orchestrator service explicitly calls each step and handles compensation centrally</td><td>Complex multi-step business processes needing clear visibility of the overall flow</td></tr>
+</table>
+<div class="box">Full detail with real Kafka-based choreography code is already covered in the Microservices guide, Section 22-23.</div>
+
+<h2>16.4 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "ShopNow's checkout Saga reserves inventory BEFORE charging payment — if the payment step fails (card declined), the compensating transaction releases the reserved inventory immediately, making it available to other customers again, rather than leaving it locked indefinitely by a failed order."</div>
+
+<h2>16.5 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. Why can't you just use a traditional distributed transaction (2PC) instead of a Saga?</div>
+<div class="a">Two-Phase Commit (2PC) requires all participants to be locked/blocked until every party confirms readiness — this creates tight coupling and poor availability (if any one participant is slow/down, everyone blocks); Sagas trade strict atomicity for eventual consistency with much better availability characteristics.</div></div>
+</div>
+
+<!-- 17. CQRS -->
+<div class="section">
+<h1>17. CQRS Pattern</h1>
+
+<h2>17.1 Simple Explanation</h2>
+<div class="box">CQRS (Command Query Responsibility Segregation) separates the model used to WRITE data (Commands) from the model used to READ data (Queries) — they can even live in entirely different databases, each optimized independently for its own purpose.</div>
+
+<h2>17.2 Real Diagram</h2>
+<div class="diagram">
+<div class="title">CQRS — ShopNow Order Reporting</div>
+<div class="flow-row"><div class="node green">Order Service (write model)<br/>normalized relational tables, optimized for correctness</div></div>
+<div class="arrow-down">↓ publishes OrderCreated/OrderUpdated events</div>
+<div class="flow-row"><div class="node purple">Kafka</div></div>
+<div class="arrow-down">↓ consumed and projected into</div>
+<div class="flow-row"><div class="node alt">Reporting DB (read model)<br/>denormalized, pre-joined for fast dashboard queries</div></div>
+</div>
+
+<h2>17.3 Why It's Needed</h2>
+<div class="box">A normalized write model is great for correctness (avoiding data duplication/anomalies) but often terrible for complex reporting queries requiring many joins. CQRS lets the read side be a completely different, denormalized shape optimized purely for fast queries, without compromising the write side's correctness.</div>
+
+<h2>17.4 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "ShopNow's 'Sales Dashboard' used to run a heavy multi-table JOIN query directly against the live Order database, slowing down actual order processing during peak reporting usage. Moving to CQRS — a separate, denormalized Reporting DB updated via Kafka events — let the dashboard query instantly without EVER touching or slowing down the live transactional Order database."</div>
+
+<h2>17.5 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. What's the real cost of adopting CQRS?</div>
+<div class="a">You now maintain TWO models (write and read) and an event pipeline keeping them in sync, plus the read model can be briefly stale (eventual consistency) — CQRS should only be used where the read/write access patterns genuinely differ enough to justify this complexity, not for simple CRUD services.</div></div>
+</div>
+
+<!-- 18. EVENT SOURCING -->
+<div class="section">
+<h1>18. Event Sourcing</h1>
+
+<h2>18.1 Simple Explanation</h2>
+<div class="box">Instead of storing just the CURRENT state of an entity (e.g., "order status = SHIPPED"), Event Sourcing stores the FULL SEQUENCE of events that led to that state ("OrderCreated → PaymentReceived → InventoryReserved → OrderShipped") — the current state is derived by replaying all events, rather than being stored directly.</div>
+
+<h2>18.2 Real Diagram</h2>
+<div class="diagram">
+<div class="title">Event Sourcing — ShopNow Order History</div>
+<div class="flow-row"><div class="node">Event Store (append-only log)</div></div>
+<div class="flow-row">
+<div class="node green">OrderCreated</div><div class="node green">PaymentReceived</div><div class="node green">InventoryReserved</div><div class="node green">OrderShipped</div>
+</div>
+<div class="arrow-down">↓ replay all events in order to reconstruct</div>
+<div class="flow-row"><div class="node purple">Current State: Order #4521 = SHIPPED</div></div>
+</div>
+
+<h2>18.3 Why It's Needed</h2>
+<table>
+<tr><th>Benefit</th><th>Real Value</th></tr>
+<tr><td>Complete audit trail</td><td>Every single state change is preserved forever — exactly WHAT happened and WHEN, not just the final state</td></tr>
+<tr><td>Time travel / debugging</td><td>Replay events up to any point in time to see exactly what the state looked like at that moment</td></tr>
+<tr><td>Natural fit with CQRS</td><td>The event log IS the write model; multiple different read models (Section 17) can be projected from the same events</td></tr>
+</table>
+
+<h2>18.4 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "A customer disputes their order's timeline — 'I paid three days ago, why does it show unpaid?' With Event Sourcing, ShopNow's support team can replay the EXACT sequence of events for that order, seeing precisely when each event occurred, versus a traditional system that only stores 'current status' with no history of how it got there."</div>
+
+<h2>18.5 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. What's the main challenge with Event Sourcing at scale?</div>
+<div class="a">Replaying thousands of events to reconstruct current state becomes slow over time — real systems solve this with periodic "snapshots" (a saved current-state checkpoint), so replay only needs to process events since the last snapshot, not the entire history from the beginning.</div></div>
+</div>
+
+<!-- 19. DISTRIBUTED CACHING -->
+<div class="section">
+<h1>19. Distributed Caching</h1>
+
+<h2>19.1 Simple Explanation</h2>
+<div class="box">Distributed Caching (Redis, Memcached) is a cache SHARED across all instances of a service, unlike a local in-process cache that exists separately per instance — every pod sees the SAME cached data, consistently.</div>
+
+<h2>19.2 Real Diagram (Recap, Applied Architecturally)</h2>
+<div class="diagram">
+<div class="title">Distributed Cache Shared Across All Pods</div>
+<div class="flow-row">
+<div class="node green">Order Service Pod 1</div><div class="node green">Order Service Pod 2</div><div class="node green">Order Service Pod 3</div>
+</div>
+<div class="arrow-down">↓ ALL read/write the SAME cache</div>
+<div class="flow-row"><div class="node purple">Redis Cluster (shared, distributed)</div></div>
+</div>
+
+<h2>19.3 Distributed Caching at True Scale — Redis Cluster</h2>
+<div class="box">A single Redis instance eventually hits capacity/throughput limits — Redis Cluster shards the cached data across multiple Redis nodes (exactly like database sharding, Section 5, applied to the cache layer), with each node responsible for a subset of keys, allowing the cache itself to scale horizontally.</div>
+
+<h2>19.4 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "ShopNow's single Redis instance started showing high CPU and occasional slow responses as traffic grew — migrating to a 3-node Redis Cluster (Azure Cache for Redis Premium tier) distributed the cached data and load across all three nodes, resolving the bottleneck without any application code changes, since the Redis client library handles cluster routing transparently."</div>
+
+<h2>19.5 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. What's the difference between a local cache and a distributed cache, and when would you use each?</div>
+<div class="a">A local (in-process) cache is extremely fast (no network hop) but inconsistent across multiple instances. A distributed cache is shared/consistent across all instances but has a small network round-trip cost — real systems often use BOTH: a small local cache for extremely hot data, backed by a distributed cache as the shared source of truth.</div></div>
+</div>
+
+<!-- 20. OBSERVABILITY -->
+<div class="section">
+<h1>20. Observability (Logs, Metrics, Traces)</h1>
+
+<h2>20.1 Simple Explanation</h2>
+<div class="box">Observability is having enough visibility into a running system to understand WHY something is happening, even for problems you never anticipated — built from three pillars: Logs (detailed event records), Metrics (aggregated trends), and Traces (a request's full journey across services).</div>
+
+<h2>20.2 Real Diagram</h2>
+<div class="diagram">
+<div class="title">Using All Three Pillars — ShopNow Slow Checkout Investigation</div>
+<div class="flow-row"><div class="node purple">1. Grafana metric dashboard shows: checkout p99 latency spiked</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node alt">2. Distributed trace (Jaeger/App Insights) shows the Payment Service call is the slow span</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">3. Centralized logs (Splunk/ELK) filtered by trace ID reveal the exact error from the payment gateway</div></div>
+</div>
+
+<h2>20.3 Why It's Needed in Microservices Specifically</h2>
+<div class="box">In a monolith, a stack trace tells you everything. Across 10 microservices, a single slow customer request might touch 5 of them — without distributed tracing tying it all together via one correlation ID, finding the actual slow/failing hop becomes nearly impossible guesswork.</div>
+<div class="box">Full complete depth on every aspect of this topic (Splunk queries, Prometheus/Grafana, OpenTelemetry, SLA/SLO, real production troubleshooting) is covered in the dedicated Observability &amp; Monitoring guide.</div>
+
+<h2>20.4 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "A customer complains their checkout was slow. Support pulls the correlation ID from the customer's error screen, searches it across the observability platform, and instantly sees the full trace: Gateway (5ms) → Order Service (20ms) → Payment Service (2800ms — the bottleneck) → Inventory Service (15ms), immediately pointing at Payment Service's slow downstream card network call as the root cause."</div>
+
+<h2>20.5 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. What's the difference between monitoring and observability?</div>
+<div class="a">Monitoring watches predefined metrics/dashboards for KNOWN failure conditions ("is the system healthy?"). Observability provides rich enough data (logs+metrics+traces, correlated) to investigate NEW, previously unanticipated problems — monitoring is a subset of observability.</div></div>
+</div>
+
+<!-- 21. HIGH AVAILABILITY DISASTER RECOVERY -->
+<div class="section">
+<h1>21. High Availability &amp; Disaster Recovery</h1>
+
+<h2>21.1 Simple Explanation</h2>
+<div class="box"><b>High Availability (HA)</b> means the system keeps working correctly even when individual components fail — no single point of failure. <b>Disaster Recovery (DR)</b> is the plan for recovering the ENTIRE system after a major catastrophic event (an entire data center/region going down).</div>
+
+<h2>21.2 Real Diagram</h2>
+<div class="diagram">
+<div class="title">High Availability Across Every Layer — ShopNow</div>
+<div class="flow-row"><div class="node">Multiple pod replicas per service (min 3)</div></div>
+<div class="flow-row"><div class="node green">Multiple Availability Zones (pods spread across zones via anti-affinity)</div></div>
+<div class="flow-row"><div class="node purple">Database replication (Section 6) with automatic failover</div></div>
+<div class="flow-row"><div class="node alt">Circuit breakers/retries (Section 12) for graceful degradation</div></div>
+</div>
+
+<h2>21.3 HA vs DR — Key Metrics</h2>
+<table>
+<tr><th>Metric</th><th>Meaning</th><th>Real Example</th></tr>
+<tr><td>RTO (Recovery Time Objective)</td><td>How long the system can be down before it's fully recovered</td><td>"We must be back online within 1 hour of a disaster"</td></tr>
+<tr><td>RPO (Recovery Point Objective)</td><td>How much data loss is acceptable, measured in time</td><td>"We can lose at most 5 minutes of transactions"</td></tr>
+</table>
+
+<h2>21.4 Real DR Strategies</h2>
+<table>
+<tr><th>Strategy</th><th>How It Works</th><th>Trade-Off</th></tr>
+<tr><td>Backup and Restore</td><td>Regular backups, restored to a new environment if disaster strikes</td><td>Cheapest, but slowest recovery (high RTO) and some data loss (RPO = time since last backup)</td></tr>
+<tr><td>Pilot Light</td><td>A minimal version of the system runs constantly in a second region, scaled up only when needed</td><td>Faster recovery than backup/restore, moderate ongoing cost</td></tr>
+<tr><td>Active-Passive (Warm Standby)</td><td>A full standby environment runs in a second region, ready to take over</td><td>Fast recovery (low RTO), higher ongoing cost for the idle standby capacity</td></tr>
+<tr><td>Active-Active (Multi-Region)</td><td>Both regions actively serve real traffic simultaneously</td><td>Near-zero RTO/RPO, but the highest cost and complexity (data must be synchronized across regions)</td></tr>
+</table>
+
+<h2>21.5 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "ShopNow runs an Active-Passive DR strategy — the primary region (East US) serves all live traffic, while a Warm Standby in a second region (West Europe) continuously receives database replication updates. During a real regional Azure outage, ShopNow's DNS failover redirected traffic to the standby region within 8 minutes, meeting their agreed 15-minute RTO, with less than 30 seconds of data loss thanks to near-real-time replication."</div>
+
+<h2>21.6 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. What's the difference between High Availability and Disaster Recovery?</div>
+<div class="a">HA handles component-level failures WITHIN a normally-operating environment (a pod crashes, a node fails) using redundancy the system automatically recovers from. DR handles catastrophic, whole-environment failures (an entire data center/region going down), requiring a deliberate failover plan to a separate environment.</div></div>
+<div class="qa"><div class="q">Q2. How would you decide between Active-Passive and Active-Active DR for a given system?</div>
+<div class="a">If the business can tolerate a few minutes of downtime during a rare disaster and wants lower ongoing cost, Active-Passive is usually the right, more cost-effective choice. If the system requires near-zero downtime even during a regional disaster (e.g., a global payments platform), the higher cost and complexity of Active-Active is justified.</div></div>
+</div>
+
+<!-- 22. CDN -->
+<div class="section">
+<h1>22. Content Delivery Network (CDN)</h1>
+
+<h2>22.1 Simple Explanation</h2>
+<div class="box">A CDN is a network of servers spread across many geographic locations that cache and serve static content (images, JS/CSS bundles, videos) from a server PHYSICALLY CLOSE to the user — instead of every user's request traveling all the way to ShopNow's origin server in one region, it's served from a nearby "edge" location.</div>
+
+<h2>22.2 Why It's Needed</h2>
+<div class="warn">Without a CDN, a user in Australia requesting an image hosted only on a server in the US East region suffers real network latency just from the physical distance — and the origin server must handle every single request for every single user worldwide, wasting bandwidth on identical static content repeatedly.</div>
+
+<h2>22.3 Real Diagram</h2>
+<div class="diagram">
+<div class="title">CDN — ShopNow Product Images</div>
+<div class="flow-row"><div class="node">User in Sydney requests product-image.jpg</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">Nearest CDN Edge Node (Sydney) — already has it cached</div></div>
+<div class="arrow-down">↓ MISS only on the very first request from that region</div>
+<div class="flow-row"><div class="node green">Origin Server (US East) — fetched once, then cached at the edge for every subsequent user nearby</div></div>
+</div>
+
+<h2>22.4 React + Cloud Application</h2>
+<div class="box">React's built static bundle (JS/CSS) and all product images are typically uploaded to cloud storage (Azure Blob Storage/AWS S3) and served through a CDN (Azure CDN/CloudFront/Cloudflare) rather than directly from the Spring Boot servers — keeping backend compute focused purely on dynamic API requests, while static assets are served at CDN edge speed globally.</div>
+
+<h2>22.5 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "ShopNow's product image load time for international customers dropped from 900ms to under 50ms after moving images behind a CDN — and origin server bandwidth costs dropped significantly since the CDN absorbed the vast majority of repeat requests for the same popular product images."</div>
+
+<h2>22.6 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. What kind of content is a CDN best suited for, and what is it NOT good for?</div>
+<div class="a">CDNs excel at static, rarely-changing content (images, videos, JS/CSS bundles) that's the same for every user. They're a poor fit for highly personalized, frequently-changing dynamic data (like a user's live order status), which should come directly from the API instead.</div></div>
+<div class="qa"><div class="q">Q2. How does a CDN stay updated when the underlying file changes?</div>
+<div class="a">Through cache invalidation/purging (explicitly telling the CDN to drop a stale file) or versioned file names (e.g., <code>app.a1b2c3.js</code>) — changing the filename on each deploy guarantees users always get the new version without needing to wait for a cache to expire.</div></div>
+</div>
+
+<!-- 23. CONSISTENT HASHING -->
+<div class="section">
+<h1>23. Consistent Hashing</h1>
+
+<h2>23.1 Simple Explanation</h2>
+<div class="box">Consistent Hashing is a technique for mapping keys (like a customer ID) to servers/shards/cache nodes in a way that, when a node is ADDED or REMOVED, only a SMALL fraction of keys need to move — unlike simple modulo hashing (<code>hash % N</code>), where changing the number of nodes N reshuffles almost EVERY key's assignment.</div>
+
+<h2>23.2 Why It's Needed</h2>
+<div class="warn">With simple <code>hash(key) % number_of_nodes</code>, adding just ONE new cache/database node changes the result of the modulo for almost every existing key — meaning nearly the entire cache goes cold, or nearly all sharded data must be physically moved, all at once.</div>
+
+<h2>23.3 Real Diagram</h2>
+<div class="diagram">
+<div class="title">Consistent Hashing — A Hash Ring</div>
+<div class="flow-row"><div class="node purple">Hash Ring (0 to Max value, wrapping around)</div></div>
+<div class="flow-row">
+<div class="node green">Node A (position 25)</div><div class="node green">Node B (position 120)</div><div class="node green">Node C (position 230)</div>
+</div>
+<div class="arrow-down">↓ a key hashes to position 140 → stored on the NEXT node clockwise</div>
+<div class="flow-row"><div class="node alt">Key lands between Node B (120) and Node C (230) → assigned to Node C</div></div>
+<div class="arrow-down">↓ if Node C is removed, ONLY its keys move to the next node clockwise (Node A) — Node A and Node B's existing keys are untouched</div>
+</div>
+
+<h2>23.4 Where It's Actually Used</h2>
+<table>
+<tr><th>System</th><th>How Consistent Hashing Helps</th></tr>
+<tr><td>Redis Cluster (Section 19.3)</td><td>Distributes cache keys across nodes, minimizing re-distribution when scaling the cluster up/down</td></tr>
+<tr><td>Database Sharding (Section 5)</td><td>An alternative to plain hash-based sharding that avoids a full re-shard when adding a new shard</td></tr>
+<tr><td>Load Balancers with session affinity</td><td>Consistently routes the same client to the same backend instance even as instances scale</td></tr>
+<tr><td>Distributed caches (Memcached, DynamoDB internally)</td><td>Core mechanism for partitioning keys across many nodes evenly</td></tr>
+</table>
+
+<h2>23.5 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "When ShopNow's Redis Cluster scaled from 3 to 4 nodes during a traffic spike, consistent hashing meant only about 25% of cached keys needed to move to the new node — with simple modulo hashing, nearly ALL cached keys would have been invalidated at once, causing a massive, sudden spike in database load as everything became a cache miss simultaneously."</div>
+
+<h2>23.6 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. Why is consistent hashing better than simple modulo (hash % N) hashing when scaling a distributed cache?</div>
+<div class="a">Modulo hashing's result changes for almost every key whenever N (the node count) changes, causing massive data movement/cache invalidation. Consistent hashing only remaps the keys that fall between the affected node and its neighbor on the hash ring, keeping data movement proportional to the change, not the whole dataset.</div></div>
+</div>
+
+<!-- 24. DATABASE INDEXING -->
+<div class="section">
+<h1>24. Database Indexing</h1>
+
+<h2>24.1 Simple Explanation</h2>
+<div class="box">An index is an extra, separately-maintained data structure (usually a B-Tree) that lets the database find rows matching a condition WITHOUT scanning every single row — like a book's index page letting you jump straight to the right page instead of reading the entire book to find a topic.</div>
+
+<h2>24.2 Why It's Needed</h2>
+<div class="warn">Without an index, a query like <code>WHERE customer_id = 88452</code> on a 100-million-row table forces the database to check EVERY row (a full table scan) — as data grows, this gets progressively and dramatically slower, even though the actual matching rows might be very few.</div>
+
+<h2>24.3 Real Diagram</h2>
+<div class="diagram">
+<div class="title">Indexed vs Non-Indexed Lookup — ShopNow Orders Table</div>
+<div class="flow-row"><div class="node alt">No Index: scan all 100,000,000 rows to find customer_id = 88452</div></div>
+<div class="flow-row"><div class="node green">With Index on customer_id: B-Tree lookup finds matching rows in a handful of steps</div></div>
+</div>
+
+<h2>24.4 Java/Spring Boot Application</h2>
+<pre><span class="c1">// Real JPA entity — declaring an index explicitly</span>
+@Entity
+@Table(name = "orders", indexes = {
+    @Index(name = "idx_customer_id", columnList = "customer_id")
+})
+public class Order { ... }
+</pre>
+<div class="box">Indexes aren't free — every INSERT/UPDATE/DELETE must also update every index on that table, so indexing every column "just in case" slows down writes. Real teams index based on ACTUAL query patterns (checked via <code>EXPLAIN</code> plans), typically on foreign keys and columns used heavily in <code>WHERE</code>/<code>JOIN</code>/<code>ORDER BY</code> clauses.</div>
+
+<h2>24.5 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "ShopNow's 'order history' page query took 4 seconds once the Orders table crossed 50 million rows — running <code>EXPLAIN</code> revealed a full table scan on <code>customer_id</code>. Adding an index on that column brought the query down to under 10 milliseconds, with no application code change at all."</div>
+
+<h2>24.6 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. Why shouldn't you just index every column in every table?</div>
+<div class="a">Every additional index adds overhead to every write operation (the index must be updated too) and consumes extra storage — indexes should be added deliberately based on real, observed query patterns, not defensively on every column.</div></div>
+<div class="qa"><div class="q">Q2. What's a composite index, and when would you use one?</div>
+<div class="a">An index built on MULTIPLE columns together (e.g., <code>customer_id, order_date</code>), used when queries frequently filter/sort by that exact combination — it's more effective than two separate single-column indexes for such combined queries, but column ORDER in the index matters for which query patterns it actually speeds up.</div></div>
+</div>
+
+<!-- 25. IDEMPOTENCY -->
+<div class="section">
+<h1>25. Idempotency &amp; Idempotent APIs</h1>
+
+<h2>25.1 Simple Explanation</h2>
+<div class="box">An operation is <b>idempotent</b> if performing it multiple times has the EXACT SAME effect as performing it once — like pressing an elevator call button 5 times; the elevator still only comes once, extra presses change nothing further.</div>
+
+<h2>25.2 Why It's Needed in Distributed Systems</h2>
+<div class="warn">Networks are unreliable — a client might send a "charge payment" request, the server processes it successfully, but the response gets lost before reaching the client. The client, seeing no response, retries the SAME request — without idempotency, this can charge the customer TWICE for one order.</div>
+
+<h2>25.3 Real Diagram</h2>
+<div class="diagram">
+<div class="title">Idempotency Key — ShopNow Checkout Retry</div>
+<div class="flow-row"><div class="node">Client sends POST /payments with Idempotency-Key: abc-123</div></div>
+<div class="arrow-down">↓ response lost due to network blip, client retries with the SAME key</div>
+<div class="flow-row"><div class="node alt">Payment Service sees key "abc-123" was already processed</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">Returns the ORIGINAL result again — customer charged only ONCE, not twice</div></div>
+</div>
+
+<h2>25.4 Java/Spring Boot Application</h2>
+<pre>@PostMapping("/payments")
+public PaymentResponse charge(@RequestHeader("Idempotency-Key") String key,
+                               @RequestBody PaymentRequest request) {
+    Optional&lt;PaymentResponse&gt; existing = idempotencyStore.get(key); <span class="c1">// checked in Redis/DB</span>
+    if (existing.isPresent()) return existing.get();  <span class="c1">// safe to return cached result</span>
+
+    PaymentResponse response = paymentProcessor.charge(request);
+    idempotencyStore.save(key, response);  <span class="c1">// remember this key's result</span>
+    return response;
+}
+</pre>
+
+<h2>25.5 Which HTTP Methods Are Naturally Idempotent?</h2>
+<table>
+<tr><th>Method</th><th>Naturally Idempotent?</th><th>Why</th></tr>
+<tr><td>GET</td><td>Yes</td><td>Reading data repeatedly doesn't change anything</td></tr>
+<tr><td>PUT</td><td>Yes</td><td>Setting a resource to the same full state repeatedly has the same end result</td></tr>
+<tr><td>DELETE</td><td>Yes</td><td>Deleting an already-deleted resource still results in it being gone</td></tr>
+<tr><td>POST</td><td>No (by default)</td><td>Typically CREATES a new resource each time — needs an explicit idempotency key to be made safe for retries</td></tr>
+</table>
+
+<h2>25.6 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "ShopNow's mobile app had unreliable network conditions in certain regions, causing checkout requests to time out client-side even though the server had already successfully processed them — the app retried automatically. Because the Payment Service enforced idempotency keys generated once per checkout attempt, these retries never resulted in a double charge, even though the exact same request hit the server 2-3 times."</div>
+
+<h2>25.7 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. Why is POST not idempotent by default, and how do you make a POST endpoint safe to retry?</div>
+<div class="a">A plain POST typically creates a new resource on every call — retrying it naturally creates duplicates. Making it idempotent requires the CLIENT to generate a unique idempotency key per logical operation, which the server stores and checks before processing, returning the original result on a duplicate key instead of repeating the side effect.</div></div>
+</div>
+
+<!-- 26. HEALTH CHECKS AND DEPLOYMENT STRATEGIES -->
+<div class="section">
+<h1>26. Health Checks, Readiness Probes &amp; Blue-Green/Canary Deployments</h1>
+
+<h2>26.1 Simple Explanation</h2>
+<div class="box">A <b>health check</b> is an endpoint (e.g., <code>/actuator/health</code>) that a Load Balancer or Kubernetes calls periodically to confirm an instance is actually working BEFORE sending it real traffic — an unhealthy instance is automatically pulled out of rotation rather than serving errors to real users.</div>
+
+<h2>26.2 Liveness vs Readiness Probes (Kubernetes)</h2>
+<table>
+<tr><th>Probe</th><th>Question It Answers</th><th>What Happens If It Fails</th></tr>
+<tr><td>Liveness Probe</td><td>"Is this pod still alive/functioning at all?"</td><td>Kubernetes RESTARTS the pod</td></tr>
+<tr><td>Readiness Probe</td><td>"Is this pod ready to receive real traffic right now?"</td><td>Kubernetes temporarily REMOVES it from the Load Balancer's rotation (no restart) until it passes again</td></tr>
+</table>
+<div class="box">A Spring Boot pod might be "alive" (liveness passes) but still warming up its database connection pool or loading a cache on startup — readiness correctly keeps it out of traffic during that brief window without unnecessarily restarting it.</div>
+
+<h2>26.3 Real Diagram — Canary Deployment</h2>
+<div class="diagram">
+<div class="title">Canary Deployment — ShopNow Order Service v2</div>
+<div class="flow-row"><div class="node green">v1 (95% of traffic) — stable, existing version</div><div class="node alt">v2 (5% of traffic) — new version, being verified</div></div>
+<div class="arrow-down">↓ monitor error rate/latency on v2 closely</div>
+<div class="flow-row"><div class="node purple">If healthy → gradually shift more traffic to v2 (25% → 50% → 100%)</div></div>
+<div class="arrow-down">↓ if v2 shows problems at ANY point</div>
+<div class="flow-row"><div class="node gray">Instantly route 100% back to v1 — minimal customer impact, only 5% saw the issue</div></div>
+</div>
+
+<h2>26.4 Blue-Green vs Canary vs Rolling Deployment</h2>
+<table>
+<tr><th>Strategy</th><th>How It Works</th><th>Trade-Off</th></tr>
+<tr><td>Rolling Update</td><td>Old instances replaced gradually, one/few at a time</td><td>No extra infrastructure cost, but both versions run simultaneously during rollout, briefly</td></tr>
+<tr><td>Blue-Green</td><td>A full parallel "Green" environment is deployed; traffic switches all at once when ready</td><td>Instant rollback (just switch back to "Blue"), but requires double the infrastructure temporarily</td></tr>
+<tr><td>Canary</td><td>New version gets a small traffic percentage first, gradually increased if healthy</td><td>Safest for catching real production issues early, but requires good metrics/monitoring to judge "healthy"</td></tr>
+</table>
+
+<h2>26.5 Real-Time Scenario</h2>
+<div class="tip"><b>Real scenario:</b> "ShopNow deployed a new pricing calculation change using a Canary strategy — 5% of checkout traffic hit the new version first. Within 10 minutes, error rate metrics showed a bug affecting international currency conversion. Because only 5% of customers were exposed, ShopNow rolled back instantly with minimal real customer impact — a full Blue-Green switch to 100% would have affected every single customer instead."</div>
+
+<h2>26.6 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. Why does Kubernetes need BOTH a liveness and a readiness probe — isn't one enough?</div>
+<div class="a">They answer different questions — liveness decides if a pod needs restarting (it's stuck/crashed), readiness decides if it should currently receive traffic (it might be alive but temporarily not ready, e.g., during startup or a brief downstream dependency outage) — conflating them risks either unnecessary restarts or sending traffic to a not-yet-ready pod.</div></div>
+<div class="qa"><div class="q">Q2. When would you choose Canary over Blue-Green deployment?</div>
+<div class="a">Canary is preferred when you want to limit the "blast radius" of a risky change by exposing it to a small percentage of real traffic first and watching real metrics before a full rollout — Blue-Green is simpler and better when you need an instant, all-or-nothing cutover with guaranteed fast rollback.</div></div>
+</div>
+
+<!-- 27. CAPACITY ESTIMATION -->
+<div class="section">
+<h1>27. Back-of-the-Envelope Capacity Estimation</h1>
+
+<h2>27.1 Simple Explanation</h2>
+<div class="box">Before designing a system, interviewers (and real architects) often estimate rough numbers — expected users, requests per second, storage needed — using simple math, to decide whether a single server is enough or whether sharding/caching/CDNs (covered earlier) are actually necessary from day one.</div>
+
+<h2>27.2 A Worked Example — ShopNow Order Volume</h2>
+<div class="box">
+<p><b>Given:</b> 2 million daily active users, each placing an average of 0.1 orders/day (i.e., 1 in 10 users orders something daily).</p>
+<p><b>Step 1 — Total daily orders:</b> 2,000,000 × 0.1 = 200,000 orders/day.</p>
+<p><b>Step 2 — Average requests per second:</b> 200,000 ÷ 86,400 seconds/day ≈ 2.3 orders/second on average.</p>
+<p><b>Step 3 — Peak traffic (assume 10x average during sales/peak hours):</b> ~23 orders/second at peak.</p>
+<p><b>Step 4 — Storage estimate:</b> If each order record is ~2KB, 200,000 orders/day × 2KB ≈ 400MB/day ≈ 146GB/year of order data alone.</p>
+</div>
+<div class="tip">These rough numbers immediately tell you: 23 requests/second at peak is easily handled by a small number of horizontally-scaled pods (Section 9) behind a Load Balancer (Section 2) — you do NOT need sharding (Section 5) yet at this scale, but 146GB/year means you SHOULD plan an archival/partitioning strategy for the Orders table within a year or two.</div>
+
+<h2>27.3 Why This Skill Matters in Interviews</h2>
+<div class="box">Jumping straight to "let's use Kafka and shard the database into 50 pieces" for a system that will realistically handle 5 requests/second is a common interview red flag — good system design shows you can justify EVERY architectural decision with a rough but reasoned estimate of actual scale, rather than reaching for complex patterns by default.</div>
+
+<h2>27.4 Interview Q&amp;A</h2>
+<div class="qa"><div class="q">Q1. Why do interviewers care about back-of-the-envelope math if the numbers are just rough estimates?</div>
+<div class="a">The goal isn't precision — it's demonstrating that architectural decisions (sharding, caching, CDN, number of instances) are being driven by REASONED estimates of actual scale, not guesswork or over-engineering by default; a system designed for 10 requests/second looks very different from one designed for 10,000.</div></div>
+</div>
+
+<!-- 28. PUTTING IT ALL TOGETHER -->
+<div class="section">
+<h1>28. Putting It All Together — A Complete System Design Example</h1>
+
+<h2>22.1 The Full ShopNow Architecture, Every Topic Applied Together</h2>
+<div class="diagram">
+<div class="title">Complete ShopNow System Design — All 20 Topics Applied</div>
+<div class="flow-row"><div class="node">React Frontend</div></div>
+<div class="arrow-down">↓ (Load Balancer, Section 2)</div>
+<div class="flow-row"><div class="node purple">API Gateway (Section 3) — routing, JWT auth, Rate Limiting (Section 13)</div></div>
+<div class="arrow-down">↓ (Service Discovery, Section 11)</div>
+<div class="flow-row">
+<div class="node green">Order Service</div><div class="node green">Payment Service</div><div class="node green">Inventory Service</div>
+</div>
+<div class="flow-row" style="font-size:9px;font-weight:normal;">(Microservices, Section 10 — each with Circuit Breakers, Section 12, and a Cache, Section 4/19)</div>
+<div class="arrow-down">↓ (Saga, Section 16, for the checkout flow)</div>
+<div class="flow-row"><div class="node alt">Kafka (Message Queue, Section 14; Event-Driven Architecture, Section 15)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">Sharded (Section 5) + Replicated (Section 6) Databases per Service</div></div>
+<div class="arrow-down">↓ CQRS (Section 17) for the reporting dashboard, Event Sourcing (Section 18) for order history</div>
+<div class="flow-row"><div class="node green">Reporting Read Model + Event Store</div></div>
+<div class="arrow-down">↓ cross-cutting</div>
+<div class="flow-row"><div class="node purple">Observability (Section 20) + High Availability/DR (Section 21) applied across every single layer above</div></div>
+</div>
+
+<h2>22.2 Why This Exercise Matters</h2>
+<div class="tip">Real system design interviews ask you to design something like ShopNow from scratch — the skill isn't memorizing these 20 topics in isolation, it's knowing WHICH ones to apply, WHERE, and WHY, for the specific system being designed. This combined diagram is exactly the kind of answer structure that demonstrates that integrated understanding.</div>
+</div>
+
+<!-- 29. INTERVIEW QA CROSS TOPIC -->
+<div class="section">
+<h1>29. Interview Questions &amp; Real-Time Scenarios Across All Topics</h1>
+
+<div class="qa"><div class="q">Q1. Design a system that can handle 10x traffic growth without a full rewrite — what topics would you apply?</div>
+<div class="a">Horizontal scaling (Section 9) with load balancing (Section 2) for compute, database sharding (Section 5) and read replicas (Section 6) for data, distributed caching (Section 4/19) to reduce database load, and an API Gateway with rate limiting (Sections 3, 13) to protect against abuse at the new scale.</div></div>
+
+<div class="qa"><div class="q">Q2. A checkout flow spans Order, Inventory, and Payment services — how do you ensure it either fully succeeds or fully rolls back?</div>
+<div class="a">The Saga pattern (Section 16) — each service performs its own local transaction with a defined compensating action, so a failure at any step triggers the appropriate rollback of previously completed steps, without needing a fragile distributed transaction.</div></div>
+
+<div class="qa"><div class="q">Q3. How would you design a system to survive an entire Azure region going down?</div>
+<div class="a">Implement a Disaster Recovery strategy (Section 21) — at minimum Active-Passive with a warm standby in a second region, database replication (Section 6) across regions, and DNS-based failover, sized to meet the business's agreed RTO/RPO targets.</div></div>
+
+<div class="qa"><div class="q">Q4. Why would you choose eventual consistency for a product review count but strong consistency for an inventory count?</div>
+<div class="a">A stale review count for a few seconds has near-zero real business impact (Section 8's consistency models). A stale inventory count could let a customer buy an item that's actually sold out, a real customer-facing and operational problem — the CAP Theorem (Section 7) trade-off is deliberately made differently for each based on actual business impact.</div></div>
+
+<div class="qa"><div class="q">Q5. How would you prevent one slow downstream service from taking down your entire system?</div>
+<div class="a">Circuit Breakers with timeouts and fallbacks (Section 12) on every inter-service call, combined with Bulkheads isolating resource pools per dependency — ensuring a struggling service degrades gracefully instead of cascading failure to unrelated parts of the system.</div></div>
+
+<div class="qa"><div class="q">Q6. Design a real-time notification system that must not slow down the core checkout flow.</div>
+<div class="a">Use an event-driven architecture (Section 15) with a message queue (Section 14) — Order Service publishes an event and immediately responds to the customer; a separate Notification Service consumes the event asynchronously, completely decoupled from checkout's response time.</div></div>
+
+<div class="qa"><div class="q">Q7. How would you build a reporting dashboard without slowing down your transactional database?</div>
+<div class="a">Apply CQRS (Section 17) — build a separate, denormalized read model populated via events from the write side, so heavy reporting queries never touch or compete with the live transactional database.</div></div>
+
+<div class="qa"><div class="q">Q8. How do independent microservices find and call each other reliably as instances scale up and down?</div>
+<div class="a">Service Discovery (Section 11, Eureka or Kubernetes-native DNS) — services register themselves and are looked up by name rather than hardcoded IP, so the actual set of healthy instances can change freely without breaking service-to-service calls.</div></div>
+
+<div class="qa"><div class="q">Q9. A customer disputes exactly when their order status changed — how would you design the system to answer this definitively?</div>
+<div class="a">Event Sourcing (Section 18) — store the full sequence of events (not just current state), letting you reconstruct and prove the exact timeline of what happened and when, rather than only having the final current status available.</div></div>
+
+<div class="qa"><div class="q">Q10. How would you protect your platform from a single API partner overwhelming your system?</div>
+<div class="a">Rate limiting (Section 13) enforced centrally at the API Gateway (Section 3), scoped per API key/partner, using a Redis-backed atomic counter — ensuring one partner's excessive traffic can't degrade the experience for every other client.</div></div>
+</div>
+
+<!-- 30. COMMON ISSUES AND FIXES -->
+<div class="section">
+<h1>30. Common System Design Issues &amp; Real Fixes</h1>
+<table>
+<tr><th>Issue</th><th>Cause</th><th>Real Fix</th></tr>
+<tr><td>Site goes down the moment one server crashes</td><td>Single point of failure — no redundancy at the compute layer</td><td>Run multiple stateless instances behind a Load Balancer (Section 2), minimum 2-3 replicas even under normal load</td></tr>
+<tr><td>Database becomes the bottleneck as traffic grows</td><td>All reads and writes hitting one database server</td><td>Add read replicas (Section 6) for read-heavy traffic, and shard (Section 5) once write volume itself outgrows a single primary</td></tr>
+<tr><td>A slow downstream dependency takes the whole system down</td><td>No timeout/circuit breaker on inter-service calls</td><td>Apply Circuit Breaker + timeout (Section 12) on every synchronous call so failures degrade gracefully instead of cascading</td></tr>
+<tr><td>Users see stale or inconsistent data intermittently</td><td>Eventual consistency (Section 8) chosen for data that actually needed strong consistency</td><td>Re-evaluate the CAP trade-off (Section 7) per use case — use strong consistency for anything where staleness has real business impact (inventory, balances)</td></tr>
+<tr><td>One partner/client overwhelms the API for everyone else</td><td>No rate limiting enforced centrally</td><td>Enforce rate limiting at the API Gateway (Sections 3, 13), scoped per API key/client</td></tr>
+<tr><td>A new feature requires touching 10 services just to add one field</td><td>Services split too finely, or boundaries drawn along the wrong lines</td><td>Revisit service boundaries (Section 10) around actual business capabilities, not arbitrary technical layers</td></tr>
+<tr><td>Reporting queries slow down the live production database</td><td>Heavy analytical joins running directly against the transactional database</td><td>Apply CQRS (Section 17) with a separate, denormalized read model fed by events</td></tr>
+<tr><td>An entire region outage takes the whole application offline</td><td>No Disaster Recovery plan, single-region deployment</td><td>Design at least an Active-Passive DR strategy (Section 21) with cross-region replication and DNS failover matching agreed RTO/RPO</td></tr>
+</table>
+</div>
+
+<!-- 31. FINAL SUMMARY -->
+<div class="section">
+<h1>31. Final Summary &amp; Cheat Sheet</h1>
+<div class="box">
+<p><b>The 20 topics form a connected toolkit,</b> not isolated trivia — Load Balancer + Horizontal Scaling handle compute growth; Sharding + Replication + CAP + Consistency Models handle data growth and correctness trade-offs; Microservices + Service Discovery + API Gateway + Circuit Breaker handle service decomposition and resilience; Message Queues + Event-Driven Architecture + Saga + CQRS + Event Sourcing handle asynchronous, distributed data flows; Caching + Rate Limiting protect performance and fairness; Observability + High Availability/DR ensure you can see and survive whatever goes wrong.</p>
+<p><b>The interview edge:</b> never just define a term — explain WHY it's needed (the real problem), WHERE it fits in a real architecture, and a concrete real-world trade-off, exactly the structure used throughout this guide's ShopNow example.</p>
+</div>
+
+<h2>24.1 Quick Cheat Sheet</h2>
+<table>
+<tr><th>Topic</th><th>One-Line Meaning</th></tr>
+<tr><td>Load Balancer</td><td>Distributes traffic across multiple identical instances</td></tr>
+<tr><td>API Gateway</td><td>Single entry point handling routing, auth, rate limiting centrally</td></tr>
+<tr><td>Caching (Redis)</td><td>Stores frequently-needed data in fast, shared memory</td></tr>
+<tr><td>Database Sharding</td><td>Splits one large dataset across multiple database instances</td></tr>
+<tr><td>Database Replication</td><td>Duplicates data across servers for redundancy and read scaling</td></tr>
+<tr><td>CAP Theorem</td><td>Pick 2 of Consistency, Availability, Partition Tolerance during a network partition</td></tr>
+<tr><td>Consistency Models</td><td>The specific guarantee a system gives about seeing the latest data</td></tr>
+<tr><td>Horizontal vs Vertical Scaling</td><td>Add more machines vs make one machine bigger</td></tr>
+<tr><td>Microservices</td><td>Independently deployable services, each owning a business capability</td></tr>
+<tr><td>Service Discovery</td><td>Services find each other by name, not hardcoded IP</td></tr>
+<tr><td>Circuit Breaker</td><td>Fails fast once a dependency's failure rate crosses a threshold</td></tr>
+<tr><td>Rate Limiting</td><td>Caps how many requests a client can make in a time window</td></tr>
+<tr><td>Message Queues</td><td>Decouple services in time via asynchronous messages</td></tr>
+<tr><td>Event-Driven Architecture</td><td>Services react to published events instead of direct calls</td></tr>
+<tr><td>Saga Pattern</td><td>Sequence of local transactions + compensations replacing a lost distributed transaction</td></tr>
+<tr><td>CQRS</td><td>Separate write and read models, optimized independently</td></tr>
+<tr><td>Event Sourcing</td><td>Store the full history of events, derive current state by replay</td></tr>
+<tr><td>Distributed Caching</td><td>One shared cache visible consistently across all service instances</td></tr>
+<tr><td>Observability</td><td>Logs + Metrics + Traces together, enough to debug the unexpected</td></tr>
+<tr><td>High Availability</td><td>No single point of failure within a normally operating system</td></tr>
+<tr><td>Disaster Recovery</td><td>The plan for recovering from a catastrophic, whole-environment failure</td></tr>
+<tr><td>CDN</td><td>Geographically distributed edge servers caching static content close to users</td></tr>
+<tr><td>Consistent Hashing</td><td>Maps keys to nodes so scaling up/down only moves a small fraction of data</td></tr>
+<tr><td>Database Indexing</td><td>A B-Tree structure letting queries find rows without scanning the whole table</td></tr>
+<tr><td>Idempotency</td><td>Repeating the same operation/request has the same effect as doing it once</td></tr>
+<tr><td>Health Checks / Probes</td><td>Automated checks ensuring only healthy instances receive real traffic</td></tr>
+<tr><td>Canary / Blue-Green Deployment</td><td>Strategies to roll out new versions safely with limited blast radius</td></tr>
+<tr><td>Capacity Estimation</td><td>Rough math on expected traffic/storage to justify architectural decisions</td></tr>
+</table>
+
+<div class="tip">Use this guide alongside the Microservices guide, the Docker &amp; Kubernetes guide, the JDBC/Hibernate/Spring Data JPA guide, the SQL/Spring Batch guide, the Observability &amp; Monitoring guide, and the AWS/Azure Cloud Architecture guide — together they connect these system design fundamentals to their complete, production-grade real-world implementation detail.</div>
+</div>
+
+</body>
+</html>
+

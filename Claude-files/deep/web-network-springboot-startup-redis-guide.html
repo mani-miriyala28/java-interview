@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Web &amp; Network Basics, Spring Boot Startup Internals &amp; Redis Caching — Complete Guide</title>
+<style>
+  @page { size: A4; margin: 18mm 15mm 18mm 15mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Arial, sans-serif; color: #1a1a1a; font-size: 11.5px; line-height: 1.55; }
+  a { text-decoration: none; color: #d32f2f; }
+  h1, h2, h3, h4 { color: #c62828; font-family: Arial, sans-serif; page-break-after: avoid; }
+  h1 { font-size: 22px; border-bottom: 3px solid #c62828; padding-bottom: 6px; margin-top: 0; }
+  h2 { font-size: 17px; border-bottom: 1px solid #ffcdd2; padding-bottom: 4px; margin-top: 26px; }
+  h3 { font-size: 14px; color: #b03a2e; margin-top: 18px; }
+  h4 { font-size: 12.5px; color: #444; margin-top: 12px; }
+  .section { page-break-before: always; }
+  .cover { page-break-after: always; text-align: center; padding-top: 82px; }
+  .cover h1 { font-size: 28px; border: none; }
+  .cover h3 { color: #333; font-weight: normal; font-size: 15px; margin-top: 14px;}
+  .cover .tag { margin-top: 40px; font-size: 13px; color: #666; }
+  .toc { page-break-after: always; }
+  .toc ol { line-height: 1.75; font-size: 10.6px; }
+  code, pre { font-family: Consolas, "Courier New", monospace; }
+  code { background: #f1f1f1; padding: 1px 5px; border-radius: 3px; color: #a4141d; }
+  pre { background: #1e1e1e; color: #d4d4d4; padding: 10px 12px; border-radius: 6px; overflow-x: auto; font-size: 10.5px; line-height: 1.5; page-break-inside: avoid; white-space: pre-wrap; word-wrap: break-word; }
+  pre .c1 { color: #6a9955; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0 16px 0; font-size: 11px; }
+  th, td { border: 1px solid #e6e6e6; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #f5f5f5; color: #c62828; }
+  tr:nth-child(even) { background: #f9fafc; }
+  .box { background: #f8f9fb; border: 1px solid #cdd6e6; border-radius: 6px; padding: 10px 14px; margin: 10px 0; }
+  .warn { background: #fff4e5; border: 1px solid #f0c36d; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .tip { background: #e8f6ee; border: 1px solid #7fc79a; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .qa { border-left: 3px solid #c62828; padding-left: 10px; margin: 10px 0 16px 0; page-break-inside: avoid; }
+  .qa .q { font-weight: bold; color: #c62828; }
+  .qa .a { margin-top: 4px; }
+  .qa .scenario { margin-top: 4px; font-style: italic; color: #555; }
+  .diagram { background: #fff; border: 1px dashed #e57373; border-radius: 8px; padding: 16px; margin: 14px 0; page-break-inside: avoid; }
+  .diagram .title { font-weight: bold; color: #c62828; margin-bottom: 10px; text-align:center; }
+  .flow-row { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+  .node { border: 2px solid #c62828; background: #ffebee; border-radius: 6px; padding: 8px 12px; font-weight: bold; text-align: center; font-size: 11px; min-width: 90px; }
+  .node.alt { border-color: #b03a2e; background: #fdeceb; }
+  .node.green { border-color: #1e8449; background: #eafaf1; }
+  .node.gray { border-color: #666; background: #eee; }
+  .node.purple { border-color: #8e44ad; background: #f5eefc; }
+  .arrow { font-size: 20px; color: #c62828; font-weight: bold; }
+  .arrow-down { font-size: 20px; color: #c62828; text-align: center; }
+  .pagebreak { page-break-before: always; }
+  ul, ol { margin-top: 4px; }
+  li { margin-bottom: 3px; }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover">
+  <h1>Web &amp; Network Basics, Spring Boot Startup Internals &amp; Redis Caching</h1>
+  <h3>The Complete Guide — From "How the Internet Works" to Production-Grade Caching</h3>
+  <h3>IP Addresses, Cookies &amp; Sessions • Spring Boot Startup Sequence (21 Steps) • Request Lifecycle</h3>
+  <h3>What Is Caching, Before/After Redis, Real Implementation, Interview Q&amp;A</h3>
+  <div class="tag">A practical, simple-language, end-to-end reference for interview preparation and real-world implementation</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+<h1>Table of Contents</h1>
+<ol>
+<li>Web Basics — How the Internet Actually Works</li>
+<li>Network Basics — IP Addresses, DNS &amp; Ports</li>
+<li>HTTP and HTTPS — The Web's Communication Protocol</li>
+<li>Basic Website Flow — From Typing a URL to Seeing a Page</li>
+<li>Cookies — What, Why and How</li>
+<li>Sessions — What, Why, How, and Session vs Cookie</li>
+<li>How Login &amp; Authentication Work Internally</li>
+<li>Real-Time Network Concepts — Load Balancer, Reverse Proxy, CDN, Firewall</li>
+<li>Web &amp; Network Basics — Interview Questions &amp; Real Scenarios</li>
+<li>Spring Boot Application Startup — The Full Journey Overview</li>
+<li>Step 1-2: JVM Starts &amp; Main Method Executes</li>
+<li>Step 3-4: SpringApplication.run() &amp; ApplicationContext Created</li>
+<li>Step 5-6: Environment Loaded &amp; application.properties/YAML Loaded</li>
+<li>Step 7-9: Component Scan, Bean Definitions &amp; Dependency Injection</li>
+<li>Step 10: Auto Configuration Starts</li>
+<li>Step 11-12: DataSource Created &amp; JPA/Hibernate Initialized</li>
+<li>Step 13: Security Filters Loaded</li>
+<li>Step 14-16: DispatcherServlet Created, Embedded Tomcat Starts &amp; Port Bound</li>
+<li>Step 17-19: Bean Initialization Completed, @PostConstruct &amp; CommandLineRunner</li>
+<li>Step 20-21: ApplicationReadyEvent Published &amp; Application Ready</li>
+<li>What Happens When a Request Hits — The Full Real-Time Request Lifecycle</li>
+<li>Spring Boot Startup &amp; Request Lifecycle — Interview Questions &amp; Real Scenarios</li>
+<li>What Is Caching and Why We Need It</li>
+<li>Before Redis — What We Used Instead</li>
+<li>Introduction to Redis</li>
+<li>Redis Data Structures</li>
+<li>Redis Architecture — How It Actually Works Internally</li>
+<li>Implementing Redis in Spring Boot — Step by Step</li>
+<li>Redis Use Cases Beyond Simple Caching</li>
+<li>Cache Eviction Policies &amp; Caching Strategies (Cache-Aside, Write-Through, Write-Behind)</li>
+<li>Distributed Caching Challenges — Consistency &amp; Invalidation</li>
+<li>Redis High Availability — Replication, Sentinel &amp; Cluster</li>
+<li>Redis Security Best Practices</li>
+<li>Redis Real-Time Issues &amp; Scenarios</li>
+<li>Redis Interview Questions &amp; Answers</li>
+<li>Final Summary &amp; Cheat Sheet</li>
+</ol>
+</div>
+
+<!-- 1. WEB BASICS -->
+<div class="section">
+<h1>1. Web Basics — How the Internet Actually Works</h1>
+
+<h2>1.1 The Client-Server Model</h2>
+<div class="box">Almost everything on the web follows the same basic pattern: a <b>Client</b> (your browser, mobile app) sends a <b>Request</b> to a <b>Server</b> (a remote computer running your application), and the server sends back a <b>Response</b>. This simple request/response cycle is the foundation of everything else in this guide.</div>
+<div class="diagram">
+<div class="title">The Client-Server Model</div>
+<div class="flow-row">
+<div class="node">Client (Browser/Mobile App)</div><div class="arrow">→ Request →</div><div class="node green">Server (Spring Boot App)</div>
+</div>
+<div class="flow-row">
+<div class="node">Client renders the response</div><div class="arrow">← Response ←</div><div class="node green">Server processes and replies</div>
+</div>
+</div>
+
+<h2>1.2 What Actually Happens Between "Client" and "Server"</h2>
+<div class="box">The client and server are rarely directly connected — the request travels across the physical Internet, through many intermediate devices (routers, switches, ISPs, potentially load balancers and firewalls) before reaching the actual server. This entire journey typically takes just milliseconds.</div>
+
+<h2>1.3 Frontend vs Backend (Quick Recap)</h2>
+<table>
+<tr><th>Layer</th><th>Runs Where</th><th>Real Example</th></tr>
+<tr><td>Frontend</td><td>In the client's browser (HTML/CSS/JavaScript, React)</td><td>Renders the UI, handles user interaction</td></tr>
+<tr><td>Backend</td><td>On the server (Spring Boot, Node.js)</td><td>Business logic, database access, security</td></tr>
+<tr><td>Database</td><td>On the server (often a separate machine)</td><td>Persists data long-term</td></tr>
+</table>
+<div class="tip">This guide builds up layer by layer — from the network fundamentals underneath every web request, through exactly how a Spring Boot application starts up and handles a request internally, to how Redis caching fits into that same real-time flow.</div>
+</div>
+
+<!-- 2. NETWORK BASICS -->
+<div class="section">
+<h1>2. Network Basics — IP Addresses, DNS &amp; Ports</h1>
+
+<h2>2.1 What an IP Address Is</h2>
+<div class="box">An IP (Internet Protocol) Address is a unique numerical identifier assigned to every device on a network — it's how one computer knows exactly WHERE to send data on the internet, similar to how a street address tells a postal service where to deliver a letter.</div>
+<pre>IPv4 example:  192.168.1.10           <span class="c1"># 4 numbers (0-255), the older, still widely used format</span>
+IPv6 example:  2001:0db8:85a3::8a2e:0370:7334   <span class="c1"># newer format, vastly more available addresses</span>
+</pre>
+<table>
+<tr><th>IP Type</th><th>Meaning</th><th>Real Example</th></tr>
+<tr><td>Public IP</td><td>Unique across the entire internet, reachable from anywhere</td><td>Your company's server's internet-facing address</td></tr>
+<tr><td>Private IP</td><td>Only unique/reachable within a local network (behind a router/NAT)</td><td>Your laptop's address on your office/home Wi-Fi (192.168.x.x)</td></tr>
+<tr><td>Static IP</td><td>Manually assigned, never changes</td><td>A production database server's fixed address</td></tr>
+<tr><td>Dynamic IP</td><td>Automatically assigned, can change over time (via DHCP)</td><td>Most home internet connections</td></tr>
+</table>
+
+<h2>2.2 DNS — Translating Names Into IP Addresses</h2>
+<div class="box">Humans use domain names (<code>www.mybank.com</code>) because they're memorable; computers actually need an IP address to connect. DNS (Domain Name System) is the "phone book of the internet" — it translates a domain name into the actual IP address of the server hosting it.</div>
+<div class="diagram">
+<div class="title">DNS Resolution Flow</div>
+<div class="flow-row">
+<div class="node">Browser: "What's the IP for api.mybank.com?"</div><div class="arrow">→</div><div class="node purple">DNS Server looks it up</div><div class="arrow">→</div><div class="node green">Returns: 52.14.88.201</div>
+</div>
+<div class="arrow-down">↓ browser now connects directly to this IP</div>
+<div class="flow-row"><div class="node">Actual HTTP request sent to 52.14.88.201</div></div>
+</div>
+
+<h2>2.3 Ports — Identifying a Specific Application on a Server</h2>
+<div class="box">An IP address identifies a MACHINE; a Port identifies a SPECIFIC APPLICATION/SERVICE running on that machine — one server can run many different applications simultaneously, each listening on its own port.</div>
+<table>
+<tr><th>Port</th><th>Commonly Used By</th></tr>
+<tr><td>80</td><td>HTTP (unencrypted web traffic)</td></tr>
+<tr><td>443</td><td>HTTPS (encrypted web traffic) — the modern default for virtually all real websites</td></tr>
+<tr><td>8080</td><td>Common default for Spring Boot's embedded Tomcat during development</td></tr>
+<tr><td>5432</td><td>PostgreSQL database</td></tr>
+<tr><td>3306</td><td>MySQL database</td></tr>
+<tr><td>6379</td><td>Redis (Section 25+)</td></tr>
+</table>
+<div class="tip"><b>Real scenario:</b> "When our React app calls <code>https://api.mybank.com/accounts/1001</code>, the browser first resolves <code>api.mybank.com</code> to an IP via DNS, then connects to that IP on port 443 (HTTPS), where our load balancer is listening and forwards the request internally to one of our Spring Boot pods running on port 8080."</div>
+</div>
+
+<!-- 3. HTTP HTTPS -->
+<div class="section">
+<h1>3. HTTP and HTTPS — The Web's Communication Protocol</h1>
+
+<h2>3.1 What HTTP Is</h2>
+<div class="box">HTTP (HyperText Transfer Protocol) is the standard set of rules for how a client and server exchange requests and responses on the web — defining request methods (GET, POST, etc.), status codes, and headers (already covered in full depth in the API Development guide).</div>
+
+<h2>3.2 A Real HTTP Request/Response, Raw Format</h2>
+<pre><span class="c1">--- Real Request ---</span>
+GET /accounts/1001 HTTP/1.1
+Host: api.mybank.com
+Authorization: Bearer eyJhbGciOi...
+Accept: application/json
+
+<span class="c1">--- Real Response ---</span>
+HTTP/1.1 200 OK
+Content-Type: application/json
+Set-Cookie: JSESSIONID=A3F8B2C1D9; HttpOnly; Secure
+
+{"accountId": 1001, "balance": 4500.00}
+</pre>
+
+<h2>3.3 HTTPS — HTTP Secured With Encryption</h2>
+<div class="box">HTTPS is HTTP layered on top of TLS/SSL encryption — everything exchanged between client and server is encrypted in transit, so anyone intercepting the traffic (on public Wi-Fi, for example) sees only unreadable encrypted bytes, not your actual data (passwords, account balances, tokens).</div>
+<div class="diagram">
+<div class="title">The TLS Handshake (Simplified)</div>
+<div class="flow-row">
+<div class="node">Client: "Let's talk securely"</div><div class="arrow">→</div><div class="node purple">Server sends its TLS certificate</div><div class="arrow">→</div><div class="node">Client verifies certificate, both agree on an encryption key</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">All further communication is encrypted using that shared key</div></div>
+</div>
+<div class="warn"><b>Real-world rule:</b> Never transmit sensitive data (passwords, tokens, financial information) over plain HTTP — always HTTPS. Modern browsers actively warn users ("Not Secure") when a site doesn't use HTTPS, and real production systems enforce HTTPS-only with no HTTP fallback at all.</div>
+</div>
+
+<!-- 4. BASIC WEBSITE FLOW -->
+<div class="section">
+<h1>4. Basic Website Flow — From Typing a URL to Seeing a Page</h1>
+
+<h2>4.1 The Complete Real Flow, Step by Step</h2>
+<div class="diagram">
+<div class="title">What Really Happens When You Visit a Website</div>
+<div class="flow-row"><div class="node">1. You type mybank.com and press Enter</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">2. Browser checks DNS cache, or asks a DNS server for the IP address</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">3. Browser opens a TCP connection to that IP, on port 443</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">4. TLS handshake happens (Section 3.3) — connection is now encrypted</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">5. Browser sends an HTTP GET request for the page</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node alt">6. Server (load balancer → Spring Boot backend) processes the request, queries the database if needed</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">7. Server sends back an HTTP response (HTML, or JSON for a React SPA)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">8. Browser parses the response, requests additional resources (CSS, JS, images) the same way</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">9. Browser renders the final page on screen</div></div>
+</div>
+
+<h2>4.2 Real Modern Single Page Application (SPA) Flow</h2>
+<div class="box">For a React app specifically: step 7 above initially returns a mostly-empty HTML shell plus JavaScript bundle. The browser then executes that JavaScript, which makes SEPARATE API calls (like <code>GET /api/v1/accounts/1001</code>) to fetch actual data as JSON, and React renders the UI dynamically in the browser — this is the same request/response model, just happening multiple times after the initial page load, entirely orchestrated by JavaScript.</div>
+</div>
+
+<!-- 5. COOKIES -->
+<div class="section">
+<h1>5. Cookies — What, Why and How</h1>
+
+<h2>5.1 The Problem Cookies Solve — HTTP Is Stateless</h2>
+<div class="warn">HTTP is fundamentally <b>stateless</b> — by design, the server treats every single request as completely independent, with no memory of any previous request. Without something extra, a server has no way to know "this request and that earlier request came from the same logged-in user."</div>
+
+<h2>5.2 What a Cookie Is</h2>
+<div class="box">A Cookie is a small piece of data the SERVER asks the BROWSER to store, which the browser then automatically sends back with every subsequent request to that same domain — giving the server a way to recognize the same client across multiple otherwise-independent requests.</div>
+<pre><span class="c1">-- Server sets a cookie in its response --</span>
+HTTP/1.1 200 OK
+Set-Cookie: JSESSIONID=A3F8B2C1D9; HttpOnly; Secure; SameSite=Strict; Max-Age=1800
+
+<span class="c1">-- Browser automatically includes it on every future request to the same domain --</span>
+GET /accounts/1001 HTTP/1.1
+Cookie: JSESSIONID=A3F8B2C1D9
+</pre>
+
+<h2>5.3 Key Cookie Attributes</h2>
+<table>
+<tr><th>Attribute</th><th>Purpose</th></tr>
+<tr><td>HttpOnly</td><td>JavaScript cannot access this cookie at all — protects against theft via XSS attacks</td></tr>
+<tr><td>Secure</td><td>The cookie is only ever sent over HTTPS, never plain HTTP</td></tr>
+<tr><td>SameSite</td><td>Controls whether the cookie is sent on cross-site requests — helps prevent CSRF attacks</td></tr>
+<tr><td>Max-Age / Expires</td><td>How long the cookie lives before the browser automatically deletes it</td></tr>
+<tr><td>Domain / Path</td><td>Restricts which domain/URL paths the cookie is sent to</td></tr>
+</table>
+
+<h2>5.4 What Cookies Are Actually Used For</h2>
+<ul>
+<li>Session identification (Section 6) — the single most common real use.</li>
+<li>Remembering user preferences (theme, language) across visits.</li>
+<li>Tracking/analytics (with user consent, per privacy regulations like GDPR).</li>
+<li>Shopping cart contents for guest (non-logged-in) users on e-commerce sites.</li>
+</ul>
+<div class="tip"><b>Interview tip:</b> A cookie itself is just a small piece of data storage on the client, controlled and requested by the server — it's a general mechanism, and "session cookies" (Section 6) are simply the most common specific USE of that mechanism.</div>
+</div>
+
+<!-- 6. SESSIONS -->
+<div class="section">
+<h1>6. Sessions — What, Why, How, and Session vs Cookie</h1>
+
+<h2>6.1 What a Session Is</h2>
+<div class="box">A Session is server-side storage of information about a specific user's ongoing interaction with the application (e.g., "this user is logged in as customer #55") — the SERVER stores this data, and the CLIENT only holds a small session ID (usually via a cookie) that references it.</div>
+
+<h2>6.2 How Sessions and Cookies Work Together</h2>
+<div class="diagram">
+<div class="title">Session Creation and Usage Flow</div>
+<div class="flow-row"><div class="node">1. User logs in successfully</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">2. Server creates a Session object in memory (or a shared store), containing user info</div></div>
+<div class="arrow-down">↓ server generates a unique Session ID and sends it back as a cookie</div>
+<div class="flow-row"><div class="node green">3. Browser stores the Session ID cookie (e.g., JSESSIONID)</div></div>
+<div class="arrow-down">↓ browser sends this cookie automatically on every future request</div>
+<div class="flow-row"><div class="node">4. Server looks up the Session ID → finds the matching stored Session data → knows who this user is</div></div>
+</div>
+
+<h2>6.3 Session vs Cookie — The Key Distinction</h2>
+<table>
+<tr><th></th><th>Cookie</th><th>Session</th></tr>
+<tr><td>Where stored</td><td>Client (browser)</td><td>Server (memory, database, or Redis — Section 25+)</td></tr>
+<tr><td>What it holds</td><td>Small data, including (often) just the session ID itself</td><td>The actual user data — full profile, permissions, cart contents, etc.</td></tr>
+<tr><td>Security exposure</td><td>Visible/accessible on the client (though HttpOnly limits JS access)</td><td>Never directly exposed to the client at all — only the reference ID is</td></tr>
+<tr><td>Size limits</td><td>Small (a few KB per cookie, browser-enforced)</td><td>Can hold much more data — limited only by server memory/storage</td></tr>
+</table>
+
+<h2>6.4 Sessions in a Multi-Instance/Microservices World — A Real Problem</h2>
+<div class="warn">If a Spring Boot application stores sessions in local server memory (the default), and you run 4 replicas behind a load balancer, a user's session only exists on the ONE instance that created it — if their next request is routed to a DIFFERENT instance, that instance has never heard of their session, and they appear logged out. This is exactly why real production systems externalize session storage.</div>
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.session&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-session-data-redis&lt;/artifactId&gt;   <span class="c1">// stores sessions in Redis — shared across ALL instances</span>
+&lt;/dependency&gt;
+</pre>
+<div class="tip"><b>Real scenario:</b> "Before we externalized sessions to Redis (Spring Session), users occasionally got randomly logged out mid-use — traced to our load balancer routing their next request to a different pod that had no record of their in-memory session. Moving sessions to Redis (shared across all pods) fixed this completely, since ANY pod can now look up ANY user's session."</div>
+
+<h2>6.5 The Modern Alternative — Token-Based (JWT) Authentication</h2>
+<div class="box">Many modern REST APIs avoid server-side sessions entirely, using stateless JWTs instead (full detail in the API Development guide, Section 18) — the token itself carries the user's identity/claims, verified by signature, with NOTHING stored server-side at all. This sidesteps the multi-instance session problem entirely, at the cost of harder immediate token revocation.</div>
+</div>
+
+<!-- 7. LOGIN AUTHENTICATION INTERNALS -->
+<div class="section">
+<h1>7. How Login &amp; Authentication Work Internally</h1>
+
+<h2>7.1 Traditional Session-Based Login Flow</h2>
+<div class="diagram">
+<div class="title">Session-Based Login — Full Internal Flow</div>
+<div class="flow-row"><div class="node">1. POST /login with username/password</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">2. Server verifies credentials against the database (password checked via secure hash comparison, e.g., BCrypt)</div></div>
+<div class="arrow-down">↓ success</div>
+<div class="flow-row"><div class="node green">3. Server creates a Session, stores user info, generates a Session ID</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">4. Server responds with Set-Cookie: JSESSIONID=...</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node alt">5. Every subsequent request automatically includes this cookie — server looks up the session to authenticate the user</div></div>
+</div>
+
+<h2>7.2 Modern Token-Based (JWT) Login Flow</h2>
+<div class="diagram">
+<div class="title">JWT-Based Login — Full Internal Flow</div>
+<div class="flow-row"><div class="node">1. POST /login with username/password</div></div>
+<div class="arrow-down">↓ credentials verified</div>
+<div class="flow-row"><div class="node purple">2. Server generates a signed JWT containing user claims (id, roles, expiry) — NO server-side storage created</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">3. Server responds with the JWT in the response body (client stores it, often in memory or localStorage)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">4. Client sends the JWT in an Authorization: Bearer header on every subsequent request</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node alt">5. Server verifies the JWT's signature and expiry — NO database/session lookup needed at all</div></div>
+</div>
+
+<h2>7.3 Session-Based vs Token-Based — Full Comparison</h2>
+<table>
+<tr><th>Aspect</th><th>Session-Based (Cookies)</th><th>Token-Based (JWT)</th></tr>
+<tr><td>Server state</td><td>Stateful — server stores session data</td><td>Stateless — server stores nothing, verifies signature only</td></tr>
+<tr><td>Scaling across instances</td><td>Requires shared session store (Redis) or sticky sessions</td><td>Naturally scales — any instance can verify any token independently</td></tr>
+<tr><td>Revocation</td><td>Easy — just delete the session server-side</td><td>Harder — a signed token remains valid until it expires, unless you maintain a blocklist</td></tr>
+<tr><td>Typical use</td><td>Traditional server-rendered web apps</td><td>Modern REST APIs, mobile apps, microservices</td></tr>
+</table>
+</div>
+
+<!-- 8. REAL-TIME NETWORK CONCEPTS -->
+<div class="section">
+<h1>8. Real-Time Network Concepts — Load Balancer, Reverse Proxy, CDN, Firewall</h1>
+
+<h2>8.1 Load Balancer</h2>
+<div class="box">Distributes incoming requests across multiple backend server instances, so no single server gets overwhelmed and traffic keeps flowing even if one instance fails.</div>
+<div class="diagram">
+<div class="title">Load Balancer in Action</div>
+<div class="flow-row"><div class="node">Client Requests</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">Load Balancer (Azure Load Balancer / NGINX)</div></div>
+<div class="arrow-down">↓ spreads traffic across</div>
+<div class="flow-row">
+<div class="node green">Pod 1</div><div class="node green">Pod 2</div><div class="node green">Pod 3</div>
+</div>
+</div>
+
+<h2>8.2 Reverse Proxy</h2>
+<div class="box">Sits in front of backend servers, forwarding client requests to the appropriate backend and returning the response — often combined with load balancing, TLS termination, caching, and request routing (NGINX, our own API Gateway from the Microservices guide).</div>
+
+<h2>8.3 CDN (Content Delivery Network)</h2>
+<div class="box">A globally distributed network of servers caching static content (images, CSS, JS, videos) physically close to the end user — dramatically reducing load times by serving content from a nearby server instead of one central origin server halfway around the world.</div>
+
+<h2>8.4 Firewall</h2>
+<div class="box">A security barrier that filters network traffic based on rules — blocking unauthorized access attempts, restricting which ports/IPs can reach your servers, and forming a critical layer of real production network security.</div>
+<div class="tip"><b>Real scenario:</b> "A request to our banking app's static assets (logo, CSS) is served instantly from Azure CDN edge locations worldwide, while the actual API call for account data goes through Azure Front Door (reverse proxy + WAF/firewall) → Load Balancer → one of our AKS pods — different parts of the same page load use entirely different pieces of this real network infrastructure."</div>
+</div>
+
+<!-- 9. WEB NETWORK INTERVIEW -->
+<div class="section">
+<h1>9. Web &amp; Network Basics — Interview Questions &amp; Real Scenarios</h1>
+
+<div class="qa"><div class="q">Q1. What is the difference between an IP address and a domain name?</div>
+<div class="a">An IP address is the actual numerical address identifying a device on a network. A domain name (like mybank.com) is a human-readable alias that DNS translates into the corresponding IP address — computers ultimately still connect using the IP.</div></div>
+
+<div class="qa"><div class="q">Q2. What is the difference between HTTP and HTTPS?</div>
+<div class="a">HTTPS is HTTP secured with TLS/SSL encryption — data in transit is encrypted, protecting it from interception. Modern applications should always use HTTPS, especially for anything involving authentication or sensitive data.</div></div>
+
+<div class="qa"><div class="q">Q3. Why is HTTP described as "stateless," and what problem does that create?</div>
+<div class="a">Each HTTP request is handled independently, with no inherent memory of previous requests — this means the server has no built-in way to recognize that two requests came from the same logged-in user, which is exactly the problem cookies and sessions solve.</div></div>
+
+<div class="qa"><div class="q">Q4. Explain the difference between a cookie and a session.</div>
+<div class="a">A cookie is a small piece of data stored on the CLIENT, automatically sent with requests. A session is data stored on the SERVER representing a user's state; the client typically only holds a session ID (often via a cookie) referencing that server-side data.</div></div>
+
+<div class="qa"><div class="q">Q5. What real problem occurs with in-memory sessions in a multi-instance deployment, and how do you fix it?</div>
+<div class="a">If sessions are stored in each server instance's local memory, a user's session only exists on the instance that created it — routing their next request to a different instance makes them appear logged out. Fixed by externalizing session storage to a shared store like Redis (Spring Session), so any instance can access any user's session.</div></div>
+
+<div class="qa"><div class="q">Q6. Why are modern REST APIs moving toward JWT/token-based auth instead of server-side sessions?</div>
+<div class="a">JWTs are stateless — the server verifies a signature without needing any shared session storage, letting the architecture scale naturally across any number of instances without the session-sharing problem. The trade-off is harder immediate token revocation compared to simply deleting a server-side session.</div></div>
+
+<div class="qa"><div class="q">Q7. What are HttpOnly and Secure cookie flags, and why do they matter?</div>
+<div class="a">HttpOnly prevents JavaScript from accessing the cookie at all, protecting against theft via XSS attacks. Secure ensures the cookie is only ever transmitted over HTTPS, never plain HTTP — both are essential security defaults for any cookie carrying sensitive information like a session ID.</div></div>
+
+<div class="qa"><div class="q">Q8. What role does a Load Balancer play in a real production system?</div>
+<div class="a">It distributes incoming client requests across multiple backend instances, preventing any single instance from being overwhelmed, and enables high availability by routing around any instance that becomes unhealthy or is taken down for a rolling deployment.</div></div>
+
+<div class="qa"><div class="q">Q9. What's the difference between a CDN and a regular web server?</div>
+<div class="a">A CDN is a globally distributed network caching static content close to end users geographically, reducing latency for assets like images/CSS/JS. A regular web/application server typically runs from one (or a few) specific locations and handles dynamic, personalized content.</div></div>
+
+<div class="qa"><div class="q">Q10. Walk through what happens, step by step, when a user visits a website.</div>
+<div class="a">DNS resolves the domain to an IP → browser opens a TCP connection to that IP on the appropriate port → a TLS handshake establishes encryption (for HTTPS) → the browser sends an HTTP request → the server (often via a load balancer/reverse proxy) processes it, possibly querying a database → the server returns an HTTP response → the browser parses and renders it, fetching any additional referenced resources the same way.</div></div>
+</div>
+
+<!-- 10. SPRING BOOT STARTUP OVERVIEW -->
+<div class="section">
+<h1>10. Spring Boot Application Startup — The Full Journey Overview</h1>
+
+<h2>10.1 Why Understanding Startup Internals Matters</h2>
+<div class="box">Understanding exactly what happens between running <code>java -jar app.jar</code> and the application actually being ready to serve traffic helps you debug startup failures, understand bean wiring issues, optimize slow startup times, and answer one of the most common real interview questions: "explain what happens when a Spring Boot application starts."</div>
+
+<h2>10.2 The Complete 21-Step Journey, Visualized</h2>
+<div class="diagram">
+<div class="title">Spring Boot Startup — The Full Sequence</div>
+<div class="flow-row">
+<div class="node gray">1. JVM Starts</div><div class="node gray">2. main() Executes</div><div class="node gray">3. SpringApplication.run()</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+<div class="node">4. ApplicationContext Created</div><div class="node">5. Environment Loaded</div><div class="node">6. Properties/YAML Loaded</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+<div class="node green">7. Component Scan</div><div class="node green">8. Bean Definitions Created</div><div class="node green">9. Dependencies Injected</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+<div class="node purple">10. Auto Configuration</div><div class="node purple">11. DataSource Created</div><div class="node purple">12. JPA/Hibernate Init</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+<div class="node alt">13. Security Filters Loaded</div><div class="node alt">14. DispatcherServlet Created</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+<div class="node">15. Embedded Tomcat Starts</div><div class="node">16. Port Bound (8080)</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+<div class="node green">17. Bean Init Completed</div><div class="node green">18. @PostConstruct Runs</div><div class="node green">19. CommandLineRunner Runs</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+<div class="node purple">20. ApplicationReadyEvent Published</div><div class="node purple">21. Ready to Accept Requests</div>
+</div>
+</div>
+<div class="tip">The following sections walk through each of these 21 steps in real depth — the exact order matters, and understanding WHY each step happens where it does is what separates a memorized list from real understanding.</div>
+</div>
+
+<!-- 11. STEP 1-2 JVM MAIN -->
+<div class="section">
+<h1>11. Step 1-2: JVM Starts &amp; Main Method Executes</h1>
+
+<h2>11.1 Step 1 — JVM Starts</h2>
+<div class="box">Running <code>java -jar accounts-service.jar</code> launches the Java Virtual Machine — it loads the JVM runtime, allocates initial heap/stack memory, and locates the JAR's manifest to find the application's entry point (the class containing <code>public static void main</code>).</div>
+
+<h2>11.2 Step 2 — Main Method Executes</h2>
+<pre>@SpringBootApplication
+public class AccountsServiceApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(AccountsServiceApplication.class, args);   <span class="c1">// this ONE line kicks off everything else in this guide</span>
+    }
+}
+</pre>
+<div class="box">The <code>main</code> method is genuinely just plain Java — no Spring magic has happened yet at this exact point. The moment <code>SpringApplication.run()</code> is called is where the entire Spring Boot bootstrap process actually begins (Section 12).</div>
+</div>
+
+<!-- 12. STEP 3-4 SPRINGAPPLICATION RUN CONTEXT -->
+<div class="section">
+<h1>12. Step 3-4: SpringApplication.run() &amp; ApplicationContext Created</h1>
+
+<h2>12.1 Step 3 — What SpringApplication.run() Actually Does</h2>
+<div class="box">This single static method call orchestrates the ENTIRE startup sequence described in this guide — it's a facade hiding a large, well-defined sequence of internal steps (creating the context, loading configuration, scanning components, starting the embedded server, and more).</div>
+<pre><span class="c1">// Simplified view of what SpringApplication.run() does internally</span>
+public ConfigurableApplicationContext run(String... args) {
+    <span class="c1">// 1. Prepare the Environment (Section 13)</span>
+    <span class="c1">// 2. Create the appropriate ApplicationContext type (web vs non-web)</span>
+    <span class="c1">// 3. Refresh the context — triggers component scanning, bean creation, auto-configuration</span>
+    <span class="c1">// 4. Run CommandLineRunners/ApplicationRunners</span>
+    <span class="c1">// 5. Publish ApplicationReadyEvent</span>
+    <span class="c1">// 6. Return the fully started context</span>
+}
+</pre>
+
+<h2>12.2 Step 4 — ApplicationContext Created</h2>
+<div class="box">The ApplicationContext is Spring's IoC container (full detail in the Spring &amp; Spring Boot guide, Section 12) — for a typical web application, Spring Boot creates an <code>AnnotationConfigServletWebServerApplicationContext</code>, specifically aware of both annotation-based configuration AND the need to embed a web server.</div>
+<div class="diagram">
+<div class="title">Context Type Selection</div>
+<div class="flow-row">
+<div class="node">spring-boot-starter-web on classpath?</div><div class="arrow">→ YES →</div><div class="node green">ServletWebServerApplicationContext (embeds Tomcat)</div>
+</div>
+<div class="flow-row">
+<div class="node alt">NO → Plain AnnotationConfigApplicationContext (no embedded server, e.g., a batch job)</div>
+</div>
+</div>
+</div>
+
+<!-- 13. STEP 5-6 ENVIRONMENT PROPERTIES -->
+<div class="section">
+<h1>13. Step 5-6: Environment Loaded &amp; application.properties/YAML Loaded</h1>
+
+<h2>13.1 Step 5 — Environment Loaded</h2>
+<div class="box">Spring builds an <code>Environment</code> object representing ALL the current configuration sources available — command-line arguments, JVM system properties, OS environment variables, and configuration files — establishing the precedence order covered in the Spring &amp; Spring Boot guide (Section 35.2) before any actual file is even read.</div>
+
+<h2>13.2 Step 6 — application.properties/YAML Loaded</h2>
+<div class="box">Spring Boot locates and parses <code>application.yml</code>/<code>application.properties</code> (and any active profile-specific variants like <code>application-prod.yml</code>) from the classpath, merging them into the Environment according to the documented precedence rules.</div>
+<div class="diagram">
+<div class="title">Configuration Loading Order</div>
+<div class="flow-row">
+<div class="node">application.yml (base defaults)</div><div class="arrow">→ overridden by →</div><div class="node">application-{active-profile}.yml</div><div class="arrow">→ overridden by →</div><div class="node green">Environment variables / command-line args</div>
+</div>
+</div>
+<div class="tip"><b>Real practical impact:</b> This is exactly why <code>java -jar app.jar --server.port=9090</code> or <code>SPRING_PROFILES_ACTIVE=prod</code> can override anything defined in your YAML files — the Environment is assembled from multiple layered sources, with later/more specific sources winning, all resolved at this early stage before a single bean is even created.</div>
+</div>
+
+<!-- 14. STEP 7-9 COMPONENT SCAN BEANS DI -->
+<div class="section">
+<h1>14. Step 7-9: Component Scan, Bean Definitions &amp; Dependency Injection</h1>
+
+<h2>14.1 Step 7 — Component Scan Starts</h2>
+<div class="box"><code>@SpringBootApplication</code> includes <code>@ComponentScan</code>, which tells Spring to scan the main application class's package AND all sub-packages, looking for classes annotated with <code>@Component</code>, <code>@Service</code>, <code>@Repository</code>, <code>@Controller</code>, <code>@Configuration</code>, and similar stereotypes.</div>
+
+<h2>14.2 Step 8 — Bean Definitions Created</h2>
+<div class="box">For every class discovered during scanning (plus every <code>@Bean</code> method inside <code>@Configuration</code> classes), Spring creates a <code>BeanDefinition</code> — essentially a "recipe" describing how to construct that bean, its dependencies, and its scope — WITHOUT actually instantiating the object yet. This is a metadata-gathering phase.</div>
+<div class="diagram">
+<div class="title">Two-Phase Bean Creation</div>
+<div class="flow-row"><div class="node">Phase 1: Gather ALL BeanDefinitions first (recipes, not real objects yet)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">Phase 2: Instantiate actual bean objects, resolving dependencies between them</div></div>
+</div>
+<div class="tip">This two-phase approach is precisely why Spring can detect certain configuration problems (like circular dependencies) and resolve dependency ORDER correctly — it knows the full picture of what beans exist and what they need BEFORE creating any of them.</div>
+
+<h2>14.3 Step 9 — Dependencies Injected</h2>
+<div class="box">Spring instantiates each bean (respecting dependency order — a bean needing another bean is created after its dependency), and injects dependencies via constructor injection (the recommended approach, per the Spring &amp; Spring Boot guide Section 13) — resolving the entire object graph of your application.</div>
+</div>
+
+<!-- 15. STEP 10 AUTO CONFIGURATION -->
+<div class="section">
+<h1>15. Step 10: Auto Configuration Starts</h1>
+
+<h2>15.1 What Happens at This Stage</h2>
+<div class="box">Spring Boot's auto-configuration mechanism (full detail in the Spring &amp; Spring Boot guide, Section 33) kicks in — scanning the classpath and conditionally registering additional beans (DataSource, EntityManagerFactory, security defaults, and more) that a typical application with these specific dependencies would need, WITHOUT you writing any explicit configuration.</div>
+<pre><span class="c1">// Real example: seeing spring-boot-starter-data-jpa + a DB driver on the classpath triggers:</span>
+@Configuration
+@ConditionalOnClass(DataSource.class)
+@ConditionalOnMissingBean(DataSource.class)
+public class DataSourceAutoConfiguration { ... }   <span class="c1">// this is exactly what fires in Step 11</span>
+</pre>
+<div class="tip">This step is why Spring Boot feels like "it just works" — dozens of these conditional auto-configuration classes are evaluated (and mostly skipped, if their conditions aren't met) at this exact point in startup, silently doing the configuration work you'd have written manually in plain Spring MVC (Spring &amp; Spring Boot guide, Section 10).</div>
+</div>
+
+<!-- 16. STEP 11-12 DATASOURCE JPA -->
+<div class="section">
+<h1>16. Step 11-12: DataSource Created &amp; JPA/Hibernate Initialized</h1>
+
+<h2>16.1 Step 11 — DataSource Created</h2>
+<div class="box">Using the connection details from <code>application.yml</code> (Step 6), Spring Boot's auto-configuration creates the actual <code>DataSource</code> bean — by default, a HikariCP connection pool, pre-establishing a configurable number of ready-to-use database connections.</div>
+<pre>spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/accounts_db
+    hikari:
+      maximum-pool-size: 20    <span class="c1"># HikariCP creates connections up to this pool size, ready before any request arrives</span>
+</pre>
+
+<h2>16.2 Step 12 — JPA/Hibernate Initialized</h2>
+<div class="box">With the DataSource now available, Spring Boot's JPA auto-configuration creates the <code>EntityManagerFactory</code> — Hibernate scans for <code>@Entity</code>-annotated classes, builds its internal metadata model of your entities/relationships, and (if <code>ddl-auto: validate</code> is set, per the JDBC/Hibernate/JPA guide Section 7.2) validates that your entity mappings actually match the real database schema.</div>
+<div class="warn"><b>Real startup failure scenario:</b> If your <code>@Entity</code> class expects a column that doesn't exist in the actual database table, this EXACT step is where the application fails to start — with a clear <code>SchemaManagementException</code> — much better than discovering the mismatch later via a confusing runtime error on the first request that touches that entity.</div>
+</div>
+
+<!-- 17. STEP 13 SECURITY FILTERS -->
+<div class="section">
+<h1>17. Step 13: Security Filters Loaded</h1>
+
+<h2>17.1 What Happens Here</h2>
+<div class="box">If Spring Security is on the classpath, its auto-configuration builds the <code>SecurityFilterChain</code> — an ordered chain of servlet filters that will later intercept EVERY incoming request, handling authentication (JWT/OAuth2 validation, per the API Development guide Section 18) and authorization (role/permission checks) before the request ever reaches a controller.</div>
+<pre>@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(auth -&gt; auth
+                .requestMatchers("/actuator/health").permitAll()
+                .anyRequest().authenticated())
+            .oauth2ResourceServer(oauth2 -&gt; oauth2.jwt(Customizer.withDefaults()));
+        return http.build();   <span class="c1">// this chain is fully assembled and ready at THIS exact startup step</span>
+    }
+}
+</pre>
+<div class="tip">This ordering matters — security filters are wired up and ready BEFORE the DispatcherServlet/embedded Tomcat even start accepting connections (Steps 14-16), guaranteeing no request can ever slip through before security is fully in place.</div>
+</div>
+
+<!-- 18. STEP 14-16 DISPATCHERSERVLET TOMCAT PORT -->
+<div class="section">
+<h1>18. Step 14-16: DispatcherServlet Created, Embedded Tomcat Starts &amp; Port Bound</h1>
+
+<h2>18.1 Step 14 — DispatcherServlet Created</h2>
+<div class="box">Spring Boot auto-configures and registers the <code>DispatcherServlet</code> (the Front Controller, full detail in the Spring &amp; Spring Boot guide Section 22) — at this point it exists as a configured bean, but the actual embedded server that will route real network traffic to it hasn't started yet.</div>
+
+<h2>18.2 Step 15 — Embedded Tomcat Starts</h2>
+<div class="box">Spring Boot programmatically starts the embedded Tomcat server (bundled inside your JAR, per the Spring &amp; Spring Boot guide Section 38) — Tomcat initializes its own internal thread pools and connector infrastructure, and registers the DispatcherServlet as the handler for incoming requests.</div>
+
+<h2>18.3 Step 16 — Port Bound (8080)</h2>
+<div class="box">Tomcat binds to the configured port (default 8080, or whatever <code>server.port</code> specifies) — this is the exact moment the operating system starts allowing TCP connections to reach your application on that port. Before this step, any connection attempt would simply be refused.</div>
+<div class="diagram">
+<div class="title">Steps 14-16 Together</div>
+<div class="flow-row">
+<div class="node">DispatcherServlet registered (as a servlet definition)</div><div class="arrow">→</div><div class="node green">Embedded Tomcat starts</div><div class="arrow">→</div><div class="node purple">Port 8080 bound — OS now routes incoming connections here</div>
+</div>
+</div>
+<div class="warn"><b>Important nuance:</b> The port being bound does NOT yet mean the application is fully ready to correctly handle business requests — remaining beans still need to finish initializing (Step 17), and <code>@PostConstruct</code>/<code>CommandLineRunner</code> logic still needs to run (Steps 18-19). A request arriving in this narrow window could be accepted by Tomcat but hit a not-yet-fully-initialized application.</div>
+</div>
+
+<!-- 19. STEP 17-19 BEAN INIT POSTCONSTRUCT COMMANDLINERUNNER -->
+<div class="section">
+<h1>19. Step 17-19: Bean Initialization Completed, @PostConstruct &amp; CommandLineRunner</h1>
+
+<h2>19.1 Step 17 — Bean Initialization Completed</h2>
+<div class="box">Any remaining beans not yet fully initialized (including ones that depend on the now-available DataSource/EntityManagerFactory/Tomcat infrastructure) complete their construction and dependency injection at this stage.</div>
+
+<h2>19.2 Step 18 — @PostConstruct Executes</h2>
+<div class="box">For every bean, once its dependencies are fully injected, Spring calls any <code>@PostConstruct</code>-annotated method (full lifecycle detail in the Spring &amp; Spring Boot guide, Section 14) — commonly used for cache warm-up, validating critical configuration, or initializing a connection to an external system.</div>
+<pre>@Component
+public class InterestRateCacheWarmer {
+    @PostConstruct
+    public void warmUpCache() {
+        log.info("Pre-loading interest rate table into cache...");
+        <span class="c1">// runs automatically, exactly here in the startup sequence, before the app is marked "ready"</span>
+    }
+}
+</pre>
+
+<h2>19.3 Step 19 — CommandLineRunner Executes</h2>
+<div class="box">After the ENTIRE ApplicationContext has finished refreshing (all beans created, injected, and post-constructed), Spring Boot invokes any <code>CommandLineRunner</code>/<code>ApplicationRunner</code> beans (Spring &amp; Spring Boot guide, Section 39) — the very last hook before the application is declared ready.</div>
+<pre>@Component
+public class StartupDataVerifier implements CommandLineRunner {
+    @Override
+    public void run(String... args) {
+        log.info("Verifying critical reference data is present...");
+        <span class="c1">// this runs AFTER every single bean in the whole application is fully ready</span>
+    }
+}
+</pre>
+</div>
+
+<!-- 20. STEP 20-21 APPLICATIONREADYEVENT -->
+<div class="section">
+<h1>20. Step 20-21: ApplicationReadyEvent Published &amp; Application Ready</h1>
+
+<h2>20.1 Step 20 — ApplicationReadyEvent Published</h2>
+<div class="box">Once everything above has completed successfully, Spring publishes an <code>ApplicationReadyEvent</code> — any bean implementing <code>ApplicationListener&lt;ApplicationReadyEvent&gt;</code> (or using <code>@EventListener</code>) reacts to this signal, commonly used to log "Application started successfully" or trigger final health-check registrations.</div>
+<pre>@Component
+public class StartupCompletionListener {
+    @EventListener(ApplicationReadyEvent.class)
+    public void onReady() {
+        log.info("✅ Accounts Service is fully started and ready to accept traffic");
+    }
+}
+</pre>
+
+<h2>20.2 Step 21 — Application Ready to Accept Requests</h2>
+<div class="box">The application is now genuinely, fully ready — Tomcat is accepting connections, every bean is initialized, the security chain is active, the database connection pool is warm, and any startup verification logic has run successfully. This is precisely the state Kubernetes' readiness probe (<code>/actuator/health/readiness</code>, Spring &amp; Spring Boot guide Section 20.4) is designed to detect before routing real user traffic to this pod.</div>
+<div class="tip"><b>Interview one-liner:</b> "Startup isn't one single moment — it's a carefully ordered 21-step sequence where each step depends on the previous ones being complete: the JVM boots, the Spring container is built and populated with beans (with configuration loaded first), auto-configuration wires up infrastructure like the DataSource and security, the embedded web server starts and binds its port, and only after every bean's lifecycle hooks have run does Spring Boot declare the application truly ready."</div>
+</div>
+
+<!-- 21. REQUEST LIFECYCLE -->
+<div class="section">
+<h1>21. What Happens When a Request Hits — The Full Real-Time Request Lifecycle</h1>
+
+<h2>21.1 The Complete Real-Time Request Flow</h2>
+<div class="diagram">
+<div class="title">A Real Request's Full Internal Journey</div>
+<div class="flow-row"><div class="node">1. Client sends HTTP request to the load-balanced public URL</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">2. Load Balancer / Ingress routes it to a healthy pod's Tomcat (port 8080)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">3. Tomcat's connector accepts the TCP connection, hands off to a worker thread</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">4. Servlet Filter Chain runs FIRST — CORS filter, correlation ID filter, Spring Security's filter chain</div></div>
+<div class="arrow-down">↓ authentication/authorization checked HERE, before any business code runs</div>
+<div class="flow-row"><div class="node alt">5. DispatcherServlet (Front Controller) receives the request</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">6. HandlerMapping determines which @Controller method matches the URL/HTTP method</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">7. HandlerInterceptors' preHandle() runs (if any registered)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">8. Request body deserialized to a DTO; @Valid triggers Bean Validation</div></div>
+<div class="arrow-down">↓ validation fails → GlobalExceptionHandler responds immediately, skipping remaining steps</div>
+<div class="flow-row"><div class="node purple">9. Controller method executes, delegating to the Service layer</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">10. @Transactional boundary opens (if present) — Service layer runs business logic</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node alt">11. Repository layer executes — checks Redis cache first (Section 27+), falls back to the database via Hibernate/JPA on a cache miss</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">12. Transaction commits (or rolls back on exception) — Hibernate flushes dirty-checked changes</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">13. Service returns a DTO to the Controller (never a raw Entity)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">14. HandlerInterceptors' postHandle()/afterCompletion() run</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">15. Jackson serializes the DTO to JSON</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">16. Response flows back through the Filter Chain (logging, adding response headers)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">17. Tomcat sends the HTTP response back over the network to the client</div></div>
+</div>
+
+<h2>21.2 Where Observability Hooks Into This Flow</h2>
+<div class="box">At nearly every step above, cross-cutting observability is happening simultaneously (per the Observability &amp; Monitoring guide): the correlation ID filter tags every log line, Micrometer records request latency/count metrics, and a distributed tracing agent (OpenTelemetry) creates a span for the whole request plus child spans for the DB query and any downstream calls — all without the business logic code needing to know any of this is happening.</div>
+
+<h2>21.3 Real Scenario Tying Startup and Request Handling Together</h2>
+<div class="tip"><b>Real scenario:</b> "During a rolling deployment, Kubernetes only sends traffic to a new pod once its readiness probe passes — which only happens after Step 21 of startup (Section 20.2) is genuinely complete. This guarantees no user request ever hits a pod where, say, the DataSource connection pool hasn't finished warming up yet, preventing a whole class of 'works eventually but fails on the first few requests after deploy' bugs."</div>
+</div>
+
+<!-- 22. STARTUP INTERVIEW -->
+<div class="section">
+<h1>22. Spring Boot Startup &amp; Request Lifecycle — Interview Questions &amp; Real Scenarios</h1>
+
+<div class="qa"><div class="q">Q1. Walk through what happens when a Spring Boot application starts, end to end.</div>
+<div class="a">JVM starts and executes main() → SpringApplication.run() creates the ApplicationContext → Environment and application.yml are loaded → component scanning creates bean definitions → dependencies are injected → auto-configuration wires infrastructure (DataSource, JPA, Security) → DispatcherServlet is created and embedded Tomcat starts, binding the port → remaining beans finish initializing, @PostConstruct and CommandLineRunner execute → ApplicationReadyEvent is published and the app is ready to serve traffic.</div></div>
+
+<div class="qa"><div class="q">Q2. Why is the Environment/configuration loaded so early, before beans are created?</div>
+<div class="a">Bean creation (especially auto-configuration) depends on knowing configuration values (like datasource URLs, active profiles) upfront to decide what to configure and how — configuration must be fully resolved before Spring can correctly build the bean graph that depends on it.</div></div>
+
+<div class="qa"><div class="q">Q3. What's the difference between when BeanDefinitions are created versus when beans are actually instantiated?</div>
+<div class="a">BeanDefinitions are metadata "recipes" gathered during component scanning describing how to construct each bean and what it depends on — created first, in bulk, without instantiating anything. Actual bean instantiation happens afterward, in dependency order, using those recipes.</div></div>
+
+<div class="qa"><div class="q">Q4. Why does JPA/Hibernate initialization happen after DataSource creation, and what can go wrong here?</div>
+<div class="a">Hibernate needs an active DataSource/connection to validate that your @Entity mappings match the real database schema. If a mismatch exists (e.g., an entity field with no matching column) and ddl-auto is set to validate, the application fails to start immediately at this step with a clear schema error — much better than a confusing runtime failure discovered later.</div></div>
+
+<div class="qa"><div class="q">Q5. Why are Security Filters loaded before the embedded server starts accepting real traffic?</div>
+<div class="a">To guarantee no request can ever be processed before authentication/authorization infrastructure is fully in place — the security filter chain must be completely assembled before Tomcat binds its port and starts accepting real connections.</div></div>
+
+<div class="qa"><div class="q">Q6. What's the difference between @PostConstruct and CommandLineRunner in terms of WHEN they execute?</div>
+<div class="a">@PostConstruct runs per-bean, immediately after that specific bean's own dependencies are injected — potentially quite early in the overall startup sequence. CommandLineRunner runs only after the ENTIRE ApplicationContext has finished refreshing (every bean fully initialized), making it the very last hook before the application is considered ready.</div></div>
+
+<div class="qa"><div class="q">Q7. Why might a Kubernetes readiness probe still fail even after the application's port is bound?</div>
+<div class="a">Port binding (Step 16) happens before all remaining beans finish initializing and before @PostConstruct/CommandLineRunner logic runs (Steps 17-19) — the readiness probe endpoint only returns healthy once ApplicationReadyEvent-level completeness is reached (Step 20-21), correctly preventing traffic from reaching a pod that's still finishing its startup work.</div></div>
+
+<div class="qa"><div class="q">Q8. Describe the full lifecycle of a single HTTP request in a Spring Boot application.</div>
+<div class="a">Load balancer routes it to a pod's Tomcat → the servlet filter chain runs first (CORS, correlation ID, security authentication/authorization) → DispatcherServlet dispatches to the matching @Controller method via HandlerMapping → the request body is validated and deserialized → the Controller delegates to the Service layer within a @Transactional boundary → the Repository checks cache then the database → the transaction commits → a DTO is returned, serialized to JSON, and sent back through the filter chain to the client.</div></div>
+
+<div class="qa"><div class="q">Q9. Where does a distributed cache like Redis fit into the request lifecycle?</div>
+<div class="a">Typically inside the Service or Repository layer, checked BEFORE hitting the database — on a cache hit, the database query is skipped entirely; on a miss, the database is queried and the result is stored in the cache for next time, exactly the pattern detailed in Section 27 onward.</div></div>
+
+<div class="qa"><div class="q">Q10. Why does understanding the exact startup sequence matter for real production debugging?</div>
+<div class="a">It lets you pinpoint exactly WHERE a startup failure occurred (e.g., a schema validation error means Hibernate initialization/Step 12 failed, pointing at an entity-schema mismatch) rather than guessing, and it explains real production behaviors like why a pod briefly accepts connections before truly being ready, informing correct readiness-probe design.</div></div>
+</div>
+
+<!-- 23. WHAT IS CACHING -->
+<div class="section">
+<h1>23. What Is Caching and Why We Need It</h1>
+
+<h2>23.1 What Caching Is</h2>
+<div class="box">Caching stores a copy of expensive-to-compute or expensive-to-fetch data in a fast-access location, so repeated requests for the same data can be served instantly instead of redoing the expensive work every single time.</div>
+
+<h2>23.2 A Simple Real Example</h2>
+<div class="diagram">
+<div class="title">Without Cache vs With Cache</div>
+<div class="flow-row"><div class="node alt">Without cache: EVERY request for interest rates hits the database — 50ms each, every time, 10,000 times/day</div></div>
+<div class="arrow-down">— vs —</div>
+<div class="flow-row"><div class="node green">With cache: FIRST request hits the database (50ms), stores result in cache; next 9,999 requests served from cache (0.5ms each)</div></div>
+</div>
+
+<h2>23.3 Why Caching Matters — Real Reasons</h2>
+<table>
+<tr><th>Reason</th><th>Real Impact</th></tr>
+<tr><td>Reduces database load</td><td>Fewer repeated queries means the database can handle far more unique/necessary work</td></tr>
+<tr><td>Improves response time</td><td>In-memory lookups (microseconds) vs disk-based database queries (milliseconds)</td></tr>
+<tr><td>Reduces cost</td><td>Less database CPU/IO usage often means smaller, cheaper database infrastructure</td></tr>
+<tr><td>Improves resilience</td><td>A brief database hiccup doesn't necessarily affect cached reads still being served</td></tr>
+</table>
+
+<h2>23.4 What Should — and Shouldn't — Be Cached</h2>
+<table>
+<tr><th>Good Candidates</th><th>Bad Candidates</th></tr>
+<tr><td>Reference/lookup data (interest rates, product catalogs) — changes rarely</td><td>Real-time account balances — must always be current</td></tr>
+<tr><td>Expensive computed results (credit score calculations)</td><td>Highly sensitive data without careful security/TTL controls</td></tr>
+<tr><td>Data read far more often than it's written</td><td>Data requiring strict read-your-own-write consistency</td></tr>
+</table>
+<div class="tip"><b>Interview one-liner:</b> "Caching trades a small amount of potential staleness for a large amount of speed and reduced load — the art of good caching is choosing exactly which data can tolerate that trade-off, and for how long."</div>
+</div>
+
+<!-- 24. BEFORE REDIS -->
+<div class="section">
+<h1>24. Before Redis — What We Used Instead</h1>
+
+<h2>24.1 Caching Approaches Before Redis Became Standard</h2>
+<table>
+<tr><th>Approach</th><th>How It Worked</th><th>Real Limitation</th></tr>
+<tr><td>Local in-memory cache (HashMap, ConcurrentHashMap)</td><td>Store data directly in the application's own JVM heap memory</td><td>Per-instance only — in a multi-server deployment, each server has its own separate, inconsistent cache</td></tr>
+<tr><td>EhCache</td><td>A mature, feature-rich local Java caching library with eviction policies</td><td>Still fundamentally per-JVM by default, same multi-instance consistency problem</td></tr>
+<tr><td>Memcached</td><td>A distributed, simple key-value memory cache — an early real distributed caching solution</td><td>Only supports simple strings/objects, no rich data structures, no persistence, no built-in replication</td></tr>
+<tr><td>Database query caching</td><td>Some databases offered built-in query result caching</td><td>Tightly coupled to the specific database, limited flexibility, often deprecated in modern DB versions</td></tr>
+</table>
+
+<h2>24.2 The Real Problem That Led to Redis's Popularity</h2>
+<div class="warn">As applications moved to running multiple instances behind a load balancer (Section 8.1) — especially with microservices and Kubernetes — a purely local, per-JVM cache became fundamentally broken: instance A's cache update was invisible to instances B, C, and D. Organizations needed a genuinely <b>shared, distributed</b> cache that every instance could read and write consistently.</div>
+
+<h2>24.3 Why Redis Specifically Won Out</h2>
+<ul>
+<li>Extremely fast — an in-memory data store with sub-millisecond typical latency.</li>
+<li>Rich data structures beyond simple key-value (Section 26) — strings, hashes, lists, sets, sorted sets.</li>
+<li>Built-in persistence options (can survive a restart, unlike a pure in-memory-only cache).</li>
+<li>Native replication and clustering support for high availability at scale (Section 32).</li>
+<li>A simple, well-documented protocol with mature client libraries in every major language, including excellent native Spring Boot integration.</li>
+</ul>
+<div class="tip"><b>Interview tip:</b> Redis didn't invent distributed caching — Memcached came first — but Redis's richer data structures, built-in persistence, and native replication/clustering made it the dominant modern choice for most real organizations' caching (and beyond-caching) needs.</div>
+</div>
+
+<!-- 25. INTRODUCTION TO REDIS -->
+<div class="section">
+<h1>25. Introduction to Redis</h1>
+
+<h2>25.1 What Redis Is</h2>
+<div class="box">Redis (REmote DIctionary Server) is an open-source, in-memory data store — used as a cache, a message broker (Pub/Sub), a session store, and even a lightweight primary database for certain use cases, thanks to its speed and versatile data structures.</div>
+
+<h2>25.2 Redis vs a Traditional Database — Core Difference</h2>
+<table>
+<tr><th>Aspect</th><th>Traditional RDBMS</th><th>Redis</th></tr>
+<tr><td>Primary storage location</td><td>Disk (with memory caching internally)</td><td>Memory (RAM) primarily, with optional disk persistence)</td></tr>
+<tr><td>Data model</td><td>Structured tables, rows, columns, relationships</td><td>Simple key-value with rich value types (Section 26)</td></tr>
+<tr><td>Query language</td><td>SQL — powerful, flexible querying/joining</td><td>Simple commands per data structure — no joins, no complex query language</td></tr>
+<tr><td>Speed</td><td>Milliseconds (disk-backed)</td><td>Sub-millisecond (memory-backed)</td></tr>
+<tr><td>Best fit</td><td>Complex relational data, strong consistency, long-term storage</td><td>Fast lookups, caching, session storage, real-time counters</td></tr>
+</table>
+<div class="tip">Redis and a relational database are not competitors — real applications use BOTH together: PostgreSQL/MySQL as the durable system of record, Redis as the fast layer in front of it for frequently-accessed data.</div>
+</div>
+
+<!-- 26. REDIS DATA STRUCTURES -->
+<div class="section">
+<h1>26. Redis Data Structures</h1>
+
+<h2>26.1 String — The Simplest Type</h2>
+<pre>SET account:1001:balance "4500.00"
+GET account:1001:balance
+INCR page:views              <span class="c1"># atomic increment — a simple, thread-safe counter</span>
+SETEX session:abc123 1800 "user-data-json"   <span class="c1"># set with a 1800-second (30 min) expiry (TTL)</span>
+</pre>
+
+<h2>26.2 Hash — Storing Structured Objects</h2>
+<pre>HSET account:1001 balance 4500.00 status "ACTIVE" customerId 55
+HGET account:1001 balance
+HGETALL account:1001         <span class="c1"># retrieves all fields — often used to cache an entire object's fields together</span>
+</pre>
+
+<h2>26.3 List — Ordered Collection</h2>
+<pre>LPUSH recent_transactions:1001 "txn-9921"    <span class="c1"># add to the front</span>
+LRANGE recent_transactions:1001 0 9            <span class="c1"># get the 10 most recent items</span>
+</pre>
+
+<h2>26.4 Set — Unique, Unordered Collection</h2>
+<pre>SADD blocked_ips "203.0.113.44"
+SISMEMBER blocked_ips "203.0.113.44"     <span class="c1"># fast O(1) membership check — great for blocklists/allowlists</span>
+</pre>
+
+<h2>26.5 Sorted Set (ZSET) — Ranked Data</h2>
+<pre>ZADD leaderboard 1500 "customer:55"
+ZADD leaderboard 2100 "customer:88"
+ZREVRANGE leaderboard 0 2 WITHSCORES     <span class="c1"># top 3 ranked entries — great for leaderboards, rate-limit windows</span>
+</pre>
+
+<h2>26.6 Real Data Structure Selection Table</h2>
+<table>
+<tr><th>Data Structure</th><th>Real Use Case</th></tr>
+<tr><td>String</td><td>Simple cached values, atomic counters, session tokens</td></tr>
+<tr><td>Hash</td><td>Caching an entire object (like an Account) as one grouped structure</td></tr>
+<tr><td>List</td><td>Recent activity feeds, simple queues</td></tr>
+<tr><td>Set</td><td>Blocklists, tags, uniqueness checks</td></tr>
+<tr><td>Sorted Set</td><td>Leaderboards, rate limiting windows, priority queues</td></tr>
+</table>
+</div>
+
+<!-- 27. REDIS ARCHITECTURE -->
+<div class="section">
+<h1>27. Redis Architecture — How It Actually Works Internally</h1>
+
+<h2>27.1 Single-Threaded Command Execution</h2>
+<div class="box">Redis processes commands using a single main thread (per core, historically) — this sounds like a limitation, but because everything happens in memory (no disk I/O wait), it's extremely fast AND eliminates entire categories of concurrency bugs (no need for complex locking between commands).</div>
+
+<h2>27.2 In-Memory Storage With Optional Persistence</h2>
+<table>
+<tr><th>Persistence Option</th><th>How It Works</th></tr>
+<tr><td>RDB (snapshotting)</td><td>Periodically saves a full point-in-time snapshot of the dataset to disk</td></tr>
+<tr><td>AOF (Append Only File)</td><td>Logs every write operation to a file, replayed on restart — more durable, slightly slower</td></tr>
+<tr><td>No persistence</td><td>Pure in-memory only — data is lost entirely on restart (acceptable for a pure, rebuildable cache)</td></tr>
+</table>
+
+<h2>27.3 Redis Client-Server Flow</h2>
+<div class="diagram">
+<div class="title">Redis Architecture</div>
+<div class="flow-row">
+<div class="node">Spring Boot App (Redis Client — Lettuce/Jedis)</div><div class="arrow">→ TCP →</div><div class="node purple">Redis Server (single-threaded event loop)</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">In-memory data store (hash tables internally)</div></div>
+<div class="arrow-down">↓ optional</div>
+<div class="flow-row"><div class="node gray">RDB snapshot / AOF log written to disk</div></div>
+</div>
+</div>
+
+<!-- 28. IMPLEMENTING REDIS IN SPRING BOOT -->
+<div class="section">
+<h1>28. Implementing Redis in Spring Boot — Step by Step</h1>
+
+<h2>28.1 Step 1 — Add the Dependency</h2>
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</pre>
+
+<h2>28.2 Step 2 — Configure Connection Details</h2>
+<pre>spring:
+  data:
+    redis:
+      host: redis-cluster.prod.internal
+      port: 6379
+      password: ${REDIS_PASSWORD}
+      timeout: 2000ms
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000
+</pre>
+
+<h2>28.3 Step 3 — Enable Caching and Configure the CacheManager</h2>
+<pre>@SpringBootApplication
+@EnableCaching
+public class BankApplication { ... }
+
+@Configuration
+public class RedisConfig {
+    @Bean
+    public RedisCacheConfiguration cacheConfiguration() {
+        return RedisCacheConfiguration.defaultCacheConfig()
+            .entryTtl(Duration.ofMinutes(30))
+            .serializeValuesWith(RedisSerializationContext.SerializationPair
+                .fromSerializer(new GenericJackson2JsonRedisSerializer()));
+    }
+}
+</pre>
+
+<h2>28.4 Step 4 — Use Declarative Caching Annotations</h2>
+<pre>@Service
+@CacheConfig(cacheNames = "accounts")
+@RequiredArgsConstructor
+public class AccountService {
+    private final AccountRepository accountRepository;
+
+    @Cacheable(key = "#id")
+    public AccountDto findById(Long id) {
+        return mapper.toDto(accountRepository.findById(id).orElseThrow());
+    }
+
+    @CacheEvict(key = "#id")
+    public void closeAccount(Long id) {
+        accountRepository.deleteById(id);
+    }
+}
+</pre>
+<div class="box">This exact pattern — the full <code>@Cacheable</code>/<code>@CachePut</code>/<code>@CacheEvict</code> annotation set — is already covered in complete depth in both the Spring &amp; Spring Boot guide (Section 52-53) and the JDBC/Hibernate/JPA guide; this section focuses specifically on the network/architecture context of how Redis fits into the request lifecycle (Section 21.1, Step 11).</div>
+
+<h2>28.5 Step 5 — Using RedisTemplate Directly (Beyond Simple Caching)</h2>
+<pre>@Service
+@RequiredArgsConstructor
+public class RateLimiterService {
+    private final RedisTemplate&lt;String, String&gt; redisTemplate;
+
+    public boolean isAllowed(String apiKey, int maxRequestsPerMinute) {
+        String key = "ratelimit:" + apiKey;
+        Long count = redisTemplate.opsForValue().increment(key);
+        if (count == 1) {
+            redisTemplate.expire(key, Duration.ofMinutes(1));   <span class="c1">// TTL set only on the FIRST request in this window</span>
+        }
+        return count &lt;= maxRequestsPerMinute;
+    }
+}
+</pre>
+</div>
+
+<!-- 29. REDIS USE CASES BEYOND CACHING -->
+<div class="section">
+<h1>29. Redis Use Cases Beyond Simple Caching</h1>
+<table>
+<tr><th>Use Case</th><th>Redis Feature Used</th><th>Real Example</th></tr>
+<tr><td>Session Storage</td><td>Hash/String with TTL</td><td>Spring Session backed by Redis, shared across all pods (Section 6.4)</td></tr>
+<tr><td>Rate Limiting</td><td>Atomic INCR + TTL</td><td>API Gateway limiting requests per API key per minute</td></tr>
+<tr><td>Distributed Locking</td><td>SETNX (set-if-not-exists) with TTL</td><td>Preventing two pods from processing the same batch record simultaneously</td></tr>
+<tr><td>Leaderboards/Rankings</td><td>Sorted Set (ZSET)</td><td>Real-time ranking of top-performing sales branches</td></tr>
+<tr><td>Pub/Sub Messaging</td><td>PUBLISH/SUBSCRIBE commands</td><td>Lightweight real-time notifications across service instances (not a durable replacement for Kafka)</td></tr>
+<tr><td>Real-Time Counters</td><td>Atomic INCR/DECR</td><td>Live "active users" or "requests in flight" dashboards</td></tr>
+</table>
+<div class="tip"><b>Real scenario:</b> "Our API Gateway uses Redis-backed atomic counters with a 1-minute TTL to enforce per-partner rate limits — a partner's 61st request within any rolling minute is rejected with a 429, using nothing more than an INCR command and an EXPIRE, no separate rate-limiting infrastructure needed."</div>
+</div>
+
+<!-- 30. CACHE EVICTION STRATEGIES -->
+<div class="section">
+<h1>30. Cache Eviction Policies &amp; Caching Strategies (Cache-Aside, Write-Through, Write-Behind)</h1>
+
+<h2>30.1 Cache-Aside (Lazy Loading) — The Most Common Pattern</h2>
+<div class="diagram">
+<div class="title">Cache-Aside Pattern</div>
+<div class="flow-row"><div class="node">App checks cache first</div></div>
+<div class="arrow-down">↓ MISS</div>
+<div class="flow-row"><div class="node alt">App queries the database directly</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">App writes the result INTO the cache, then returns it</div></div>
+</div>
+<div class="box">This is exactly what Spring's <code>@Cacheable</code> implements automatically — the application code (or Spring's proxy, in this case) is responsible for populating the cache on a miss. Simple, and the most widely used real-world pattern.</div>
+
+<h2>30.2 Write-Through</h2>
+<div class="box">Every WRITE goes to the cache AND the database together, synchronously, as one operation — reads are always guaranteed fresh from the cache, at the cost of slightly slower writes (since both systems must be updated before the write is considered complete).</div>
+
+<h2>30.3 Write-Behind (Write-Back)</h2>
+<div class="box">Writes go to the cache immediately (fast), and the database update happens asynchronously afterward — faster writes, but with a real risk of data loss if the cache fails before the delayed database write completes. Used sparingly, only where that risk is genuinely acceptable.</div>
+
+<h2>30.4 Real Comparison Table</h2>
+<table>
+<tr><th>Strategy</th><th>Read Speed</th><th>Write Speed</th><th>Data Safety</th><th>Real Use</th></tr>
+<tr><td>Cache-Aside</td><td>Fast after first miss</td><td>Normal (writes go straight to DB)</td><td>Safe — DB is always source of truth</td><td>The default choice for most real caching (@Cacheable)</td></tr>
+<tr><td>Write-Through</td><td>Always fast</td><td>Slower (writes both cache+DB)</td><td>Safe — both stay in sync immediately</td><td>Data needing guaranteed freshness on every read</td></tr>
+<tr><td>Write-Behind</td><td>Always fast</td><td>Very fast</td><td>Riskier — possible data loss window</td><td>High-write-volume, loss-tolerant scenarios (e.g., analytics counters)</td></tr>
+</table>
+
+<h2>30.5 Eviction Policies — What Happens When Redis Memory Fills Up</h2>
+<table>
+<tr><th>Policy</th><th>Behavior</th></tr>
+<tr><td>noeviction</td><td>Rejects new writes once full — safest for non-cache uses, risky for a busy cache</td></tr>
+<tr><td>allkeys-lru</td><td>Evicts the Least Recently Used key across ALL keys — the standard default for a pure cache</td></tr>
+<tr><td>volatile-lru</td><td>Evicts LRU only among keys that have a TTL set, protecting permanent keys</td></tr>
+<tr><td>allkeys-random</td><td>Evicts a random key — cheap to compute, rarely the best choice</td></tr>
+</table>
+</div>
+
+<!-- 31. DISTRIBUTED CACHING CHALLENGES -->
+<div class="section">
+<h1>31. Distributed Caching Challenges — Consistency &amp; Invalidation</h1>
+
+<h2>31.1 "There Are Only Two Hard Things in Computer Science..."</h2>
+<div class="warn">The classic saying finishes: "...cache invalidation and naming things." Cache invalidation is genuinely one of the hardest real-world problems — knowing exactly WHEN cached data has become stale and needs refreshing is deceptively difficult to get completely right.</div>
+
+<h2>31.2 The Real Bypass Bug — A Common Production Incident</h2>
+<div class="box">If data is updated through a path that DOESN'T go through the application's normal service layer (a direct SQL fix, a manual database correction, a different microservice writing to the same table), Spring's <code>@CacheEvict</code>/<code>@CachePut</code> never fires — Redis keeps serving the OLD, now-incorrect cached value until its TTL naturally expires.</div>
+<div class="tip"><b>Real scenario:</b> "A support engineer manually corrected a customer's card limit directly via a database script during an incident — bypassing the application layer entirely meant Redis never got evicted, and the customer kept seeing the old limit in the app for another 30 minutes until the TTL expired. We fixed the PROCESS by requiring all manual data corrections to go through an authenticated internal API endpoint, which properly triggers cache eviction, never direct SQL against production."</div>
+
+<h2>31.3 Consistency Trade-Offs — TTL vs Explicit Invalidation</h2>
+<table>
+<tr><th>Approach</th><th>How</th><th>Trade-Off</th></tr>
+<tr><td>TTL-only (time-based expiry)</td><td>Cache entries automatically expire after a fixed duration</td><td>Simple, but data can be stale for up to the full TTL duration after any change</td></tr>
+<tr><td>Explicit invalidation (@CacheEvict)</td><td>Application code explicitly removes/updates the cache entry the moment data changes</td><td>Immediately consistent, but ONLY if every single write path remembers to do this correctly</td></tr>
+<tr><td>Both together (real best practice)</td><td>Explicit invalidation for known write paths, PLUS a safety-net TTL for anything missed</td><td>Best of both — immediate consistency in the common case, bounded staleness worst case</td></tr>
+</table>
+
+<h2>31.4 Cache Stampede — Another Real Distributed Caching Problem</h2>
+<div class="warn">If a very popular cache key expires and MANY concurrent requests all experience a cache miss simultaneously, they can all hammer the database at the exact same moment trying to recompute/refetch the same data — a "thundering herd" that can itself cause an outage.</div>
+<div class="box">Real fixes include: using a distributed lock so only ONE request recomputes the value while others wait briefly, or proactively refreshing popular keys slightly BEFORE they actually expire ("early refresh") rather than waiting for a hard expiry followed by a stampede of misses.</div>
+</div>
+
+<!-- 32. REDIS HIGH AVAILABILITY -->
+<div class="section">
+<h1>32. Redis High Availability — Replication, Sentinel &amp; Cluster</h1>
+
+<h2>32.1 Master-Replica Replication</h2>
+<div class="box">A Redis Master handles all writes, and one or more Replicas continuously receive a copy of the data — replicas can serve read traffic (spreading load) and provide a failover target if the master goes down.</div>
+<div class="diagram">
+<div class="title">Master-Replica Setup</div>
+<div class="flow-row"><div class="node purple">Redis Master (handles writes)</div></div>
+<div class="arrow-down">↓ replicates data to</div>
+<div class="flow-row"><div class="node green">Replica 1</div><div class="node green">Replica 2</div></div>
+</div>
+
+<h2>32.2 Redis Sentinel — Automatic Failover</h2>
+<div class="box">Sentinel processes monitor the Master and Replicas, and automatically PROMOTE a replica to become the new Master if the original Master fails — providing automated high availability without manual intervention.</div>
+
+<h2>32.3 Redis Cluster — Horizontal Scaling</h2>
+<div class="box">Redis Cluster shards data across multiple master nodes (each responsible for a subset of the total "hash slots"), allowing the total dataset size and write throughput to scale far beyond what a single Redis instance can handle — each shard can also have its own replicas for HA.</div>
+<table>
+<tr><th>Setup</th><th>Solves</th><th>Real Use</th></tr>
+<tr><td>Standalone Redis</td><td>Simple caching, single point of failure acceptable</td><td>Small applications, non-critical caching</td></tr>
+<tr><td>Master-Replica + Sentinel</td><td>High availability, automatic failover</td><td>Production caching where downtime must be minimized</td></tr>
+<tr><td>Redis Cluster</td><td>Horizontal scale for very large datasets/throughput</td><td>Large-scale, high-traffic production systems</td></tr>
+</table>
+<div class="tip"><b>Real scenario:</b> "Our production Redis runs as a managed Azure Cache for Redis instance with built-in replication and automatic failover — when the primary node had a brief hardware issue, failover to a replica happened in under 30 seconds, with our application's Lettuce client automatically reconnecting to the new primary, and only a brief handful of cache misses (not an outage) resulted."</div>
+</div>
+
+<!-- 33. REDIS SECURITY -->
+<div class="section">
+<h1>33. Redis Security Best Practices</h1>
+<table>
+<tr><th>Practice</th><th>Why</th></tr>
+<tr><td>Require authentication (requirepass / ACLs)</td><td>Prevents unauthorized access if the network perimeter is ever breached</td></tr>
+<tr><td>Never expose Redis directly to the public internet</td><td>Redis was not originally designed with internet-facing security as a primary concern — always keep it inside a private network/VPC</td></tr>
+<tr><td>Use TLS for connections</td><td>Encrypts data in transit between the application and Redis, especially important for sensitive cached data</td></tr>
+<tr><td>Use Redis ACLs for fine-grained permissions</td><td>Restrict which commands/keys a given application/service can access (e.g., a reporting service gets read-only access)</td></tr>
+<tr><td>Never cache raw sensitive data unencrypted</td><td>Card numbers, passwords, or full PII should never be cached in plain text, even in a supposedly "internal" cache</td></tr>
+<tr><td>Set appropriate memory limits and eviction policies</td><td>Prevents Redis from being exhausted/crashed by unbounded key growth</td></tr>
+</table>
+<div class="warn"><b>Real-world reminder:</b> Redis historically had NO authentication or encryption by default — several real, widely publicized security incidents occurred from Redis instances left accidentally exposed to the public internet with no password. Always treat Redis as sensitive internal infrastructure, never a publicly-reachable service.</div>
+</div>
+
+<!-- 34. REDIS REAL TIME ISSUES -->
+<div class="section">
+<h1>34. Redis Real-Time Issues &amp; Scenarios</h1>
+<table>
+<tr><th>Issue</th><th>Cause</th><th>Real Solution</th></tr>
+<tr><td>Stale data shown to users</td><td>Cache eviction bypassed by a direct/manual data change</td><td>Route all writes through the application layer; add a safety-net TTL (Section 31.3)</td></tr>
+<tr><td>Sudden database load spike when a popular key expires</td><td>Cache stampede — many concurrent misses at once</td><td>Distributed lock around recomputation, or proactive early refresh (Section 31.4)</td></tr>
+<tr><td>Users randomly logged out under load</td><td>Sessions stored in-memory per-instance instead of shared Redis</td><td>Use Spring Session backed by Redis (Section 6.4)</td></tr>
+<tr><td>Redis memory usage growing unbounded</td><td>No TTL set on cache entries, or no eviction policy configured</td><td>Always set a sensible TTL on cache entries; configure allkeys-lru or similar eviction policy</td></tr>
+<tr><td>Application errors after a Redis failover</td><td>Client not configured to automatically reconnect/retry</td><td>Use a modern client (Lettuce, Spring Boot's default) with automatic reconnection and sensible timeouts</td></tr>
+<tr><td>Rate limiter allows more requests than intended under high concurrency</td><td>Non-atomic check-then-increment logic (race condition)</td><td>Use Redis's atomic INCR command directly, never a separate GET-then-SET pair</td></tr>
+<tr><td>Sensitive data exposed via an exported Redis dump</td><td>PII/card data cached in plain text</td><td>Never cache raw sensitive fields; mask/encrypt or simply exclude them from any cached payload</td></tr>
+<tr><td>Cross-instance cache inconsistency intermittently reported</td><td>A mix of local (per-JVM) caching AND Redis caching used inconsistently across the codebase</td><td>Standardize on Redis (via @Cacheable) as the ONLY shared cache mechanism for any data needing cross-instance consistency</td></tr>
+</table>
+</div>
+
+<!-- 35. REDIS INTERVIEW Q&A -->
+<div class="section">
+<h1>35. Redis Interview Questions &amp; Answers</h1>
+
+<div class="qa"><div class="q">Q1. What is caching, and why is it important in real applications?</div>
+<div class="a">Caching stores a copy of expensive-to-fetch/compute data in a fast-access location, reducing database load, improving response times, and reducing infrastructure cost — the trade-off is potential staleness, which must be managed deliberately per use case.</div></div>
+
+<div class="qa"><div class="q">Q2. What did teams use for caching before Redis, and what problem forced a change?</div>
+<div class="a">Local in-memory caches (HashMap, EhCache) and Memcached. The real problem was multi-instance deployments — a purely local cache is per-JVM and becomes inconsistent across instances behind a load balancer, forcing the industry toward genuinely shared, distributed caching solutions like Redis.</div></div>
+
+<div class="qa"><div class="q">Q3. Why is Redis so fast?</div>
+<div class="a">It stores data primarily in memory (RAM) rather than disk, and processes commands via a highly optimized single-threaded event loop that avoids locking overhead between commands — both together achieve typical sub-millisecond latency.</div></div>
+
+<div class="qa"><div class="q">Q4. Name Redis's core data structures and a real use case for each.</div>
+<div class="a">String (simple values, counters), Hash (caching a whole object's fields together), List (recent activity feeds), Set (blocklists/uniqueness checks), Sorted Set/ZSET (leaderboards, rate-limiting windows) — choosing the right structure for the access pattern is a key Redis design skill.</div></div>
+
+<div class="qa"><div class="q">Q5. Explain the Cache-Aside pattern and how Spring's @Cacheable implements it.</div>
+<div class="a">Cache-Aside checks the cache first; on a miss, it queries the source of truth (the database) and populates the cache before returning the result. @Cacheable implements exactly this — on a cache hit it skips the method body entirely; on a miss it executes the method and stores the result.</div></div>
+
+<div class="qa"><div class="q">Q6. What is cache invalidation, and why is it considered one of the hardest problems in computing?</div>
+<div class="a">Cache invalidation is knowing exactly when cached data has become stale and must be refreshed/removed. It's hard because any write path that bypasses the normal cache-eviction logic (like a direct database fix) leaves stale data being served, often silently, until a TTL eventually expires.</div>
+<div class="scenario">Real scenario: a manual database correction during an incident bypassed @CacheEvict, leaving a customer seeing an outdated card limit until the TTL expired — fixed by requiring all manual fixes to go through the application layer.</div></div>
+
+<div class="qa"><div class="q">Q7. What is a cache stampede, and how do you prevent it?</div>
+<div class="a">When a popular cache key expires, many concurrent requests can all experience a cache miss simultaneously and hammer the database at once trying to recompute the same value. Prevented via a distributed lock (only one request recomputes while others wait) or by proactively refreshing hot keys before they actually expire.</div></div>
+
+<div class="qa"><div class="q">Q8. How does Redis provide high availability?</div>
+<div class="a">Master-Replica replication keeps copies of data on additional nodes; Redis Sentinel monitors the setup and automatically promotes a replica to master on failure; Redis Cluster additionally shards data across multiple masters for horizontal scaling of both capacity and throughput, each shard optionally having its own replicas.</div></div>
+
+<div class="qa"><div class="q">Q9. Why should Redis never be exposed directly to the public internet?</div>
+<div class="a">Redis was not originally designed with internet-facing security as a primary concern (historically no default authentication/encryption) — several real security incidents occurred from publicly exposed, unauthenticated Redis instances. It should always run inside a private network, with authentication and TLS enabled regardless.</div></div>
+
+<div class="qa"><div class="q">Q10. Describe a real production Redis-related issue you've resolved.</div>
+<div class="a">A rate limiter occasionally allowed more requests than intended under high concurrency due to a non-atomic "read count, check, then increment" pattern racing across concurrent requests. Fixed by using Redis's atomic INCR command directly (which is inherently safe under concurrency, since Redis processes commands one at a time) instead of a separate GET-then-SET sequence.</div></div>
+</div>
+
+<!-- 36. FINAL SUMMARY -->
+<div class="section">
+<h1>36. Final Summary &amp; Cheat Sheet</h1>
+<div class="box">
+<p><b>Web &amp; Network Basics:</b> the client-server model, DNS resolving names to IPs, ports identifying specific applications on a server, HTTPS encrypting traffic, and cookies/sessions solving HTTP's fundamental statelessness — with modern APIs increasingly favoring stateless JWTs over server-side sessions for easier multi-instance scaling.</p>
+<p><b>Spring Boot Startup:</b> a strict 21-step sequence — JVM boot → Spring container creation → configuration loading → component scanning and dependency injection → auto-configuration wiring infrastructure (DataSource, JPA, Security) → embedded server starting and binding its port → remaining bean lifecycle hooks (@PostConstruct, CommandLineRunner) → ApplicationReadyEvent, only THEN is the app truly ready for traffic.</p>
+<p><b>The Request Lifecycle:</b> every request flows through a load balancer → Tomcat → the servlet filter chain (security first) → DispatcherServlet → Controller → Service (@Transactional) → Repository (checking Redis before the database) → back out through serialization and the filter chain to the client.</p>
+<p><b>Redis &amp; Caching:</b> caching trades a bounded amount of staleness for major speed/cost benefits; Redis became the dominant distributed cache because a purely local, per-JVM cache breaks down the moment an application runs on more than one instance; Cache-Aside (via @Cacheable) is the standard real-world pattern, with careful attention to invalidation correctness, cache stampede prevention, and high-availability replication for production-grade reliability.</p>
+</div>
+
+<h2>36.1 Quick Cheat Sheet</h2>
+<table>
+<tr><th>Term</th><th>One-Line Meaning</th></tr>
+<tr><td>DNS</td><td>Translates domain names into IP addresses</td></tr>
+<tr><td>Cookie</td><td>Small client-side data sent automatically with every request to a domain</td></tr>
+<tr><td>Session</td><td>Server-side user state, referenced by a client-held session ID</td></tr>
+<tr><td>JWT</td><td>Self-contained, signed, stateless token replacing server-side sessions</td></tr>
+<tr><td>ApplicationContext</td><td>Spring's IoC container, created early in the startup sequence</td></tr>
+<tr><td>Auto Configuration</td><td>Classpath-driven, conditional bean setup eliminating manual wiring</td></tr>
+<tr><td>ApplicationReadyEvent</td><td>Signals the application is FULLY started and ready for traffic</td></tr>
+<tr><td>Cache-Aside</td><td>Check cache first, populate it on a miss — the standard @Cacheable pattern</td></tr>
+<tr><td>Cache Stampede</td><td>Many concurrent cache misses hammering the database at once</td></tr>
+<tr><td>Redis Sentinel</td><td>Monitors Redis and automates failover to a replica</td></tr>
+<tr><td>Redis Cluster</td><td>Shards data across multiple Redis masters for horizontal scale</td></tr>
+</table>
+
+<div class="tip">Use this guide alongside the Spring &amp; Spring Boot guide, the API Development guide, the Microservices guide, the JDBC/Hibernate/Spring Data JPA guide, and the Observability &amp; Monitoring guide — together they cover the complete real-world Java full-stack developer journey from the network fundamentals underneath every request, through exactly how a Spring Boot application boots and serves that request, to the caching layer that keeps it all fast at scale.</div>
+</div>
+
+</body>
+</html>
+

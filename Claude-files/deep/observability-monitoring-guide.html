@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Observability &amp; Monitoring Complete Guide — Logging, Metrics, Tracing, Splunk, ELK, Prometheus for Java Full Stack Developers</title>
+<style>
+  @page { size: A4; margin: 18mm 15mm 18mm 15mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Arial, sans-serif; color: #1a1a1a; font-size: 11.5px; line-height: 1.55; }
+  h1, h2, h3, h4 { color: #ad1457; font-family: Arial, sans-serif; page-break-after: avoid; }
+  h1 { font-size: 22px; border-bottom: 3px solid #ad1457; padding-bottom: 6px; margin-top: 0; }
+  h2 { font-size: 17px; border-bottom: 1px solid #f8bbd0; padding-bottom: 4px; margin-top: 26px; }
+  h3 { font-size: 14px; color: #b03a2e; margin-top: 18px; }
+  h4 { font-size: 12.5px; color: #444; margin-top: 12px; }
+  .section { page-break-before: always; }
+  .cover { page-break-after: always; text-align: center; padding-top: 100px; }
+  .cover h1 { font-size: 30px; border: none; }
+  .cover h3 { color: #333; font-weight: normal; font-size: 16px; margin-top: 16px;}
+  .cover .tag { margin-top: 46px; font-size: 13px; color: #666; }
+  .toc { page-break-after: always; }
+  .toc ol { line-height: 1.9; font-size: 11px; }
+  code, pre { font-family: Consolas, "Courier New", monospace; }
+  code { background: #f1f1f1; padding: 1px 5px; border-radius: 3px; color: #a4141d; }
+  pre { background: #1e1e1e; color: #d4d4d4; padding: 10px 12px; border-radius: 6px; overflow-x: auto; font-size: 10.5px; line-height: 1.5; page-break-inside: avoid; white-space: pre-wrap; word-wrap: break-word; }
+  pre .c1 { color: #6a9955; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0 16px 0; font-size: 11px; }
+  th, td { border: 1px solid #bbb; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #ad1457; color: white; }
+  tr:nth-child(even) { background: #f4f7fc; }
+  a { text-decoration: none; color: #c2185b; }
+  .box { background: #f8f9fb; border: 1px solid #cdd6e6; border-radius: 6px; padding: 10px 14px; margin: 10px 0; }
+  .warn { background: #fff4e5; border: 1px solid #f0c36d; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .tip { background: #e8f6ee; border: 1px solid #7fc79a; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .qa { border-left: 3px solid #ad1457; padding-left: 10px; margin: 10px 0 16px 0; page-break-inside: avoid; }
+  .qa .q { font-weight: bold; color: #ad1457; }
+  .qa .a { margin-top: 4px; }
+  .qa .scenario { margin-top: 4px; font-style: italic; color: #555; }
+  .diagram { background: #fff; border: 1px dashed #ec407a; border-radius: 8px; padding: 16px; margin: 14px 0; page-break-inside: avoid; }
+  .diagram .title { font-weight: bold; color: #ad1457; margin-bottom: 10px; text-align:center; }
+  .flow-row { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+  .node { border: 2px solid #ad1457; background: #fce4ec; border-radius: 6px; padding: 8px 12px; font-weight: bold; text-align: center; font-size: 11px; min-width: 90px; }
+  .node.alt { border-color: #b03a2e; background: #fdeceb; }
+  .node.green { border-color: #1e8449; background: #eafaf1; }
+  .node.gray { border-color: #666; background: #eee; }
+  .node.purple { border-color: #8e44ad; background: #f5eefc; }
+  .arrow { font-size: 20px; color: #ad1457; font-weight: bold; }
+  .arrow-down { font-size: 20px; color: #ad1457; text-align: center; }
+  .dashboard { background: #12151c; border-radius: 8px; padding: 14px; margin: 12px 0; page-break-inside: avoid; }
+  .dashboard .dtitle { color: #e8e8e8; font-weight: bold; font-size: 12px; margin-bottom: 10px; }
+  .dgrid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .dcard { background: #1e2433; border: 1px solid #333c50; border-radius: 6px; padding: 8px 10px; flex: 1; min-width: 110px; }
+  .dcard .dlabel { color: #9aa5b8; font-size: 9px; text-transform: uppercase; }
+  .dcard .dvalue { color: #4ade80; font-size: 18px; font-weight: bold; }
+  .dcard .dvalue.red { color: #f87171; }
+  .dcard .dvalue.amber { color: #fbbf24; }
+  .dbar { display:flex; align-items:flex-end; gap:4px; height:60px; margin-top:6px; }
+  .dbar div { background: linear-gradient(180deg,#60a5fa,#3b82f6); width: 10px; border-radius: 2px 2px 0 0; }
+  .pagebreak { page-break-before: always; }
+  ul, ol { margin-top: 4px; }
+  li { margin-bottom: 3px; }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <h1>Observability &amp; Monitoring — The Complete Guide</h1>
+  <h3>Logging → Metrics → Tracing → Alerting, for Java Full Stack Developers</h3>
+  <h3>Log4j/SLF4J • ELK/Kibana • Splunk (with real SPL queries) • Prometheus/Grafana • OpenTelemetry/Zipkin/Jaeger</h3>
+  <h3>Spring Boot Actuator/Micrometer • Azure Monitor/Azure DevOps • Real Production Troubleshooting</h3>
+  <div class="tag">From "Hello World" console logs to full enterprise observability — simple terms, real dashboards, real queries</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+<h1>Table of Contents</h1>
+<ol>
+<li>Why Logging Is Needed — Starting with a Simple "Hello World" Application</li>
+<li>Before Logging Frameworks — What Developers Used to Do</li>
+<li>Introduction to Log4j, SLF4J and Logback in Java</li>
+<li>Log Levels Explained (TRACE, DEBUG, INFO, WARN, ERROR)</li>
+<li>What Is Observability? Monitoring vs Observability</li>
+<li>The Three Pillars of Observability — Logs, Metrics, Traces</li>
+<li>Golden Signals — Latency, Traffic, Errors, Saturation</li>
+<li>Types of Logs — What We Log and What We Monitor</li>
+<li>Structured Logging, Correlation ID, Trace ID &amp; Span ID</li>
+<li>Centralized Logging &amp; Log Aggregation — Why It's Mandatory</li>
+<li>ELK Stack Deep Dive (Elasticsearch, Logstash, Kibana)</li>
+<li>Kibana Dashboards — Visual Examples &amp; Real Queries</li>
+<li>Splunk Deep Dive — Architecture, Indexing, Forwarders</li>
+<li>Splunk Search Processing Language (SPL) — Real Queries</li>
+<li>Splunk Dashboards — Visual Examples</li>
+<li>ELK vs Splunk vs Kibana — Full Comparison</li>
+<li>Migrating from Browser/Console Logs to Splunk or ELK (Real Migration Path)</li>
+<li>Application, Infrastructure &amp; Business Metrics</li>
+<li>Prometheus &amp; Grafana Deep Dive with Dashboards</li>
+<li>Spring Boot Observability — Actuator &amp; Micrometer</li>
+<li>Distributed Tracing — OpenTelemetry, Zipkin, Jaeger</li>
+<li>Monitoring Types — JVM, CPU, Memory, Disk, Network, Database, API</li>
+<li>APM Tools — Dynatrace, AppDynamics, New Relic</li>
+<li>Alerting — SLA, SLO, SLI, Alertmanager, PagerDuty</li>
+<li>Azure Monitor &amp; Azure DevOps Integration for Logging and Monitoring</li>
+<li>Real-Time Production Troubleshooting (Response Time, Memory Leak, CPU, Thread Dump, GC, Slow SQL)</li>
+<li>Real Organization Setup — End to End (Our Application)</li>
+<li>Common Observability Issues, Problems &amp; Solutions</li>
+<li>Interview Questions &amp; Answers (Basic → Advanced → Scenario Based)</li>
+<li>Final Summary &amp; Cheat Sheet</li>
+</ol>
+</div>
+
+<!-- 1. WHY LOGGING IS NEEDED -->
+<div class="section">
+<h1>1. Why Logging Is Needed — Starting with a Simple "Hello World" Application</h1>
+
+<h2>1.1 The Simplest Possible Program</h2>
+<pre>public class HelloWorldApp {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}
+</pre>
+<div class="box">This works fine — you run it, you see "Hello, World!" in the console, done. But real applications aren't run once by a developer watching the console. They run 24/7, unattended, on remote servers, handling thousands of requests, and something eventually goes wrong when nobody is watching the screen.</div>
+
+<h2>1.2 What Happens When This Program Grows Up</h2>
+<pre>public class OrderProcessor {
+    public static void main(String[] args) {
+        System.out.println("Starting order processing...");
+        try {
+            processOrder(1001);
+        } catch (Exception e) {
+            System.out.println("Something went wrong!");   <span class="c1">// this tells you NOTHING useful</span>
+        }
+    }
+}
+</pre>
+<div class="warn">If this ran on a production server last night at 2 AM and failed, all you have is "Something went wrong!" printed into a console window nobody was watching — it's already scrolled away or the terminal was closed. This is the exact problem logging solves.</div>
+
+<h2>1.3 The Core Reasons We Need Logging</h2>
+<table>
+<tr><th>Reason</th><th>Simple Explanation</th></tr>
+<tr><td>Nobody watches the console 24/7</td><td>Logs written to a file/system persist even when no one is looking, so you can check them later</td></tr>
+<tr><td>Understand what happened before a crash</td><td>A log trail shows the sequence of events leading up to a failure</td></tr>
+<tr><td>Debug issues that only happen in production</td><td>You can't attach a debugger to a live production server — logs are often your only window into what happened</td></tr>
+<tr><td>Track business events</td><td>"Order #1001 placed by customer #55 at 10:42 AM" — useful for audits, support, and analytics, not just bugs</td></tr>
+<tr><td>Security &amp; compliance</td><td>Who accessed what, when — required for audits in banking/healthcare</td></tr>
+<tr><td>Performance analysis</td><td>Logs with timestamps reveal how long each step took</td></tr>
+</table>
+
+<h2>1.4 From print() to Real Logging — The Journey</h2>
+<div class="diagram">
+<div class="title">The Evolution of "Telling the Developer What's Happening"</div>
+<div class="flow-row">
+<div class="node gray">System.out.println()</div><div class="arrow">→</div><div class="node">Log4j / SLF4J / Logback (files, levels)</div><div class="arrow">→</div><div class="node alt">Centralized Logging (ELK / Splunk)</div><div class="arrow">→</div><div class="node green">Full Observability (Logs + Metrics + Traces)</div>
+</div>
+</div>
+<div class="tip">This entire guide follows exactly this journey — starting simple, and building up to the full enterprise observability stack real organizations use in production, including the one your organization uses today (Splunk + Azure DevOps).</div>
+</div>
+
+<!-- 2. BEFORE LOGGING FRAMEWORKS -->
+<div class="section">
+<h1>2. Before Logging Frameworks — What Developers Used to Do</h1>
+
+<h2>2.1 The print() / System.out.println() Era</h2>
+<div class="box">Before dedicated logging frameworks existed, Java developers simply used <code>System.out.println()</code> (or <code>System.err.println()</code> for errors) scattered throughout the code. This "worked" for tiny programs but broke down fast in real applications.</div>
+
+<h2>2.2 Problems With Using println() in Real Applications</h2>
+<table>
+<tr><th>Problem</th><th>Why It Hurts in Production</th></tr>
+<tr><td>No log levels</td><td>Can't say "only show me errors" — every println prints unconditionally, cluttering output</td></tr>
+<tr><td>No timestamps by default</td><td>You don't know exactly when something happened without manually adding it every time</td></tr>
+<tr><td>Nowhere persistent to look</td><td>Console output disappears when the terminal closes or the server restarts</td></tr>
+<tr><td>No way to turn off verbose logs in production</td><td>You'd have to comment out code and redeploy just to reduce noise</td></tr>
+<tr><td>Can't easily route logs elsewhere</td><td>No built-in way to send logs to a file, a database, or a remote log server</td></tr>
+<tr><td>Poor performance at scale</td><td>Uncontrolled, unbuffered console writes across many threads slow down high-traffic applications</td></tr>
+<tr><td>No structure</td><td>Free-form text is hard to search/filter/parse reliably at scale</td></tr>
+</table>
+
+<h2>2.3 A Real Example of the Old Way</h2>
+<pre><span class="c1">// Old-style manual "logging" — common in legacy codebases before Log4j adoption</span>
+public class LegacyPaymentService {
+    public void processPayment(double amount) {
+        System.out.println("[" + new java.util.Date() + "] Processing payment: " + amount);
+        try {
+            // ... payment logic
+        } catch (Exception e) {
+            System.out.println("[" + new java.util.Date() + "] ERROR: " + e.getMessage());
+            e.printStackTrace();   <span class="c1">// prints directly to console, uncontrolled</span>
+        }
+    }
+}
+</pre>
+<div class="warn">Every developer manually formatted timestamps differently, there was no consistent way to filter by severity, and turning this "off" for production meant physically deleting or commenting out print statements — a real, common pain point that led to the creation of dedicated logging frameworks like Log4j.</div>
+</div>
+
+<!-- 3. LOG4J SLF4J LOGBACK -->
+<div class="section">
+<h1>3. Introduction to Log4j, SLF4J and Logback in Java</h1>
+
+<h2>3.1 Why Log4j Was Created</h2>
+<div class="box">Log4j (created in 1999) was one of the first Java logging frameworks to solve exactly the problems in Section 2 — configurable log levels, multiple output destinations ("appenders": console, file, database, remote server), and configurable message formatting, all without changing code.</div>
+
+<h2>3.2 The Modern Java Logging Landscape</h2>
+<table>
+<tr><th>Component</th><th>Role</th></tr>
+<tr><td>SLF4J (Simple Logging Facade for Java)</td><td>A common <b>API</b>/facade your code depends on — you write code against SLF4J, and the actual logging framework underneath can be swapped without changing your code</td></tr>
+<tr><td>Logback</td><td>The most common modern implementation used underneath SLF4J — Spring Boot's default logging framework</td></tr>
+<tr><td>Log4j2</td><td>The modern successor to the original Log4j — a full-featured framework, an alternative to Logback, often chosen for higher performance async logging</td></tr>
+</table>
+<div class="tip"><b>Interview tip:</b> SLF4J is not a logging implementation itself — it's a facade. This means you can code entirely against the SLF4J API and switch the actual underlying engine (Logback vs Log4j2) via dependencies alone, with zero code changes.</div>
+
+<h2>3.3 Real Code — Using SLF4J (What You Actually Write in Spring Boot)</h2>
+<pre>import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class PaymentService {
+    private static final Logger log = LoggerFactory.getLogger(PaymentService.class);
+
+    public void processPayment(double amount) {
+        log.info("Processing payment of amount={}", amount);
+        try {
+            // ... payment logic
+        } catch (Exception e) {
+            log.error("Payment processing failed for amount={}", amount, e);   <span class="c1">// e = full stack trace logged</span>
+        }
+    }
+}
+
+<span class="c1">// With Lombok, this becomes even shorter:</span>
+@Slf4j
+public class PaymentService {
+    public void processPayment(double amount) {
+        log.info("Processing payment of amount={}", amount);
+    }
+}
+</pre>
+
+<h2>3.4 Log4j2 Configuration Example (log4j2.xml)</h2>
+<pre>&lt;Configuration status="WARN"&gt;
+  &lt;Appenders&gt;
+    &lt;Console name="Console" target="SYSTEM_OUT"&gt;
+      &lt;PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/&gt;
+    &lt;/Console&gt;
+    &lt;RollingFile name="File" fileName="logs/app.log" filePattern="logs/app-%d{yyyy-MM-dd}-%i.log.gz"&gt;
+      &lt;PatternLayout pattern="%d{ISO8601} [%t] %-5level %logger{36} - %msg%n"/&gt;
+      &lt;Policies&gt;
+        &lt;TimeBasedTriggeringPolicy/&gt;
+        &lt;SizeBasedTriggeringPolicy size="50MB"/&gt;
+      &lt;/Policies&gt;
+      &lt;DefaultRolloverStrategy max="10"/&gt;    <span class="c1">&lt;!-- keep last 10 rotated files --&gt;</span>
+    &lt;/RollingFile&gt;
+  &lt;/Appenders&gt;
+  &lt;Loggers&gt;
+    &lt;Logger name="com.bank" level="INFO" additivity="false"&gt;
+      &lt;AppenderRef ref="Console"/&gt;
+      &lt;AppenderRef ref="File"/&gt;
+    &lt;/Logger&gt;
+    &lt;Root level="WARN"&gt;
+      &lt;AppenderRef ref="Console"/&gt;
+    &lt;/Root&gt;
+  &lt;/Loggers&gt;
+&lt;/Configuration&gt;
+</pre>
+<div class="box">This configuration says: log everything INFO and above from <code>com.bank</code> package code to both console and a rotating file (max 50MB per file, gzip old ones, keep last 10) — but only WARN and above for all other (third-party library) code, keeping noise down.</div>
+
+<h2>3.5 Spring Boot's Default — Logback (application.yml)</h2>
+<pre>logging:
+  level:
+    root: WARN
+    com.bank: INFO
+  file:
+    name: logs/accounts-service.log
+  pattern:
+    file: "%d{ISO8601} [%X{traceId}] %-5level %logger{36} - %msg%n"
+</pre>
+<div class="tip">Notice <code>%X{traceId}</code> — this pulls a value from the SLF4J MDC (Mapped Diagnostic Context), which is exactly how Correlation IDs and Trace IDs get automatically included in every log line (full detail in Section 9).</div>
+</div>
+
+<!-- 4. LOG LEVELS -->
+<div class="section">
+<h1>4. Log Levels Explained (TRACE, DEBUG, INFO, WARN, ERROR)</h1>
+
+<h2>4.1 The Standard Log Level Hierarchy</h2>
+<div class="diagram">
+<div class="title">Log Levels — From Most Verbose to Most Severe</div>
+<div class="flow-row">
+<div class="node gray">TRACE</div><div class="arrow">→</div><div class="node gray">DEBUG</div><div class="arrow">→</div><div class="node green">INFO</div><div class="arrow">→</div><div class="node alt">WARN</div><div class="arrow">→</div><div class="node alt">ERROR</div>
+</div>
+</div>
+
+<h2>4.2 What Each Level Means and When to Use It</h2>
+<table>
+<tr><th>Level</th><th>When to Use</th><th>Real Example</th></tr>
+<tr><td>TRACE</td><td>Extremely detailed, step-by-step internal flow — rarely enabled, even in dev</td><td>"Entering method calculateInterest() with params: ..."</td></tr>
+<tr><td>DEBUG</td><td>Useful detail for developers diagnosing an issue, too noisy for production by default</td><td>"SQL query built: SELECT * FROM account WHERE id=?"</td></tr>
+<tr><td>INFO</td><td>Normal but significant business/application events — the default production level</td><td>"Order #1001 created successfully for customer #55"</td></tr>
+<tr><td>WARN</td><td>Something unexpected happened but the application recovered/continued</td><td>"Retrying payment gateway call, attempt 2 of 3"</td></tr>
+<tr><td>ERROR</td><td>Something failed and needs attention — an operation could not complete</td><td>"Failed to process payment for order #1001: connection timeout"</td></tr>
+</table>
+
+<h2>4.3 Setting Levels Per Environment (Real Practice)</h2>
+<table>
+<tr><th>Environment</th><th>Typical Root Level</th><th>Why</th></tr>
+<tr><td>Local Development</td><td>DEBUG</td><td>Developers want maximum visibility while building/debugging features</td></tr>
+<tr><td>QA/Staging</td><td>INFO or DEBUG (temporarily)</td><td>Enough detail to diagnose test failures without overwhelming volume</td></tr>
+<tr><td>Production</td><td>INFO (WARN for noisy third-party libraries)</td><td>DEBUG/TRACE in prod at scale generates huge log volume, cost, and can leak sensitive data</td></tr>
+</table>
+<div class="warn"><b>Real mistake to avoid:</b> Leaving DEBUG logging enabled in production for a high-traffic service can silently fill up disk space or massively increase your Splunk/ELK ingestion costs — always confirm log levels before a production release, and use dynamic log level changes (Actuator's <code>/loggers</code> endpoint) instead of full redeploys when you temporarily need more detail.</div>
+
+<h2>4.4 Changing Log Levels at Runtime (Spring Boot Actuator)</h2>
+<pre><span class="c1"># View current level</span>
+GET /actuator/loggers/com.bank.accounts
+
+<span class="c1"># Temporarily bump to DEBUG without redeploying — great for live troubleshooting</span>
+POST /actuator/loggers/com.bank.accounts
+{ "configuredLevel": "DEBUG" }
+</pre>
+</div>
+
+<!-- 5. WHAT IS OBSERVABILITY / MONITORING VS OBSERVABILITY -->
+<div class="section">
+<h1>5. What Is Observability? Monitoring vs Observability</h1>
+
+<h2>5.1 What Is Observability?</h2>
+<div class="box">Observability is the ability to understand what's happening <b>inside</b> a system just by examining its external outputs — logs, metrics, and traces — even for problems you never anticipated in advance. It answers "why" something is happening, not just "that" something is happening.</div>
+
+<h2>5.2 What Is Monitoring?</h2>
+<div class="box">Monitoring is watching a predefined set of metrics/dashboards/alerts for known failure conditions you already anticipated — "CPU &gt; 90%," "error rate &gt; 5%." It tells you <b>that</b> something is wrong.</div>
+
+<h2>5.3 Monitoring vs Observability — Side by Side</h2>
+<table>
+<tr><th>Aspect</th><th>Monitoring</th><th>Observability</th></tr>
+<tr><td>Approach</td><td>Watches known, predefined metrics/dashboards</td><td>Lets you explore and ask new questions about unknown issues</td></tr>
+<tr><td>Answers</td><td>"Is the system healthy right now?"</td><td>"Why exactly is this specific request slow?"</td></tr>
+<tr><td>Good for</td><td>Known failure modes (disk full, CPU spike)</td><td>Novel, first-time-seen production issues</td></tr>
+<tr><td>Built from</td><td>Dashboards and alert rules</td><td>Logs + Metrics + Traces combined, richly correlated by IDs</td></tr>
+<tr><td>Relationship</td><td colspan="2">Monitoring is a <b>subset</b> of Observability — you need good telemetry data (observability) to build good monitoring on top of it</td></tr>
+</table>
+<div class="tip"><b>Interview one-liner:</b> "Monitoring tells you something is broken; observability helps you figure out why — you can have monitoring without full observability, but you can't have real observability without collecting the data monitoring depends on."</div>
+</div>
+
+<!-- 6. THREE PILLARS -->
+<div class="section">
+<h1>6. The Three Pillars of Observability — Logs, Metrics, Traces</h1>
+
+<div class="diagram">
+<div class="title">The Three Pillars — What Each One Answers</div>
+<div class="flow-row">
+<div class="node green">Logs<br/>"What exactly happened?"</div>
+<div class="node purple">Metrics<br/>"How is the system trending over time?"</div>
+<div class="node alt">Traces<br/>"Where did time go for THIS request?"</div>
+</div>
+</div>
+
+<h2>6.1 Logs</h2>
+<p>Discrete, timestamped, detailed event records — an error message, a business event, a warning. Best for deep-diving into <b>one specific incident or request</b>.</p>
+
+<h2>6.2 Metrics</h2>
+<p>Numeric measurements aggregated over time — request count, average latency, memory usage percentage. Best for <b>trends, dashboards, and alerting thresholds</b>; cheap to store even at high volume since they're pre-aggregated numbers, not full text.</p>
+
+<h2>6.3 Traces</h2>
+<p>The end-to-end path of a single request as it flows through multiple services/components, broken into timed "spans." Best for finding <b>exactly which hop</b> in a multi-service call chain is slow or failing.</p>
+
+<h2>6.4 How They Work Together — Real Example</h2>
+<div class="diagram">
+<div class="title">Using All Three Pillars Together to Debug an Incident</div>
+<div class="flow-row">
+<div class="node purple">1. Grafana metric dashboard shows: Accounts Service p99 latency spiked to 3s</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+<div class="node alt">2. Open Jaeger, find a slow trace from that time window</div>
+</div>
+<div class="arrow-down">↓ trace shows one span (Cards Service call) took 2.8s of the 3s</div>
+<div class="flow-row">
+<div class="node green">3. Search Kibana/Splunk logs filtered by that trace ID → find the exact error/warning logged by Cards Service at that moment</div>
+</div>
+</div>
+</div>
+
+<!-- 7. GOLDEN SIGNALS -->
+<div class="section">
+<h1>7. Golden Signals — Latency, Traffic, Errors, Saturation</h1>
+<div class="box">Popularized by Google's SRE book, the "Four Golden Signals" are the minimum set of metrics you should monitor for any user-facing service if you can only pick a few.</div>
+<table>
+<tr><th>Signal</th><th>What It Measures</th><th>Real Example Metric</th></tr>
+<tr><td>Latency</td><td>Time taken to serve a request</td><td>p50/p95/p99 response time of <code>POST /accounts/transfer</code></td></tr>
+<tr><td>Traffic</td><td>Demand being placed on the system</td><td>Requests per second on the API Gateway</td></tr>
+<tr><td>Errors</td><td>Rate of failed requests</td><td>Percentage of 5xx responses from Cards Service</td></tr>
+<tr><td>Saturation</td><td>How "full" the system's resources are</td><td>CPU/memory/thread pool utilization, DB connection pool usage</td></tr>
+</table>
+<div class="tip"><b>Real scenario:</b> "Our Grafana dashboard for Accounts Service has exactly these four panels at the very top — any on-call engineer can glance at it for 5 seconds and know if the service is healthy, overloaded, or actively failing, before digging into anything deeper."</div>
+</div>
+
+<!-- 8. TYPES OF LOGS -->
+<div class="section">
+<h1>8. Types of Logs — What We Log and What We Monitor</h1>
+
+<h2>8.1 Categories of Logs</h2>
+<table>
+<tr><th>Log Type</th><th>What It Contains</th><th>Real Example</th></tr>
+<tr><td>Application Logs</td><td>Business logic events, errors, warnings from your own code</td><td>"Loan application LN-4521 approved for customer 8823"</td></tr>
+<tr><td>Access/Request Logs</td><td>Every incoming HTTP request — method, path, status, duration</td><td>"GET /accounts/1001 → 200 OK in 42ms"</td></tr>
+<tr><td>Error/Exception Logs</td><td>Stack traces and failure details</td><td>"NullPointerException at AccountService.java:82"</td></tr>
+<tr><td>Audit Logs</td><td>Who did what, when — for compliance/security</td><td>"User admin_raj updated card limit for card 8890 from 50000 to 100000"</td></tr>
+<tr><td>Security Logs</td><td>Authentication attempts, authorization failures, suspicious activity</td><td>"Failed login attempt for user jsmith from IP 203.0.113.44"</td></tr>
+<tr><td>Infrastructure/System Logs</td><td>OS, container runtime, Kubernetes events</td><td>"Pod cards-service-7f9c OOMKilled"</td></tr>
+<tr><td>Database Logs</td><td>Slow queries, connection errors, deadlocks</td><td>"Query exceeded 5000ms: SELECT * FROM transaction WHERE ..."</td></tr>
+<tr><td>Integration/Third-Party Logs</td><td>Calls to external systems (payment gateways, credit bureaus)</td><td>"Card network API responded with timeout after 10s"</td></tr>
+</table>
+
+<h2>8.2 What We Actually Monitor (Not Just Log)</h2>
+<table>
+<tr><th>Category</th><th>What We Watch</th></tr>
+<tr><td>Availability</td><td>Is the service up and responding to health checks?</td></tr>
+<tr><td>Performance</td><td>Response time percentiles, throughput</td></tr>
+<tr><td>Errors</td><td>Error rate/count, by type and endpoint</td></tr>
+<tr><td>Resource usage</td><td>CPU, memory, disk, network, thread pools, DB connections</td></tr>
+<tr><td>Business KPIs</td><td>Orders placed/hour, loan approvals/day, failed payment percentage</td></tr>
+<tr><td>Security events</td><td>Failed logins, unusual access patterns, privilege escalations</td></tr>
+</table>
+<div class="warn"><b>What NOT to log:</b> passwords, full credit card numbers, JWT tokens, national ID numbers, or other sensitive PII/PCI data in plain text — mask/redact these before logging (e.g., log only the last 4 digits of a card number) to stay compliant with PCI-DSS/GDPR and avoid a serious security incident if logs are ever exposed.</div>
+</div>
+
+<!-- 9. STRUCTURED LOGGING / CORRELATION ID / TRACE ID -->
+<div class="section">
+<h1>9. Structured Logging, Correlation ID, Trace ID &amp; Span ID</h1>
+
+<h2>9.1 Unstructured vs Structured Logging</h2>
+<pre><span class="c1"># Unstructured (plain text) — hard to search/filter reliably at scale</span>
+2026-09-30 10:42:13 INFO Order 1001 created for customer 55, amount 4500.00
+
+<span class="c1"># Structured (JSON) — every field is queryable, filterable, aggregatable</span>
+{"timestamp":"2026-09-30T10:42:13Z","level":"INFO","service":"orders-service",
+ "traceId":"a1b2c3d4","message":"Order created","orderId":1001,"customerId":55,"amount":4500.00}
+</pre>
+<div class="box">Structured (usually JSON) logs let tools like Splunk/ELK index each field separately — you can query <code>customerId=55 AND level=ERROR</code> directly, instead of writing fragile text-pattern searches across free-form messages.</div>
+
+<h2>9.2 Real Spring Boot Structured Logging Setup (Logback JSON Encoder)</h2>
+<pre>&lt;dependency&gt;
+  &lt;groupId&gt;net.logstash.logback&lt;/groupId&gt;
+  &lt;artifactId&gt;logstash-logback-encoder&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+<span class="c1">&lt;!-- logback-spring.xml --&gt;</span>
+&lt;appender name="JSON" class="ch.qos.logback.core.ConsoleAppender"&gt;
+  &lt;encoder class="net.logstash.logback.encoder.LogstashEncoder"&gt;
+    &lt;includeMdcKeyName&gt;traceId&lt;/includeMdcKeyName&gt;
+    &lt;includeMdcKeyName&gt;spanId&lt;/includeMdcKeyName&gt;
+  &lt;/encoder&gt;
+&lt;/appender&gt;
+</pre>
+
+<h2>9.3 What Is a Correlation ID?</h2>
+<div class="box">A Correlation ID is a unique identifier generated at the very start of a request (usually at the API Gateway or the first service that receives it) and passed along in every downstream call's headers/logs — letting you find <b>every log line related to one user's request</b> across every service it touched, just by searching for that one ID.</div>
+<pre><span class="c1">// Servlet Filter generating/propagating a correlation ID</span>
+@Component
+public class CorrelationIdFilter extends OncePerRequestFilter {
+    @Override
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
+            throws ServletException, IOException {
+        String correlationId = req.getHeader("X-Correlation-Id");
+        if (correlationId == null) correlationId = UUID.randomUUID().toString();
+        MDC.put("correlationId", correlationId);     <span class="c1">// now available to every log line via %X{correlationId}</span>
+        res.setHeader("X-Correlation-Id", correlationId);
+        try {
+            chain.doFilter(req, res);
+        } finally {
+            MDC.clear();     <span class="c1">// always clean up MDC to avoid leaking into the next request on the same thread</span>
+        }
+    }
+}
+</pre>
+
+<h2>9.4 Trace ID &amp; Span ID (Distributed Tracing Terms)</h2>
+<div class="box">A <b>Trace ID</b> is essentially a more formal, standardized version of a Correlation ID used specifically by distributed tracing systems (OpenTelemetry, Zipkin, Jaeger) — it identifies the entire end-to-end request across all services. A <b>Span ID</b> identifies one specific unit of work within that trace (e.g., "the Cards Service's handling of this request" is one span, "the SQL query it ran" could be a child span).</div>
+<div class="diagram">
+<div class="title">Trace ID vs Span ID</div>
+<div class="flow-row"><div class="node purple">Trace ID: 7f3a9c (whole request, same across all services)</div></div>
+<div class="flow-row">
+<div class="node">Span A: Gateway (id: s1)</div><div class="node">Span B: Accounts Service (id: s2, parent: s1)</div><div class="node alt">Span C: Cards Service call (id: s3, parent: s2)</div>
+</div>
+</div>
+<div class="tip"><b>Real scenario:</b> "A customer reports 'my transfer failed.' We ask for the correlation ID from the error screen (or find it via their customer ID + timestamp), search Splunk for that exact ID, and instantly see every log line from Gateway → Accounts Service → Cards Service → Kafka for that one specific request — no guessing which of 50 million daily log lines are relevant."</div>
+</div>
+
+<!-- 10. CENTRALIZED LOGGING -->
+<div class="section">
+<h1>10. Centralized Logging &amp; Log Aggregation — Why It's Mandatory</h1>
+
+<h2>10.1 The Problem Without Centralized Logging</h2>
+<div class="warn">With 20 microservices running across dozens of Kubernetes pods, logs sitting only on each pod's local disk are nearly useless — pods are ephemeral (deleted/rescheduled constantly), so their logs vanish, and manually SSHing/kubectl-exec-ing into each pod to grep logs one by one doesn't scale at all.</div>
+
+<h2>10.2 What Centralized Logging Provides</h2>
+<ul>
+<li>One searchable place for logs from every service, every pod, every environment.</li>
+<li>Logs survive even after the pod that generated them is gone.</li>
+<li>Powerful search/filter across huge volumes (millions of log lines/day) in seconds.</li>
+<li>Dashboards and alerts built directly on log data (e.g., alert if "ERROR" count spikes).</li>
+<li>Long-term retention for audits/compliance, independent of any single server's disk.</li>
+</ul>
+
+<h2>10.3 General Log Aggregation Architecture (Tool-Agnostic)</h2>
+<div class="diagram">
+<div class="title">Log Aggregation — The Universal Pattern</div>
+<div class="flow-row">
+<div class="node green">App writes logs<br/>(stdout or file)</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">Log Shipper/Agent<br/>(Filebeat, Fluentd, Splunk Forwarder)</div></div>
+<div class="arrow-down">↓ ships to</div>
+<div class="flow-row"><div class="node purple">Central Log Store<br/>(Elasticsearch or Splunk Indexer)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node alt">Search &amp; Dashboard UI<br/>(Kibana or Splunk Web)</div></div>
+</div>
+<div class="tip">This same 4-layer pattern (App → Shipper → Store → UI) is exactly how both ELK and Splunk work internally — once you understand one, the other is easy to map onto the same mental model, just with different product names.</div>
+</div>
+
+<!-- 11. ELK STACK -->
+<div class="section">
+<h1>11. ELK Stack Deep Dive (Elasticsearch, Logstash, Kibana)</h1>
+
+<h2>11.1 The Three Components</h2>
+<table>
+<tr><th>Component</th><th>Role</th></tr>
+<tr><td>Elasticsearch</td><td>A distributed search &amp; analytics engine — stores logs as indexed JSON documents, enables fast full-text and structured search</td></tr>
+<tr><td>Logstash</td><td>A data processing pipeline — ingests raw logs, parses/transforms/enriches them, then sends them to Elasticsearch</td></tr>
+<tr><td>Kibana</td><td>The web UI — search logs, build visualizations and dashboards on top of Elasticsearch data</td></tr>
+</table>
+<div class="box">Many modern setups replace Logstash with the much lighter-weight <b>Filebeat</b> (a "Beat") for simple log shipping, or use <b>Fluentd/Fluent Bit</b> (common in Kubernetes) — the combination is then sometimes called "EFK" instead of "ELK."</div>
+
+<h2>11.2 Full ELK Flow — Real Example</h2>
+<div class="diagram">
+<div class="title">ELK in a Kubernetes-Based Microservices Setup</div>
+<div class="flow-row">
+<div class="node green">Accounts Service pod</div><div class="node green">Cards Service pod</div><div class="node green">Loans Service pod</div>
+</div>
+<div class="arrow-down">↓ each pod has a Filebeat/Fluent Bit sidecar or DaemonSet reading container stdout</div>
+<div class="flow-row"><div class="node">Logstash (parses JSON, adds Kubernetes metadata: pod name, namespace)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">Elasticsearch (index: logs-accounts-service-2026.09.30)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node alt">Kibana (search, dashboards, alerts)</div></div>
+</div>
+
+<h2>11.3 Elasticsearch Core Concepts</h2>
+<table>
+<tr><th>Concept</th><th>Meaning</th></tr>
+<tr><td>Index</td><td>A collection of documents (like a database/table), often one per service per day (e.g., <code>logs-accounts-2026.09.30</code>)</td></tr>
+<tr><td>Document</td><td>One single log entry, stored as JSON</td></tr>
+<tr><td>Field</td><td>One property of the document (level, message, traceId, customerId)</td></tr>
+<tr><td>Shard</td><td>A horizontal partition of an index, spread across nodes for scalability</td></tr>
+<tr><td>Query DSL</td><td>Elasticsearch's JSON-based query language for searching documents</td></tr>
+</table>
+
+<h2>11.4 Real Elasticsearch Query DSL Example</h2>
+<pre>GET /logs-accounts-service-*/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "match": { "level": "ERROR" } },
+        { "match": { "traceId": "a1b2c3d4" } }
+      ],
+      "filter": [
+        { "range": { "timestamp": { "gte": "now-1h" } } }
+      ]
+    }
+  }
+}
+</pre>
+
+<h2>11.5 A Basic Logstash Pipeline Config</h2>
+<pre>input {
+  beats { port => 5044 }
+}
+filter {
+  json { source => "message" }
+  mutate { add_field => { "environment" => "prod" } }
+}
+output {
+  elasticsearch {
+    hosts => ["http://elasticsearch:9200"]
+    index => "logs-%{[service]}-%{+YYYY.MM.dd}"
+  }
+}
+</pre>
+</div>
+
+<!-- 12. KIBANA DASHBOARDS -->
+<div class="section">
+<h1>12. Kibana Dashboards — Visual Examples &amp; Real Queries</h1>
+
+<h2>12.1 Kibana Query Language (KQL) — Real Search Examples</h2>
+<pre><span class="c1"># Find all ERROR logs from Cards Service in the last hour</span>
+service: "cards-service" and level: "ERROR"
+
+<span class="c1"># Find everything for one specific customer's failed transactions</span>
+customerId: 55 and message: "*failed*"
+
+<span class="c1"># Find slow requests (custom field "durationMs" logged by the app)</span>
+service: "accounts-service" and durationMs &gt; 2000
+
+<span class="c1"># Find all logs for one traced request across every service</span>
+traceId: "a1b2c3d4"
+</pre>
+
+<h2>12.2 Example Kibana Dashboard — Visual Mockup</h2>
+<div class="dashboard">
+<div class="dtitle">Kibana Dashboard — Accounts Service Overview (Last 24 Hours)</div>
+<div class="dgrid">
+<div class="dcard"><div class="dlabel">Total Log Volume</div><div class="dvalue">1.42M</div></div>
+<div class="dcard"><div class="dlabel">Error Count</div><div class="dvalue red">3,180</div></div>
+<div class="dcard"><div class="dlabel">Warn Count</div><div class="dvalue amber">9,742</div></div>
+<div class="dcard"><div class="dlabel">Unique Trace IDs</div><div class="dvalue">418,220</div></div>
+</div>
+<div class="dbar">
+<div style="height:20px"></div><div style="height:35px"></div><div style="height:28px"></div><div style="height:55px"></div>
+<div style="height:70px"></div><div style="height:40px"></div><div style="height:30px"></div><div style="height:22px"></div>
+<div style="height:60px"></div><div style="height:80px"></div><div style="height:45px"></div><div style="height:25px"></div>
+</div>
+<div class="dlabel" style="margin-top:4px;">Errors per hour, last 12 hours</div>
+</div>
+
+<h2>12.3 Common Kibana Dashboard Panels Real Teams Build</h2>
+<ul>
+<li><b>Log volume over time</b> — a line/bar chart showing overall traffic and spotting unusual spikes.</li>
+<li><b>Top error messages</b> — a data table aggregating the most frequent error strings, to spot recurring issues.</li>
+<li><b>Errors by service</b> — a pie/bar chart comparing which microservice is generating the most errors.</li>
+<li><b>Response time heatmap</b> — visualize latency distribution over time.</li>
+<li><b>Geographic/customer impact map</b> — for customer-facing incidents, showing how many unique customers were affected.</li>
+</ul>
+<div class="tip"><b>Real scenario:</b> "During a production incident, the on-call engineer opens the pre-built 'Live Incident' Kibana dashboard, filters by the last 15 minutes, and immediately sees the error spike started exactly when a new deployment rolled out — pointing straight at the recent release as the root cause, all without writing a single manual query."</div>
+</div>
+
+<!-- 13. SPLUNK DEEP DIVE -->
+<div class="section">
+<h1>13. Splunk Deep Dive — Architecture, Indexing, Forwarders</h1>
+
+<h2>13.1 What Is Splunk?</h2>
+<div class="box">Splunk is a commercial, enterprise-grade platform for collecting, indexing, and searching machine-generated data (logs, metrics, events) at massive scale — it plays the same overall role as ELK, but as a mature, polished, paid product with a very powerful proprietary query language (SPL) and strong enterprise support/compliance features.</div>
+
+<h2>13.2 Splunk Architecture</h2>
+<div class="diagram">
+<div class="title">Splunk Architecture — Real Setup</div>
+<div class="flow-row">
+<div class="node green">Accounts Service</div><div class="node green">Cards Service</div><div class="node green">Loans Service</div>
+</div>
+<div class="arrow-down">↓ Universal Forwarder (lightweight agent) installed on each host/pod</div>
+<div class="flow-row"><div class="node">Splunk Forwarders</div></div>
+<div class="arrow-down">↓ ship raw events to</div>
+<div class="flow-row"><div class="node purple">Splunk Indexers (parse, index, store)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node alt">Splunk Search Head (Web UI, SPL queries, dashboards, alerts)</div></div>
+</div>
+
+<h2>13.3 Core Splunk Concepts</h2>
+<table>
+<tr><th>Concept</th><th>Meaning</th></tr>
+<tr><td>Universal Forwarder</td><td>Lightweight agent installed on each server/pod that reads log files/stdout and forwards raw data to indexers</td></tr>
+<tr><td>Index</td><td>Where Splunk stores processed/indexed event data (e.g., <code>main</code>, or a dedicated <code>bank_prod</code> index)</td></tr>
+<tr><td>Sourcetype</td><td>A classification of the data format (e.g., <code>spring_boot_json</code>, <code>nginx_access</code>) — tells Splunk how to parse fields</td></tr>
+<tr><td>Event</td><td>One single log entry as stored/indexed in Splunk</td></tr>
+<tr><td>Field Extraction</td><td>Splunk automatically (or via configured rules) extracts key-value fields from raw events for searching</td></tr>
+<tr><td>SPL (Search Processing Language)</td><td>Splunk's own query language — pipe-based, similar in feel to Unix shell pipelines</td></tr>
+</table>
+
+<h2>13.4 Getting Logs Into Splunk From a Spring Boot App</h2>
+<pre><span class="c1"># inputs.conf on the server/pod running the Universal Forwarder</span>
+[monitor:///var/log/accounts-service/*.log]
+sourcetype = spring_boot_json
+index = bank_prod
+
+<span class="c1"># Alternative: Spring Boot logs directly to Splunk HTTP Event Collector (HEC) — common in Kubernetes</span>
+&lt;dependency&gt;
+  &lt;groupId&gt;com.splunk.logging&lt;/groupId&gt;
+  &lt;artifactId&gt;splunk-library-javalogging&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+<span class="c1"># log4j2.xml — HEC appender sends logs directly over HTTPS, no forwarder needed</span>
+&lt;Http name="splunkHttp" url="https://splunk-hec:8088/services/collector/event"
+      token="YOUR-HEC-TOKEN" source="accounts-service" sourcetype="spring_boot_json" index="bank_prod"/&gt;
+</pre>
+<div class="tip"><b>Real scenario:</b> "Our Kubernetes pods run without local disk persistence for logs — instead, each Spring Boot service is configured with a Splunk HEC appender that ships structured JSON logs directly over HTTPS the moment they're written, so we don't lose anything even if a pod crashes and is deleted instantly."</div>
+</div>
+
+<!-- 14. SPLUNK SPL QUERIES -->
+<div class="section">
+<h1>14. Splunk Search Processing Language (SPL) — Real Queries</h1>
+
+<h2>14.1 Basic Search Syntax</h2>
+<pre><span class="c1"># Find all ERROR events from Cards Service in the last 24 hours</span>
+index=bank_prod sourcetype=spring_boot_json service="cards-service" level="ERROR"
+
+<span class="c1"># Search across a specific time range using earliest/latest</span>
+index=bank_prod service="loans-service" earliest=-1h latest=now level="ERROR"
+</pre>
+
+<h2>14.2 Real SPL Queries Used in Our Organization</h2>
+<pre><span class="c1"># 1. Count errors per service in the last hour, sorted highest first</span>
+index=bank_prod level="ERROR" earliest=-1h
+| stats count by service
+| sort -count
+
+<span class="c1"># 2. Find the full journey of one customer's request using a trace ID</span>
+index=bank_prod traceId="a1b2c3d4"
+| sort _time
+| table _time, service, level, message
+
+<span class="c1"># 3. Top 10 slowest API endpoints in the last 4 hours</span>
+index=bank_prod sourcetype=access_log earliest=-4h
+| stats avg(durationMs) as avg_duration, p95(durationMs) as p95_duration by endpoint
+| sort -p95_duration
+| head 10
+
+<span class="c1"># 4. Detect a spike in failed logins (possible brute-force attempt)</span>
+index=bank_prod sourcetype=auth_log message="Failed login"
+| bucket _time span=5m
+| stats count by _time, sourceIp
+| where count &gt; 20
+
+<span class="c1"># 5. Calculate error rate percentage over time for an SLO dashboard</span>
+index=bank_prod service="accounts-service"
+| bucket _time span=5m
+| stats count as total, count(eval(level="ERROR")) as errors by _time
+| eval error_rate = round((errors/total)*100, 2)
+
+<span class="c1"># 6. Find all audit events where a card limit was changed above a threshold</span>
+index=bank_prod sourcetype=audit_log action="card_limit_updated" newLimit&gt;100000
+| table _time, user, cardId, oldLimit, newLimit
+</pre>
+
+<h2>14.3 Key SPL Commands Cheat Sheet</h2>
+<table>
+<tr><th>Command</th><th>Purpose</th></tr>
+<tr><td><code>stats</code></td><td>Aggregate values (count, avg, sum, p95, etc.) grouped by fields</td></tr>
+<tr><td><code>eval</code></td><td>Create/calculate a new field based on an expression</td></tr>
+<tr><td><code>where</code></td><td>Filter results after aggregation (like SQL's HAVING)</td></tr>
+<tr><td><code>sort</code></td><td>Order results by a field (prefix with <code>-</code> for descending)</td></tr>
+<tr><td><code>table</code></td><td>Display only specific fields in a clean tabular view</td></tr>
+<tr><td><code>bucket</code></td><td>Group events into time buckets (e.g., 5-minute windows) for trend charts</td></tr>
+<tr><td><code>rex</code></td><td>Extract a new field from raw text using a regular expression</td></tr>
+<tr><td><code>timechart</code></td><td>Build a time-series aggregation directly suited for charting</td></tr>
+</table>
+</div>
+
+<!-- 15. SPLUNK DASHBOARDS -->
+<div class="section">
+<h1>15. Splunk Dashboards — Visual Examples</h1>
+
+<h2>15.1 Real Splunk Dashboard Mockup — Executive/On-Call View</h2>
+<div class="dashboard">
+<div class="dtitle">Splunk Dashboard — Bank Platform Health (Real-Time)</div>
+<div class="dgrid">
+<div class="dcard"><div class="dlabel">Requests / min</div><div class="dvalue">18,420</div></div>
+<div class="dcard"><div class="dlabel">Error Rate</div><div class="dvalue amber">1.8%</div></div>
+<div class="dcard"><div class="dlabel">p95 Latency</div><div class="dvalue">340ms</div></div>
+<div class="dcard"><div class="dlabel">Active Alerts</div><div class="dvalue red">2</div></div>
+</div>
+<div class="dbar">
+<div style="height:30px"></div><div style="height:32px"></div><div style="height:28px"></div><div style="height:45px"></div>
+<div style="height:65px"></div><div style="height:75px"></div><div style="height:50px"></div><div style="height:35px"></div>
+<div style="height:30px"></div><div style="height:28px"></div><div style="height:60px"></div><div style="height:40px"></div>
+</div>
+<div class="dlabel" style="margin-top:4px;">Error rate % per 5-min bucket, last hour</div>
+</div>
+
+<h2>15.2 Common Panels in Real Splunk Dashboards</h2>
+<ul>
+<li><b>Single-value panels</b> — total requests, error rate, active alert count (built with <code>stats</code> + a Splunk "Single Value" visualization).</li>
+<li><b>Time chart panels</b> — error trends, traffic trends, built with <code>timechart</code>.</li>
+<li><b>Top-N tables</b> — top failing endpoints, top customers affected, slowest queries.</li>
+<li><b>Geographic maps</b> — request origin by country/region for fraud/security dashboards.</li>
+<li><b>Alert-linked panels</b> — panels tied directly to a saved search that also powers a real-time alert.</li>
+</ul>
+
+<h2>15.3 Creating a Splunk Alert From a Saved Search</h2>
+<pre><span class="c1"># Saved search powering an alert: fire if error rate exceeds 5% for 2 consecutive 5-min windows</span>
+index=bank_prod service="accounts-service"
+| bucket _time span=5m
+| stats count as total, count(eval(level="ERROR")) as errors by _time
+| eval error_rate = round((errors/total)*100, 2)
+| where error_rate &gt; 5
+
+<span class="c1"># Alert configured to: run every 5 minutes, trigger if search returns &gt;=1 result,
+#                       throttle to avoid duplicate pages, action = send to PagerDuty webhook</span>
+</pre>
+</div>
+
+<!-- 16. ELK VS SPLUNK -->
+<div class="section">
+<h1>16. ELK vs Splunk vs Kibana — Full Comparison</h1>
+<table>
+<tr><th>Aspect</th><th>ELK Stack (Elasticsearch + Logstash + Kibana)</th><th>Splunk</th></tr>
+<tr><td>Cost Model</td><td>Open source core (free), paid tier (Elastic subscription) for advanced features</td><td>Commercial, licensed by data ingestion volume — can get expensive at scale</td></tr>
+<tr><td>Setup/Maintenance</td><td>You self-host and maintain the cluster (or use Elastic Cloud)</td><td>Can be self-hosted or Splunk Cloud (fully managed)</td></tr>
+<tr><td>Query Language</td><td>KQL / Elasticsearch Query DSL (JSON-based)</td><td>SPL — very powerful, pipe-based, enterprise-favorite</td></tr>
+<tr><td>Ease of Use</td><td>Good, some learning curve for Query DSL</td><td>Very polished UI/UX, often considered more approachable for non-engineers (support/ops teams)</td></tr>
+<tr><td>Enterprise Features</td><td>Growing (via paid tiers) — security, alerting, ML</td><td>Very mature — strong compliance, RBAC, ITSI, enterprise support contracts</td></tr>
+<tr><td>Common In</td><td>Cloud-native/Kubernetes-heavy, cost-conscious, open-source-friendly orgs</td><td>Large enterprises, banks, regulated industries with budget for licensing and strong support needs</td></tr>
+</table>
+<div class="tip"><b>Interview tip:</b> Both solve the same core problem (centralized log search/analysis) — the real difference is licensing cost model, operational ownership (self-hosted vs managed), and query language ergonomics. Many large enterprises (including regulated banks) use Splunk specifically for its enterprise compliance/support maturity, which is very likely why your organization uses it.</div>
+</div>
+
+<!-- 17. MIGRATION PLAN -->
+<div class="section">
+<h1>17. Migrating from Browser/Console Logs to Splunk or ELK (Real Migration Path)</h1>
+
+<h2>17.1 The Starting Point — "We Just Have Browser Dev Tools / Console Logs"</h2>
+<div class="warn">If today the only visibility into issues is opening browser DevTools Console/Network tab, or SSHing into a server to tail a local log file, you have <b>zero</b> centralized observability — nothing is searchable historically, nothing survives a pod restart, and nobody gets alerted automatically when something breaks.</div>
+
+<h2>17.2 Step-by-Step Migration Plan</h2>
+<ol>
+<li><b>Step 1 — Standardize on structured logging first.</b> Before shipping logs anywhere, switch every service to JSON structured logging (Section 9) with consistent field names (service, level, traceId, message) — garbage in, garbage out otherwise.</li>
+<li><b>Step 2 — Add Correlation/Trace IDs everywhere.</b> Ensure every request gets a unique ID propagated through all services and included in every log line (Section 9.3).</li>
+<li><b>Step 3 — Pick the destination.</b> Confirm Splunk (since your org already has it) as the target — request an index (e.g., <code>bank_prod</code>) and an HEC token, or forwarder deployment, from your Splunk admin team.</li>
+<li><b>Step 4 — Instrument one pilot service first.</b> Don't migrate all 20 services at once — start with one lower-risk service, wire up the Splunk HEC appender or Universal Forwarder, verify events arrive and fields parse correctly.</li>
+<li><b>Step 5 — Build a basic dashboard and one alert for the pilot service.</b> Prove the value early (e.g., an error-rate dashboard + a Slack/PagerDuty alert) before rolling out further.</li>
+<li><b>Step 6 — Roll out to remaining services incrementally,</b> reusing the same sourcetype/index conventions and log format standards established in the pilot.</li>
+<li><b>Step 7 — Decommission ad-hoc access</b> (SSH-based manual log tailing, browser-console-only debugging) once the team trusts and habitually uses Splunk for troubleshooting.</li>
+<li><b>Step 8 — Add distributed tracing</b> (OpenTelemetry) once basic centralized logging is solid, to complete the observability picture (Sections 20-23).</li>
+</ol>
+
+<h2>17.3 What About Frontend (React) Logs Currently Only in Browser DevTools?</h2>
+<div class="box">Frontend errors visible only in a user's browser console are invisible to your team unless the user reports them. Real organizations solve this by shipping frontend errors/logs to the backend (or directly to an observability tool) using a small client-side error reporting layer.</div>
+<pre><span class="c1">// React — global error boundary + window.onerror reporting to a backend logging endpoint</span>
+window.addEventListener('error', (event) => {
+  fetch('/api/client-logs', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      message: event.message,
+      stack: event.error?.stack,
+      url: window.location.href,
+      traceId: getCurrentTraceId()
+    })
+  });
+});
+</pre>
+<div class="box">The backend endpoint receiving these simply logs them (structured JSON, same pipeline as backend logs) into the same Splunk index — so frontend errors become searchable and alertable exactly like backend errors, closing the "we only saw it in dev tools" gap entirely.</div>
+</div>
+
+<!-- 18. METRICS -->
+<div class="section">
+<h1>18. Application, Infrastructure &amp; Business Metrics</h1>
+
+<h2>18.1 Categories of Metrics</h2>
+<table>
+<tr><th>Category</th><th>Examples</th><th>Why It Matters</th></tr>
+<tr><td>Application Metrics</td><td>Request count, response time, error rate per endpoint</td><td>Shows how the application itself is performing</td></tr>
+<tr><td>Infrastructure Metrics</td><td>CPU, memory, disk I/O, network throughput per pod/node</td><td>Shows if underlying resources are the bottleneck</td></tr>
+<tr><td>Business Metrics</td><td>Loan applications/hour, failed payment %, new accounts opened/day</td><td>Connects technical health to actual business impact</td></tr>
+<tr><td>Custom Metrics</td><td>Anything specific to your domain (e.g., "average card approval time")</td><td>Captures what generic tooling can't measure out of the box</td></tr>
+</table>
+
+<h2>18.2 Real Custom Business Metric in Spring Boot</h2>
+<pre>@Service
+@RequiredArgsConstructor
+public class LoansService {
+    private final MeterRegistry meterRegistry;
+
+    public void approveLoan(Loan loan) {
+        // ... business logic
+        meterRegistry.counter("loan.approved", "type", loan.getType()).increment();
+        meterRegistry.summary("loan.approved.amount").record(loan.getAmount());
+    }
+}
+</pre>
+<div class="tip">This one counter powers both a technical dashboard panel ("loan approvals per hour") and a genuinely business-relevant KPI ("are we approving fewer loans than usual today, and why?") — the same metric, two audiences.</div>
+</div>
+
+<!-- 19. PROMETHEUS & GRAFANA -->
+<div class="section">
+<h1>19. Prometheus &amp; Grafana Deep Dive with Dashboards</h1>
+
+<h2>19.1 How Prometheus Works</h2>
+<div class="diagram">
+<div class="title">Prometheus Pull-Based Model</div>
+<div class="flow-row">
+<div class="node green">Accounts Service exposes /actuator/prometheus</div>
+</div>
+<div class="arrow-down">↓ Prometheus "scrapes" (pulls) this endpoint every 15s</div>
+<div class="flow-row"><div class="node purple">Prometheus Server (time-series database)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node alt">Grafana (queries Prometheus, renders dashboards)</div></div>
+</div>
+<div class="box">Unlike log shippers that <b>push</b> data, Prometheus typically <b>pulls</b> (scrapes) metrics from each target on a schedule — this is a key architectural difference from logging pipelines and something interviewers often ask about.</div>
+
+<h2>19.2 Prometheus Configuration (Real Example)</h2>
+<pre># prometheus.yml
+scrape_configs:
+  - job_name: 'accounts-service'
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['accounts-service:8081']
+  - job_name: 'cards-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['cards-service:8082']
+</pre>
+
+<h2>19.3 PromQL — Prometheus Query Language Examples</h2>
+<pre><span class="c1"># Requests per second over the last 5 minutes</span>
+rate(http_server_requests_seconds_count{service="accounts-service"}[5m])
+
+<span class="c1"># p95 latency</span>
+histogram_quantile(0.95, rate(http_server_requests_seconds_bucket[5m]))
+
+<span class="c1"># Error rate percentage</span>
+sum(rate(http_server_requests_seconds_count{status=~"5.."}[5m]))
+/ sum(rate(http_server_requests_seconds_count[5m])) * 100
+
+<span class="c1"># JVM heap usage percentage</span>
+jvm_memory_used_bytes{area="heap"} / jvm_memory_max_bytes{area="heap"} * 100
+</pre>
+
+<h2>19.4 Real Grafana Dashboard Mockup</h2>
+<div class="dashboard">
+<div class="dtitle">Grafana Dashboard — Accounts Service (RED Metrics)</div>
+<div class="dgrid">
+<div class="dcard"><div class="dlabel">Request Rate</div><div class="dvalue">842 req/s</div></div>
+<div class="dcard"><div class="dlabel">Error Rate</div><div class="dvalue amber">2.1%</div></div>
+<div class="dcard"><div class="dlabel">p95 Duration</div><div class="dvalue">280ms</div></div>
+<div class="dcard"><div class="dlabel">Heap Usage</div><div class="dvalue">68%</div></div>
+</div>
+<div class="dbar">
+<div style="height:35px"></div><div style="height:38px"></div><div style="height:42px"></div><div style="height:36px"></div>
+<div style="height:55px"></div><div style="height:68px"></div><div style="height:60px"></div><div style="height:44px"></div>
+<div style="height:40px"></div><div style="height:38px"></div><div style="height:52px"></div><div style="height:46px"></div>
+</div>
+<div class="dlabel" style="margin-top:4px;">Request rate over the last 12 hours</div>
+</div>
+
+<h2>19.5 Alerting Rules in Prometheus (Alertmanager)</h2>
+<pre># alert-rules.yml
+groups:
+- name: accounts-service-alerts
+  rules:
+  - alert: HighErrorRate
+    expr: sum(rate(http_server_requests_seconds_count{status=~"5..",service="accounts-service"}[5m]))
+          / sum(rate(http_server_requests_seconds_count{service="accounts-service"}[5m])) > 0.05
+    for: 5m
+    labels: { severity: critical }
+    annotations:
+      summary: "Accounts Service error rate above 5% for 5 minutes"
+</pre>
+</div>
+
+<!-- 20. SPRING BOOT ACTUATOR MICROMETER -->
+<div class="section">
+<h1>20. Spring Boot Observability — Actuator &amp; Micrometer</h1>
+
+<h2>20.1 Why Actuator Is the Foundation</h2>
+<div class="box">Spring Boot Actuator exposes production-ready operational endpoints out of the box — health, metrics, environment info — forming the backbone that Kubernetes probes, Prometheus scraping, and Eureka health checks all depend on.</div>
+
+<h2>20.2 Key Actuator Endpoints</h2>
+<table>
+<tr><th>Endpoint</th><th>Purpose</th></tr>
+<tr><td><code>/actuator/health</code></td><td>Overall UP/DOWN status, including DB/Kafka/disk checks</td></tr>
+<tr><td><code>/actuator/health/readiness</code></td><td>Kubernetes readiness probe — "can I accept traffic?"</td></tr>
+<tr><td><code>/actuator/health/liveness</code></td><td>Kubernetes liveness probe — "am I alive at all?"</td></tr>
+<tr><td><code>/actuator/metrics</code></td><td>Browse all raw available metrics</td></tr>
+<tr><td><code>/actuator/prometheus</code></td><td>Metrics formatted for Prometheus scraping</td></tr>
+<tr><td><code>/actuator/loggers</code></td><td>View/change log levels at runtime (Section 4.4)</td></tr>
+<tr><td><code>/actuator/env</code></td><td>Current configuration properties (secure this in prod!)</td></tr>
+<tr><td><code>/actuator/threaddump</code></td><td>Full JVM thread dump — critical for hang/deadlock diagnosis (Section 35)</td></tr>
+<tr><td><code>/actuator/heapdump</code></td><td>Downloadable full heap dump — critical for memory leak diagnosis (Section 34)</td></tr>
+</table>
+
+<h2>20.3 Micrometer — The Metrics Facade</h2>
+<div class="box">Micrometer is to <b>metrics</b> what SLF4J is to <b>logging</b> — a vendor-neutral facade. You instrument your code once using Micrometer's API, and it can export to Prometheus, Datadog, New Relic, or others just by swapping a dependency, with no code changes.</div>
+<pre>management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus, metrics, loggers, threaddump, heapdump
+  endpoint:
+    health:
+      probes:
+        enabled: true      <span class="c1"># enables /actuator/health/readiness and /liveness</span>
+  metrics:
+    tags:
+      application: accounts-service    <span class="c1"># every metric auto-tagged with service name</span>
+</pre>
+
+<h2>20.4 Readiness vs Liveness — Real Difference</h2>
+<table>
+<tr><th></th><th>Readiness Probe</th><th>Liveness Probe</th></tr>
+<tr><td>Question Answered</td><td>"Can I currently handle traffic?"</td><td>"Am I alive, or should I be restarted?"</td></tr>
+<tr><td>On Failure</td><td>Removed from Service load-balancing (no restart)</td><td>Kubernetes kills and restarts the container</td></tr>
+<tr><td>Real Example</td><td>DB connection pool exhausted — don't send more traffic yet</td><td>Deadlocked JVM that will never recover on its own</td></tr>
+</table>
+</div>
+
+<!-- 21. DISTRIBUTED TRACING -->
+<div class="section">
+<h1>21. Distributed Tracing — OpenTelemetry, Zipkin, Jaeger</h1>
+
+<h2>21.1 Trace, Span, Parent Span, Child Span Recap</h2>
+<div class="diagram">
+<div class="title">Trace Tree — "Transfer Funds" Request</div>
+<div class="flow-row"><div class="node purple">Trace: transfer-funds (Trace ID: 9f8e7d)</div></div>
+<div class="flow-row"><div class="node">Root Span: Gateway (12ms)</div></div>
+<div class="arrow-down">↓ parent-child</div>
+<div class="flow-row"><div class="node green">Child Span: Accounts Service (45ms)</div></div>
+<div class="arrow-down">↓ parent-child</div>
+<div class="flow-row">
+<div class="node alt">Child Span: DB query debit (8ms)</div><div class="node alt">Child Span: Cards Service call (220ms ← bottleneck!)</div>
+</div>
+</div>
+
+<h2>21.2 OpenTelemetry — The Modern Standard</h2>
+<div class="box">OpenTelemetry (OTel) is the current CNCF industry standard for generating traces, metrics, and logs in a vendor-neutral way — auto-instruments Spring Boot (HTTP, JDBC, Kafka clients) via a Java agent with zero code changes, and can export to Zipkin, Jaeger, Prometheus, or commercial APM tools interchangeably.</div>
+<pre>java -javaagent:opentelemetry-javaagent.jar \
+     -Dotel.service.name=accounts-service \
+     -Dotel.traces.exporter=otlp \
+     -Dotel.exporter.otlp.endpoint=http://otel-collector:4317 \
+     -jar accounts-service.jar
+</pre>
+
+<h2>21.3 Zipkin — Simpler, Lightweight Tracing UI</h2>
+<div class="box">Originally built at Twitter, Zipkin provides a simple, easy-to-run UI for viewing traces — good for small-to-mid scale setups, easy local development setup via Spring Cloud Sleuth/Micrometer Tracing integration.</div>
+<pre>management:
+  tracing:
+    sampling:
+      probability: 1.0      <span class="c1"># trace 100% of requests in dev; lower (e.g., 0.1) in high-traffic prod</span>
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411/api/v2/spans
+</pre>
+
+<h2>21.4 Jaeger — Scalable, CNCF Tracing Platform</h2>
+<div class="box">Originally built at Uber, Jaeger scales further than Zipkin with pluggable storage backends (Elasticsearch, Cassandra), a richer dependency-graph UI, and is a natural fit for larger Kubernetes-native organizations already running an ELK-style storage layer.</div>
+
+<h2>21.5 Zipkin vs Jaeger — Quick Comparison</h2>
+<table>
+<tr><th>Aspect</th><th>Zipkin</th><th>Jaeger</th></tr>
+<tr><td>Origin</td><td>Twitter</td><td>Uber (CNCF graduated project)</td></tr>
+<tr><td>Storage backend options</td><td>In-memory, MySQL, Elasticsearch (simpler)</td><td>Elasticsearch, Cassandra, Kafka-buffered (more scalable)</td></tr>
+<tr><td>UI richness</td><td>Simple, functional</td><td>Richer — service dependency graphs, more advanced filtering</td></tr>
+<tr><td>Best fit</td><td>Small-mid scale, simpler setups</td><td>Large-scale, Kubernetes-native, CNCF-aligned organizations</td></tr>
+</table>
+
+<h2>21.6 Root Cause Analysis Using Tracing — Real Walkthrough</h2>
+<ol>
+<li>Grafana alert fires: Accounts Service p95 latency &gt; 1s.</li>
+<li>Open Jaeger, filter traces for Accounts Service in that time window, sort by duration descending.</li>
+<li>Open the slowest trace — see the span breakdown (Gateway → Accounts → Cards call → DB query).</li>
+<li>Spot that the "Cards Service call" span consistently takes 200-300ms, dominating total request time.</li>
+<li>Cross-reference Cards Service's own logs (via the same trace ID in Splunk/Kibana) to find the actual root cause (e.g., a slow downstream Card Network API call without a timeout).</li>
+</ol>
+</div>
+
+<!-- 22. MONITORING TYPES -->
+<div class="section">
+<h1>22. Monitoring Types — JVM, CPU, Memory, Disk, Network, Database, API</h1>
+
+<h2>22.1 JVM Monitoring</h2>
+<table>
+<tr><th>Metric</th><th>Why It Matters</th></tr>
+<tr><td>Heap usage (used/max)</td><td>Approaching the max risks OutOfMemoryError</td></tr>
+<tr><td>GC pause time &amp; frequency</td><td>Long/frequent GC pauses directly cause request latency spikes</td></tr>
+<tr><td>Thread count</td><td>Runaway thread creation indicates a leak or thread pool misconfiguration</td></tr>
+<tr><td>Class loading count</td><td>Unusual growth can indicate classloader leaks (common in app server redeploys)</td></tr>
+</table>
+
+<h2>22.2 CPU, Memory, Disk, Network Monitoring</h2>
+<table>
+<tr><th>Resource</th><th>What to Watch</th><th>Real Consequence If Ignored</th></tr>
+<tr><td>CPU</td><td>Sustained utilization %, throttling events (Kubernetes CPU limits)</td><td>Request queueing, increased latency, eventual timeouts</td></tr>
+<tr><td>Memory</td><td>Usage vs limit, OOMKilled events</td><td>Container abruptly killed and restarted, dropping in-flight requests</td></tr>
+<tr><td>Disk</td><td>Free space %, I/O wait time</td><td>Application/log writes fail once disk is full, cascading failures</td></tr>
+<tr><td>Network</td><td>Bandwidth usage, connection errors, DNS resolution time</td><td>Intermittent timeouts hard to diagnose without network-level metrics</td></tr>
+</table>
+
+<h2>22.3 Database Monitoring</h2>
+<ul>
+<li>Connection pool usage (active vs idle vs max) — exhaustion causes new requests to wait/fail.</li>
+<li>Slow query log / query duration percentiles (Section 36).</li>
+<li>Replication lag (for read replicas) — stale reads if lag grows.</li>
+<li>Lock waits/deadlocks — a common hidden cause of intermittent timeouts.</li>
+</ul>
+
+<h2>22.4 API Monitoring</h2>
+<ul>
+<li>Per-endpoint request rate, error rate, latency percentiles (not just service-wide averages — one bad endpoint can hide in a good overall average).</li>
+<li>Status code breakdown (4xx vs 5xx) — 4xx spikes often indicate a client-side/contract issue, not a backend outage.</li>
+<li>Rate limit rejection counts — helps distinguish "we're down" from "a client is being throttled as designed."</li>
+</ul>
+</div>
+
+<!-- 23. APM TOOLS -->
+<div class="section">
+<h1>23. APM Tools — Dynatrace, AppDynamics, New Relic</h1>
+
+<h2>23.1 What Full APM Platforms Add Beyond Open Source Tooling</h2>
+<div class="box">Application Performance Monitoring (APM) platforms like Dynatrace, AppDynamics, and New Relic combine metrics, distributed tracing, log aggregation, real-user monitoring (RUM), and AI-driven root-cause analysis into one commercial, fully managed product — reducing the operational burden of running/integrating Prometheus + Grafana + Jaeger + ELK yourself.</div>
+
+<h2>23.2 Comparison</h2>
+<table>
+<tr><th>Tool</th><th>Standout Feature</th><th>Best Fit</th></tr>
+<tr><td>Dynatrace</td><td>AI-powered automatic root-cause analysis ("Davis AI"), full-stack auto-discovery</td><td>Large enterprises wanting minimal manual dashboard/alert configuration</td></tr>
+<tr><td>AppDynamics</td><td>Strong business transaction correlation (ties technical metrics to business KPIs)</td><td>Enterprises wanting tight technical-to-business impact visibility</td></tr>
+<tr><td>New Relic</td><td>Broad, approachable all-in-one platform, generous free tier for smaller teams</td><td>Teams wanting a single commercial tool without heavy self-hosting</td></tr>
+</table>
+
+<h2>23.3 Open Source Stack vs Commercial APM — Trade-off</h2>
+<table>
+<tr><th>Aspect</th><th>Open Source (Prometheus/Grafana/Jaeger/ELK)</th><th>Commercial APM (Dynatrace/AppDynamics/New Relic)</th></tr>
+<tr><td>Cost</td><td>Free/self-hosted infra cost only</td><td>Licensing cost, often per-host/per-GB, can scale expensively</td></tr>
+<tr><td>Setup effort</td><td>You wire everything together yourself</td><td>Mostly auto-instrumented/auto-discovered out of the box</td></tr>
+<tr><td>Flexibility</td><td>Full control, fully customizable</td><td>Some customization, but within the vendor's platform constraints</td></tr>
+<tr><td>Best for</td><td>Cost-conscious, engineering-heavy orgs wanting full control</td><td>Enterprises prioritizing fast time-to-value and reduced operational overhead</td></tr>
+</table>
+</div>
+
+<!-- 24. ALERTING - SLA SLO SLI -->
+<div class="section">
+<h1>24. Alerting — SLA, SLO, SLI, Alertmanager, PagerDuty</h1>
+
+<h2>24.1 SLI, SLO, SLA — The Relationship</h2>
+<div class="diagram">
+<div class="title">SLI → SLO → SLA Relationship</div>
+<div class="flow-row">
+<div class="node green">SLI (measurement)<br/>e.g., "99.2% of requests succeeded"</div><div class="arrow">→ compared against →</div><div class="node alt">SLO (internal target)<br/>e.g., "99.5% success rate goal"</div><div class="arrow">→ backs →</div><div class="node purple">SLA (external promise)<br/>e.g., "99% uptime guaranteed to customers, or refund"</div>
+</div>
+</div>
+<table>
+<tr><th>Term</th><th>Meaning</th><th>Real Example</th></tr>
+<tr><td>SLI (Service Level Indicator)</td><td>The actual measured metric</td><td>"99.2% of requests returned successfully last month"</td></tr>
+<tr><td>SLO (Service Level Objective)</td><td>The internal target/goal for that metric</td><td>"We aim for 99.5% success rate"</td></tr>
+<tr><td>SLA (Service Level Agreement)</td><td>The external, often contractual promise to customers, usually with a looser target than the internal SLO (as a safety buffer) and consequences if missed</td><td>"99% uptime guaranteed, or service credit issued"</td></tr>
+</table>
+<div class="tip"><b>Interview tip:</b> SLOs are always set stricter than the public SLA on purpose — this gives the team an internal early-warning buffer to react before ever actually breaching the customer-facing SLA.</div>
+
+<h2>24.2 Error Budgets</h2>
+<div class="box">If your SLO is 99.9% success rate, your "error budget" for the month is the remaining 0.1% — a practical way to balance reliability work vs feature velocity: if the error budget is being consumed too fast, the team pauses risky releases and focuses on stability.</div>
+
+<h2>24.3 Alertmanager — Routing &amp; Silencing Prometheus Alerts</h2>
+<pre># alertmanager.yml
+route:
+  receiver: 'team-accounts-slack'
+  routes:
+    - match: { severity: critical }
+      receiver: 'pagerduty-oncall'
+      continue: true
+receivers:
+  - name: 'pagerduty-oncall'
+    pagerduty_configs:
+      - routing_key: '&lt;PAGERDUTY_INTEGRATION_KEY&gt;'
+  - name: 'team-accounts-slack'
+    slack_configs:
+      - channel: '#accounts-service-alerts'
+</pre>
+
+<h2>24.4 Grafana Alerts (Alternative/Complementary to Alertmanager)</h2>
+<div class="box">Grafana's built-in alerting lets you define alert rules directly on dashboard panels (e.g., "alert if this panel's value exceeds threshold for 5 minutes"), simplifying the setup when you're already building dashboards in Grafana rather than maintaining separate Alertmanager rule files.</div>
+
+<h2>24.5 PagerDuty — Incident Notification &amp; Escalation</h2>
+<ul>
+<li>Receives alerts from Prometheus/Alertmanager, Splunk, Grafana, or any webhook source.</li>
+<li>Manages on-call schedules/rotations per team.</li>
+<li>Escalates automatically if the primary on-call doesn't acknowledge within a configured time.</li>
+<li>Tracks incident timeline (acknowledged, resolved) for post-incident reviews.</li>
+</ul>
+
+<h2>24.6 Good Alerting Practices</h2>
+<table>
+<tr><th>Practice</th><th>Why</th></tr>
+<tr><td>Alert on symptoms, not causes</td><td>"Error rate high" (symptom, user-impacting) is better than "CPU at 80%" (cause, may not even matter to users)</td></tr>
+<tr><td>Use "for" duration, not instant spikes</td><td>Avoids paging someone for a 10-second blip that self-resolves</td></tr>
+<tr><td>Tie alerts to actionable runbooks</td><td>Every alert should link to documented next steps, not leave the on-call guessing</td></tr>
+<tr><td>Avoid alert fatigue</td><td>Too many low-value alerts cause real ones to get ignored/muted — a serious anti-pattern</td></tr>
+</table>
+</div>
+
+<!-- 25. AZURE MONITOR AZURE DEVOPS -->
+<div class="section">
+<h1>25. Azure Monitor &amp; Azure DevOps Integration for Logging and Monitoring</h1>
+
+<h2>25.1 Azure-Native Observability Services</h2>
+<table>
+<tr><th>Azure Service</th><th>Role</th></tr>
+<tr><td>Azure Monitor</td><td>The umbrella platform collecting metrics and logs across all Azure resources (AKS, App Service, databases)</td></tr>
+<tr><td>Log Analytics Workspace</td><td>Where Azure Monitor logs are stored/queried, using Kusto Query Language (KQL)</td></tr>
+<tr><td>Application Insights</td><td>APM specifically for applications — auto-instruments requests, dependencies, exceptions, and can capture distributed traces</td></tr>
+<tr><td>Container Insights</td><td>AKS-specific monitoring — pod/node CPU, memory, and log collection built on Log Analytics</td></tr>
+<tr><td>Azure Managed Grafana / Managed Prometheus</td><td>Fully managed Prometheus + Grafana offering, if you prefer that stack over Azure Monitor's native tools</td></tr>
+</table>
+
+<h2>25.2 Application Insights — Real Spring Boot Integration</h2>
+<pre>&lt;dependency&gt;
+  &lt;groupId&gt;com.microsoft.azure&lt;/groupId&gt;
+  &lt;artifactId&gt;applicationinsights-spring-boot-starter&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+<span class="c1"># application.yml</span>
+azure:
+  application-insights:
+    connection-string: InstrumentationKey=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+</pre>
+<div class="box">Once wired up, Application Insights automatically captures incoming requests, outgoing dependency calls (DB, HTTP, Kafka), exceptions, and custom events/metrics — visualized in the Azure Portal with a built-in "Application Map" showing your live service dependency graph.</div>
+
+<h2>25.3 Kusto Query Language (KQL) — Real Examples</h2>
+<pre><span class="c1">// Find all exceptions in the last hour for Accounts Service</span>
+exceptions
+| where cloud_RoleName == "accounts-service"
+| where timestamp &gt; ago(1h)
+| project timestamp, type, outerMessage, operation_Id
+
+<span class="c1">// Requests slower than 2 seconds, grouped by operation name</span>
+requests
+| where duration &gt; 2000
+| summarize count(), avg(duration) by name
+| order by count_ desc
+</pre>
+
+<h2>25.4 How This Fits With Azure DevOps (Since Your Org Uses It)</h2>
+<ul>
+<li><b>Release annotations:</b> Azure DevOps pipeline deployment steps can push a "release marker" into Application Insights/Azure Monitor, so dashboards visually show exactly when a new version was deployed — instantly correlating incidents with recent releases.</li>
+<li><b>Pipeline-triggered smoke test alerts:</b> a post-deployment pipeline stage can query Application Insights/Log Analytics for error rate immediately after deployment, and automatically roll back if it spikes.</li>
+<li><b>Work item linking:</b> alerts/incidents from Azure Monitor can automatically create linked Azure Boards work items for tracking and follow-up.</li>
+<li><b>Unified secrets/config:</b> Application Insights connection strings and Splunk HEC tokens are both stored in Azure Key Vault-backed Variable Groups, injected consistently across all pipelines.</li>
+</ul>
+<div class="tip"><b>Real scenario:</b> "Our Azure DevOps release pipeline for Accounts Service automatically annotates our Grafana/Application Insights dashboard with a vertical marker on every production deployment — when an on-call engineer sees an error spike, the first thing they check is whether it lines up with one of these markers, immediately narrowing down 'is this a bad deploy or something else.'"</div>
+</div>
+
+<!-- 26. REAL-TIME PRODUCTION TROUBLESHOOTING -->
+<div class="section">
+<h1>26. Real-Time Production Troubleshooting (Response Time, Memory Leak, CPU, Thread Dump, GC, Slow SQL)</h1>
+
+<h2>26.1 High Response Time Analysis</h2>
+<div class="box">Step-by-step: (1) Check Grafana/Splunk dashboard — is it every endpoint or just one? (2) Check the Golden Signal panels — is traffic unusually high (real load) or is latency high even at normal traffic (a real regression)? (3) Open a distributed trace for a slow request — find which span dominates. (4) Drill into that specific component (DB query, downstream call, GC pause).</div>
+<div class="diagram">
+<div class="title">High Response Time — Decision Flow</div>
+<div class="flow-row"><div class="node">p95 latency alert fires</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+<div class="node alt">Traffic also spiked?<br/>→ likely capacity/scaling issue</div>
+<div class="node green">Traffic normal, latency still high?<br/>→ real regression, check traces</div>
+</div>
+</div>
+
+<h2>26.2 Memory Leak Detection</h2>
+<div class="box">A memory leak shows as a heap usage graph that keeps climbing over hours/days and never drops back down even after full GC cycles — eventually leading to OutOfMemoryError or repeated OOMKills.</div>
+<pre><span class="c1"># Step 1: confirm the trend in Grafana — steadily rising heap usage over days despite GC runs</span>
+<span class="c1"># Step 2: capture a heap dump for analysis (via Actuator or jmap)</span>
+curl -o heapdump.hprof http://accounts-service:8081/actuator/heapdump
+jmap -dump:live,format=b,file=heapdump.hprof &lt;pid&gt;
+
+<span class="c1"># Step 3: analyze with Eclipse MAT (Memory Analyzer Tool) — look at "Leak Suspects" report</span>
+<span class="c1"># common real culprits: unbounded static caches/Maps, listeners never unregistered, ThreadLocal not cleared</span>
+</pre>
+<div class="tip"><b>Real scenario:</b> "A slow, multi-day memory creep in Cards Service was traced (via Eclipse MAT's dominator tree) to a static <code>Map&lt;Long, CardDto&gt;</code> cache that was never evicted — every unique card ID ever looked up stayed in memory forever. Fixed by switching to a bounded Caffeine cache with a TTL and max size."</div>
+
+<h2>26.3 High CPU Investigation &amp; Thread Dump Analysis</h2>
+<pre><span class="c1"># Step 1: identify the high-CPU JVM process on the host/pod</span>
+top -H -p &lt;pid&gt;    <span class="c1"># shows per-thread CPU usage</span>
+
+<span class="c1"># Step 2: capture a thread dump at that moment</span>
+curl http://accounts-service:8081/actuator/threaddump &gt; threaddump.json
+jstack &lt;pid&gt; &gt; threaddump.txt
+
+<span class="c1"># Step 3: convert the high-CPU thread's native ID (from top -H) to hex, find matching "nid=0x..." in the thread dump</span>
+<span class="c1"># Step 4: inspect that thread's stack trace to see exactly what code it's stuck executing</span>
+</pre>
+<div class="tip"><b>Real scenario:</b> "High sustained CPU on Loans Service was traced via thread dump to a regex pattern with catastrophic backtracking, running on every single interest calculation request — visible as dozens of threads all stuck inside the same <code>Pattern.matches()</code> call in their stack traces."</div>
+
+<h2>26.4 GC (Garbage Collection) Analysis</h2>
+<pre><span class="c1"># Enable GC logging (Java 9+)</span>
+-Xlog:gc*:file=/logs/gc.log:time,uptime:filecount=10,filesize=50M
+
+<span class="c1"># Analyze with GCViewer or GCEasy.io — look for:</span>
+<span class="c1"># - Frequent Full GCs (should be rare)</span>
+<span class="c1"># - Long pause times (each pause = frozen application, no requests processed)</span>
+<span class="c1"># - Rising "after GC" heap baseline over time (memory leak indicator)</span>
+</pre>
+<table>
+<tr><th>Symptom</th><th>Likely Cause</th><th>Fix Direction</th></tr>
+<tr><td>Frequent minor GCs</td><td>Too much short-lived object churn (young gen too small)</td><td>Tune young generation size, reduce unnecessary object allocation</td></tr>
+<tr><td>Long Full GC pauses</td><td>Old generation filling up, or memory leak</td><td>Increase heap, fix leak, consider G1GC/ZGC tuning</td></tr>
+<tr><td>Heap baseline keeps rising after each GC</td><td>Memory leak — objects not being released</td><td>Heap dump analysis (Section 26.2)</td></tr>
+</table>
+
+<h2>26.5 Slow SQL Analysis</h2>
+<pre><span class="c1"># Step 1: Enable slow query logging on the database (MySQL example)</span>
+SET GLOBAL slow_query_log = 'ON';
+SET GLOBAL long_query_time = 2;   <span class="c1"># log queries taking more than 2 seconds</span>
+
+<span class="c1"># Step 2: identify the actual slow query and run EXPLAIN on it</span>
+EXPLAIN SELECT * FROM transaction WHERE account_id = 1001 AND created_date &gt; '2026-01-01';
+
+<span class="c1"># Step 3: check if an index is missing (look for "type: ALL" = full table scan in EXPLAIN output)</span>
+CREATE INDEX idx_txn_account_date ON transaction(account_id, created_date);
+</pre>
+<div class="tip"><b>Real scenario:</b> "A 'random' slowness on the Accounts Service dashboard was traced through a distributed trace's DB-query span, then to the slow query log, revealing a missing composite index on <code>transaction(account_id, created_date)</code> — a query that once took 4.5 seconds dropped to 12ms after adding the index."</div>
+</div>
+
+<!-- 27. REAL ORGANIZATION SETUP END TO END -->
+<div class="section">
+<h1>27. Real Organization Setup — End to End (Our Application)</h1>
+
+<h2>27.1 The Full Observability Stack We Actually Run</h2>
+<div class="diagram">
+<div class="title">Our Real Organization's Observability Architecture</div>
+<div class="flow-row">
+<div class="node green">React Customer Portal</div><div class="node green">Accounts / Cards / Loans Services (AKS)</div>
+</div>
+<div class="arrow-down">↓ logs</div>
+<div class="flow-row"><div class="node purple">Splunk (HEC ingestion, SPL search, dashboards, alerts)</div></div>
+<div class="arrow-down">↓ metrics</div>
+<div class="flow-row"><div class="node alt">Azure Monitor / Managed Prometheus + Grafana</div></div>
+<div class="arrow-down">↓ traces</div>
+<div class="flow-row"><div class="node">Application Insights (auto-instrumented distributed tracing)</div></div>
+<div class="arrow-down">↓ alerts</div>
+<div class="flow-row"><div class="node gray">Alertmanager / Grafana Alerts → PagerDuty → On-Call Engineer</div></div>
+</div>
+
+<h2>27.2 What Each Layer Gives Us (Mapped to the Three Pillars)</h2>
+<table>
+<tr><th>Pillar</th><th>Our Tool</th><th>Primary Use</th></tr>
+<tr><td>Logs</td><td>Splunk</td><td>Deep-diving one request/incident, audit trail, security investigation</td></tr>
+<tr><td>Metrics</td><td>Azure Monitor / Prometheus + Grafana</td><td>Dashboards, trend analysis, alerting on Golden Signals</td></tr>
+<tr><td>Traces</td><td>Application Insights (or Jaeger, depending on service)</td><td>Pinpointing exactly which hop in a multi-service call is slow/failing</td></tr>
+</table>
+
+<h2>27.3 Real Incident Walkthrough Using the Full Stack</h2>
+<ol>
+<li>PagerDuty pages the on-call engineer: "Accounts Service error rate &gt; 5% for 5 minutes."</li>
+<li>Open Grafana dashboard — confirm the error rate panel and check if it aligns with a recent Azure DevOps deployment marker.</li>
+<li>Open Application Insights, find a failing request's trace — see it fails inside a call to Cards Service.</li>
+<li>Search Splunk using the trace/operation ID — find the exact exception logged by Cards Service: a downstream Card Network API timeout.</li>
+<li>Check the Circuit Breaker's state (Resilience4j metrics exposed via Actuator/Micrometer) — confirm it's open, meaning the fallback is already active and degrading gracefully.</li>
+<li>Escalate to the third-party Card Network's status page/support, while the fallback keeps most functionality working; document in the incident timeline for the post-incident review.</li>
+</ol>
+</div>
+
+<!-- 28. COMMON ISSUES -->
+<div class="section">
+<h1>28. Common Observability Issues, Problems &amp; Solutions</h1>
+<table>
+<tr><th>Issue</th><th>Cause</th><th>Real Solution</th></tr>
+<tr><td>"We only found out about the outage from a customer complaint"</td><td>No alerting configured, or alerts not tied to actual user-facing symptoms</td><td>Set up Golden Signal alerts (error rate, latency) tied to PagerDuty, tested regularly</td></tr>
+<tr><td>Can't find logs for a specific failed request</td><td>No correlation/trace ID propagated through all services</td><td>Implement Correlation ID filter (Section 9.3) across every service and the frontend</td></tr>
+<tr><td>Log volume/cost exploding</td><td>DEBUG/TRACE level left on in production, or logging entire request/response bodies</td><td>Enforce INFO as default production level, sample verbose logs, avoid logging full payloads</td></tr>
+<tr><td>Sensitive data found in logs (PII/PCI)</td><td>No log masking/redaction policy</td><td>Redact card numbers/passwords/tokens before logging; automated scanning for accidental leaks</td></tr>
+<tr><td>Alert fatigue — team ignoring alerts</td><td>Too many low-value/noisy alerts, no clear runbooks</td><td>Alert only on user-impacting symptoms, tune thresholds, attach runbooks to every alert</td></tr>
+<tr><td>Dashboards show "everything is fine" during an actual outage</td><td>Metrics based on averages hiding a subset of failing requests/endpoints</td><td>Use percentiles (p95/p99) and per-endpoint breakdowns, not just overall averages</td></tr>
+<tr><td>Can't tell which service is the bottleneck in a slow multi-service request</td><td>No distributed tracing in place</td><td>Instrument with OpenTelemetry/Application Insights, visualize in Jaeger/Zipkin</td></tr>
+<tr><td>Frontend errors invisible to the team</td><td>Errors only appear in the user's browser console, never reported anywhere</td><td>Ship client-side errors to a backend logging endpoint (Section 17.3)</td></tr>
+<tr><td>Splunk/ELK ingestion costs spiraling</td><td>Logging too verbosely, duplicate logs, unindexed noisy fields</td><td>Right-size log levels, filter out noisy low-value logs at the source/forwarder, review retention policy</td></tr>
+<tr><td>Memory leak only shows up after days in production, not in testing</td><td>Load/duration in test environments too short to reveal slow leaks</td><td>Run longer-duration soak tests in staging, monitor heap trend over multi-day windows before major releases</td></tr>
+<tr><td>Different teams use inconsistent log formats/field names</td><td>No shared logging standard across services</td><td>Establish and enforce an org-wide structured logging standard (field names, correlation ID header) via a shared starter library</td></tr>
+</table>
+</div>
+
+<!-- 29. INTERVIEW Q&A -->
+<div class="section">
+<h1>29. Interview Questions &amp; Answers (Basic → Advanced → Scenario Based)</h1>
+
+<div class="qa"><div class="q">Q1. Why do we need logging in an application?</div>
+<div class="a">Because production applications run unattended 24/7 — logging provides a persistent, searchable record of what happened, essential for debugging issues after the fact, tracking business events, security auditing, and performance analysis, none of which console output alone can provide.</div></div>
+
+<div class="qa"><div class="q">Q2. What is the difference between monitoring and observability?</div>
+<div class="a">Monitoring watches predefined metrics/dashboards for known failure conditions ("is the system healthy?"). Observability provides rich enough telemetry (logs, metrics, traces) to investigate and answer new, previously unanticipated questions about "why" something is happening.</div></div>
+
+<div class="qa"><div class="q">Q3. What are the three pillars of observability?</div>
+<div class="a">Logs (detailed event records — "what exactly happened"), Metrics (aggregated numeric trends — "how is the system trending"), and Traces (the end-to-end path of one request across services — "where did time go for this specific request").</div></div>
+
+<div class="qa"><div class="q">Q4. What are the four Golden Signals?</div>
+<div class="a">Latency (how long requests take), Traffic (demand on the system), Errors (rate of failures), and Saturation (how full/stressed the system's resources are) — the minimum set of metrics recommended for monitoring any user-facing service.</div></div>
+
+<div class="qa"><div class="q">Q5. What is a Correlation ID and why is it important?</div>
+<div class="a">A unique identifier generated at the start of a request and propagated through every downstream service call and log line, letting you find every log related to one specific request across an entire distributed system with a single search.</div></div>
+
+<div class="qa"><div class="q">Q6. Difference between Trace ID and Span ID?</div>
+<div class="a">A Trace ID identifies the entire end-to-end request across all services. A Span ID identifies one specific unit of work within that trace (e.g., one service's handling of the request, or one DB query) — spans are linked in a parent-child hierarchy to reconstruct the full call tree.</div></div>
+
+<div class="qa"><div class="q">Q7. What is SLF4J, and why isn't it a logging framework itself?</div>
+<div class="a">SLF4J is a facade/API — your code depends on SLF4J's interfaces, while the actual logging implementation (Logback, Log4j2) is plugged in underneath. This lets you switch the underlying logging engine without changing application code.</div></div>
+
+<div class="qa"><div class="q">Q8. Why is DEBUG-level logging risky to leave enabled in production?</div>
+<div class="a">It generates a very high volume of log data, increasing storage/ingestion cost (especially with paid tools like Splunk billed on volume), can slow down the application under high load, and risks accidentally logging sensitive data not meant for verbose output.</div></div>
+
+<div class="qa"><div class="q">Q9. How does Prometheus collect metrics, and how is that different from log shipping?</div>
+<div class="a">Prometheus uses a pull model — it scrapes a metrics endpoint (like Spring Boot Actuator's /actuator/prometheus) on a schedule. Log shippers (Filebeat, Splunk forwarders) typically push data as it's generated — a key architectural difference often asked about in interviews.</div></div>
+
+<div class="qa"><div class="q">Q10. Explain SLI, SLO, and SLA with an example.</div>
+<div class="a">SLI is the actual measured value (e.g., "99.2% success rate this month"). SLO is the internal target (e.g., "we aim for 99.5%"). SLA is the external, often contractual promise to customers (e.g., "99% uptime guaranteed"), deliberately set looser than the SLO to give the team a safety buffer.</div></div>
+
+<div class="qa"><div class="q">Q11. How would you investigate a memory leak in a Spring Boot application in production?</div>
+<div class="a">Confirm a steadily rising heap trend in Grafana that doesn't drop after GC, capture a heap dump via Actuator's /actuator/heapdump or jmap, and analyze it with Eclipse MAT's "Leak Suspects" report to find what's holding references — commonly unbounded caches, unregistered listeners, or ThreadLocal misuse.</div>
+<div class="scenario">Real scenario: a static Map cache that was never evicted caused a multi-day memory creep, fixed by switching to a bounded, TTL-based Caffeine cache.</div></div>
+
+<div class="qa"><div class="q">Q12. How would you diagnose high CPU usage on a production JVM?</div>
+<div class="a">Use `top -H -p &lt;pid&gt;` to find the specific high-CPU thread, capture a thread dump at that moment (Actuator's /actuator/threaddump or jstack), convert the thread's native ID to hex, and locate its exact stack trace to see what code it's stuck executing.</div></div>
+
+<div class="qa"><div class="q">Q13. What's the difference between Zipkin and Jaeger?</div>
+<div class="a">Both are distributed tracing UIs. Zipkin is simpler and lighter, good for smaller scale. Jaeger (from Uber, CNCF) scales further with more storage backend options and a richer service dependency graph UI, making it a common choice for larger Kubernetes-native organizations.</div></div>
+
+<div class="qa"><div class="q">Q14. What is the difference between ELK and Splunk?</div>
+<div class="a">Both centralize and search logs at scale. ELK is open-source (with paid tiers) and self-hosted/self-managed by default; Splunk is a commercial product (or Splunk Cloud) with a very powerful SPL query language, generally considered more polished/enterprise-ready but licensed by ingestion volume, which can get expensive at scale.</div></div>
+
+<div class="qa"><div class="q">Q15. How would you migrate an application currently relying only on browser console logs to a centralized tool like Splunk?</div>
+<div class="a">Standardize on structured JSON logging with correlation IDs first, pick a pilot service, wire it to Splunk via HEC or a Universal Forwarder, validate field parsing and build one dashboard/alert to prove value, then roll out incrementally to remaining services — and separately, add a client-side error handler in the frontend that ships browser errors to a backend logging endpoint so they land in the same centralized system.</div></div>
+
+<div class="qa"><div class="q">Q16. What is the purpose of readiness and liveness probes, and how do they relate to Actuator?</div>
+<div class="a">Readiness (/actuator/health/readiness) tells Kubernetes if a pod should currently receive traffic — failing it removes the pod from load balancing without restarting it. Liveness (/actuator/health/liveness) tells Kubernetes if the pod is alive at all — failing it triggers a container restart.</div></div>
+
+<div class="qa"><div class="q">Q17. How do you find the root cause of a slow multi-service request?</div>
+<div class="a">Use distributed tracing to find the specific slow span in the call chain (e.g., via Jaeger or Application Insights), then cross-reference centralized logs (Splunk/Kibana) filtered by the same trace ID to see the detailed context/error for that exact slow component.</div></div>
+
+<div class="qa"><div class="q">Q18. What should you never log, and why?</div>
+<div class="a">Passwords, full card numbers, JWT tokens, and other sensitive PII/PCI data — logging them in plain text creates serious compliance risk (PCI-DSS/GDPR) and a major security exposure if logs are ever leaked or accessed by unauthorized users; mask/redact sensitive fields before logging.</div></div>
+
+<div class="qa"><div class="q">Q19. What is an error budget and how is it used?</div>
+<div class="a">The allowed amount of failure implied by an SLO (e.g., a 99.9% SLO implies a 0.1% error budget). Teams use it to balance reliability and feature velocity — if the budget is being consumed too fast, the team pauses risky releases to focus on stability instead.</div></div>
+
+<div class="qa"><div class="q">Q20. Walk through a real production incident you resolved using logs, metrics, and traces together.</div>
+<div class="a">An alert fired on high error rate (metrics); a distributed trace showed the failure occurred in a downstream Cards Service call (traces); searching centralized logs by that request's trace ID revealed the exact exception — a third-party Card Network API timeout (logs) — while the circuit breaker's fallback kept the system functioning in a degraded but stable state during the incident.</div></div>
+</div>
+
+<!-- 30. FINAL SUMMARY -->
+<div class="section">
+<h1>30. Final Summary &amp; Cheat Sheet</h1>
+<div class="box">
+<p><b>The journey:</b> System.out.println() → Log4j/SLF4J/Logback with levels and files → Centralized logging (Splunk/ELK) with structured JSON and correlation IDs → Full observability (Logs + Metrics + Traces) with Prometheus/Grafana, OpenTelemetry/Jaeger/Zipkin, and Actuator/Micrometer.</p>
+<p><b>Our real stack:</b> Splunk for centralized log search and SPL-powered dashboards/alerts, Azure Monitor/Prometheus+Grafana for metrics, Application Insights/Jaeger for distributed tracing, Alertmanager/PagerDuty for incident notification — all integrated with our Azure DevOps pipelines for deployment-correlated observability.</p>
+<p><b>The golden rule:</b> Instrument for observability from day one (structured logs, correlation IDs, health probes, basic metrics) rather than bolting it on after the first painful production incident where nobody could figure out what went wrong.</p>
+</div>
+
+<h2>30.1 Quick Cheat Sheet</h2>
+<table>
+<tr><th>Term</th><th>One-Line Meaning</th></tr>
+<tr><td>SLF4J</td><td>Logging facade — code against this, swap the implementation freely</td></tr>
+<tr><td>Log Level</td><td>TRACE &lt; DEBUG &lt; INFO &lt; WARN &lt; ERROR — controls verbosity</td></tr>
+<tr><td>Correlation ID</td><td>Unique ID tying together all logs for one request across services</td></tr>
+<tr><td>Trace / Span</td><td>Trace = whole request journey; Span = one timed unit of work within it</td></tr>
+<tr><td>Golden Signals</td><td>Latency, Traffic, Errors, Saturation</td></tr>
+<tr><td>ELK</td><td>Elasticsearch (store/search) + Logstash (process) + Kibana (visualize)</td></tr>
+<tr><td>Splunk</td><td>Commercial log platform with SPL query language, forwarders, and HEC ingestion</td></tr>
+<tr><td>Prometheus</td><td>Pull-based metrics time-series database</td></tr>
+<tr><td>Grafana</td><td>Dashboards and alerting on top of Prometheus (or other) data sources</td></tr>
+<tr><td>Micrometer</td><td>Metrics facade for Spring Boot, vendor-neutral like SLF4J for metrics</td></tr>
+<tr><td>Actuator</td><td>Spring Boot's built-in health/metrics/ops endpoints</td></tr>
+<tr><td>OpenTelemetry</td><td>Vendor-neutral standard for generating traces/metrics/logs</td></tr>
+<tr><td>SLI / SLO / SLA</td><td>Measured value / internal target / external contractual promise</td></tr>
+<tr><td>Error Budget</td><td>Allowed failure margin implied by an SLO, balances velocity vs stability</td></tr>
+<tr><td>Heap Dump</td><td>Snapshot of JVM memory used to diagnose memory leaks</td></tr>
+<tr><td>Thread Dump</td><td>Snapshot of all JVM threads used to diagnose hangs/high CPU/deadlocks</td></tr>
+</table>
+
+<div class="tip">Use this guide alongside the Git/GitHub/GitLab/Bitbucket guide, the CI/CD guide, the Docker &amp; Kubernetes guide, and the Microservices guide — together they cover the complete real-world Java full-stack developer journey: writing and versioning code, automating build/test/deploy, containerizing and orchestrating services, designing resilient microservices, and finally, observing and troubleshooting all of it reliably in production.</div>
+</div>
+
+</body>
+</html>
+

@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>JDBC, Hibernate &amp; Spring Data JPA Complete Guide — The Java Data Layer for Full Stack Developers</title>
+<style>
+  @page { size: A4; margin: 18mm 15mm 18mm 15mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Arial, sans-serif; color: #1a1a1a; font-size: 11.5px; line-height: 1.55; }
+  a { text-decoration: none; color: #8e24aa; }
+  h1, h2, h3, h4 { color: #6a1b9a; font-family: Arial, sans-serif; page-break-after: avoid; }
+  h1 { font-size: 22px; border-bottom: 3px solid #6a1b9a; padding-bottom: 6px; margin-top: 0; }
+  h2 { font-size: 17px; border-bottom: 1px solid #e1bee7; padding-bottom: 4px; margin-top: 26px; }
+  h3 { font-size: 14px; color: #b03a2e; margin-top: 18px; }
+  h4 { font-size: 12.5px; color: #444; margin-top: 12px; }
+  .section { page-break-before: always; }
+  .cover { page-break-after: always; text-align: center; padding-top: 90px; }
+  .cover h1 { font-size: 30px; border: none; }
+  .cover h3 { color: #333; font-weight: normal; font-size: 16px; margin-top: 16px;}
+  .cover .tag { margin-top: 44px; font-size: 13px; color: #666; }
+  .toc { page-break-after: always; }
+  .toc ol { line-height: 1.85; font-size: 11px; }
+  code, pre { font-family: Consolas, "Courier New", monospace; }
+  code { background: #f1f1f1; padding: 1px 5px; border-radius: 3px; color: #a4141d; }
+  pre { background: #1e1e1e; color: #d4d4d4; padding: 10px 12px; border-radius: 6px; overflow-x: auto; font-size: 10.5px; line-height: 1.5; page-break-inside: avoid; white-space: pre-wrap; word-wrap: break-word; }
+  pre .c1 { color: #6a9955; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0 16px 0; font-size: 11px; }
+  th, td { border: 1px solid #e6e6e6; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #f5f5f5; color: #6a1b9a; }
+  tr:nth-child(even) { background: #f9fafc; }
+  .box { background: #f8f9fb; border: 1px solid #cdd6e6; border-radius: 6px; padding: 10px 14px; margin: 10px 0; }
+  .warn { background: #fff4e5; border: 1px solid #f0c36d; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .tip { background: #e8f6ee; border: 1px solid #7fc79a; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .qa { border-left: 3px solid #6a1b9a; padding-left: 10px; margin: 10px 0 16px 0; page-break-inside: avoid; }
+  .qa .q { font-weight: bold; color: #6a1b9a; }
+  .qa .a { margin-top: 4px; }
+  .qa .scenario { margin-top: 4px; font-style: italic; color: #555; }
+  .diagram { background: #fff; border: 1px dashed #ba68c8; border-radius: 8px; padding: 16px; margin: 14px 0; page-break-inside: avoid; }
+  .diagram .title { font-weight: bold; color: #6a1b9a; margin-bottom: 10px; text-align:center; }
+  .flow-row { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+  .node { border: 2px solid #6a1b9a; background: #f3e5f5; border-radius: 6px; padding: 8px 12px; font-weight: bold; text-align: center; font-size: 11px; min-width: 90px; }
+  .node.alt { border-color: #b03a2e; background: #fdeceb; }
+  .node.green { border-color: #1e8449; background: #eafaf1; }
+  .node.gray { border-color: #666; background: #eee; }
+  .node.purple { border-color: #8e44ad; background: #f5eefc; }
+  .arrow { font-size: 20px; color: #6a1b9a; font-weight: bold; }
+  .arrow-down { font-size: 20px; color: #6a1b9a; text-align: center; }
+  .pagebreak { page-break-before: always; }
+  ul, ol { margin-top: 4px; }
+  li { margin-bottom: 3px; }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover">
+  <h1>JDBC, Hibernate &amp; Spring Data JPA — The Complete Guide</h1>
+  <h3>The Java Data Layer, End to End</h3>
+  <h3>JDBC → Hibernate → Spring JDBC → Spring Data JPA (Main Focus)</h3>
+  <h3>Entity Mapping, Relationships, Caching, Locking, Performance Tuning, Real Organization Practices</h3>
+  <div class="tag">A practical, simple-language, end-to-end reference for interview preparation and real-world implementation</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+<h1>Table of Contents</h1>
+<ol>
+<li>Why Java Needs to Talk to a Database — Introduction</li>
+<li>JDBC — The Foundation of Java Database Access</li>
+<li>Hibernate — The ORM Evolution</li>
+<li>Spring JDBC (JdbcTemplate) — A Lighter-Weight Middle Ground</li>
+<li>Introduction to Spring Data JPA — Why It's the Standard Today</li>
+<li>POJO vs Entity vs DTO — Full Clarification</li>
+<li>Setting Up Spring Data JPA in a Real Project</li>
+<li>JpaRepository Deep Dive</li>
+<li>Entity Mapping — The Basics (@Entity, @Id, @Column, @Table)</li>
+<li>Entity Mapping — All Relationship Types (OneToOne, OneToMany, ManyToOne, ManyToMany)</li>
+<li>Cascade Types Deep Dive</li>
+<li>Lazy vs Eager Loading</li>
+<li>The N+1 Problem — Deep Dive</li>
+<li>JPQL vs Native Query</li>
+<li>Pagination &amp; Sorting</li>
+<li>@Transactional in the Data Layer</li>
+<li>Optimistic vs Pessimistic Locking</li>
+<li>First Level Cache (Persistence Context)</li>
+<li>Second Level Cache</li>
+<li>Auditing</li>
+<li>Specifications — Dynamic Queries</li>
+<li>Entity Graph</li>
+<li>Query Performance Tuning</li>
+<li>Entity Lifecycle — Transient, Persistent, Detached, Removed</li>
+<li>Real-Time Development — The Data Layer in a Real Organization</li>
+<li>Common JDBC/Hibernate/JPA Issues &amp; Real-Time Scenarios</li>
+<li>Interview Questions &amp; Answers (Basic → Advanced → Scenario Based)</li>
+<li>Final Summary &amp; Cheat Sheet</li>
+</ol>
+</div>
+
+<!-- 1. WHY JAVA NEEDS TO TALK TO A DATABASE -->
+<div class="section">
+<h1>1. Why Java Needs to Talk to a Database — Introduction</h1>
+
+<h2>1.1 The Core Problem</h2>
+<div class="box">Almost every real application needs to persist data — customer records, orders, account balances — beyond the lifetime of a single running program. Databases (like MySQL, PostgreSQL, Oracle) store this data reliably, but a database understands SQL, while Java understands objects. Something has to bridge that gap.</div>
+
+<h2>1.2 The Evolution at a Glance</h2>
+<div class="diagram">
+<div class="title">The Java Data Access Journey</div>
+<div class="flow-row">
+<div class="node gray">JDBC (1997)<br/>Raw SQL, manual everything</div><div class="arrow">→</div><div class="node">Hibernate (2001)<br/>ORM — objects mapped to tables</div><div class="arrow">→</div><div class="node">Spring JDBC<br/>Lighter JDBC wrapper</div><div class="arrow">→</div><div class="node green">Spring Data JPA (2011+)<br/>Repository abstraction over JPA/Hibernate</div>
+</div>
+</div>
+
+<h2>1.3 Why This Guide Focuses Mainly on Spring Data JPA</h2>
+<div class="tip">Spring Data JPA is the dominant, default choice for the data access layer in virtually all modern Spring Boot applications — it sits on top of JPA (the specification) and Hibernate (the implementation), eliminating almost all boilerplate while still letting you drop down to JDBC/native SQL when truly needed. This guide gives JDBC, Hibernate, and Spring JDBC a solid but concise introduction, then spends the majority of its depth on Spring Data JPA — exactly matching how real Java teams actually work today.</div>
+</div>
+
+<!-- 2. JDBC -->
+<div class="section">
+<h1>2. JDBC — The Foundation of Java Database Access</h1>
+
+<h2>2.1 What JDBC Is</h2>
+<div class="box">JDBC (Java Database Connectivity) is the standard, lowest-level Java API for connecting to and executing SQL against a relational database. Every other technology in this guide (Hibernate, Spring JDBC, Spring Data JPA) is ultimately built on top of JDBC underneath — it never fully disappears, it's just hidden behind better abstractions.</div>
+
+<h2>2.2 The Real, Raw JDBC Flow</h2>
+<div class="diagram">
+<div class="title">Raw JDBC — Every Step Is Manual</div>
+<div class="flow-row">
+<div class="node">1. Get Connection</div><div class="arrow">→</div><div class="node">2. Create Statement</div><div class="arrow">→</div><div class="node">3. Execute SQL</div><div class="arrow">→</div><div class="node">4. Process ResultSet</div><div class="arrow">→</div><div class="node alt">5. Close Everything</div>
+</div>
+</div>
+<pre>public Account findAccountById(Long id) {
+    String sql = "SELECT id, balance, status FROM account WHERE id = ?";
+    try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setLong(1, id);
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                Account account = new Account();
+                account.setId(rs.getLong("id"));            <span class="c1">// manual column-by-column mapping</span>
+                account.setBalance(rs.getBigDecimal("balance"));
+                account.setStatus(rs.getString("status"));
+                return account;
+            }
+            return null;
+        }
+    } catch (SQLException e) {
+        throw new RuntimeException("Failed to fetch account", e);
+    }
+}
+</pre>
+
+<h2>2.3 What JDBC Gives You — and What It Doesn't</h2>
+<table>
+<tr><th>JDBC Provides</th><th>JDBC Does NOT Provide</th></tr>
+<tr><td>A standard way to connect to any relational database</td><td>Object-to-table mapping — you map every column by hand</td></tr>
+<tr><td>PreparedStatement — safe, parameterized queries (prevents SQL injection)</td><td>Automatic relationship handling (joins across objects)</td></tr>
+<tr><td>Transaction control (commit/rollback)</td><td>Caching</td></tr>
+<tr><td>Connection pooling support (via a pool library like HikariCP)</td><td>Any abstraction over repetitive boilerplate</td></tr>
+</table>
+<div class="tip"><b>Interview one-liner:</b> "JDBC is the foundational, low-level API every Java data access technology builds on — it directly executes SQL and manually maps ResultSets to objects, with zero abstraction over the repetitive connection/statement/resultset/cleanup pattern."</div>
+</div>
+
+<!-- 3. HIBERNATE -->
+<div class="section">
+<h1>3. Hibernate — The ORM Evolution</h1>
+
+<h2>3.1 What Hibernate Added</h2>
+<div class="box">Hibernate is an ORM (Object-Relational Mapping) framework — it automatically maps Java objects (annotated classes) to database tables and generates the SQL for you, eliminating the manual boilerplate from Section 2.2 almost entirely.</div>
+
+<h2>3.2 The Same Query, With Hibernate</h2>
+<pre>@Entity
+@Table(name = "account")
+public class Account {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private BigDecimal balance;
+    private String status;
+}
+
+<span class="c1">// Fetching — Hibernate generates and executes the SQL, and maps the result automatically</span>
+Session session = sessionFactory.openSession();
+Account account = session.get(Account.class, id);   <span class="c1">// ONE line replaces the entire JDBC method</span>
+</pre>
+
+<h2>3.3 JPA vs Hibernate — Critical Distinction</h2>
+<table>
+<tr><th></th><th>JPA</th><th>Hibernate</th></tr>
+<tr><td>What it is</td><td>A specification — a set of interfaces/annotations (<code>@Entity</code>, <code>EntityManager</code>)</td><td>A concrete implementation of that specification (the actual working engine)</td></tr>
+<tr><td>Analogy</td><td>Like an interface</td><td>Like a class implementing that interface</td></tr>
+<tr><td>Other implementations</td><td>—</td><td>EclipseLink, OpenJPA also implement JPA</td></tr>
+</table>
+<div class="tip"><b>Interview tip:</b> When you write <code>@Entity</code> and use <code>EntityManager</code>, you're coding against the <b>JPA</b> specification. Spring Boot's default underlying implementation actually doing the work is <b>Hibernate</b>. Spring Data JPA (the main focus of this guide) is built on top of JPA, using Hibernate underneath by default.</div>
+
+<h2>3.4 What Hibernate Solved — and What Still Needed Solving</h2>
+<ul>
+<li>Eliminated manual SQL/ResultSet-to-object mapping.</li>
+<li>Added relationship management (<code>@OneToMany</code>, <code>@ManyToOne</code>), caching, and lazy loading.</li>
+<li><b>Still needed:</b> even with Hibernate, you still wrote a lot of repetitive DAO code — <code>save()</code>, <code>findById()</code>, <code>delete()</code> methods copy-pasted (with small variations) across every entity type. Spring Data JPA's Repository abstraction (Section 8) was created specifically to eliminate that remaining repetition.</li>
+</ul>
+</div>
+
+<!-- 4. SPRING JDBC -->
+<div class="section">
+<h1>4. Spring JDBC (JdbcTemplate) — A Lighter-Weight Middle Ground</h1>
+
+<h2>4.1 What Spring JDBC Solves</h2>
+<div class="box">Spring JDBC's <code>JdbcTemplate</code> removes JDBC's repetitive connection/resource-cleanup boilerplate (Section 2.2) WITHOUT introducing a full ORM — you still write your own SQL, but Spring handles opening/closing connections, exception translation, and basic result mapping for you.</div>
+
+<h2>4.2 Real JdbcTemplate Code</h2>
+<pre>@Repository
+@RequiredArgsConstructor
+public class AccountJdbcRepository {
+    private final JdbcTemplate jdbcTemplate;
+
+    public Account findById(Long id) {
+        String sql = "SELECT id, balance, status FROM account WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, (rs, rowNum) -&gt;
+            new Account(rs.getLong("id"), rs.getBigDecimal("balance"), rs.getString("status")), id);
+        <span class="c1">// no manual connection open/close, no try/catch/finally boilerplate — Spring handles all of that</span>
+    }
+
+    public List&lt;Account&gt; findByStatus(String status) {
+        return jdbcTemplate.query(
+            "SELECT id, balance, status FROM account WHERE status = ?",
+            (rs, rowNum) -&gt; new Account(rs.getLong("id"), rs.getBigDecimal("balance"), rs.getString("status")),
+            status);
+    }
+}
+</pre>
+
+<h2>4.3 When Real Teams Still Use Spring JDBC Instead of JPA</h2>
+<table>
+<tr><th>Use Case</th><th>Why JdbcTemplate Over JPA</th></tr>
+<tr><td>Complex reporting queries with many joins/aggregations</td><td>Full manual SQL control is often clearer than fighting an ORM to produce the exact query needed</td></tr>
+<tr><td>Bulk batch operations</td><td>Fine-grained control over batching behavior</td></tr>
+<tr><td>Very simple microservices with minimal domain complexity</td><td>Avoids the overhead of a full entity/relationship model when it isn't needed</td></tr>
+</table>
+<div class="tip">In practice, many real Spring Boot applications use <b>Spring Data JPA as the default</b> for typical CRUD/entity-relationship-heavy work, and drop down to <code>JdbcTemplate</code> or native queries selectively for complex reporting/analytics queries — the two coexist in the same codebase without conflict.</div>
+</div>
+
+<!-- 5. INTRO TO SPRING DATA JPA -->
+<div class="section">
+<h1>5. Introduction to Spring Data JPA — Why It's the Standard Today</h1>
+
+<h2>5.1 What Spring Data JPA Actually Adds on Top of JPA/Hibernate</h2>
+<div class="box">Spring Data JPA doesn't replace JPA/Hibernate — it sits on top of them, providing the <b>Repository abstraction</b>: you declare an interface, and Spring generates the entire implementation (CRUD methods, query methods, pagination, sorting) for you at runtime. No DAO implementation class to write at all.</div>
+
+<h2>5.2 The Dramatic Before/After</h2>
+<pre><span class="c1">// WITHOUT Spring Data JPA — a full Hibernate/JPA DAO you'd have to write yourself</span>
+@Repository
+public class AccountDaoImpl implements AccountDao {
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    public Account findById(Long id) { return entityManager.find(Account.class, id); }
+    public Account save(Account account) { return entityManager.merge(account); }
+    public void delete(Account account) { entityManager.remove(account); }
+    public List&lt;Account&gt; findByStatus(String status) {
+        return entityManager.createQuery("SELECT a FROM Account a WHERE a.status = :status", Account.class)
+            .setParameter("status", status).getResultList();
+    }
+    <span class="c1">// ... and this repeats, with small variations, for EVERY entity in the application</span>
+}
+
+<span class="c1">// WITH Spring Data JPA — the ENTIRE above class becomes just this:</span>
+public interface AccountRepository extends JpaRepository&lt;Account, Long&gt; {
+    List&lt;Account&gt; findByStatus(String status);   <span class="c1">// Spring generates the implementation automatically, just from the method name</span>
+}
+</pre>
+<div class="tip"><b>This is the single most important thing to understand about Spring Data JPA:</b> you write an <b>interface</b>, and Spring generates a real, working implementation for you at application startup — using method naming conventions, annotations, or JPQL/native queries you provide, without you ever writing a class that implements it.</div>
+
+<h2>5.3 The Full Stack, Visualized</h2>
+<div class="diagram">
+<div class="title">How Everything Fits Together</div>
+<div class="flow-row"><div class="node purple">Your Code: AccountRepository extends JpaRepository&lt;Account, Long&gt;</div></div>
+<div class="arrow-down">↓ Spring Data JPA generates a proxy implementation</div>
+<div class="flow-row"><div class="node green">JPA (specification): EntityManager, @Entity, JPQL</div></div>
+<div class="arrow-down">↓ implemented by</div>
+<div class="flow-row"><div class="node">Hibernate (implementation): generates actual SQL, manages sessions/caching</div></div>
+<div class="arrow-down">↓ executes via</div>
+<div class="flow-row"><div class="node gray">JDBC: the raw connection to the database</div></div>
+</div>
+<div class="tip">The remainder of this guide (Sections 6 onward) focuses in depth on Spring Data JPA — exactly as requested — covering everything a real Java full-stack developer needs for production-grade data layer development.</div>
+</div>
+
+<!-- 6. POJO VS ENTITY VS DTO -->
+<div class="section">
+<h1>6. POJO vs Entity vs DTO — Full Clarification</h1>
+
+<h2>6.1 What Each Term Actually Means</h2>
+<table>
+<tr><th>Term</th><th>Definition</th><th>Real Example</th></tr>
+<tr><td>POJO (Plain Old Java Object)</td><td>Any simple Java class with fields, getters/setters, and no forced framework inheritance — the broadest term</td><td>Any regular class, including Entities and DTOs themselves</td></tr>
+<tr><td>Entity</td><td>A POJO annotated with <code>@Entity</code>, mapped to a database table, managed by JPA/Hibernate's persistence context</td><td><code>Account</code> class with <code>@Entity</code>, <code>@Id</code>, <code>@Column</code></td></tr>
+<tr><td>DTO (Data Transfer Object)</td><td>A POJO specifically designed to carry data across a boundary (e.g., the API layer), decoupled from the database schema</td><td><code>AccountDto</code> record with only the fields the client needs</td></tr>
+</table>
+
+<h2>6.2 Why Entities and DTOs Must Be Kept Separate</h2>
+<div class="warn">Returning a JPA <code>@Entity</code> directly from a REST controller tightly couples your public API contract to your internal database schema, risks exposing internal-only fields, and can throw serialization errors on lazy-loaded relationships accessed outside a transaction (Section 12, Section 24). Always map Entity → DTO before returning data to a client.</div>
+
+<h2>6.3 Real Code — All Three Side by Side</h2>
+<pre><span class="c1">// ENTITY — mapped to the database, managed by JPA</span>
+@Entity
+@Table(name = "account")
+public class Account {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private BigDecimal balance;
+    private String status;
+    private String internalRiskScore;   <span class="c1">// internal only — should NEVER leave via the API</span>
+}
+
+<span class="c1">// DTO — the public-facing shape, deliberately excludes internalRiskScore</span>
+public record AccountDto(Long id, BigDecimal balance, String status) {}
+
+<span class="c1">// MAPPER — converts between them</span>
+@Component
+public class AccountMapper {
+    public AccountDto toDto(Account entity) {
+        return new AccountDto(entity.getId(), entity.getBalance(), entity.getStatus());
+    }
+}
+
+<span class="c1">// A plain POJO — not an entity, not a DTO, just a regular helper object</span>
+public class InterestCalculationResult {
+    private BigDecimal principal;
+    private BigDecimal interestEarned;
+}
+</pre>
+<div class="tip"><b>Interview one-liner:</b> "POJO is the general category; an Entity is a POJO mapped to a database table via JPA annotations; a DTO is a POJO shaped specifically for data transfer across a boundary like an API — Entities and DTOs should never be the same class."</div>
+</div>
+
+<!-- 7. SETTING UP SPRING DATA JPA -->
+<div class="section">
+<h1>7. Setting Up Spring Data JPA in a Real Project</h1>
+
+<h2>7.1 Real Dependencies</h2>
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+    &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.flywaydb&lt;/groupId&gt;
+    &lt;artifactId&gt;flyway-core&lt;/artifactId&gt;   <span class="c1">&lt;!-- real orgs use migrations, never ddl-auto in production --&gt;</span>
+&lt;/dependency&gt;
+</pre>
+
+<h2>7.2 Real application.yml Configuration</h2>
+<pre>spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/accounts_db
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 20        <span class="c1"># HikariCP — Spring Boot's default, high-performance connection pool</span>
+      minimum-idle: 5
+  jpa:
+    hibernate:
+      ddl-auto: validate           <span class="c1"># NEVER "update" in production — schema changes go through Flyway/Liquibase</span>
+    show-sql: false                 <span class="c1"># enable temporarily for local debugging only</span>
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc.batch_size: 20         <span class="c1"># batches multiple inserts/updates into fewer round trips (Section 23)</span>
+  flyway:
+    locations: classpath:db/migration
+</pre>
+<div class="warn"><b>Critical real-world rule:</b> <code>ddl-auto: update</code> (or worse, <code>create</code>) must NEVER be used in production — it lets Hibernate auto-modify your database schema based on entity changes, which is unpredictable and dangerous at scale. Real organizations use versioned migration tools (Flyway or Liquibase) with <code>ddl-auto: validate</code> (Hibernate only checks the schema matches, never changes it).</div>
+
+<h2>7.3 Real Flyway Migration Script</h2>
+<pre><span class="c1">-- src/main/resources/db/migration/V1__create_account_table.sql</span>
+CREATE TABLE account (
+    id BIGSERIAL PRIMARY KEY,
+    balance NUMERIC(15,2) NOT NULL DEFAULT 0,
+    status VARCHAR(20) NOT NULL,
+    created_date TIMESTAMP NOT NULL DEFAULT now()
+);
+CREATE INDEX idx_account_status ON account(status);
+</pre>
+</div>
+
+<!-- 8. JPAREPOSITORY DEEP DIVE -->
+<div class="section">
+<h1>8. JpaRepository Deep Dive</h1>
+
+<h2>8.1 The Repository Interface Hierarchy</h2>
+<div class="diagram">
+<div class="title">Spring Data Repository Hierarchy</div>
+<div class="flow-row"><div class="node gray">Repository&lt;T, ID&gt;<br/>marker interface, no methods</div></div>
+<div class="arrow-down">↓ extends</div>
+<div class="flow-row"><div class="node">CrudRepository&lt;T, ID&gt;<br/>save, findById, findAll, delete, count</div></div>
+<div class="arrow-down">↓ extends</div>
+<div class="flow-row"><div class="node green">PagingAndSortingRepository&lt;T, ID&gt;<br/>adds findAll(Pageable), findAll(Sort)</div></div>
+<div class="arrow-down">↓ extends</div>
+<div class="flow-row"><div class="node purple">JpaRepository&lt;T, ID&gt;<br/>adds JPA-specific batch ops, flush(), getReferenceById()</div></div>
+</div>
+
+<h2>8.2 What You Get for Free — Zero Implementation Code</h2>
+<pre>public interface AccountRepository extends JpaRepository&lt;Account, Long&gt; {
+    <span class="c1">// Nothing written here yet — but you ALREADY have all of these, working, for free:</span>
+    <span class="c1">// save(account), saveAll(accounts), findById(id), findAll(), findAllById(ids),</span>
+    <span class="c1">// existsById(id), count(), deleteById(id), delete(account), deleteAll()</span>
+}
+</pre>
+
+<h2>8.3 Derived Query Methods — The "Magic" Explained</h2>
+<div class="box">Spring Data JPA parses your method NAME itself to generate the query — no annotation, no SQL, no JPQL needed for common cases.</div>
+<pre>public interface AccountRepository extends JpaRepository&lt;Account, Long&gt; {
+
+    List&lt;Account&gt; findByStatus(String status);
+    <span class="c1">// generates: SELECT a FROM Account a WHERE a.status = ?1</span>
+
+    List&lt;Account&gt; findByStatusAndBalanceGreaterThan(String status, BigDecimal minBalance);
+    <span class="c1">// generates: SELECT a FROM Account a WHERE a.status = ?1 AND a.balance &gt; ?2</span>
+
+    Optional&lt;Account&gt; findByCustomerEmailIgnoreCase(String email);
+    <span class="c1">// generates: SELECT a FROM Account a WHERE UPPER(a.customer.email) = UPPER(?1) — note: navigates a relationship!</span>
+
+    List&lt;Account&gt; findTop5ByStatusOrderByBalanceDesc(String status);
+    <span class="c1">// generates: SELECT a FROM Account a WHERE a.status = ?1 ORDER BY a.balance DESC LIMIT 5</span>
+
+    long countByStatus(String status);
+    <span class="c1">// generates a COUNT query instead of fetching entities — very efficient</span>
+
+    boolean existsByCustomerEmail(String email);
+    <span class="c1">// generates an efficient EXISTS-style check</span>
+
+    void deleteByStatus(String status);
+}
+</pre>
+
+<h2>8.4 Key Derived Query Keywords Reference</h2>
+<table>
+<tr><th>Keyword</th><th>Example</th><th>Meaning</th></tr>
+<tr><td>And / Or</td><td><code>findByStatusAndBalanceGreaterThan</code></td><td>Combines multiple conditions</td></tr>
+<tr><td>Between</td><td><code>findByCreatedDateBetween(start, end)</code></td><td>Range condition</td></tr>
+<tr><td>LessThan / GreaterThan</td><td><code>findByBalanceGreaterThanEqual</code></td><td>Numeric/date comparisons</td></tr>
+<tr><td>Like / Containing / StartingWith</td><td><code>findByCustomerNameContaining</code></td><td>Partial string match (SQL LIKE)</td></tr>
+<tr><td>IgnoreCase</td><td><code>findByEmailIgnoreCase</code></td><td>Case-insensitive comparison</td></tr>
+<tr><td>OrderBy</td><td><code>findByStatusOrderByBalanceDesc</code></td><td>Adds explicit sort order</td></tr>
+<tr><td>In</td><td><code>findByStatusIn(List&lt;String&gt; statuses)</code></td><td>SQL IN clause</td></tr>
+<tr><td>IsNull / IsNotNull</td><td><code>findByClosedDateIsNull</code></td><td>Null checks</td></tr>
+<tr><td>First / Top</td><td><code>findFirst3ByStatus</code></td><td>Limits result count</td></tr>
+</table>
+<div class="warn"><b>Real-world limit:</b> Derived query methods are great for simple conditions, but a method name like <code>findByStatusAndBalanceGreaterThanAndCustomerCityAndCreatedDateBetween</code> becomes unreadable — once a query needs more than 2-3 conditions or any real complexity, switch to <code>@Query</code> (JPQL/native, Section 14) or Specifications (Section 21) instead.</div>
+
+<h2>8.5 Custom Queries With @Query</h2>
+<pre>public interface AccountRepository extends JpaRepository&lt;Account, Long&gt; {
+
+    @Query("SELECT a FROM Account a WHERE a.status = :status AND a.balance &gt; :minBalance")
+    List&lt;Account&gt; findActiveAccountsAboveBalance(@Param("status") String status, @Param("minBalance") BigDecimal minBalance);
+
+    @Modifying   <span class="c1">// REQUIRED for UPDATE/DELETE queries — tells Spring this isn't a SELECT</span>
+    @Transactional
+    @Query("UPDATE Account a SET a.status = :status WHERE a.id = :id")
+    int updateStatus(@Param("id") Long id, @Param("status") String status);
+}
+</pre>
+</div>
+
+<!-- 9. ENTITY MAPPING BASICS -->
+<div class="section">
+<h1>9. Entity Mapping — The Basics (@Entity, @Id, @Column, @Table)</h1>
+
+<h2>9.1 The Minimum Required Annotations</h2>
+<pre>@Entity                              <span class="c1">// marks this class as a JPA-managed entity</span>
+@Table(name = "account")             <span class="c1">// maps to the "account" table (optional if class name matches)</span>
+public class Account {
+
+    @Id                               <span class="c1">// marks the primary key field</span>
+    @GeneratedValue(strategy = GenerationType.IDENTITY)   <span class="c1">// auto-increment, DB generates the value</span>
+    private Long id;
+
+    @Column(name = "balance", nullable = false, precision = 15, scale = 2)
+    private BigDecimal balance;
+
+    @Column(name = "account_status", length = 20)
+    private String status;
+
+    @Column(updatable = false)        <span class="c1">// set once on insert, never changed after</span>
+    private LocalDateTime createdDate;
+
+    @Transient                        <span class="c1">// NOT persisted to the database at all — a calculated/temporary field</span>
+    private BigDecimal displayBalanceWithCurrencySymbol;
+
+    @Enumerated(EnumType.STRING)      <span class="c1">// stores the enum's NAME ("ACTIVE"), not its ordinal number (safer against reordering)</span>
+    private AccountType accountType;
+}
+</pre>
+
+<h2>9.2 @GeneratedValue Strategies</h2>
+<table>
+<tr><th>Strategy</th><th>How IDs Are Generated</th><th>Real Use</th></tr>
+<tr><td>IDENTITY</td><td>Database auto-increment column generates the value on insert</td><td>Most common with PostgreSQL/MySQL</td></tr>
+<tr><td>SEQUENCE</td><td>Uses a database sequence object, can pre-allocate a batch of IDs for performance</td><td>Common with Oracle/PostgreSQL, better batch insert performance than IDENTITY</td></tr>
+<tr><td>TABLE</td><td>Uses a separate table to simulate a sequence — portable but slower</td><td>Rare, mostly for databases lacking native sequence support</td></tr>
+<tr><td>AUTO</td><td>Lets the JPA provider choose the best strategy for the underlying database</td><td>Convenient but less predictable/explicit</td></tr>
+</table>
+<div class="warn"><b>Real gotcha:</b> <code>GenerationType.IDENTITY</code> disables Hibernate's JDBC batch inserts for that entity — because the DB must generate and return each ID individually before Hibernate can process the next insert. If bulk-insert performance matters, <code>SEQUENCE</code> is usually a better choice (Section 23).</div>
+
+<h2>9.3 Embedded Objects (@Embeddable)</h2>
+<pre>@Embeddable
+public class Address {
+    private String street;
+    private String city;
+    private String zipCode;
+}
+
+@Entity
+public class Customer {
+    @Id
+    private Long id;
+
+    @Embedded   <span class="c1">// Address's fields are stored as columns directly on the "customer" table, not a separate table</span>
+    private Address address;
+}
+</pre>
+<div class="box">Use <code>@Embeddable</code>/<code>@Embedded</code> for value objects that logically belong to an entity but don't need their own identity/table — like an Address, or a Money value object combining amount+currency.</div>
+</div>
+
+<!-- 10. ENTITY MAPPING RELATIONSHIPS -->
+<div class="section">
+<h1>10. Entity Mapping — All Relationship Types (OneToOne, OneToMany, ManyToOne, ManyToMany)</h1>
+
+<h2>10.1 The Four Relationship Types, Visualized</h2>
+<div class="diagram">
+<div class="title">Relationship Types Overview (Real Banking Example)</div>
+<div class="flow-row">
+<div class="node">Customer 1 ←→ 1 Passport<br/>(OneToOne)</div>
+</div>
+<div class="flow-row">
+<div class="node green">Customer 1 → N Accounts<br/>(OneToMany / ManyToOne)</div>
+</div>
+<div class="flow-row">
+<div class="node purple">Account N ←→ N Cards (via joint holders)<br/>(ManyToMany)</div>
+</div>
+</div>
+
+<h2>10.2 @OneToOne — Real Example</h2>
+<pre>@Entity
+public class Customer {
+    @Id @GeneratedValue private Long id;
+    private String name;
+
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    private Passport passport;   <span class="c1">// the INVERSE side — "mappedBy" points to the field name in Passport</span>
+}
+
+@Entity
+public class Passport {
+    @Id @GeneratedValue private Long id;
+    private String passportNumber;
+
+    @OneToOne
+    @JoinColumn(name = "customer_id")   <span class="c1">// the OWNING side — holds the actual foreign key column</span>
+    private Customer customer;
+}
+</pre>
+
+<h2>10.3 @OneToMany and @ManyToOne — The Most Common Real Pairing</h2>
+<pre>@Entity
+public class Customer {
+    @Id @GeneratedValue private Long id;
+    private String name;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List&lt;Account&gt; accounts = new ArrayList&lt;&gt;();   <span class="c1">// INVERSE side, no foreign key here</span>
+}
+
+@Entity
+public class Account {
+    @Id @GeneratedValue private Long id;
+    private BigDecimal balance;
+
+    @ManyToOne(fetch = FetchType.LAZY)   <span class="c1">// OWNING side — Account table has the customer_id foreign key column</span>
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customer;
+}
+</pre>
+<div class="box"><b>Owning side vs Inverse side:</b> The <b>owning side</b> is the entity whose table holds the actual foreign key column, and it's the side you must set when saving a new relationship. The <b>inverse side</b> uses <code>mappedBy</code> to reference the owning side's field name — it exists mainly for convenient bidirectional navigation and is NOT what actually controls the foreign key in the database.</div>
+
+<h2>10.4 @ManyToMany — Real Example</h2>
+<pre>@Entity
+public class Account {
+    @Id @GeneratedValue private Long id;
+
+    @ManyToMany
+    @JoinTable(
+        name = "account_holder",                       <span class="c1">// the join table itself</span>
+        joinColumns = @JoinColumn(name = "account_id"),
+        inverseJoinColumns = @JoinColumn(name = "customer_id"))
+    private Set&lt;Customer&gt; jointHolders = new HashSet&lt;&gt;();   <span class="c1">// a joint account can have multiple holders</span>
+}
+
+@Entity
+public class Customer {
+    @ManyToMany(mappedBy = "jointHolders")
+    private Set&lt;Account&gt; jointAccounts = new HashSet&lt;&gt;();
+}
+</pre>
+<div class="warn"><b>Real-world advice:</b> <code>@ManyToMany</code> is the least commonly recommended relationship type in real production systems — the join table often needs its own extra columns later (e.g., "date added as joint holder," "holder role"), which <code>@ManyToMany</code> can't represent. Most real teams model the join table as its own explicit <code>@Entity</code> with two <code>@ManyToOne</code> relationships instead, giving full control and room to grow.</div>
+
+<h2>10.5 Real "Explicit Join Entity" Pattern (Preferred Over @ManyToMany)</h2>
+<pre>@Entity
+@Table(name = "account_holder")
+public class AccountHolder {
+    @Id @GeneratedValue private Long id;
+
+    @ManyToOne @JoinColumn(name = "account_id")
+    private Account account;
+
+    @ManyToOne @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+    private LocalDate addedAsHolderDate;   <span class="c1">// extra column — impossible to add cleanly with plain @ManyToMany</span>
+    private String holderRole;             <span class="c1">// e.g., "PRIMARY", "JOINT"</span>
+}
+</pre>
+
+<h2>10.6 Bidirectional vs Unidirectional Relationships</h2>
+<table>
+<tr><th></th><th>Unidirectional</th><th>Bidirectional</th></tr>
+<tr><td>Navigation</td><td>Only one side can navigate to the other (e.g., Account → Customer, but not back)</td><td>Both sides can navigate to each other</td></tr>
+<tr><td>Complexity</td><td>Simpler, fewer synchronization bugs</td><td>Must keep both sides in sync manually (Section 10.7) or risk inconsistent in-memory state</td></tr>
+<tr><td>Real recommendation</td><td>Prefer unidirectional unless you genuinely need to navigate both ways</td><td>Use only when regularly needed from both directions</td></tr>
+</table>
+
+<h2>10.7 The Bidirectional Sync Gotcha — Real Helper Methods</h2>
+<pre><span class="c1">// WITHOUT a helper method, this is a common real bug:</span>
+account.setCustomer(customer);
+<span class="c1">// customer.getAccounts() does NOT automatically include this account in memory until the object is re-fetched!</span>
+
+<span class="c1">// FIX — a helper method keeping both sides in sync</span>
+@Entity
+public class Customer {
+    private List&lt;Account&gt; accounts = new ArrayList&lt;&gt;();
+
+    public void addAccount(Account account) {
+        accounts.add(account);
+        account.setCustomer(this);   <span class="c1">// keeps BOTH sides consistent in memory</span>
+    }
+}
+</pre>
+</div>
+
+<!-- 11. CASCADE TYPES -->
+<div class="section">
+<h1>11. Cascade Types Deep Dive</h1>
+
+<h2>11.1 What Cascading Means</h2>
+<div class="box">Cascading propagates an operation (save, update, delete) performed on a parent entity to its related child entities automatically — without cascading, you'd need to manually save/delete each related entity yourself.</div>
+
+<h2>11.2 The Full Cascade Type Reference</h2>
+<table>
+<tr><th>Cascade Type</th><th>What Propagates</th><th>Real Use Case</th></tr>
+<tr><td>PERSIST</td><td>Saving the parent also saves new child entities</td><td>Saving a new Customer automatically saves their new Accounts</td></tr>
+<tr><td>MERGE</td><td>Updating the parent also updates changes to child entities</td><td>Updating a Customer's detached data also merges Account changes</td></tr>
+<tr><td>REMOVE</td><td>Deleting the parent also deletes child entities</td><td>Deleting a Customer deletes all their Accounts (use with EXTREME caution)</td></tr>
+<tr><td>REFRESH</td><td>Refreshing the parent from the DB also refreshes children</td><td>Rare, used to discard in-memory changes and reload from DB</td></tr>
+<tr><td>DETACH</td><td>Detaching the parent also detaches children from the persistence context</td><td>Rare, manual session management scenarios</td></tr>
+<tr><td>ALL</td><td>All of the above</td><td>Convenient shorthand — use deliberately, not by default</td></tr>
+</table>
+
+<h2>11.3 Real Code — Careful, Deliberate Cascade Usage</h2>
+<pre>@Entity
+public class Customer {
+    @OneToMany(mappedBy = "customer", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    private List&lt;Account&gt; accounts = new ArrayList&lt;&gt;();
+    <span class="c1">// deliberately NOT CascadeType.REMOVE — deleting a Customer should NEVER silently delete their financial Accounts!</span>
+}
+</pre>
+<div class="warn"><b>Real production disaster this prevents:</b> A common real-world mistake is using <code>cascade = CascadeType.ALL</code> everywhere by default — this has caused real incidents where deleting a "parent" record (like a Customer) unexpectedly cascaded and deleted financially/legally important child records (like Accounts with transaction history) that should have required a deliberate, explicit, audited deletion process instead.</div>
+
+<h2>11.4 orphanRemoval — A Related but Distinct Concept</h2>
+<pre>@OneToMany(mappedBy = "customer", orphanRemoval = true)
+private List&lt;Account&gt; accounts;
+
+<span class="c1">// Removing an account from the in-memory list AND letting Hibernate detect it as "orphaned" deletes it from the DB too</span>
+customer.getAccounts().remove(someAccount);   <span class="c1">// this alone triggers a DELETE for someAccount, due to orphanRemoval=true</span>
+</pre>
+<div class="box"><code>orphanRemoval</code> handles a different scenario than <code>CascadeType.REMOVE</code>: it deletes a child when it's removed from the parent's collection (even if the parent itself isn't deleted), whereas <code>CascadeType.REMOVE</code> only deletes children when the parent itself is deleted.</div>
+</div>
+
+<!-- 12. LAZY VS EAGER LOADING -->
+<div class="section">
+<h1>12. Lazy vs Eager Loading</h1>
+
+<h2>12.1 The Core Concept</h2>
+<div class="box"><b>Lazy loading</b> means a related entity/collection is NOT fetched from the database until you actually access it in code. <b>Eager loading</b> means it's fetched immediately, together with the parent, in the very same query (or an immediate follow-up query).</div>
+
+<h2>12.2 Default Fetch Types (Commonly Misremembered — Real Interview Trap)</h2>
+<table>
+<tr><th>Relationship</th><th>Default Fetch Type</th></tr>
+<tr><td>@ManyToOne</td><td>EAGER (default) — a very common source of unexpected extra queries if not overridden</td></tr>
+<tr><td>@OneToOne</td><td>EAGER (default)</td></tr>
+<tr><td>@OneToMany</td><td>LAZY (default)</td></tr>
+<tr><td>@ManyToMany</td><td>LAZY (default)</td></tr>
+</table>
+<div class="warn"><b>Real best practice:</b> Real organizations almost universally override <code>@ManyToOne</code> and <code>@OneToOne</code> to explicitly use <code>FetchType.LAZY</code> as well — relying on JPA's EAGER defaults for these has caused real, hard-to-diagnose performance issues where fetching one entity silently triggers a cascade of unnecessary joins/queries across the whole object graph.</div>
+<pre>@ManyToOne(fetch = FetchType.LAZY)   <span class="c1">// ALWAYS explicitly override the default here in real projects</span>
+@JoinColumn(name = "customer_id")
+private Customer customer;
+</pre>
+
+<h2>12.3 How Lazy Loading Actually Works — Proxies</h2>
+<div class="box">When you fetch an <code>Account</code> with a lazy <code>customer</code> field, Hibernate doesn't leave it null — it injects a <b>proxy object</b> (a placeholder subclass) that looks like a real Customer but contains no real data yet. The moment you call any getter on it (e.g., <code>account.getCustomer().getName()</code>), Hibernate fires a real SQL query to fetch the actual data, IF the persistence context/session is still open.</div>
+
+<h2>12.4 The Classic LazyInitializationException</h2>
+<pre>@Transactional
+public AccountDto getAccount(Long id) {
+    Account account = accountRepository.findById(id).orElseThrow();
+    return mapper.toDto(account);   <span class="c1">// mapping happens INSIDE the transaction — safe, session still open</span>
+}
+
+<span class="c1">// vs. the BUGGY version:</span>
+public Account getAccountRaw(Long id) {
+    return accountRepository.findById(id).orElseThrow();
+    <span class="c1">// no @Transactional here — the session closes the moment this method returns</span>
+}
+public void processElsewhere() {
+    Account account = getAccountRaw(1001L);
+    account.getCustomer().getName();   <span class="c1">// LazyInitializationException! Session is already closed, proxy can't fetch real data</span>
+}
+</pre>
+<div class="tip"><b>Real fix pattern:</b> Always do your entity-to-DTO mapping (accessing any lazy fields you need) <b>inside</b> the same <code>@Transactional</code> service method boundary where the entity was fetched — never pass raw entities across transaction boundaries and expect lazy fields to still be accessible.</div>
+
+<h2>12.5 Diagram — Lazy Loading Timeline</h2>
+<div class="diagram">
+<div class="title">Lazy Loading — What Happens When</div>
+<div class="flow-row"><div class="node">accountRepository.findById(1001) called</div></div>
+<div class="arrow-down">↓ SELECT * FROM account WHERE id=1001 (customer is a PROXY, not loaded yet)</div>
+<div class="flow-row"><div class="node green">Still inside @Transactional method</div></div>
+<div class="arrow-down">↓ account.getCustomer().getName() called</div>
+<div class="flow-row"><div class="node alt">Hibernate fires: SELECT * FROM customer WHERE id=? (lazy field resolved NOW)</div></div>
+</div>
+</div>
+
+<!-- 13. N+1 PROBLEM -->
+<div class="section">
+<h1>13. The N+1 Problem — Deep Dive</h1>
+
+<h2>13.1 What the N+1 Problem Is</h2>
+<div class="warn">Fetching a list of N parent entities, then lazily accessing a related field/collection for EACH one, results in 1 query for the parents PLUS N additional queries (one per parent) — N+1 total queries, instead of the 1-2 queries that would be ideal.</div>
+
+<h2>13.2 Real Example — The Bug in Action</h2>
+<pre>List&lt;Account&gt; accounts = accountRepository.findAll();   <span class="c1">// query #1 — fetches 50 accounts</span>
+
+for (Account account : accounts) {
+    System.out.println(account.getCustomer().getName());   <span class="c1">// lazy @ManyToOne — fires ONE separate query PER account!</span>
+}
+<span class="c1">// Total: 1 + 50 = 51 queries, when 1-2 queries would have been enough</span>
+</pre>
+<div class="diagram">
+<div class="title">N+1 Visualized</div>
+<div class="flow-row"><div class="node alt">1 query: SELECT * FROM account (50 rows)</div></div>
+<div class="arrow-down">↓ then, for EACH of the 50 accounts:</div>
+<div class="flow-row"><div class="node gray">50 separate queries: SELECT * FROM customer WHERE id = ?</div></div>
+</div>
+
+<h2>13.3 How to Detect It (Real Practice)</h2>
+<pre>spring:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        <span class="c1"># even better in real orgs: use the "datasource-proxy" or "p6spy" library to log/count actual queries per request in tests</span>
+</pre>
+<div class="tip"><b>Real practice:</b> Add an automated test asserting the exact number of SQL queries executed for a given list endpoint (using a query-counting library) — this catches an accidentally introduced N+1 regression in code review/CI, before it ever reaches production and causes a real performance incident under load.</div>
+
+<h2>13.4 The Fixes — In Order of Preference</h2>
+<pre><span class="c1">// FIX 1 — JOIN FETCH in JPQL (Section 14): fetch parent + child in ONE query</span>
+@Query("SELECT a FROM Account a JOIN FETCH a.customer WHERE a.status = :status")
+List&lt;Account&gt; findByStatusWithCustomer(@Param("status") String status);
+
+<span class="c1">// FIX 2 — Entity Graph (Section 22): declarative, reusable fetch plan</span>
+@EntityGraph(attributePaths = {"customer"})
+List&lt;Account&gt; findByStatus(String status);
+
+<span class="c1">// FIX 3 — Batch fetching: Hibernate groups the N follow-up queries into fewer IN-clause queries</span>
+@BatchSize(size = 20)   <span class="c1">// on the @ManyToOne/@OneToMany field — turns 50 queries into ~3 queries of 20 IDs each</span>
+private Customer customer;
+
+<span class="c1">// application.yml — global batch fetch size default</span>
+spring.jpa.properties.hibernate.default_batch_fetch_size: 20
+</pre>
+
+<h2>13.5 N+1 Isn't Unique to Lazy — It Can Happen With Collections Too</h2>
+<pre>List&lt;Customer&gt; customers = customerRepository.findAll();   <span class="c1">// 1 query</span>
+for (Customer c : customers) {
+    int count = c.getAccounts().size();   <span class="c1">// lazy @OneToMany collection — N additional queries again</span>
+}
+</pre>
+<div class="tip"><b>Real scenario:</b> "Our /accounts list endpoint went from 40ms to 4 seconds after we added a customer name column to the response. Enabling SQL logging revealed exactly 51 queries for a 50-account page — a textbook N+1 caused by a lazily-loaded @ManyToOne. Adding <code>JOIN FETCH</code> to the repository query dropped it back to 1 query and under 50ms."</div>
+</div>
+
+<!-- 14. JPQL VS NATIVE QUERY -->
+<div class="section">
+<h1>14. JPQL vs Native Query</h1>
+
+<h2>14.1 What JPQL Is</h2>
+<div class="box">JPQL (Java Persistence Query Language) looks like SQL but operates on your <b>entity object model</b>, not directly on database tables/columns — you write <code>SELECT a FROM Account a</code> (the entity class name), not <code>SELECT * FROM account</code> (the table name), and JPQL is translated into real SQL by Hibernate at runtime.</div>
+
+<h2>14.2 Real JPQL Examples</h2>
+<pre>@Query("SELECT a FROM Account a WHERE a.status = :status")
+List&lt;Account&gt; findByStatus(@Param("status") String status);
+
+@Query("SELECT a FROM Account a JOIN a.customer c WHERE c.city = :city")
+List&lt;Account&gt; findByCustomerCity(@Param("city") String city);
+
+@Query("SELECT new com.bank.dto.AccountSummaryDto(a.id, a.balance, c.name) " +
+       "FROM Account a JOIN a.customer c WHERE a.status = 'ACTIVE'")
+List&lt;AccountSummaryDto&gt; findActiveAccountSummaries();   <span class="c1">// constructor expression — projects directly into a DTO, avoiding entity overhead entirely</span>
+</pre>
+
+<h2>14.3 Native Queries — Dropping to Raw SQL</h2>
+<pre>@Query(value = "SELECT * FROM account WHERE status = :status AND balance &gt; :minBalance " +
+               "ORDER BY balance DESC LIMIT :limit", nativeQuery = true)
+List&lt;Account&gt; findTopAccountsNative(@Param("status") String status,
+                                     @Param("minBalance") BigDecimal minBalance,
+                                     @Param("limit") int limit);
+
+<span class="c1">// Native query using a database-specific function JPQL can't express</span>
+@Query(value = "SELECT * FROM account WHERE ST_DWithin(location, :point, :radius)", nativeQuery = true)
+List&lt;Account&gt; findNearbyBranches(@Param("point") Point point, @Param("radius") double radius);
+</pre>
+
+<h2>14.4 JPQL vs Native Query — Full Comparison</h2>
+<table>
+<tr><th>Aspect</th><th>JPQL</th><th>Native Query</th></tr>
+<tr><td>Operates on</td><td>Entity object model (class/field names)</td><td>Actual database tables/columns</td></tr>
+<tr><td>Database portability</td><td>Portable across different databases (Hibernate translates it)</td><td>Tied to one specific database's SQL dialect/functions</td></tr>
+<tr><td>Can use DB-specific functions?</td><td>No (limited to JPQL's function set)</td><td>Yes — full access to any vendor-specific SQL feature</td></tr>
+<tr><td>Return type flexibility</td><td>Entities, DTO constructor expressions, scalar values</td><td>Entities (with care) or raw <code>Object[]</code>/interface projections</td></tr>
+<tr><td>Real-world guidance</td><td>Default choice — use for the vast majority of queries</td><td>Use only when JPQL genuinely can't express what you need (complex vendor-specific SQL, performance-critical raw queries)</td></tr>
+</table>
+<div class="tip"><b>Interview one-liner:</b> "JPQL queries the object model and is database-portable; native queries are raw SQL tied to one database but give full access to vendor-specific features — real teams default to JPQL/derived queries and only reach for native SQL when truly necessary."</div>
+</div>
+
+<!-- 15. PAGINATION & SORTING -->
+<div class="section">
+<h1>15. Pagination &amp; Sorting</h1>
+
+<h2>15.1 Why Pagination Is Mandatory (Recap)</h2>
+<div class="warn">Returning millions of rows in one query would crash the client and overload the database. <code>JpaRepository</code> (via <code>PagingAndSortingRepository</code>) provides built-in pagination support — never fetch an entire large table into memory and paginate manually in application code.</div>
+
+<h2>15.2 Real Code — Pageable and Sort</h2>
+<pre>public interface AccountRepository extends JpaRepository&lt;Account, Long&gt; {
+    Page&lt;Account&gt; findByStatus(String status, Pageable pageable);
+}
+
+@Service
+@RequiredArgsConstructor
+public class AccountService {
+    private final AccountRepository accountRepository;
+
+    public Page&lt;AccountDto&gt; getAccounts(String status, int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).descending());
+        return accountRepository.findByStatus(status, pageable).map(mapper::toDto);
+    }
+}
+
+<span class="c1">// Real controller usage: GET /accounts?status=ACTIVE&page=0&size=20&sortBy=balance</span>
+</pre>
+
+<h2>15.3 The Page Object — What You Get Back</h2>
+<pre>Page&lt;Account&gt; page = accountRepository.findByStatus("ACTIVE", pageable);
+page.getContent();          <span class="c1">// the actual List&lt;Account&gt; for this page</span>
+page.getTotalElements();    <span class="c1">// total count across ALL pages (runs a separate COUNT query)</span>
+page.getTotalPages();
+page.hasNext();
+page.isLast();
+</pre>
+<div class="warn"><b>Real performance gotcha:</b> <code>Page&lt;T&gt;</code> always runs an additional <code>COUNT(*)</code> query to compute <code>getTotalElements()</code> — on a very large table, this count query itself can become slow. If you don't need the total count (e.g., infinite-scroll UIs), use <code>Slice&lt;T&gt;</code> instead, which only checks "is there a next page?" without running a separate COUNT query.</div>
+<pre>Slice&lt;Account&gt; slice = accountRepository.findByStatus("ACTIVE", pageable);   <span class="c1">// no COUNT query — cheaper for infinite scroll</span>
+</pre>
+
+<h2>15.4 Multi-Field Sorting</h2>
+<pre>Sort sort = Sort.by(Sort.Order.desc("balance"), Sort.Order.asc("customer.name"));
+Pageable pageable = PageRequest.of(0, 20, sort);
+</pre>
+</div>
+
+<!-- 16. @TRANSACTIONAL IN DATA LAYER -->
+<div class="section">
+<h1>16. @Transactional in the Data Layer</h1>
+
+<h2>16.1 Recap and Data-Layer-Specific Focus</h2>
+<div class="box">Full general detail on <code>@Transactional</code> (propagation, isolation, rollback rules) is covered in the Spring &amp; Spring Boot guide (Sections 42-45) — this section focuses specifically on how transactions interact with the JPA persistence context and lazy loading.</div>
+
+<h2>16.2 Why @Transactional Matters So Much for JPA Specifically</h2>
+<div class="box">The JPA persistence context (Section 18 — First Level Cache) and lazy loading (Section 12) are both tied directly to the lifetime of a transaction/session. A transaction boundary isn't just about atomicity here — it's also what keeps lazy proxies resolvable and dirty-checking active.</div>
+
+<h2>16.3 Real Code — Transaction Boundary Around Multiple Repository Calls</h2>
+<pre>@Service
+@RequiredArgsConstructor
+public class TransferService {
+    private final AccountRepository accountRepository;
+
+    @Transactional
+    public void transfer(Long fromId, Long toId, BigDecimal amount) {
+        Account from = accountRepository.findById(fromId).orElseThrow();
+        Account to = accountRepository.findById(toId).orElseThrow();
+
+        from.debit(amount);
+        to.credit(amount);
+        <span class="c1">// NOTICE: no explicit accountRepository.save() calls needed here!</span>
+        <span class="c1">// Because "from" and "to" are managed entities (Section 24), Hibernate's dirty checking</span>
+        <span class="c1">// automatically detects the field changes and issues UPDATE statements at commit time</span>
+    }
+}
+</pre>
+<div class="tip"><b>Interview tip:</b> Inside an active transaction, modifying a <b>managed</b> entity's fields directly (without calling <code>save()</code>) is enough — Hibernate's dirty-checking mechanism compares the entity's current state to its original loaded state at flush/commit time and generates the necessary UPDATE automatically. Calling <code>save()</code> explicitly on an already-managed entity is harmless but redundant.</div>
+
+<h2>16.4 readOnly = true — A Real Performance Optimization</h2>
+<pre>@Transactional(readOnly = true)
+public List&lt;AccountDto&gt; getAllActiveAccounts() {
+    return accountRepository.findByStatus("ACTIVE").stream().map(mapper::toDto).toList();
+    <span class="c1">// Hibernate skips dirty-checking overhead entirely for this transaction — real, measurable speedup on read-heavy endpoints</span>
+}
+</pre>
+</div>
+
+<!-- 17. OPTIMISTIC VS PESSIMISTIC LOCKING -->
+<div class="section">
+<h1>17. Optimistic vs Pessimistic Locking</h1>
+
+<h2>17.1 The Core Problem — Concurrent Updates</h2>
+<div class="warn">Two users (or two service instances) reading the same Account row and both trying to update it at nearly the same time can cause a "lost update" — the second write silently overwrites the first, without either user knowing a conflict occurred.</div>
+
+<h2>17.2 Optimistic Locking — Real Implementation</h2>
+<div class="box">Optimistic locking assumes conflicts are RARE — it adds a version column, checked at update time; if the version doesn't match what was read, it means someone else changed the row in between, and Hibernate throws an exception rather than silently overwriting.</div>
+<pre>@Entity
+public class Account {
+    @Id @GeneratedValue private Long id;
+    private BigDecimal balance;
+
+    @Version   <span class="c1">// Hibernate automatically manages this — increments on every update</span>
+    private Long version;
+}
+
+<span class="c1">// What happens under the hood:</span>
+<span class="c1">// UPDATE account SET balance = ?, version = version + 1 WHERE id = ? AND version = ?</span>
+<span class="c1">// If 0 rows are affected (because version already changed), Hibernate throws:</span>
+<span class="c1">// OptimisticLockException / ObjectOptimisticLockingFailureException</span>
+
+@Service
+public class AccountService {
+    @Transactional
+    @Retryable(value = ObjectOptimisticLockingFailureException.class, maxAttempts = 3)
+    public void updateBalance(Long id, BigDecimal newBalance) {
+        Account account = accountRepository.findById(id).orElseThrow();
+        account.setBalance(newBalance);   <span class="c1">// if version conflicts, this whole method retries automatically</span>
+    }
+}
+</pre>
+
+<h2>17.3 Pessimistic Locking — Real Implementation</h2>
+<div class="box">Pessimistic locking assumes conflicts are LIKELY/costly to resolve after the fact — it locks the row in the database the moment it's read, blocking any other transaction from reading/writing it until the lock is released (transaction commits/rolls back).</div>
+<pre>public interface AccountRepository extends JpaRepository&lt;Account, Long&gt; {
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT a FROM Account a WHERE a.id = :id")
+    Optional&lt;Account&gt; findByIdForUpdate(@Param("id") Long id);
+    <span class="c1">// generates: SELECT ... FROM account WHERE id = ? FOR UPDATE — other transactions BLOCK until this one finishes</span>
+}
+</pre>
+<table>
+<tr><th>Lock Mode</th><th>Behavior</th></tr>
+<tr><td>PESSIMISTIC_READ</td><td>Other transactions can still read, but cannot acquire a write lock (shared lock)</td></tr>
+<tr><td>PESSIMISTIC_WRITE</td><td>Other transactions cannot read (in some DBs) or write until this lock is released (exclusive lock)</td></tr>
+<tr><td>PESSIMISTIC_FORCE_INCREMENT</td><td>Combines pessimistic locking with a forced version bump, for extra safety</td></tr>
+</table>
+
+<h2>17.4 Optimistic vs Pessimistic — When to Use Which</h2>
+<table>
+<tr><th>Aspect</th><th>Optimistic Locking</th><th>Pessimistic Locking</th></tr>
+<tr><td>Assumption</td><td>Conflicts are rare</td><td>Conflicts are likely/costly</td></tr>
+<tr><td>Performance under low contention</td><td>Excellent — no locking overhead</td><td>Worse — always acquires a DB lock even if no real conflict would occur</td></tr>
+<tr><td>Performance under high contention</td><td>Poor — frequent retries/failed updates</td><td>Better — serializes access cleanly, avoiding wasted retry work</td></tr>
+<tr><td>Real banking example</td><td>Updating a customer's profile/preferences (rare simultaneous edits)</td><td>Processing a high-value funds transfer where two concurrent debits on the same account absolutely cannot both succeed</td></tr>
+</table>
+<div class="tip"><b>Real scenario:</b> "Our account balance updates use optimistic locking with a small automatic retry (3 attempts) — conflicts are rare in practice. Our end-of-day batch reconciliation job, which must guarantee exclusive access to a specific ledger row while recalculating totals, uses pessimistic locking (FOR UPDATE) deliberately, accepting the brief blocking cost for guaranteed correctness during that critical window."</div>
+</div>
+
+<!-- 18. FIRST LEVEL CACHE -->
+<div class="section">
+<h1>18. First Level Cache (Persistence Context)</h1>
+
+<h2>18.1 What the First Level Cache Is</h2>
+<div class="box">The First Level Cache is the JPA <b>Persistence Context</b> itself (the <code>EntityManager</code>'s internal session) — it's ALWAYS active, cannot be disabled, and is scoped to a single transaction/session. Fetching the same entity by ID twice within the same transaction returns the exact same in-memory object, without a second SQL query.</div>
+
+<h2>18.2 Real Demonstration</h2>
+<pre>@Transactional
+public void demonstrateFirstLevelCache() {
+    Account first = accountRepository.findById(1001L).orElseThrow();   <span class="c1">// query #1 — hits the database</span>
+    Account second = accountRepository.findById(1001L).orElseThrow();  <span class="c1">// NO query #2 — returned directly from the persistence context</span>
+
+    System.out.println(first == second);   <span class="c1">// true — literally the SAME object reference in memory</span>
+}
+</pre>
+
+<h2>18.3 Scope and Lifetime</h2>
+<div class="diagram">
+<div class="title">First Level Cache Scope</div>
+<div class="flow-row"><div class="node purple">Transaction/Session starts</div></div>
+<div class="arrow-down">↓ Persistence Context created</div>
+<div class="flow-row"><div class="node green">Entities fetched are cached here — repeated lookups by ID are free</div></div>
+<div class="arrow-down">↓ Transaction/Session ends</div>
+<div class="flow-row"><div class="node gray">Persistence Context destroyed — cache is gone, next transaction starts fresh</div></div>
+</div>
+<div class="tip"><b>Interview tip:</b> The First Level Cache is per-transaction/session and automatic — it's not something you configure or enable, and it never helps across separate transactions or separate application instances. That's exactly the gap the Second Level Cache (Section 19) fills.</div>
+</div>
+
+<!-- 19. SECOND LEVEL CACHE -->
+<div class="section">
+<h1>19. Second Level Cache</h1>
+
+<h2>19.1 What Problem It Solves</h2>
+<div class="box">The First Level Cache only helps within ONE transaction. The Second Level Cache is shared across transactions (and, depending on the cache provider, potentially across the whole application instance) — genuinely reducing repeated database hits for the same rarely-changing entity across many separate requests.</div>
+
+<h2>19.2 Real Setup — Hibernate + Ehcache/Caffeine</h2>
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.hibernate.orm&lt;/groupId&gt;
+    &lt;artifactId&gt;hibernate-jcache&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.ehcache&lt;/groupId&gt;
+    &lt;artifactId&gt;ehcache&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+<span class="c1"># application.yml</span>
+spring:
+  jpa:
+    properties:
+      hibernate:
+        cache:
+          use_second_level_cache: true
+          region.factory_class: org.hibernate.cache.jcache.internal.JCacheRegionFactory
+        javax.cache.provider: org.ehcache.jsr107.EhcacheCachingProvider
+</pre>
+<pre>@Entity
+@Cacheable   <span class="c1">// opts this entity INTO the second level cache</span>
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class InterestRateProduct {   <span class="c1">// a great candidate — rarely changes, read very frequently</span>
+    @Id private Long id;
+    private String productCode;
+    private BigDecimal interestRate;
+}
+</pre>
+
+<h2>19.3 What Belongs in the Second Level Cache — and What Doesn't</h2>
+<table>
+<tr><th>Good Candidates</th><th>Bad Candidates</th></tr>
+<tr><td>Reference/lookup data (interest rate products, country codes, currency lists)</td><td>Frequently-changing transactional data (account balances, order status)</td></tr>
+<tr><td>Data read far more often than it's written</td><td>Data with strict "always read the absolute latest value" requirements</td></tr>
+<tr><td>Data that's expensive to compute/fetch but rarely changes</td><td>Large entities/collections that would consume excessive cache memory</td></tr>
+</table>
+
+<h2>19.4 Second Level Cache vs Redis (Common Point of Confusion)</h2>
+<table>
+<tr><th></th><th>Hibernate Second Level Cache</th><th>Redis (via Spring @Cacheable)</th></tr>
+<tr><td>Scope</td><td>Specifically caches JPA entities/query results, tightly coupled to Hibernate's internals</td><td>General-purpose cache for ANY object — service results, DTOs, session data, and more</td></tr>
+<tr><td>Distributed by default?</td><td>Depends on provider — often per-instance unless using a distributed provider like Hazelcast/Infinispan</td><td>Naturally distributed/shared across all instances (Spring &amp; Spring Boot guide, Section 53)</td></tr>
+<tr><td>Real-world usage</td><td>Less commonly used in modern microservices — many teams skip it entirely</td><td>The default, standard choice for shared caching in real microservices architectures</td></tr>
+</table>
+<div class="tip"><b>Real-world guidance:</b> Many modern Spring Boot microservices skip Hibernate's Second Level Cache entirely and instead cache at the <b>service layer</b> using Spring's <code>@Cacheable</code> backed by Redis (Spring &amp; Spring Boot guide, Section 53) — it's simpler to reason about, naturally distributed across instances, and not tied to Hibernate-specific internals. The Second Level Cache is still valid and used, but less universal than Redis-backed service-layer caching in cloud-native architectures.</div>
+</div>
+
+<!-- 20. AUDITING -->
+<div class="section">
+<h1>20. Auditing</h1>
+
+<h2>20.1 Why Auditing Matters</h2>
+<div class="box">Almost every real business entity needs to answer "who created this, when, and who last modified it" — critical for debugging, compliance, and customer support. Spring Data JPA provides this automatically via auditing annotations, instead of manually setting these fields in every service method.</div>
+
+<h2>20.2 Real Setup — Enabling Auditing</h2>
+<pre>@SpringBootApplication
+@EnableJpaAuditing   <span class="c1">// turns on entity auditing support application-wide</span>
+public class BankApplication { ... }
+
+@Component
+public class SpringSecurityAuditorAware implements AuditorAware&lt;String&gt; {
+    @Override
+    public Optional&lt;String&gt; getCurrentAuditor() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return Optional.ofNullable(auth).map(Authentication::getName);   <span class="c1">// pulls the current logged-in user</span>
+    }
+}
+</pre>
+
+<h2>20.3 Real Auditable Base Class</h2>
+<pre>@MappedSuperclass   <span class="c1">// NOT an entity itself — its fields are inherited into entities that extend it</span>
+@EntityListeners(AuditingEntityListener.class)
+public abstract class Auditable {
+
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdDate;
+
+    @LastModifiedDate
+    private LocalDateTime lastModifiedDate;
+
+    @CreatedBy
+    @Column(updatable = false)
+    private String createdBy;
+
+    @LastModifiedBy
+    private String lastModifiedBy;
+}
+
+@Entity
+public class Account extends Auditable {   <span class="c1">// automatically gets all 4 audit fields, zero manual code</span>
+    @Id @GeneratedValue private Long id;
+    private BigDecimal balance;
+}
+</pre>
+<div class="tip"><b>Real scenario:</b> "When a customer disputes a card limit change, our support team's first step is checking <code>lastModifiedBy</code> and <code>lastModifiedDate</code> on the Card entity — automatic auditing means this information is always there, for every entity, without any developer having to remember to add it manually in each service method."</div>
+
+<h2>20.4 Full Audit History (Beyond Just Last-Modified) — Envers</h2>
+<div class="box">The auditing above only tracks WHO and WHEN for the current state — it doesn't preserve the full history of every past value. For genuine full history/versioning (e.g., regulatory requirements to show every historical card limit value ever set), Hibernate Envers provides automatic entity versioning with a queryable audit table per entity.</div>
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.hibernate.orm&lt;/groupId&gt;
+    &lt;artifactId&gt;hibernate-envers&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+@Entity
+@Audited   <span class="c1">// Envers automatically creates and maintains a "card_AUD" history table</span>
+public class Card {
+    @Id @GeneratedValue private Long id;
+    private BigDecimal limit;
+}
+</pre>
+</div>
+
+<!-- 21. SPECIFICATIONS -->
+<div class="section">
+<h1>21. Specifications — Dynamic Queries</h1>
+
+<h2>21.1 The Problem Specifications Solve</h2>
+<div class="warn">Real search/filter screens often have MANY optional filter combinations (filter by status, OR date range, OR customer name, OR any combination) — writing a derived query method or JPQL query for every possible combination is unmanageable. Specifications let you build queries dynamically and type-safely at runtime.</div>
+
+<h2>21.2 Real Setup</h2>
+<pre>public interface AccountRepository extends JpaRepository&lt;Account, Long&gt;, JpaSpecificationExecutor&lt;Account&gt; {
+    <span class="c1">// JpaSpecificationExecutor adds findAll(Specification&lt;Account&gt;) and similar methods</span>
+}
+</pre>
+
+<h2>21.3 Real Specification Classes</h2>
+<pre>public class AccountSpecifications {
+
+    public static Specification&lt;Account&gt; hasStatus(String status) {
+        return (root, query, cb) -&gt;
+            status == null ? null : cb.equal(root.get("status"), status);   <span class="c1">// null = "ignore this filter entirely"</span>
+    }
+
+    public static Specification&lt;Account&gt; balanceGreaterThan(BigDecimal minBalance) {
+        return (root, query, cb) -&gt;
+            minBalance == null ? null : cb.greaterThan(root.get("balance"), minBalance);
+    }
+
+    public static Specification&lt;Account&gt; customerNameContains(String name) {
+        return (root, query, cb) -&gt; {
+            if (name == null) return null;
+            Join&lt;Account, Customer&gt; customer = root.join("customer");   <span class="c1">// joining a relationship dynamically</span>
+            return cb.like(cb.lower(customer.get("name")), "%" + name.toLowerCase() + "%");
+        };
+    }
+}
+</pre>
+
+<h2>21.4 Combining Specifications Dynamically — Real Service Code</h2>
+<pre>@Service
+@RequiredArgsConstructor
+public class AccountSearchService {
+    private final AccountRepository accountRepository;
+
+    public Page&lt;Account&gt; search(String status, BigDecimal minBalance, String customerName, Pageable pageable) {
+        Specification&lt;Account&gt; spec = Specification.where(AccountSpecifications.hasStatus(status))
+            .and(AccountSpecifications.balanceGreaterThan(minBalance))
+            .and(AccountSpecifications.customerNameContains(customerName));
+        <span class="c1">// only the filters that were actually provided (non-null) end up in the final SQL WHERE clause</span>
+        return accountRepository.findAll(spec, pageable);
+    }
+}
+</pre>
+<div class="tip"><b>Real scenario:</b> "Our Accounts search screen has 8 optional filter fields — building this with derived query methods would require 2^8 = 256 method variations. Specifications let us compose exactly the filters the user actually provided into one dynamic query, cleanly and type-safely."</div>
+</div>
+
+<!-- 22. ENTITY GRAPH -->
+<div class="section">
+<h1>22. Entity Graph</h1>
+
+<h2>22.1 What Entity Graphs Solve</h2>
+<div class="box">Entity Graphs let you declaratively specify which lazy relationships should be eagerly fetched for a SPECIFIC query — without changing the entity's default <code>FetchType</code> globally. This is one of the cleanest real solutions to the N+1 problem (Section 13) when different use cases need different fetch depths for the same entity.</div>
+
+<h2>22.2 Real Named Entity Graph</h2>
+<pre>@Entity
+@NamedEntityGraph(
+    name = "Account.withCustomerAndCards",
+    attributeNodes = {
+        @NamedAttributeNode("customer"),
+        @NamedAttributeNode("cards")
+    }
+)
+public class Account {
+    @Id @GeneratedValue private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Customer customer;
+
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    private List&lt;Card&gt; cards;
+}
+
+public interface AccountRepository extends JpaRepository&lt;Account, Long&gt; {
+    @EntityGraph(value = "Account.withCustomerAndCards", type = EntityGraph.EntityGraphType.LOAD)
+    List&lt;Account&gt; findByStatus(String status);
+    <span class="c1">// THIS specific query fetches customer AND cards eagerly, in one optimized query — while the entity's DEFAULT fetch type stays LAZY everywhere else</span>
+}
+</pre>
+
+<h2>22.3 Ad-Hoc Entity Graphs (No @NamedEntityGraph Needed)</h2>
+<pre>public interface AccountRepository extends JpaRepository&lt;Account, Long&gt; {
+    @EntityGraph(attributePaths = {"customer", "cards"})   <span class="c1">// defined inline, no separate @NamedEntityGraph annotation required</span>
+    Optional&lt;Account&gt; findById(Long id);
+}
+</pre>
+
+<h2>22.4 EntityGraphType.LOAD vs FETCH</h2>
+<table>
+<tr><th>Type</th><th>Behavior</th></tr>
+<tr><td>LOAD</td><td>Attributes in the graph are EAGER; attributes NOT in the graph keep their entity-defined default fetch type</td></tr>
+<tr><td>FETCH</td><td>Attributes in the graph are EAGER; attributes NOT in the graph are forced to LAZY, regardless of their entity-defined default</td></tr>
+</table>
+<div class="tip"><b>Interview tip:</b> Entity Graphs solve a real limitation of the "always LAZY, always JOIN FETCH in JPQL" approach — they let the SAME entity's relationships be fetched differently depending on the specific use case/query, without maintaining multiple near-duplicate JPQL queries just to vary the fetch depth.</div>
+</div>
+
+<!-- 23. QUERY PERFORMANCE TUNING -->
+<div class="section">
+<h1>23. Query Performance Tuning</h1>
+
+<h2>23.1 The Real Performance Checklist</h2>
+<table>
+<tr><th>Technique</th><th>Why It Helps</th></tr>
+<tr><td>Fix N+1 problems (Section 13)</td><td>Usually the single biggest real-world win — often 10-100x fewer queries</td></tr>
+<tr><td>Add appropriate database indexes</td><td>An unindexed WHERE/JOIN/ORDER BY column on a large table is a very common root cause of slow queries</td></tr>
+<tr><td>Use DTO projections instead of full entities for read-only views</td><td>Fetches only the columns actually needed, skips entity/persistence-context overhead entirely</td></tr>
+<tr><td>Enable JDBC batching for bulk inserts/updates</td><td>Groups many statements into fewer round trips to the database</td></tr>
+<tr><td>Use pagination (Section 15) for all list endpoints</td><td>Avoids loading huge result sets into memory</td></tr>
+<tr><td>Use <code>readOnly = true</code> transactions for pure reads (Section 16.4)</td><td>Skips Hibernate's dirty-checking overhead</td></tr>
+<tr><td>Avoid fetching entire entity graphs when only a few fields are needed</td><td>Interface/DTO projections (below) reduce data transfer and mapping overhead</td></tr>
+</table>
+
+<h2>23.2 Real DTO/Interface Projections (Fetch Only What You Need)</h2>
+<pre><span class="c1">// Interface-based projection — Spring Data JPA generates the SELECT with ONLY these columns</span>
+public interface AccountSummary {
+    Long getId();
+    BigDecimal getBalance();
+    String getCustomerName();   <span class="c1">// can even project across a relationship</span>
+}
+
+public interface AccountRepository extends JpaRepository&lt;Account, Long&gt; {
+    List&lt;AccountSummary&gt; findByStatus(String status);   <span class="c1">// returns ONLY id, balance, customerName — not the full entity</span>
+}
+</pre>
+
+<h2>23.3 Enabling JDBC Batching for Bulk Operations</h2>
+<pre>spring:
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 30
+        order_inserts: true    <span class="c1"># groups inserts of the same entity type together for effective batching</span>
+        order_updates: true
+</pre>
+<div class="warn"><b>Real gotcha (recap from Section 9.2):</b> <code>GenerationType.IDENTITY</code> disables batch inserts entirely — if bulk insert performance matters for an entity, use <code>GenerationType.SEQUENCE</code> instead so Hibernate can batch multiple inserts together.</div>
+
+<h2>23.4 Real Index Analysis Workflow</h2>
+<pre><span class="c1">-- Step 1: identify the actual slow query (via slow query log or APM trace, Observability guide Section 26)</span>
+EXPLAIN ANALYZE SELECT * FROM account WHERE customer_id = 55 AND status = 'ACTIVE' ORDER BY created_date DESC;
+
+<span class="c1">-- Step 2: if EXPLAIN shows a full table scan (Seq Scan), add a composite index matching the query pattern</span>
+CREATE INDEX idx_account_customer_status_date ON account(customer_id, status, created_date DESC);
+</pre>
+<div class="tip"><b>Real scenario:</b> "A customer's account history page took 3.2 seconds under production load. Query logging revealed an N+1 issue (fixed with an Entity Graph) AND a missing composite index on the transaction table's <code>(account_id, transaction_date)</code> columns. Together, these two fixes brought the page load time down to 80ms — always check for BOTH query-count problems and missing-index problems, since they often compound each other."</div>
+</div>
+
+<!-- 24. ENTITY LIFECYCLE -->
+<div class="section">
+<h1>24. Entity Lifecycle — Transient, Persistent, Detached, Removed</h1>
+
+<h2>24.1 The Four Entity States</h2>
+<div class="diagram">
+<div class="title">JPA Entity Lifecycle States</div>
+<div class="flow-row"><div class="node gray">TRANSIENT<br/>new Account() — not yet saved, JPA doesn't know about it</div></div>
+<div class="arrow-down">↓ repository.save() / entityManager.persist()</div>
+<div class="flow-row"><div class="node green">PERSISTENT (Managed)<br/>tracked by the persistence context — changes auto-detected (dirty checking)</div></div>
+<div class="arrow-down">↓ transaction/session ends</div>
+<div class="flow-row"><div class="node">DETACHED<br/>still has data, but NO LONGER tracked — changes are silently ignored until re-attached</div></div>
+<div class="arrow-down">↓ entityManager.remove()</div>
+<div class="flow-row"><div class="node alt">REMOVED<br/>scheduled for DELETE at next flush/commit</div></div>
+</div>
+
+<h2>24.2 Real Code Demonstrating Each State</h2>
+<pre>Account account = new Account();          <span class="c1">// TRANSIENT — just a plain Java object, JPA has no idea it exists</span>
+account.setBalance(BigDecimal.TEN);
+
+accountRepository.save(account);           <span class="c1">// now PERSISTENT — tracked, dirty-checked, has a real DB row</span>
+
+account.setBalance(BigDecimal.valueOf(20)); <span class="c1">// no explicit save() needed — dirty checking picks this up automatically</span>
+
+<span class="c1">// ... transaction ends here ...</span>
+
+account.setBalance(BigDecimal.valueOf(999));  <span class="c1">// account is now DETACHED — this change is IGNORED, never reaches the database!</span>
+
+Account merged = accountRepository.save(account);   <span class="c1">// re-attaches (merges) the detached entity — NOW this change is picked up</span>
+
+accountRepository.delete(merged);          <span class="c1">// REMOVED — scheduled for deletion at the next flush</span>
+</pre>
+
+<h2>24.3 The Real Detached Entity Trap</h2>
+<div class="warn">A very common real bug: fetching an entity in one transactional method, returning it, modifying it elsewhere (e.g., in a controller or a different service), and expecting the change to persist — it silently won't, because the entity is detached the moment its original transaction ended. This is exactly why entity-to-DTO mapping must happen inside the originating transaction (Section 12.4), and why any legitimate update must go through a fresh <code>@Transactional</code> method that re-fetches (or explicitly merges) the entity.</div>
+
+<h2>24.4 JPA Lifecycle Callbacks</h2>
+<pre>@Entity
+public class Account {
+    @PrePersist
+    public void beforeSave() {
+        if (this.status == null) this.status = "ACTIVE";   <span class="c1">// runs right before the INSERT</span>
+    }
+
+    @PreUpdate
+    public void beforeUpdate() {
+        log.info("Account {} is about to be updated", this.id);   <span class="c1">// runs right before the UPDATE</span>
+    }
+
+    @PostLoad
+    public void afterLoad() {
+        <span class="c1">// runs right after the entity is loaded from the database — e.g., computing a transient field</span>
+    }
+}
+</pre>
+</div>
+
+<!-- 25. REAL-TIME DEVELOPMENT DATA LAYER -->
+<div class="section">
+<h1>25. Real-Time Development — The Data Layer in a Real Organization</h1>
+
+<h2>25.1 The Full Data Layer Development Checklist</h2>
+<ol>
+<li><b>Design the schema first</b> — normalize appropriately, decide primary keys, foreign keys, and indexes based on expected query patterns.</li>
+<li><b>Write a Flyway/Liquibase migration</b> for every schema change — never rely on <code>ddl-auto</code> in any shared environment.</li>
+<li><b>Create the Entity</b> — explicit column mappings, explicit <code>FetchType.LAZY</code> on every <code>@ManyToOne</code>/<code>@OneToOne</code>, careful/deliberate cascade choices.</li>
+<li><b>Create the Repository interface</b> extending <code>JpaRepository</code> (+ <code>JpaSpecificationExecutor</code> if dynamic search is needed).</li>
+<li><b>Write derived queries for simple cases, JPQL/@Query for medium complexity, Specifications for dynamic search.</b></li>
+<li><b>Map to DTOs</b> in the service layer — never expose entities via the API.</li>
+<li><b>Wrap multi-step operations in @Transactional</b> at the service layer, with explicit rollback rules for checked exceptions if needed.</li>
+<li><b>Write a repository-level integration test with Testcontainers</b> (Spring &amp; Spring Boot guide, Section 51) — verifying real query behavior against a real database engine, not just a mocked repository.</li>
+<li><b>Enable SQL logging locally and count queries</b> for any new list endpoint — catch N+1 issues before merging.</li>
+<li><b>Add indexes</b> matching the actual query patterns used by the new repository methods.</li>
+<li><b>Load test</b> critical paths before major releases to catch performance regressions early.</li>
+</ol>
+
+<h2>25.2 Real Organization Layered Structure (Recap, Data-Layer Focus)</h2>
+<pre>accounts-service/
+├── entity/
+│   ├── Account.java              <span class="c1"># @Entity, extends Auditable, explicit LAZY fetch types</span>
+│   └── Customer.java
+├── repository/
+│   ├── AccountRepository.java    <span class="c1"># extends JpaRepository&lt;Account, Long&gt;, JpaSpecificationExecutor&lt;Account&gt;</span>
+│   └── specification/
+│       └── AccountSpecifications.java
+├── dto/
+│   ├── AccountDto.java
+│   └── AccountSummary.java       <span class="c1"># interface projection (Section 23.2)</span>
+├── mapper/
+│   └── AccountMapper.java
+├── service/
+│   └── AccountService.java       <span class="c1"># @Transactional boundaries live here</span>
+└── src/main/resources/db/migration/
+    ├── V1__create_account_table.sql
+    └── V2__add_account_status_index.sql
+</pre>
+
+<h2>25.3 Real Code Review Standards for the Data Layer</h2>
+<ul>
+<li>No entity returned directly from any controller — DTO mapping mandatory.</li>
+<li>No <code>@ManyToOne</code>/<code>@OneToOne</code> without an explicit <code>fetch = FetchType.LAZY</code>.</li>
+<li>No <code>CascadeType.ALL</code> or <code>CascadeType.REMOVE</code> without explicit justification and a second reviewer's sign-off.</li>
+<li>No new list endpoint merged without confirming query count (no accidental N+1) in a test.</li>
+<li>Every schema change accompanied by a Flyway/Liquibase migration script, reviewed like any other code.</li>
+<li>Any query touching more than ~100k rows reviewed for index coverage before merge.</li>
+</ul>
+</div>
+
+<!-- 26. COMMON ISSUES AND SCENARIOS -->
+<div class="section">
+<h1>26. Common JDBC/Hibernate/JPA Issues &amp; Real-Time Scenarios</h1>
+<table>
+<tr><th>Issue</th><th>Cause</th><th>Real Solution</th></tr>
+<tr><td>LazyInitializationException</td><td>Accessing a lazy field/collection after the transaction/session has closed</td><td>Map to DTOs inside the transactional method; use JOIN FETCH/Entity Graph if the data is genuinely needed</td></tr>
+<tr><td>N+1 queries slowing down a list endpoint</td><td>Lazily-loaded relationship accessed in a loop over a list of parents</td><td>JOIN FETCH, Entity Graph, or @BatchSize (Section 13.4)</td></tr>
+<tr><td>Detached entity changes silently not saved</td><td>Modifying an entity after its original transaction ended</td><td>Re-fetch within a new @Transactional method, or explicitly merge() the detached entity</td></tr>
+<tr><td>OptimisticLockException under concurrent updates</td><td>Two transactions read the same row, both tried to update it</td><td>Add automatic retry (Section 17.2) for genuinely rare conflicts, or use pessimistic locking for high-contention critical paths</td></tr>
+<tr><td>Application accidentally deletes related child records</td><td>Overly broad CascadeType.ALL / CascadeType.REMOVE on a relationship</td><td>Use deliberate, minimal cascade types; never cascade REMOVE on financially/legally significant child data (Section 11.3)</td></tr>
+<tr><td>Slow bulk insert/import job</td><td>GenerationType.IDENTITY disabling JDBC batching, or missing batch_size config</td><td>Switch to GenerationType.SEQUENCE, enable hibernate.jdbc.batch_size (Section 23.3)</td></tr>
+<tr><td>@Transactional checked-exception rollback surprise</td><td>Spring's default rollback rule doesn't cover checked exceptions</td><td>Use rollbackFor explicitly (Spring &amp; Spring Boot guide, Section 45)</td></tr>
+<tr><td>Self-invocation bypasses @Transactional</td><td>Calling a @Transactional method from within the same class via "this"</td><td>Move the method to a separate injected bean (Spring &amp; Spring Boot guide, Section 20.5)</td></tr>
+<tr><td>Pagination COUNT query is slow on a huge table</td><td>Page&lt;T&gt; always runs a separate COUNT(*) query</td><td>Use Slice&lt;T&gt; for infinite-scroll UIs that don't need a total count (Section 15.3)</td></tr>
+<tr><td>ddl-auto silently altered the production schema</td><td>ddl-auto set to update/create instead of validate</td><td>Always use validate in production, manage schema changes exclusively via Flyway/Liquibase (Section 7.2)</td></tr>
+<tr><td>Tests pass locally (H2) but fail against the real production database</td><td>SQL dialect/feature differences between H2 and the real database engine</td><td>Use Testcontainers with the real database engine for integration tests (Spring &amp; Spring Boot guide, Section 51)</td></tr>
+<tr><td>Stale cached data shown to users</td><td>Data updated via a path that bypasses the cache eviction logic (e.g., direct SQL correction)</td><td>Route all writes through the application layer so @CacheEvict/@CachePut always fire (Spring &amp; Spring Boot guide, Section 53.7)</td></tr>
+</table>
+</div>
+
+<!-- 27. INTERVIEW Q&A -->
+<div class="section">
+<h1>27. Interview Questions &amp; Answers (Basic → Advanced → Scenario Based)</h1>
+
+<div class="qa"><div class="q">Q1. What is the difference between JDBC, Hibernate, and Spring Data JPA?</div>
+<div class="a">JDBC is the low-level API for executing SQL and manually mapping results. Hibernate is an ORM implementing the JPA specification, automatically mapping objects to tables and generating SQL. Spring Data JPA sits on top of JPA/Hibernate, providing a Repository abstraction that generates the entire DAO implementation from an interface — eliminating almost all remaining boilerplate.</div></div>
+
+<div class="qa"><div class="q">Q2. What is the difference between JPA and Hibernate?</div>
+<div class="a">JPA is a specification (interfaces and annotations); Hibernate is a concrete implementation of that specification. You code against JPA's API (@Entity, EntityManager), and Hibernate is the engine actually executing the work underneath, by default in Spring Boot.</div></div>
+
+<div class="qa"><div class="q">Q3. Explain the difference between a POJO, an Entity, and a DTO.</div>
+<div class="a">POJO is the general term for any plain Java object. An Entity is a POJO annotated with @Entity, mapped to a database table and managed by JPA. A DTO is a POJO specifically shaped to transfer data across a boundary like an API, deliberately decoupled from the database schema.</div></div>
+
+<div class="qa"><div class="q">Q4. What does JpaRepository give you for free, and how do derived query methods work?</div>
+<div class="a">Extending JpaRepository&lt;T, ID&gt; gives you save, findById, findAll, delete, count, and more with zero implementation code. Derived query methods let Spring Data JPA parse the method NAME (e.g., findByStatusAndBalanceGreaterThan) and generate the corresponding JPQL query automatically, without writing any SQL.</div></div>
+
+<div class="qa"><div class="q">Q5. What is the difference between the owning side and the inverse side of a relationship?</div>
+<div class="a">The owning side is the entity whose table holds the actual foreign key column, and it's what you must set when persisting a new relationship. The inverse side uses mappedBy to reference the owning side's field, existing mainly for convenient bidirectional navigation — it does not control the actual foreign key in the database.</div></div>
+
+<div class="qa"><div class="q">Q6. Explain the default fetch types for each relationship type, and why real teams override them.</div>
+<div class="a">@ManyToOne and @OneToOne default to EAGER; @OneToMany and @ManyToMany default to LAZY. Real teams almost always explicitly override @ManyToOne/@OneToOne to LAZY as well, because relying on EAGER defaults has caused real performance issues where fetching one entity silently triggers a cascade of unnecessary joins across the object graph.</div></div>
+
+<div class="qa"><div class="q">Q7. What is the N+1 problem, and how do you fix it?</div>
+<div class="a">Fetching a list of N parents, then lazily accessing a related field per item, triggers 1 query for the parents plus N additional queries — N+1 total instead of a couple. Fixed using JOIN FETCH in JPQL, an @EntityGraph, or Hibernate's batch fetching (@BatchSize / default_batch_fetch_size).</div>
+<div class="scenario">Real scenario: A list endpoint went from 40ms to 4 seconds after adding a related field to the response; SQL logging revealed 51 queries for 50 accounts — fixed with JOIN FETCH, restoring sub-50ms performance.</div></div>
+
+<div class="qa"><div class="q">Q8. Difference between JPQL and native queries — when would you use each?</div>
+<div class="a">JPQL operates on the entity object model and is database-portable; native queries are raw SQL tied to a specific database dialect but allow vendor-specific functions. Default to JPQL/derived queries for portability and clarity; use native queries only when JPQL genuinely can't express what's needed.</div></div>
+
+<div class="qa"><div class="q">Q9. Why does Page&lt;T&gt; sometimes cause performance issues, and what's the alternative?</div>
+<div class="a">Page&lt;T&gt; always runs a separate COUNT(*) query to compute total elements/pages, which can itself be slow on very large tables. Slice&lt;T&gt; avoids this by only checking whether a next page exists, without a COUNT query — a better fit for infinite-scroll style UIs that don't need a total count.</div></div>
+
+<div class="qa"><div class="q">Q10. Explain optimistic vs pessimistic locking with a real example.</div>
+<div class="a">Optimistic locking (via @Version) assumes conflicts are rare — it detects a conflict at update time and throws an exception if another transaction changed the row first, typically paired with an automatic retry. Pessimistic locking acquires a database-level lock (SELECT ... FOR UPDATE) the moment a row is read, blocking other transactions until it's released — better for high-contention critical paths like large fund transfers.</div></div>
+
+<div class="qa"><div class="q">Q11. What is the First Level Cache, and can it be disabled?</div>
+<div class="a">It's the JPA Persistence Context itself — always active, scoped to a single transaction/session, and cannot be disabled. Fetching the same entity by ID twice within the same transaction returns the identical cached object without a second query.</div></div>
+
+<div class="qa"><div class="q">Q12. What is the Second Level Cache, and how is it different from Redis-based caching?</div>
+<div class="a">The Second Level Cache is shared across transactions (via a provider like Ehcache), specifically caching JPA entities/query results. Redis-based @Cacheable caching is general-purpose, naturally distributed across instances, and the more common modern choice in cloud-native microservices — many teams skip Hibernate's Second Level Cache entirely in favor of Redis at the service layer.</div></div>
+
+<div class="qa"><div class="q">Q13. Walk through the JPA entity lifecycle states.</div>
+<div class="a">Transient (a plain new object, not yet known to JPA) → Persistent/Managed (tracked by the persistence context after save/persist, with automatic dirty checking) → Detached (still has data but no longer tracked once the transaction/session ends — changes are silently ignored) → Removed (scheduled for deletion after remove() is called).</div></div>
+
+<div class="qa"><div class="q">Q14. What is the "detached entity" trap, and how do you avoid it?</div>
+<div class="a">Modifying an entity after its originating transaction has ended doesn't persist the change, because the entity is now detached and untracked. Avoid it by mapping to DTOs and doing all necessary field access inside the original @Transactional method, and by re-fetching or explicitly merging when a legitimate update is needed later.</div></div>
+
+<div class="qa"><div class="q">Q15. What are Specifications, and when would you use them over derived query methods?</div>
+<div class="a">Specifications let you dynamically compose query predicates at runtime, type-safely — ideal for search screens with many optional filter combinations, where writing a derived query method or JPQL query for every combination would be unmanageable (e.g., 8 optional filters would need 256 method variations otherwise).</div></div>
+
+<div class="qa"><div class="q">Q16. What is an Entity Graph, and how does it differ from just using JOIN FETCH everywhere?</div>
+<div class="a">An Entity Graph declaratively specifies which relationships to eagerly fetch for a SPECIFIC query, without changing the entity's global default fetch type — letting the same entity be fetched with different depths depending on the use case, cleaner than maintaining multiple near-duplicate JPQL queries just to vary fetch depth.</div></div>
+
+<div class="qa"><div class="q">Q17. Why should ddl-auto never be set to "update" in production?</div>
+<div class="a">It lets Hibernate automatically and unpredictably modify the database schema based on entity changes at startup — risky and hard to review/rollback at scale. Production schema changes should always go through versioned, reviewable migration scripts (Flyway/Liquibase), with Hibernate set to validate (checks but never changes the schema).</div></div>
+
+<div class="qa"><div class="q">Q18. How do you improve the performance of a bulk insert operation?</div>
+<div class="a">Use GenerationType.SEQUENCE instead of IDENTITY (IDENTITY disables JDBC batching), enable hibernate.jdbc.batch_size with order_inserts/order_updates, and consider using JdbcTemplate batch operations directly for very large bulk loads where full entity/persistence-context overhead isn't needed.</div></div>
+
+<div class="qa"><div class="q">Q19. How does Spring Data JPA auditing work, and what's the difference from full history tracking?</div>
+<div class="a">@CreatedDate/@LastModifiedDate/@CreatedBy/@LastModifiedBy (with @EnableJpaAuditing and an AuditorAware bean) automatically track who/when for the current row state. For full historical versioning of every past value (not just the latest), Hibernate Envers provides automatic entity history tables via @Audited.</div></div>
+
+<div class="qa"><div class="q">Q20. Describe a real production data-layer issue you've resolved end to end.</div>
+<div class="a">A customer account history page took 3.2 seconds under load. SQL logging revealed both an N+1 issue (fixed with an Entity Graph) and a missing composite index on the transaction table's (account_id, transaction_date) columns (confirmed via EXPLAIN ANALYZE). Fixing both together brought the page down to 80ms — a reminder that query-count problems and missing-index problems often compound each other and both need checking.</div></div>
+</div>
+
+<!-- 28. FINAL SUMMARY -->
+<div class="section">
+<h1>28. Final Summary &amp; Cheat Sheet</h1>
+<div class="box">
+<p><b>The journey:</b> JDBC (raw SQL, full manual control, maximum boilerplate) → Hibernate (ORM eliminates manual mapping) → Spring JDBC (removes JDBC's connection/cleanup boilerplate while keeping raw SQL) → Spring Data JPA (Repository abstraction eliminates almost all remaining DAO boilerplate).</p>
+<p><b>POJO/Entity/DTO:</b> keep them distinct — Entities are database-mapped and internal, DTOs are the public contract, and both are technically POJOs.</p>
+<p><b>Relationships:</b> always know which side owns the foreign key, always override default fetch types to LAZY on @ManyToOne/@OneToOne, and choose cascade types deliberately — never CascadeType.ALL by default.</p>
+<p><b>The N+1 problem</b> is the single most common real-world JPA performance issue — JOIN FETCH, Entity Graphs, and batch fetching are the three real fixes.</p>
+<p><b>Transactions, locking, and caching:</b> @Transactional ties directly to lazy loading and dirty checking; choose optimistic locking for rare-conflict scenarios and pessimistic locking for high-contention critical paths; prefer Redis-backed service-layer caching over Hibernate's Second Level Cache in modern cloud-native microservices.</p>
+<p><b>Production discipline:</b> Flyway/Liquibase migrations (never ddl-auto: update), DTOs at every API boundary, deliberate cascade/fetch choices, and query-count/index checks before every new list endpoint ships.</p>
+</div>
+
+<h2>28.1 Quick Cheat Sheet</h2>
+<table>
+<tr><th>Term</th><th>One-Line Meaning</th></tr>
+<tr><td>JDBC</td><td>Low-level, manual Java-to-database SQL API</td></tr>
+<tr><td>Hibernate</td><td>ORM implementation of JPA — maps objects to tables automatically</td></tr>
+<tr><td>Spring Data JPA</td><td>Repository abstraction generating DAO implementations from interfaces</td></tr>
+<tr><td>Owning Side</td><td>The entity holding the actual foreign key column in a relationship</td></tr>
+<tr><td>Lazy Loading</td><td>Related data fetched only when actually accessed, via a proxy</td></tr>
+<tr><td>N+1 Problem</td><td>1 query for parents + N queries for each parent's related data</td></tr>
+<tr><td>JPQL</td><td>Query language operating on the entity object model, portable across databases</td></tr>
+<tr><td>Native Query</td><td>Raw, database-specific SQL</td></tr>
+<tr><td>Page vs Slice</td><td>Page includes a total COUNT query; Slice only checks for a next page (cheaper)</td></tr>
+<tr><td>Optimistic Locking</td><td>@Version-based conflict detection at update time, assumes rare conflicts</td></tr>
+<tr><td>Pessimistic Locking</td><td>Database row lock acquired at read time, assumes likely conflicts</td></tr>
+<tr><td>First Level Cache</td><td>The always-on Persistence Context, scoped to one transaction/session</td></tr>
+<tr><td>Second Level Cache</td><td>Shared cache across transactions, tied to Hibernate internals</td></tr>
+<tr><td>Specification</td><td>Dynamically composed, type-safe query predicates for flexible search</td></tr>
+<tr><td>Entity Graph</td><td>Declarative, per-query fetch plan overriding default fetch types</td></tr>
+<tr><td>Entity Lifecycle</td><td>Transient → Persistent (Managed) → Detached → Removed</td></tr>
+</table>
+
+<div class="tip">Use this guide alongside the Spring &amp; Spring Boot guide, the API Development guide, the Microservices guide, and the Docker &amp; Kubernetes guide — together they cover the complete real-world Java full-stack developer journey from the data layer foundations all the way through building, securing, and deploying production-grade Spring Boot services.</div>
+</div>
+
+</body>
+</html>
+

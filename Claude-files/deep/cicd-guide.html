@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CI/CD Complete Guide — Jenkins, GitHub Actions, GitLab Runners, Azure Pipelines &amp; AWS CI/CD for Java Full Stack Developers</title>
+<style>
+  @page { size: A4; margin: 18mm 15mm 18mm 15mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #1a1a1a;
+    font-size: 11.5px;
+    line-height: 1.55;
+  }
+  h1, h2, h3, h4 { color: #2e7d32; font-family: Arial, sans-serif; page-break-after: avoid; }
+  h1 { font-size: 22px; border-bottom: 3px solid #2e7d32; padding-bottom: 6px; margin-top: 0; }
+  h2 { font-size: 17px; border-bottom: 1px solid #c8e6c9; padding-bottom: 4px; margin-top: 26px; }
+  h3 { font-size: 14px; color: #b03a2e; margin-top: 18px; }
+  h4 { font-size: 12.5px; color: #444; margin-top: 12px; }
+  .section { page-break-before: always; }
+  .cover { page-break-after: always; text-align: center; padding-top: 120px; }
+  .cover h1 { font-size: 32px; border: none; }
+  .cover h3 { color: #333; font-weight: normal; font-size: 17px; margin-top: 18px;}
+  .cover .tag { margin-top: 50px; font-size: 13px; color: #666; }
+  .toc { page-break-after: always; }
+  .toc ol { line-height: 2; }
+  code, pre { font-family: Consolas, "Courier New", monospace; }
+  code { background: #f1f1f1; padding: 1px 5px; border-radius: 3px; color: #a4141d; }
+  pre {
+    background: #1e1e1e; color: #d4d4d4; padding: 10px 12px; border-radius: 6px;
+    overflow-x: auto; font-size: 10.5px; line-height: 1.5; page-break-inside: avoid;
+    white-space: pre-wrap; word-wrap: break-word;
+  }
+  pre .c1 { color: #6a9955; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0 16px 0; font-size: 11px; }
+  th, td { border: 1px solid #bbb; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #2e7d32; color: white; }
+  tr:nth-child(even) { background: #f4f7fc; }
+  .box { background: #f8f9fb; border: 1px solid #cdd6e6; border-radius: 6px; padding: 10px 14px; margin: 10px 0; }
+  .warn { background: #fff4e5; border: 1px solid #f0c36d; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .tip { background: #e8f6ee; border: 1px solid #7fc79a; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .qa { border-left: 3px solid #2e7d32; padding-left: 10px; margin: 10px 0 16px 0; page-break-inside: avoid; }
+  .qa .q { font-weight: bold; color: #2e7d32; }
+  .qa .a { margin-top: 4px; }
+  .qa .scenario { margin-top: 4px; font-style: italic; color: #555; }
+  .diagram { background: #fff; border: 1px dashed #81c784; border-radius: 8px; padding: 16px; margin: 14px 0; page-break-inside: avoid; }
+  .diagram .title { font-weight: bold; color: #2e7d32; margin-bottom: 10px; text-align:center; }
+  .flow-row { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+  .node { border: 2px solid #2e7d32; background: #e8f5e9; border-radius: 6px; padding: 8px 12px; font-weight: bold; text-align: center; font-size: 11px; min-width: 90px; }
+  .node.alt { border-color: #b03a2e; background: #fdeceb; }
+  .node.green { border-color: #1e8449; background: #eafaf1; }
+  .node.gray { border-color: #666; background: #eee; }
+  .node.purple { border-color: #8e44ad; background: #f5eefc; }
+  .arrow { font-size: 20px; color: #2e7d32; font-weight: bold; }
+  .arrow-down { font-size: 20px; color: #2e7d32; text-align: center; }
+  footer-note { font-size: 10px; color: #888; }
+  .pagebreak { page-break-before: always; }
+  ul, ol { margin-top: 4px; }
+  li { margin-bottom: 3px; }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover">
+  <h1>CI/CD — The Complete Guide</h1>
+  <h3>Jenkins • GitHub Actions • GitLab Runners • Azure Pipelines • AWS CI/CD</h3>
+  <h3>For Java Full Stack Developers (Spring Boot Backend + React Frontend)</h3>
+  <h3>Before CI/CD → Concepts → Pipelines → Real Scripts → Deployment → Interview Q&amp;A</h3>
+  <div class="tag">A practical, simple-language reference for interview preparation and daily real-world use</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+<h1>Table of Contents</h1>
+<ol>
+<li>Before CI/CD — Real Problems in Organizations</li>
+<li>What is CI/CD and What Problems It Solves</li>
+<li>CI vs CD vs Continuous Deployment — Clear Difference</li>
+<li>The CI/CD Toolscape — Jenkins, GitHub Actions, GitLab CI, Azure Pipelines, AWS CI/CD</li>
+<li>Where Git and Maven Fit Into CI/CD</li>
+<li>Anatomy of a Pipeline — Stages Explained</li>
+<li>Prerequisites Before You Create Any Pipeline</li>
+<li>Spring Boot Backend — Full CI/CD Example (End to End)</li>
+<li>React Frontend — Full CI/CD Example (End to End)</li>
+<li>Jenkins Deep Dive with Real Jenkinsfile</li>
+<li>GitHub Actions Deep Dive with Real Workflow YAML</li>
+<li>GitLab CI/CD Runners Deep Dive with Real .gitlab-ci.yml</li>
+<li>Azure Pipelines Deep Dive with Real azure-pipelines.yml</li>
+<li>AWS CI/CD Deep Dive (CodePipeline, CodeBuild, CodeDeploy, CodeCommit)</li>
+<li>Tool vs Tool — Full Comparison Table</li>
+<li>Deployment Strategies (Recreate, Rolling, Blue-Green, Canary)</li>
+<li>Azure DevOps in Depth — Our Organization's Real Setup &amp; Configuration</li>
+<li>How Deployment Works (Dev → QA → Staging → Prod)</li>
+<li>How Integration Testing Works in a Pipeline</li>
+<li>Docker + Kubernetes in the CI/CD Flow</li>
+<li>Secrets, Approvals and Environments</li>
+<li>Common CI/CD Issues and How to Fix Them (End to End Troubleshooting)</li>
+<li>CI/CD Best Practices for Full Stack Teams</li>
+<li>CI/CD Cheat Sheet</li>
+<li>Interview Questions &amp; Answers (Basic → Advanced → Scenario Based)</li>
+<li>Final Summary</li>
+</ol>
+</div>
+
+<!-- 1. BEFORE CI/CD -->
+<div class="section">
+<h1>1. Before CI/CD — Real Problems in Organizations</h1>
+<h2>1.1 A Day Without CI/CD</h2>
+<p>Imagine a Java full stack team (Spring Boot + React) releasing an e-commerce app <b>without</b> any CI/CD pipeline:</p>
+<ul>
+<li>A developer finishes a feature, builds the project on their own laptop using <code>mvn clean install</code>, and manually copies the JAR to the server using FTP/WinSCP.</li>
+<li>"It works on my machine" — the build passes locally but fails on the server because of different Java versions, missing environment variables, or a forgotten config file.</li>
+<li>No one runs unit tests before deployment, so bugs reach production and are found by customers, not developers.</li>
+<li>Deploying the React frontend means manually running <code>npm run build</code> and copying the <code>dist</code>/<code>build</code> folder to a web server via SFTP — very slow and error-prone.</li>
+<li>Releases happen once a month because they are risky, manual, and require a "deployment day" with the whole team on a call, often at night.</li>
+<li>If something breaks in production, rollback means someone manually copying the previous JAR/zip back — if they can even find it.</li>
+<li>There is no consistent record of <i>what</i> was deployed, <i>when</i>, and <i>by whom</i>.</li>
+</ul>
+<div class="warn"><b>Real pain:</b> A release engineer manually deploys the wrong build (an old JAR file) to production on a Friday evening. Nobody notices until Monday morning when customers report missing features. There is no audit trail to explain what happened.</div>
+
+<h2>1.2 Problems Manual Releases Create for Organizations</h2>
+<table>
+<tr><th>Problem</th><th>Impact on Organization</th></tr>
+<tr><td>Manual build &amp; deploy</td><td>Slow, inconsistent, human errors, different results on different machines</td></tr>
+<tr><td>No automated testing before deploy</td><td>Bugs reach production, customer trust drops</td></tr>
+<tr><td>No standard process</td><td>Every developer deploys differently; tribal knowledge, "only Raj knows how to deploy"</td></tr>
+<tr><td>Slow release cycle</td><td>Business loses competitive speed; features take weeks to reach users</td></tr>
+<tr><td>Hard rollback</td><td>Downtime lasts longer when something goes wrong</td></tr>
+<tr><td>No traceability</td><td>Cannot answer "what code is running in production right now?"</td></tr>
+<tr><td>Fear of deployment</td><td>Team avoids releasing frequently because every release is risky</td></tr>
+</table>
+
+<h2>1.3 What Organizations Needed</h2>
+<ul>
+<li>An automatic way to build and test code the moment it is pushed to Git.</li>
+<li>A repeatable, scripted deployment process — same steps every time, no human memory needed.</li>
+<li>Fast feedback: if a developer breaks the build, they should know within minutes, not days.</li>
+<li>Ability to release many times a day safely, with approvals only where needed (like production).</li>
+<li>A clear history: which commit, which build, which environment, deployed by which pipeline run.</li>
+</ul>
+<div class="diagram">
+<div class="title">Before CI/CD vs After CI/CD</div>
+<div class="flow-row">
+  <div class="node alt">Manual Build<br>on laptop</div>
+  <div class="arrow">→</div>
+  <div class="node alt">Manual Copy<br>via FTP/SFTP</div>
+  <div class="arrow">→</div>
+  <div class="node alt">Bugs in<br>Production</div>
+</div>
+<div class="flow-row">
+  <div class="node green">Git Push</div>
+  <div class="arrow">→</div>
+  <div class="node green">Pipeline: Build + Test</div>
+  <div class="arrow">→</div>
+  <div class="node green">Automated Deploy</div>
+  <div class="arrow">→</div>
+  <div class="node green">Monitored Production</div>
+</div>
+</div>
+</div>
+
+<!-- 2. WHAT IS CI/CD -->
+<div class="section">
+<h1>2. What is CI/CD and What Problems It Solves</h1>
+<h2>2.1 Simple Definition</h2>
+<div class="box">
+<b>CI/CD</b> stands for <b>Continuous Integration</b> and <b>Continuous Delivery/Deployment</b>. It is an automated pipeline (a series of scripted steps) that takes your code from a Git repository, builds it, tests it, packages it, and deploys it to servers — automatically, every time code changes, without manual steps.</div>
+
+<h2>2.2 Continuous Integration (CI)</h2>
+<p>Every time a developer pushes code (or raises a Pull Request), the pipeline automatically:</p>
+<ol>
+<li>Pulls the latest code from Git</li>
+<li>Builds it (e.g., <code>mvn compile</code> for Java, <code>npm install &amp; build</code> for React)</li>
+<li>Runs unit tests and code quality checks</li>
+<li>Reports success/failure back to the developer within minutes</li>
+</ol>
+<p>Goal: catch integration bugs early, before they reach other developers or production.</p>
+
+<h2>2.3 Continuous Delivery vs Continuous Deployment</h2>
+<table>
+<tr><th>Term</th><th>Meaning</th><th>Production Deploy</th></tr>
+<tr><td>Continuous Delivery</td><td>Code is always in a deployable state; the final deploy-to-production step needs a manual approval/click</td><td>Manual trigger (button click)</td></tr>
+<tr><td>Continuous Deployment</td><td>Every change that passes all tests is deployed to production automatically — no human click</td><td>Fully automatic</td></tr>
+</table>
+<div class="tip"><b>Real world:</b> Most banking/finance orgs use Continuous <b>Delivery</b> (manual approval before prod) for compliance reasons. Product companies like fast-moving startups often use Continuous <b>Deployment</b> (fully automatic) for low-risk services.</div>
+
+<h2>2.4 What Problems CI/CD Solves</h2>
+<table>
+<tr><th>Old Problem</th><th>CI/CD Solution</th></tr>
+<tr><td>"Works on my machine"</td><td>Build always happens in a clean, identical pipeline environment (often a Docker container)</td></tr>
+<tr><td>Bugs found late</td><td>Automated tests run on every commit — fail fast</td></tr>
+<tr><td>Manual, risky deploys</td><td>Same scripted deployment steps every single time</td></tr>
+<tr><td>Slow releases</td><td>Pipelines run in minutes; teams can release multiple times a day</td></tr>
+<tr><td>No rollback plan</td><td>Redeploy the previous successful pipeline artifact/version instantly</td></tr>
+<tr><td>No audit trail</td><td>Every pipeline run is logged: who pushed, what commit, what tests passed, who approved</td></tr>
+</table>
+
+<div class="diagram">
+<div class="title">CI/CD Pipeline Flow (Generic)</div>
+<div class="flow-row">
+  <div class="node">Code Commit<br>(Git)</div>
+  <div class="arrow">→</div>
+  <div class="node">Build</div>
+  <div class="arrow">→</div>
+  <div class="node">Unit Test</div>
+  <div class="arrow">→</div>
+  <div class="node">Code Quality<br>(SonarQube)</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+  <div class="node purple">Package<br>(JAR/WAR/Docker)</div>
+  <div class="arrow">→</div>
+  <div class="node purple">Deploy to Dev</div>
+  <div class="arrow">→</div>
+  <div class="node purple">Deploy to QA</div>
+  <div class="arrow">→</div>
+  <div class="node green">Approval</div>
+  <div class="arrow">→</div>
+  <div class="node green">Deploy to Prod</div>
+</div>
+</div>
+</div>
+
+<!-- 3. CI vs CD vs DEPLOYMENT -->
+<div class="section">
+<h1>3. CI vs CD vs Continuous Deployment — Clear Difference</h1>
+<h2>3.1 Side by Side</h2>
+<table>
+<tr><th>Stage</th><th>What Happens</th><th>Tools Involved</th><th>Triggered By</th></tr>
+<tr><td>Continuous Integration</td><td>Build + Unit Test + Static Analysis on every push/PR</td><td>Jenkins, GitHub Actions, GitLab CI, Maven</td><td>Git push / PR opened</td></tr>
+<tr><td>Continuous Delivery</td><td>Package + auto-deploy to Dev/QA/Staging; Prod needs manual click</td><td>Same tools + deployment scripts, Ansible, Helm</td><td>Successful CI + manual approval</td></tr>
+<tr><td>Continuous Deployment</td><td>Fully automatic deploy to Production too, with no human step</td><td>Same + strong automated test coverage</td><td>Successful CI, automatically</td></tr>
+</table>
+
+<h2>3.2 Why the Distinction Matters in Real Organizations</h2>
+<ul>
+<li>Regulated industries (banking, healthcare, government) almost always use <b>Continuous Delivery</b> — a human must approve the production release for compliance/audit reasons.</li>
+<li>SaaS/product companies with strong automated test suites (e.g., feature-flag driven releases) often use <b>Continuous Deployment</b> for internal services and some customer-facing services.</li>
+<li>In interviews, always mention this real distinction — most companies use CI + CD (delivery), not full continuous deployment, because production still needs a gate/approval.</li>
+</ul>
+<div class="diagram">
+<div class="title">CI vs CD vs Continuous Deployment</div>
+<div class="flow-row">
+  <div class="node">Commit</div><div class="arrow">→</div>
+  <div class="node">Build+Test (CI)</div>
+</div>
+<div class="arrow-down">↓ CI passes</div>
+<div class="flow-row">
+  <div class="node purple">Auto Deploy Dev/QA (CD - Delivery)</div>
+</div>
+<div class="arrow-down">↓ Manual Approval (Delivery) OR Automatic (Deployment)</div>
+<div class="flow-row">
+  <div class="node green">Production</div>
+</div>
+</div>
+</div>
+
+<!-- 4. TOOLSCAPE -->
+<div class="section">
+<h1>4. The CI/CD Toolscape</h1>
+<h2>4.1 The Big Players</h2>
+<table>
+<tr><th>Tool</th><th>Owner/Type</th><th>Where Pipeline is Defined</th><th>Best Fit</th></tr>
+<tr><td>Jenkins</td><td>Open-source, self-hosted server</td><td><code>Jenkinsfile</code> (Groovy-based Pipeline DSL)</td><td>Large enterprises needing full control, on-prem, plugins for everything</td></tr>
+<tr><td>GitHub Actions</td><td>Built into GitHub</td><td><code>.github/workflows/*.yml</code></td><td>Teams already using GitHub; fast setup, huge marketplace of actions</td></tr>
+<tr><td>GitLab CI/CD (Runners)</td><td>Built into GitLab</td><td><code>.gitlab-ci.yml</code></td><td>Teams using GitLab; tightly integrated with Merge Requests and Container Registry</td></tr>
+<tr><td>Azure Pipelines</td><td>Microsoft Azure DevOps</td><td><code>azure-pipelines.yml</code></td><td>Enterprises on Microsoft/Azure stack, .NET + Java mixed shops</td></tr>
+<tr><td>AWS CI/CD</td><td>AWS (CodeCommit, CodeBuild, CodeDeploy, CodePipeline)</td><td><code>buildspec.yml</code> + Pipeline JSON/console/CDK</td><td>Teams fully hosted on AWS infrastructure</td></tr>
+</table>
+
+<h2>4.2 Common Thread Across All Tools</h2>
+<p>Even though syntax differs, every tool follows the same mental model:</p>
+<ol>
+<li><b>Trigger</b> — something starts the pipeline (push, PR, tag, schedule, manual)</li>
+<li><b>Agent/Runner</b> — a machine (VM, container, or cloud-hosted) that executes the steps</li>
+<li><b>Stages/Jobs</b> — logical groups of steps (Build, Test, Package, Deploy)</li>
+<li><b>Steps/Tasks</b> — individual commands (e.g., <code>mvn test</code>, <code>docker build</code>)</li>
+<li><b>Artifacts</b> — the output of the build (JAR, Docker image, static files) passed between stages</li>
+<li><b>Environments</b> — Dev, QA, Staging, Prod, each with its own config/secrets</li>
+</ol>
+<div class="tip">If you understand this generic model, you can pick up any CI/CD tool quickly — only the YAML/DSL syntax changes.</div>
+</div>
+
+<!-- 5. GIT AND MAVEN -->
+<div class="section">
+<h1>5. Where Git and Maven Fit Into CI/CD</h1>
+<h2>5.1 Git's Role</h2>
+<ul>
+<li>Git is the <b>source of truth</b> — every pipeline starts by checking out a specific commit/branch from Git.</li>
+<li>Pipelines are triggered by Git events: push to <code>main</code>/<code>develop</code>, a Pull/Merge Request, or a new Git tag (e.g., <code>v1.2.0</code> for a release).</li>
+<li>Branching strategy directly drives pipeline behavior — e.g., pushing to <code>feature/*</code> branches might only run CI (build+test), while merging into <code>main</code> triggers full CD to production.</li>
+</ul>
+<pre># Typical trigger rules seen in real pipelines
+push to feature/*   -> run build + unit tests only
+pull_request to develop -> run build + tests + code quality gate
+push/merge to main  -> run build + tests + package + deploy to Dev/QA
+tag v*.*.*          -> deploy to Production
+</pre>
+
+<h2>5.2 Maven's Role (Java Projects)</h2>
+<p>Maven is the build tool for Spring Boot projects. Every Java CI/CD pipeline calls Maven commands as its "build" and "test" steps.</p>
+<table>
+<tr><th>Maven Command</th><th>What It Does in the Pipeline</th></tr>
+<tr><td><code>mvn clean</code></td><td>Removes old <code>target/</code> build output</td></tr>
+<tr><td><code>mvn compile</code></td><td>Compiles Java source code</td></tr>
+<tr><td><code>mvn test</code></td><td>Runs JUnit/Mockito unit tests</td></tr>
+<tr><td><code>mvn package</code></td><td>Builds the deployable JAR/WAR file</td></tr>
+<tr><td><code>mvn verify</code></td><td>Runs integration tests (Failsafe plugin) after packaging</td></tr>
+<tr><td><code>mvn install</code></td><td>Installs the artifact into the local <code>.m2</code> repo (used for multi-module projects)</td></tr>
+<tr><td><code>mvn deploy</code></td><td>Uploads the built artifact to a remote repository (Nexus/Artifactory)</td></tr>
+</table>
+<pre>mvn clean package -DskipTests=false</pre>
+<div class="box">Real pipelines usually run <code>mvn clean verify</code> which does compile → test → package → integration-test in one command, then archive the resulting JAR as a build artifact.</div>
+
+<h2>5.3 Dependency Management in CI</h2>
+<ul>
+<li>Maven downloads dependencies from <code>pom.xml</code> — in CI, the <code>.m2</code> cache is often cached between runs to speed up builds (avoids re-downloading every time).</li>
+<li>Private/internal libraries are usually pulled from a company <b>Nexus</b> or <b>Artifactory</b> repository, configured via <code>settings.xml</code> with credentials stored as pipeline secrets.</li>
+<li>For React, the equivalent is <code>package.json</code> + <code>node_modules</code>, cached using the <code>npm</code>/<code>yarn</code> lock file hash as a cache key.</li>
+</ul>
+</div>
+
+<!-- 6. ANATOMY OF PIPELINE -->
+<div class="section">
+<h1>6. Anatomy of a Pipeline — Stages Explained</h1>
+<h2>6.1 Standard Stages Used Across All Tools</h2>
+<table>
+<tr><th>Stage</th><th>Purpose</th><th>Typical Commands</th></tr>
+<tr><td>Checkout</td><td>Pull code from Git at the triggering commit</td><td><code>git clone</code>/<code>checkout</code> (done automatically by most tools)</td></tr>
+<tr><td>Build</td><td>Compile the source code</td><td><code>mvn compile</code>, <code>npm install</code></td></tr>
+<tr><td>Unit Test</td><td>Run fast automated tests, no external dependencies</td><td><code>mvn test</code>, <code>npm test</code></td></tr>
+<tr><td>Code Quality</td><td>Static analysis, coverage, security scan</td><td>SonarQube, ESLint, Checkstyle</td></tr>
+<tr><td>Package</td><td>Create deployable artifact</td><td><code>mvn package</code>, <code>npm run build</code>, <code>docker build</code></td></tr>
+<tr><td>Push Artifact</td><td>Store the artifact somewhere reusable</td><td>Push JAR to Nexus, push image to Docker Hub/ECR/ACR/GitLab Registry</td></tr>
+<tr><td>Deploy - Dev</td><td>Automatic deploy to a shared dev environment</td><td><code>kubectl apply</code>, <code>ansible-playbook</code>, SSH+scp</td></tr>
+<tr><td>Integration/E2E Test</td><td>Test the deployed app end-to-end (API tests, Selenium/Cypress)</td><td>Postman/Newman, Cypress, RestAssured</td></tr>
+<tr><td>Deploy - QA/Staging</td><td>Deploy to a pre-prod environment for manual/exploratory testing</td><td>Same deploy scripts, different config</td></tr>
+<tr><td>Approval Gate</td><td>Manual sign-off before production (Continuous Delivery)</td><td>Built-in "Environments/Approvals" feature of the tool</td></tr>
+<tr><td>Deploy - Prod</td><td>Final release to live users</td><td>Blue-green / rolling / canary deployment scripts</td></tr>
+<tr><td>Notify</td><td>Tell the team the result</td><td>Slack/Teams/Email notification step</td></tr>
+</table>
+
+<div class="diagram">
+<div class="title">Full Pipeline Stage Flow</div>
+<div class="flow-row">
+  <div class="node">Checkout</div><div class="arrow">→</div>
+  <div class="node">Build</div><div class="arrow">→</div>
+  <div class="node">Unit Test</div><div class="arrow">→</div>
+  <div class="node">Code Quality</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+  <div class="node purple">Package</div><div class="arrow">→</div>
+  <div class="node purple">Push Artifact</div><div class="arrow">→</div>
+  <div class="node purple">Deploy Dev</div><div class="arrow">→</div>
+  <div class="node purple">Integration Test</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+  <div class="node">Deploy QA</div><div class="arrow">→</div>
+  <div class="node green">Manual Approval</div><div class="arrow">→</div>
+  <div class="node green">Deploy Prod</div><div class="arrow">→</div>
+  <div class="node green">Notify Team</div>
+</div>
+</div>
+</div>
+
+<!-- 7. PREREQUISITES -->
+<div class="section">
+<h1>7. Prerequisites Before You Create Any Pipeline</h1>
+<h2>7.1 Things You Must Have Ready</h2>
+<ol>
+<li><b>Git repository</b> with the project already pushed (GitHub/GitLab/Bitbucket/Azure Repos).</li>
+<li><b>Working local build</b> — the project must build successfully locally first: <code>mvn clean package</code> for Spring Boot, <code>npm install &amp; npm run build</code> for React. If it does not build locally, it will not build in the pipeline.</li>
+<li><b>Dockerfile</b> (if deploying as containers) — defines how to package the app as an image.</li>
+<li><b>Target environment access</b> — server/VM/Kubernetes cluster/cloud account credentials where the app will be deployed.</li>
+<li><b>Secrets/credentials</b> stored securely in the CI/CD tool's secret store (never hardcoded): DB passwords, cloud keys, registry logins.</li>
+<li><b>Build agent/runner</b> — either self-hosted (a Jenkins agent VM, a GitLab Runner machine) or cloud-hosted (GitHub-hosted runners, Azure-hosted agents).</li>
+<li><b>Branching strategy decided</b> — which branch maps to which environment (e.g., <code>develop</code>→Dev, <code>release/*</code>→QA, <code>main</code>→Prod).</li>
+<li><b>Test suite in place</b> — unit tests (JUnit/Jest) at minimum; integration/E2E tests are a bonus.</li>
+</ol>
+<div class="warn"><b>Common mistake:</b> Teams try to write a pipeline before the project even builds cleanly on their own laptop. Always get a clean local build + tests passing first — the pipeline should just automate what already works manually.</div>
+
+<h2>7.2 Checklist Before Writing YAML/Jenkinsfile</h2>
+<table>
+<tr><th>Checklist Item</th><th>Why It Matters</th></tr>
+<tr><td>pom.xml / package.json is correct and builds</td><td>Pipeline literally runs these build tools</td></tr>
+<tr><td>Java version / Node version fixed</td><td>Avoids "works on my machine" version drift</td></tr>
+<tr><td>.gitignore excludes target/, node_modules/, .env</td><td>Keeps repo clean; secrets not committed</td></tr>
+<tr><td>Environment-specific config externalized</td><td>application-dev.yml, application-prod.yml, or env vars — not hardcoded</td></tr>
+<tr><td>Access to deployment target confirmed</td><td>SSH key, kubeconfig, or cloud IAM role ready before writing deploy stage</td></tr>
+</table>
+</div>
+
+<!-- 8. SPRING BOOT EXAMPLE -->
+<div class="section">
+<h1>8. Spring Boot Backend — Full CI/CD Example (End to End)</h1>
+<h2>8.1 The Real-Time Scenario</h2>
+<p>We have an <b>Order Service</b> — a Spring Boot REST API (Java 17, Maven, connects to MySQL) — stored in Git. We want: every push to <code>develop</code> builds+tests+deploys to Dev automatically; merging to <code>main</code> deploys to Production after manual approval.</p>
+
+<h2>8.2 Project Structure</h2>
+<pre>order-service/
+├── src/main/java/com/shop/order/...
+├── src/test/java/com/shop/order/...
+├── pom.xml
+├── Dockerfile
+├── Jenkinsfile
+├── .github/workflows/backend-ci-cd.yml
+└── .gitlab-ci.yml
+</pre>
+
+<h2>8.3 Step 1 — Confirm Local Build Works</h2>
+<pre>mvn clean verify
+# BUILD SUCCESS -> now safe to automate in a pipeline</pre>
+
+<h2>8.4 Step 2 — Dockerfile for the Spring Boot App</h2>
+<pre><span class="c1"># Multi-stage build: compile with Maven, run with a small JRE image</span>
+FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+COPY --from=build /app/target/order-service-*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","app.jar"]</pre>
+
+<h2>8.5 Step 3 — What the Pipeline Does (Any Tool)</h2>
+<ol>
+<li>Checkout code from Git (branch that triggered the run)</li>
+<li>Set up Java 17 + Maven cache</li>
+<li><code>mvn clean verify</code> — compiles, runs unit tests, runs integration tests</li>
+<li>Publish test reports (JUnit XML) so failures show in the pipeline UI</li>
+<li><code>docker build</code> the image and tag it with the Git commit SHA (e.g., <code>order-service:a1b2c3d</code>)</li>
+<li>Push the image to a registry (Docker Hub / ECR / ACR / GitLab Container Registry)</li>
+<li>Deploy to Dev automatically (e.g., <code>kubectl set image</code> or <code>docker-compose pull &amp; up</code>)</li>
+<li>Run a smoke/integration test against Dev (hit <code>/actuator/health</code>)</li>
+<li>Wait for manual approval → deploy the same image to Production</li>
+</ol>
+<div class="tip"><b>Key real-world rule:</b> Build the artifact/Docker image <b>once</b>, then promote the exact same image through Dev → QA → Prod. Never rebuild per environment — that risks "it was a different build" bugs.</div>
+
+<h2>8.6 Application Config per Environment</h2>
+<pre><span class="c1"># application-dev.yml</span>
+spring.datasource.url: jdbc:mysql://dev-db:3306/orders
+<span class="c1"># application-prod.yml</span>
+spring.datasource.url: ${DB_URL}      <span class="c1"># injected as env var / secret by the pipeline</span></pre>
+
+<h2>8.7 Deployment Mechanics for Spring Boot</h2>
+<table>
+<tr><th>Target</th><th>How Deploy Happens</th></tr>
+<tr><td>Plain VM</td><td>SSH into server, <code>scp</code> the JAR, restart via <code>systemctl restart order-service</code></td></tr>
+<tr><td>Docker host</td><td>SSH + <code>docker pull &amp;&amp; docker-compose up -d</code></td></tr>
+<tr><td>Kubernetes</td><td><code>kubectl set image deployment/order-service order-service=registry/order-service:sha</code> (rolling update)</td></tr>
+<tr><td>AWS Elastic Beanstalk / ECS</td><td>CodeDeploy or ECS service update triggers a new task with the new image</td></tr>
+<tr><td>Azure App Service</td><td>Azure Pipelines "Deploy to App Service" task pushes the JAR/container directly</td></tr>
+</table>
+</div>
+
+<!-- 9. REACT EXAMPLE -->
+<div class="section">
+<h1>9. React Frontend — Full CI/CD Example (End to End)</h1>
+<h2>9.1 The Real-Time Scenario</h2>
+<p>The React app (Shop UI) is a completely separate Git repository/pipeline from the Spring Boot backend — frontend and backend are deployed independently, which is normal in real organizations (separate release cadence, separate teams).</p>
+
+<h2>9.2 Project Structure</h2>
+<pre>shop-ui/
+├── src/
+├── public/
+├── package.json
+├── Dockerfile
+├── nginx.conf
+└── .github/workflows/frontend-ci-cd.yml</pre>
+
+<h2>9.3 Step 1 — Confirm Local Build Works</h2>
+<pre>npm install
+npm run test -- --watchAll=false
+npm run build
+# creates the production-ready static build/ folder</pre>
+
+<h2>9.4 Step 2 — Dockerfile for React (served via Nginx)</h2>
+<pre><span class="c1"># Stage 1: build the static files</span>
+FROM node:20-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+<span class="c1"># Stage 2: serve with nginx</span>
+FROM nginx:alpine
+COPY --from=build /app/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80</pre>
+
+<h2>9.5 Step 3 — What the Pipeline Does</h2>
+<ol>
+<li>Checkout code</li>
+<li>Set up Node.js (cache <code>node_modules</code> using <code>package-lock.json</code> hash)</li>
+<li><code>npm ci</code> (clean, reproducible install — always used in CI instead of <code>npm install</code>)</li>
+<li><code>npm test</code> — runs Jest/React Testing Library unit tests</li>
+<li><code>npm run lint</code> — ESLint code quality check</li>
+<li><code>npm run build</code> — produces optimized static files</li>
+<li>Build a Docker image (Nginx serving the static files) OR upload static files directly to an S3 bucket / Azure Static Web App / Netlify</li>
+<li>Deploy to Dev → run Cypress E2E tests against it → deploy to Prod (CDN cache invalidation if using CloudFront)</li>
+</ol>
+
+<h2>9.6 Frontend Talking to Backend Across Environments</h2>
+<pre><span class="c1">// .env.development</span>
+REACT_APP_API_URL=http://dev-api.shop.com
+<span class="c1">// .env.production</span>
+REACT_APP_API_URL=https://api.shop.com</pre>
+<div class="box">React reads the correct <code>REACT_APP_API_URL</code> at build time per environment, so the same code base produces environment-specific builds — this is why frontend and backend pipelines can run and deploy fully independently while still talking to the right API.</div>
+
+<h2>9.7 Static Hosting Options (Real World)</h2>
+<table>
+<tr><th>Option</th><th>Notes</th></tr>
+<tr><td>Nginx/Docker on VM or K8s</td><td>Full control, common in enterprises with existing infra</td></tr>
+<tr><td>AWS S3 + CloudFront</td><td>Very common for pure static React apps, cheap and fast (CDN)</td></tr>
+<tr><td>Azure Static Web Apps</td><td>Native integration with Azure Pipelines/GitHub Actions</td></tr>
+<tr><td>Netlify / Vercel</td><td>Popular for smaller teams/startups, zero-config CI/CD built in</td></tr>
+</table>
+</div>
+
+<!-- 10. JENKINS -->
+<div class="section">
+<h1>10. Jenkins Deep Dive with Real Jenkinsfile</h1>
+<h2>10.1 What Jenkins Is</h2>
+<p>Jenkins is a free, open-source, self-hosted automation server. You install it on your own VM/server; it has a huge plugin ecosystem (Git, Maven, Docker, Kubernetes, Slack, SonarQube, etc.). The pipeline is defined as code in a file called <code>Jenkinsfile</code>, written in Groovy-based syntax, checked into the same Git repo.</p>
+
+<h2>10.2 Jenkins Architecture</h2>
+<div class="diagram">
+<div class="title">Jenkins Master-Agent Model</div>
+<div class="flow-row">
+  <div class="node">Git Repo<br>(webhook)</div><div class="arrow">→</div>
+  <div class="node">Jenkins Master<br>(scheduler, UI, plugins)</div><div class="arrow">→</div>
+  <div class="node purple">Agent/Node 1<br>(Linux, Docker)</div>
+</div>
+<div class="flow-row">
+  <div class="node purple">Agent/Node 2<br>(Windows)</div>
+</div>
+</div>
+
+<h2>10.3 Real Jenkinsfile — Spring Boot Order Service</h2>
+<pre>pipeline {
+  agent any
+  tools { maven 'Maven3'; jdk 'JDK17' }
+  environment {
+    IMAGE = "myorg/order-service:${env.GIT_COMMIT.take(7)}"
+    REGISTRY_CREDS = credentials('docker-hub-creds')
+  }
+  stages {
+    stage('Checkout') {
+      steps { checkout scm }
+    }
+    stage('Build & Unit Test') {
+      steps { sh 'mvn clean verify' }
+      post {
+        always { junit 'target/surefire-reports/*.xml' }
+      }
+    }
+    stage('Code Quality') {
+      steps { sh 'mvn sonar:sonar -Dsonar.host.url=$SONAR_URL' }
+    }
+    stage('Build Docker Image') {
+      steps { sh "docker build -t $IMAGE ." }
+    }
+    stage('Push Image') {
+      steps {
+        sh "docker login -u $REGISTRY_CREDS_USR -p $REGISTRY_CREDS_PSW"
+        sh "docker push $IMAGE"
+      }
+    }
+    stage('Deploy to Dev') {
+      steps { sh "kubectl set image deployment/order-service order-service=$IMAGE -n dev" }
+    }
+    stage('Approval') {
+      steps { input message: 'Deploy to Production?', ok: 'Deploy' }
+    }
+    stage('Deploy to Prod') {
+      steps { sh "kubectl set image deployment/order-service order-service=$IMAGE -n prod" }
+    }
+  }
+  post {
+    failure { slackSend channel: '#deployments', message: "Build FAILED: ${env.BUILD_URL}" }
+    success { slackSend channel: '#deployments', message: "Deployed ${IMAGE} successfully" }
+  }
+}</pre>
+
+<h2>10.4 Key Jenkins Concepts</h2>
+<table>
+<tr><th>Concept</th><th>Meaning</th></tr>
+<tr><td>Master</td><td>The Jenkins server that schedules jobs and hosts the UI</td></tr>
+<tr><td>Agent/Node</td><td>A machine that actually executes the pipeline steps</td></tr>
+<tr><td>Declarative vs Scripted Pipeline</td><td>Declarative (shown above) is structured/simple; Scripted is full Groovy, more flexible but complex</td></tr>
+<tr><td>Webhook</td><td>GitHub/GitLab calls Jenkins URL automatically on push, triggering the job</td></tr>
+<tr><td>Credentials Store</td><td>Jenkins' built-in secret manager for passwords, tokens, SSH keys</td></tr>
+</table>
+</div>
+
+<!-- 11. GITHUB ACTIONS -->
+<div class="section">
+<h1>11. GitHub Actions Deep Dive with Real Workflow YAML</h1>
+<h2>11.1 What GitHub Actions Is</h2>
+<p>GitHub Actions is CI/CD built directly into GitHub. No separate server to install — GitHub provides hosted runners (or you can register your own self-hosted runner). Pipelines are YAML files under <code>.github/workflows/</code>.</p>
+
+<h2>11.2 Real Workflow — Spring Boot Backend</h2>
+<pre>name: Backend CI/CD
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+    branches: [develop]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: 'temurin', java-version: '17', cache: 'maven' }
+      - name: Build and Test
+        run: mvn clean verify
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v4
+        with: { name: test-results, path: target/surefire-reports }
+
+  docker-build-push:
+    needs: build-test
+    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Image
+        run: docker build -t myorg/order-service:${{ github.sha }} .
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USER }} --password-stdin
+      - name: Push Image
+        run: docker push myorg/order-service:${{ github.sha }}
+
+  deploy-dev:
+    needs: docker-build-push
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Deploy to Dev
+        run: kubectl set image deployment/order-service order-service=myorg/order-service:${{ github.sha }} -n dev
+
+  deploy-prod:
+    needs: docker-build-push
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: production   # this environment has "Required reviewers" set in GitHub -> manual approval
+    steps:
+      - name: Deploy to Prod
+        run: kubectl set image deployment/order-service order-service=myorg/order-service:${{ github.sha }} -n prod</pre>
+
+<h2>11.3 Real Workflow — React Frontend</h2>
+<pre>name: Frontend CI/CD
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: 'npm' }
+      - run: npm ci
+      - run: npm test -- --watchAll=false
+      - run: npm run build
+      - name: Deploy to S3
+        run: aws s3 sync build/ s3://shop-ui-prod-bucket --delete
+      - name: Invalidate CloudFront
+        run: aws cloudfront create-invalidation --distribution-id $DIST_ID --paths "/*"</pre>
+
+<h2>11.4 Key GitHub Actions Concepts</h2>
+<table>
+<tr><th>Concept</th><th>Meaning</th></tr>
+<tr><td>Workflow</td><td>The whole YAML file — one automation triggered by an event</td></tr>
+<tr><td>Job</td><td>A group of steps that runs on one runner; jobs can run in parallel or depend on each other (<code>needs:</code>)</td></tr>
+<tr><td>Step / Action</td><td>A single task; "Actions" are reusable steps shared via the GitHub Marketplace (<code>uses: actions/checkout@v4</code>)</td></tr>
+<tr><td>Secrets</td><td>Stored in repo/organization Settings → Secrets, referenced as <code>${{ secrets.NAME }}</code></td></tr>
+<tr><td>Environments</td><td>Named deploy targets (dev/prod) that can require manual reviewer approval before running</td></tr>
+</table>
+</div>
+
+<!-- 12. GITLAB CI -->
+<div class="section">
+<h1>12. GitLab CI/CD Runners Deep Dive with Real .gitlab-ci.yml</h1>
+<h2>12.1 What GitLab CI/CD Is</h2>
+<p>GitLab has CI/CD built in, defined in a single <code>.gitlab-ci.yml</code> at the repo root. The actual execution happens on <b>GitLab Runners</b> — agents (shared, group, or project-specific) that pick up jobs and run them.</p>
+
+<h2>12.2 Real .gitlab-ci.yml — Spring Boot Backend</h2>
+<pre>stages: [build, test, package, deploy-dev, deploy-prod]
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+cache:
+  paths: [.m2/repository]
+
+build:
+  stage: build
+  image: maven:3.9-eclipse-temurin-17
+  script: mvn compile
+
+unit-test:
+  stage: test
+  image: maven:3.9-eclipse-temurin-17
+  script: mvn test
+  artifacts:
+    when: always
+    reports:
+      junit: target/surefire-reports/TEST-*.xml
+
+package-and-push:
+  stage: package
+  image: docker:24
+  services: [docker:24-dind]
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA .
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+
+deploy-dev:
+  stage: deploy-dev
+  script: kubectl set image deployment/order-service order-service=$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA -n dev
+  environment: { name: dev }
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+
+deploy-prod:
+  stage: deploy-prod
+  script: kubectl set image deployment/order-service order-service=$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA -n prod
+  environment: { name: production }
+  when: manual        # manual approval click in GitLab UI
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'</pre>
+
+<h2>12.3 Key GitLab CI/CD Concepts</h2>
+<table>
+<tr><th>Concept</th><th>Meaning</th></tr>
+<tr><td>Stages</td><td>Ordered phases; all jobs in one stage run in parallel, next stage waits for it to finish</td></tr>
+<tr><td>Runner</td><td>The agent (VM/Docker/K8s) that executes jobs; can be shared (GitLab-hosted) or self-hosted (project-specific)</td></tr>
+<tr><td>when: manual</td><td>Turns a job into a manual approval gate — exactly like Jenkins' <code>input</code> step</td></tr>
+<tr><td>CI/CD Variables</td><td>Secrets/config set in Settings → CI/CD → Variables, masked in logs</td></tr>
+<tr><td>Built-in Container Registry</td><td>GitLab provides its own Docker registry per project — no separate Docker Hub needed</td></tr>
+</table>
+</div>
+
+<!-- 13. AZURE PIPELINES -->
+<div class="section">
+<h1>13. Azure Pipelines Deep Dive with Real azure-pipelines.yml</h1>
+<h2>13.1 What Azure Pipelines Is</h2>
+<p>Part of Azure DevOps. Pipelines are defined in <code>azure-pipelines.yml</code>, executed on Microsoft-hosted agents or self-hosted agent pools. Very common in enterprises already using Azure Boards/Repos.</p>
+
+<h2>13.2 Real azure-pipelines.yml — Spring Boot Backend</h2>
+<pre>trigger:
+  branches: { include: [develop, main] }
+
+pool: { vmImage: 'ubuntu-latest' }
+
+stages:
+- stage: BuildAndTest
+  jobs:
+  - job: Build
+    steps:
+    - task: JavaToolInstaller@0
+      inputs: { versionSpec: '17', jdkArchitectureOption: 'x64', jdkSourceOption: 'PreInstalled' }
+    - script: mvn clean verify
+      displayName: 'Maven Build and Test'
+    - task: PublishTestResults@2
+      inputs: { testResultsFiles: '**/surefire-reports/*.xml' }
+
+- stage: DockerPushDev
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/develop')
+  jobs:
+  - job: BuildPushImage
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'acrServiceConnection'
+        repository: 'order-service'
+        command: 'buildAndPush'
+        tags: '$(Build.SourceVersion)'
+
+- stage: DeployDev
+  dependsOn: DockerPushDev
+  jobs:
+  - deployment: DeployToAKS
+    environment: 'dev'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: KubernetesManifest@0
+            inputs: { action: 'deploy', manifests: 'k8s/deployment.yml' }
+
+- stage: DeployProd
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+  jobs:
+  - deployment: DeployToProdAKS
+    environment: 'production'   # configured with manual approvals + gates in Azure DevOps UI
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: KubernetesManifest@0
+            inputs: { action: 'deploy', manifests: 'k8s/deployment.yml' }</pre>
+
+<h2>13.3 Key Azure Pipelines Concepts</h2>
+<table>
+<tr><th>Concept</th><th>Meaning</th></tr>
+<tr><td>Stage</td><td>Top-level phase (Build, Deploy Dev, Deploy Prod)</td></tr>
+<tr><td>Job</td><td>A set of steps run on one agent within a stage</td></tr>
+<tr><td>Task</td><td>A pre-built unit of work (like GitHub Actions) — huge marketplace: Docker@2, KubernetesManifest@0, AzureWebApp@1</td></tr>
+<tr><td>Environments + Approvals</td><td>Configured in the Azure DevOps UI (not YAML) to require a specific person/group to approve before deploy</td></tr>
+<tr><td>Service Connection</td><td>Secure link to external systems (ACR, AWS, K8s cluster) storing credentials centrally</td></tr>
+</table>
+</div>
+
+<!-- 14. AWS CI/CD -->
+<div class="section">
+<h1>14. AWS CI/CD Deep Dive (CodePipeline, CodeBuild, CodeDeploy, CodeCommit)</h1>
+<h2>14.1 The AWS Native CI/CD Services</h2>
+<table>
+<tr><th>Service</th><th>Role</th></tr>
+<tr><td>CodeCommit</td><td>AWS-hosted Git repository (rarely used now — most teams keep code on GitHub/GitLab/Bitbucket and just connect it)</td></tr>
+<tr><td>CodeBuild</td><td>Runs the build/test commands, defined in <code>buildspec.yml</code> — equivalent to a Jenkins/GitHub Actions job</td></tr>
+<tr><td>CodeDeploy</td><td>Handles the actual deployment to EC2, Lambda, or ECS, including blue-green deployments</td></tr>
+<tr><td>CodePipeline</td><td>The orchestrator that chains Source → Build → Deploy stages together (like the overall Jenkinsfile/workflow)</td></tr>
+</table>
+
+<div class="diagram">
+<div class="title">AWS CI/CD Flow</div>
+<div class="flow-row">
+  <div class="node">GitHub/CodeCommit<br>(Source)</div><div class="arrow">→</div>
+  <div class="node purple">CodeBuild<br>(mvn/npm build+test)</div><div class="arrow">→</div>
+  <div class="node green">CodeDeploy<br>(EC2 / ECS / Lambda)</div>
+</div>
+<div class="flow-row">
+  <div class="node gray">Orchestrated end-to-end by CodePipeline</div>
+</div>
+</div>
+
+<h2>14.2 Real buildspec.yml — Spring Boot Backend (CodeBuild)</h2>
+<pre>version: 0.2
+phases:
+  install:
+    runtime-versions: { java: corretto17 }
+  pre_build:
+    commands:
+      - echo Logging in to ECR
+      - aws ecr get-login-password | docker login --username AWS --password-stdin $ECR_URI
+  build:
+    commands:
+      - mvn clean verify
+      - docker build -t order-service:$CODEBUILD_RESOLVED_SOURCE_VERSION .
+      - docker tag order-service:$CODEBUILD_RESOLVED_SOURCE_VERSION $ECR_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION
+  post_build:
+    commands:
+      - docker push $ECR_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION
+      - printf '[{"name":"order-service","imageUri":"%s"}]' $ECR_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION > imagedefinitions.json
+artifacts:
+  files: [imagedefinitions.json]
+reports:
+  unit-tests:
+    files: ['target/surefire-reports/*.xml']</pre>
+
+<h2>14.3 CodePipeline Stages (Console/CDK Definition, Conceptually)</h2>
+<pre>Pipeline: order-service-pipeline
+  Stage 1 - Source: GitHub (webhook on push to main/develop)
+  Stage 2 - Build: CodeBuild runs buildspec.yml (test + docker build + push to ECR)
+  Stage 3 - DeployDev: CodeDeploy/ECS updates the "dev" ECS service with new image
+  Stage 4 - ManualApproval: SNS notification, someone clicks "Approve" in console
+  Stage 5 - DeployProd: CodeDeploy/ECS updates the "prod" ECS service (blue-green)</pre>
+
+<h2>14.4 React Frontend on AWS</h2>
+<ul>
+<li>CodeBuild runs <code>npm ci &amp;&amp; npm test &amp;&amp; npm run build</code></li>
+<li>Build output pushed to an S3 bucket configured for static website hosting</li>
+<li>CloudFront serves it globally as a CDN; CodePipeline runs a CloudFront cache invalidation as the final deploy step</li>
+</ul>
+</div>
+
+<!-- 15. COMPARISON -->
+<div class="section">
+<h1>15. Tool vs Tool — Full Comparison Table</h1>
+<table>
+<tr><th>Feature</th><th>Jenkins</th><th>GitHub Actions</th><th>GitLab CI/CD</th><th>Azure Pipelines</th><th>AWS CI/CD</th></tr>
+<tr><td>Hosting</td><td>Self-hosted (you manage the server)</td><td>GitHub-hosted or self-hosted runners</td><td>GitLab-hosted or self-hosted runners</td><td>Microsoft-hosted or self-hosted agents</td><td>Fully managed AWS services</td></tr>
+<tr><td>Config Format</td><td>Jenkinsfile (Groovy DSL)</td><td>YAML workflow</td><td>YAML (.gitlab-ci.yml)</td><td>YAML (azure-pipelines.yml)</td><td>buildspec.yml + Pipeline definition (console/CDK/CFN)</td></tr>
+<tr><td>Setup Effort</td><td>High — install/maintain server, plugins</td><td>Very low — built into GitHub</td><td>Low — built into GitLab</td><td>Medium — part of Azure DevOps org</td><td>Medium — needs several AWS services wired together</td></tr>
+<tr><td>Best For</td><td>Full control, complex/legacy enterprise needs, on-prem</td><td>Teams already on GitHub, open-source projects</td><td>Teams already on GitLab, tight MR integration</td><td>Microsoft/.NET + Java enterprise shops</td><td>Teams fully invested in AWS infra</td></tr>
+<tr><td>Secrets Management</td><td>Jenkins Credentials Store</td><td>GitHub Encrypted Secrets</td><td>GitLab CI/CD Variables (masked/protected)</td><td>Azure Key Vault / Variable Groups</td><td>AWS Secrets Manager / Parameter Store</td></tr>
+<tr><td>Approval Gates</td><td><code>input</code> step in Jenkinsfile</td><td>"Environments" with required reviewers</td><td><code>when: manual</code> jobs</td><td>Environment approvals/checks (UI configured)</td><td>Manual Approval action in CodePipeline</td></tr>
+<tr><td>Cost Model</td><td>Free, but you pay for server infra</td><td>Free minutes for public repos, paid minutes for private</td><td>Free tier minutes, paid for more</td><td>Free tier minutes, paid parallel jobs</td><td>Pay-per-build-minute + other AWS resource costs</td></tr>
+<tr><td>Plugin/Extensibility</td><td>Massive plugin ecosystem (2000+)</td><td>Marketplace Actions (huge, community-driven)</td><td>Growing marketplace + native Docker/K8s integration</td><td>Marketplace Tasks (large, Microsoft-curated)</td><td>Integrates natively with all other AWS services</td></tr>
+</table>
+<div class="tip"><b>Interview tip:</b> There is no single "best" tool — the right choice depends on where the code already lives (GitHub → GitHub Actions is natural) and what cloud/infra the company already uses (AWS shop → AWS CI/CD or Jenkins on EC2 is common; Azure shop → Azure Pipelines).</div>
+</div>
+
+<!-- 16. DEPLOYMENT STRATEGIES -->
+<div class="section">
+<h1>16. Deployment Strategies (Recreate, Rolling, Blue-Green, Canary)</h1>
+
+<h2>16.1 Why Deployment Strategy Matters</h2>
+<p>Getting a build to "pass the pipeline" is only half the job. <b>How</b> the new version replaces the old one in production decides whether users notice downtime, whether a bad release can be undone in seconds, and how much extra infrastructure cost the org accepts. This is one of the most common real-world and interview topics.</p>
+
+<h2>16.2 Recreate Deployment</h2>
+<div class="box">Stop the old version completely, then start the new version. Simple but causes downtime.</div>
+<div class="diagram">
+<div class="title">Recreate Strategy</div>
+<div class="flow-row">
+<div class="node alt">Old v1 running</div><div class="arrow">→</div><div class="node gray">STOP v1 (downtime)</div><div class="arrow">→</div><div class="node green">START v2</div>
+</div>
+</div>
+<ul>
+<li><b>Used for:</b> internal tools, low-traffic apps, dev/QA environments.</li>
+<li><b>Downside:</b> real downtime window — not acceptable for customer-facing production.</li>
+</ul>
+
+<h2>16.3 Rolling Deployment</h2>
+<div class="box">Replace instances/pods one (or a few) at a time. Some old and new versions run simultaneously during rollout. This is Kubernetes' default deployment strategy.</div>
+<div class="diagram">
+<div class="title">Rolling Update Across 4 Pods</div>
+<div class="flow-row">
+<div class="node alt">v1</div><div class="node alt">v1</div><div class="node alt">v1</div><div class="node alt">v1</div>
+</div>
+<div class="arrow-down">↓ replace pod 1</div>
+<div class="flow-row">
+<div class="node green">v2</div><div class="node alt">v1</div><div class="node alt">v1</div><div class="node alt">v1</div>
+</div>
+<div class="arrow-down">↓ continue until all replaced</div>
+<div class="flow-row">
+<div class="node green">v2</div><div class="node green">v2</div><div class="node green">v2</div><div class="node green">v2</div>
+</div>
+</div>
+<ul>
+<li><b>Used for:</b> most typical Spring Boot microservices on Kubernetes — zero downtime, gradual rollout.</li>
+<li><b>Risk:</b> if v2 has a bug, some users hit v1 and others hit v2 at the same time (mixed versions) — the API contract must stay backward compatible during rollout.</li>
+</ul>
+
+<h2>16.4 Blue-Green Deployment</h2>
+<div class="box">Keep two identical full environments — "Blue" (current live) and "Green" (new version). Deploy to Green, test it fully, then switch the router/load balancer to send all traffic to Green instantly. Blue stays idle as an instant rollback target.</div>
+<div class="diagram">
+<div class="title">Blue-Green Deployment</div>
+<div class="flow-row">
+<div class="node green">BLUE (v1) — LIVE</div><div class="node gray">GREEN (v2) — idle, being tested</div>
+</div>
+<div class="arrow-down">↓ switch router traffic</div>
+<div class="flow-row">
+<div class="node gray">BLUE (v1) — idle (rollback ready)</div><div class="node green">GREEN (v2) — LIVE</div>
+</div>
+</div>
+<ul>
+<li><b>Used for:</b> critical production releases where instant rollback matters (banking, e-commerce checkout).</li>
+<li><b>Cost:</b> needs double the infrastructure momentarily (or two full environments always up).</li>
+<li><b>Rollback:</b> just flip the router back to Blue — seconds, not a redeploy.</li>
+</ul>
+
+<h2>16.5 Canary Deployment</h2>
+<div class="box">Release the new version to a small % of real users first (e.g., 5%), watch metrics/errors, then gradually increase to 25% → 50% → 100%. If something looks wrong, stop and roll back before everyone is affected.</div>
+<div class="diagram">
+<div class="title">Canary Rollout</div>
+<div class="flow-row">
+<div class="node alt">95% traffic → v1</div><div class="node green">5% traffic → v2 (canary)</div>
+</div>
+<div class="arrow-down">↓ monitor error rate / latency — looks good</div>
+<div class="flow-row">
+<div class="node alt">50% traffic → v1</div><div class="node green">50% traffic → v2</div>
+</div>
+<div class="arrow-down">↓ fully confident</div>
+<div class="flow-row">
+<div class="node green">100% traffic → v2</div>
+</div>
+</div>
+<ul>
+<li><b>Used for:</b> large-scale consumer apps (Netflix, Amazon-style), feature-flag driven releases.</li>
+<li><b>Tools that help:</b> Kubernetes + Istio/Linkerd service mesh, Argo Rollouts, Azure App Service deployment slots with % traffic routing.</li>
+</ul>
+
+<h2>16.6 Which Strategy Do Real Companies Use?</h2>
+<table>
+<tr><th>Strategy</th><th>Downtime</th><th>Rollback Speed</th><th>Infra Cost</th><th>Typical Real-World Use</th></tr>
+<tr><td>Recreate</td><td>Yes</td><td>Slow (redeploy old)</td><td>Low</td><td>Dev/QA, internal tools</td></tr>
+<tr><td>Rolling</td><td>No (brief mixed versions)</td><td>Medium</td><td>Low-Medium</td><td>Most Kubernetes microservices (default)</td></tr>
+<tr><td>Blue-Green</td><td>No</td><td>Instant</td><td>High (2x env)</td><td>Critical prod apps, payment systems</td></tr>
+<tr><td>Canary</td><td>No</td><td>Fast (stop rollout)</td><td>Medium</td><td>Large user-base products, risky features</td></tr>
+</table>
+<div class="tip"><b>Real scenario:</b> "We deployed a Spring Boot pricing-engine change with Rolling strategy in Kubernetes on a Friday, and a subtle bug only showed up under load. Because it was Rolling, only some pods had the bad version, so <code>kubectl rollout undo deployment/pricing-service</code> instantly reverted us to the last stable ReplicaSet in under a minute — no manual redeploy needed."</div>
+</div>
+
+<!-- 17. AZURE DEVOPS DEEP DIVE -->
+<div class="section">
+<h1>17. Azure DevOps in Depth — Our Organization's Real Setup &amp; Configuration</h1>
+
+<h2>17.1 What Azure DevOps Actually Is</h2>
+<p>Azure DevOps is not just "Azure Pipelines" — it is a full suite. Most organizations use these modules together:</p>
+<table>
+<tr><th>Module</th><th>Purpose</th></tr>
+<tr><td>Azure Boards</td><td>Work items, sprints, backlogs, Kanban boards (Jira-like)</td></tr>
+<tr><td>Azure Repos</td><td>Git repositories (private, hosted by Microsoft) with PR reviews and branch policies</td></tr>
+<tr><td>Azure Pipelines</td><td>CI/CD — build and release pipelines (YAML or Classic UI)</td></tr>
+<tr><td>Azure Artifacts</td><td>Private package feeds — Maven/npm/NuGet packages internal to the org</td></tr>
+<tr><td>Azure Test Plans</td><td>Manual + exploratory testing tracking</td></tr>
+</table>
+
+<h2>17.2 Organization Structure in Azure DevOps</h2>
+<div class="diagram">
+<div class="title">Azure DevOps Hierarchy</div>
+<div class="flow-row"><div class="node purple">Organization (company)</div></div>
+<div class="arrow-down">↓ contains</div>
+<div class="flow-row"><div class="node">Project (e.g., "OrderManagement")</div></div>
+<div class="arrow-down">↓ contains</div>
+<div class="flow-row">
+<div class="node green">Repos</div><div class="node green">Boards</div><div class="node green">Pipelines</div><div class="node green">Artifacts</div>
+</div>
+</div>
+<ul>
+<li><b>Organization</b> — top level, e.g., <code>dev.azure.com/mycompany</code>.</li>
+<li><b>Project</b> — one per product/team, e.g., "OrderManagement", "CustomerPortal".</li>
+<li><b>Teams</b> — groups within a project with their own board/area path.</li>
+</ul>
+
+<h2>17.3 Setting Up a Project — Step by Step (What We Actually Do)</h2>
+<ol>
+<li>Create/Join Organization → Create Project (choose Git as version control).</li>
+<li>Import or push existing repo into <b>Azure Repos</b> (or connect an external GitHub repo as the source).</li>
+<li>Set <b>Branch Policies</b> on <code>main</code>/<code>develop</code>: require PR, minimum 2 reviewers, require linked work item, require build validation to pass.</li>
+<li>Create <b>Service Connections</b> (Project Settings → Service Connections) — this is how the pipeline authenticates to Azure Kubernetes Service, Azure Container Registry, Azure App Service, SonarQube, etc.</li>
+<li>Create <b>Variable Groups</b> (Pipelines → Library) — e.g., <code>dev-secrets</code>, <code>qa-secrets</code>, <code>prod-secrets</code>, each linked optionally to Azure Key Vault.</li>
+<li>Create <b>Environments</b> (Pipelines → Environments) — <code>Development</code>, <code>QA</code>, <code>Staging</code>, <code>Production</code> — and add <b>Approval Checks</b> on Staging/Production.</li>
+<li>Create the pipeline itself pointing to <code>azure-pipelines.yml</code> in the repo.</li>
+</ol>
+
+<h2>17.4 Service Connections (Critical Real-World Config)</h2>
+<div class="box">A Service Connection is a stored, permission-scoped credential Azure Pipelines uses to talk to an external system, so raw secrets never sit in YAML.</div>
+<table>
+<tr><th>Service Connection Type</th><th>Used For</th></tr>
+<tr><td>Azure Resource Manager (ARM)</td><td>Deploying to App Service, AKS, Azure Functions, Storage</td></tr>
+<tr><td>Docker Registry / ACR</td><td>Push/pull container images to Azure Container Registry</td></tr>
+<tr><td>GitHub</td><td>Trigger pipelines from a GitHub-hosted repo</td></tr>
+<tr><td>SonarQube/SonarCloud</td><td>Code quality gate integration</td></tr>
+<tr><td>Kubernetes</td><td>kubectl-based deploys to a specific AKS cluster/namespace</td></tr>
+</table>
+
+<h2>17.5 Full Real Azure DevOps YAML — Spring Boot, Multi-Stage, Multi-Environment</h2>
+<pre><span class="c1"># azure-pipelines.yml — our real organization pattern</span>
+trigger:
+  branches:
+    include: [ main, release/*, feature/* ]
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - group: common-settings          <span class="c1"># variable group from Library</span>
+  - name: mavenGoal
+    value: 'clean package'
+
+stages:
+- stage: Build
+  displayName: 'Build & Unit Test'
+  jobs:
+  - job: BuildJob
+    steps:
+    - task: JavaToolInstaller@0
+      inputs: { versionSpec: '17', jdkArchitectureOption: 'x64', jdkSourceOption: 'PreInstalled' }
+    - task: Maven@4
+      inputs:
+        mavenPomFile: 'pom.xml'
+        goals: '$(mavenGoal)'
+        publishJUnitResults: true
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    - task: SonarQubePrepare@5
+      inputs: { SonarQube: 'SonarQube-ServiceConnection', scannerMode: 'Other' }
+    - script: mvn sonar:sonar
+      displayName: 'SonarQube Analysis'
+    - task: SonarQubePublish@5
+
+- stage: Docker
+  displayName: 'Build & Push Image'
+  dependsOn: Build
+  jobs:
+  - job: DockerJob
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'ACR-ServiceConnection'
+        repository: 'order-service'
+        command: 'buildAndPush'
+        Dockerfile: 'Dockerfile'
+        tags: '$(Build.BuildId)'
+
+- stage: DeployDev
+  displayName: 'Deploy to Dev'
+  dependsOn: Docker
+  jobs:
+  - deployment: DeployDevJob
+    environment: 'Development'          <span class="c1"># no approval gate configured</span>
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: KubernetesManifest@1
+            inputs:
+              action: 'deploy'
+              kubernetesServiceConnection: 'AKS-Dev-ServiceConnection'
+              namespace: 'dev'
+              manifests: 'k8s/deployment.yml'
+              containers: 'myacr.azurecr.io/order-service:$(Build.BuildId)'
+
+- stage: DeployProd
+  displayName: 'Deploy to Production'
+  dependsOn: DeployDev
+  jobs:
+  - deployment: DeployProdJob
+    environment: 'Production'           <span class="c1"># approval gate configured in UI — pauses here</span>
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: KubernetesManifest@1
+            inputs:
+              action: 'deploy'
+              kubernetesServiceConnection: 'AKS-Prod-ServiceConnection'
+              namespace: 'prod'
+              manifests: 'k8s/deployment.yml'
+              containers: 'myacr.azurecr.io/order-service:$(Build.BuildId)'
+</pre>
+
+<h2>17.6 The <code>environment:</code> Keyword and Approvals (Configured in the UI, not YAML)</h2>
+<div class="box">Notice the YAML does not contain the approval logic — that is intentional. In Azure DevOps, you configure <b>Approvals and Checks</b> directly on the Environment object (Pipelines → Environments → Production → Approvals and Checks → Add "Approvals"). This lets security/release managers change who approves without touching code.</div>
+<ul>
+<li><b>Dev environment:</b> no approval — auto-deploys after build/test passes.</li>
+<li><b>QA/Staging:</b> optional — sometimes a QA lead approval check.</li>
+<li><b>Production:</b> mandatory approval — usually Release Manager + Team Lead, sometimes a 2-person rule.</li>
+<li>Other Checks available: Business hours restriction, branch control, invoke Azure Function for automated gate, required template.</li>
+</ul>
+
+<h2>17.7 Variable Groups &amp; Key Vault Integration</h2>
+<pre><span class="c1"># Library → Variable Group "prod-secrets" linked to Azure Key Vault "mycompany-kv"</span>
+<span class="c1"># Secrets like DB_PASSWORD, JWT_SECRET are pulled at pipeline run-time, never stored in YAML/git</span>
+variables:
+  - group: prod-secrets   <span class="c1"># DB_PASSWORD, API_KEY resolved from Key Vault automatically</span>
+</pre>
+
+<h2>17.8 Azure Repos Branch Policy (What We Enforce)</h2>
+<table>
+<tr><th>Policy</th><th>Setting We Use</th></tr>
+<tr><td>Minimum reviewers</td><td>2 approvals required on <code>main</code></td></tr>
+<tr><td>Linked work item required</td><td>Yes — every PR must link an Azure Boards task/bug</td></tr>
+<tr><td>Build validation</td><td>PR must trigger the CI pipeline and pass before merge</td></tr>
+<tr><td>Comment resolution</td><td>All PR comments must be marked resolved</td></tr>
+<tr><td>Merge type</td><td>Squash merge enforced (clean history)</td></tr>
+</table>
+
+<h2>17.9 Multi-Stage vs Classic Release Pipelines</h2>
+<div class="box">Older Azure DevOps setups used a separate "Classic Release Pipeline" (drag-and-drop UI) after a "Classic Build Pipeline". Modern orgs (including ours) use a single <b>YAML multi-stage pipeline</b> checked into the repo — build, test, and deploy stages all in one version-controlled file, so pipeline changes go through PR review just like code.</div>
+
+<h2>17.10 Real Organization Flow — End to End</h2>
+<div class="diagram">
+<div class="title">Our Azure DevOps Flow</div>
+<div class="flow-row">
+<div class="node">Feature branch push</div><div class="arrow">→</div><div class="node">PR to main (2 reviewers + linked task)</div><div class="arrow">→</div><div class="node green">Build+Test+Sonar stage</div>
+</div>
+<div class="arrow-down">↓ merge triggers full pipeline</div>
+<div class="flow-row">
+<div class="node">Docker build → push to ACR</div><div class="arrow">→</div><div class="node">Deploy Dev (auto)</div><div class="arrow">→</div><div class="node">Deploy QA (auto)</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+<div class="node alt">Deploy Staging (QA lead approval)</div><div class="arrow">→</div><div class="node alt">Deploy Production (Release Mgr approval)</div>
+</div>
+</div>
+<div class="tip"><b>Real scenario:</b> "Our Production environment check also runs an Azure Function gate that verifies no P1 incidents are open before allowing the approval button to even appear — this stopped several risky Friday deployments automatically."</div>
+</div>
+
+<!-- 18. DEPLOYMENT DEV->PROD -->
+<div class="section">
+<h1>18. How Deployment Works (Dev → QA → Staging → Prod)</h1>
+
+<h2>18.1 The Standard Environment Chain</h2>
+<div class="diagram">
+<div class="title">Environment Promotion Flow</div>
+<div class="flow-row">
+<div class="node">Dev</div><div class="arrow">→</div><div class="node">QA</div><div class="arrow">→</div><div class="node alt">Staging (UAT)</div><div class="arrow">→</div><div class="node green">Production</div>
+</div>
+</div>
+<table>
+<tr><th>Environment</th><th>Purpose</th><th>Who Uses It</th><th>Data</th><th>Approval Needed?</th></tr>
+<tr><td>Dev</td><td>Developers test integration of their own changes</td><td>Developers</td><td>Fake/synthetic data</td><td>No</td></tr>
+<tr><td>QA</td><td>QA team runs manual + automated test suites</td><td>QA/Testers</td><td>Test data sets</td><td>Usually no</td></tr>
+<tr><td>Staging/UAT</td><td>Mirror of production for final business sign-off</td><td>Business/Product owners</td><td>Prod-like masked data</td><td>Yes (QA lead / product owner)</td></tr>
+<tr><td>Production</td><td>Real users, real traffic</td><td>End customers</td><td>Real data</td><td>Yes (Release Manager)</td></tr>
+</table>
+
+<h2>18.2 The Same Artifact Everywhere (Key Principle)</h2>
+<div class="warn"><b>Golden rule:</b> Build the artifact (JAR/Docker image) <b>once</b>, then promote the exact same artifact through Dev → QA → Staging → Prod. Never rebuild code per environment — only change <b>configuration</b> (via <code>application-{profile}.yml</code>, environment variables, or config maps). Rebuilding per environment risks "it worked in QA but broke in Prod" due to different dependency versions.</div>
+
+<h2>18.3 Config-Per-Environment (Spring Boot Example)</h2>
+<pre><span class="c1"># same JAR, different profile activated by an environment variable at deploy time</span>
+java -jar order-service.jar --spring.profiles.active=prod
+
+<span class="c1"># application-dev.yml   → points to dev DB, verbose logging</span>
+<span class="c1"># application-qa.yml    → points to QA DB, test payment gateway</span>
+<span class="c1"># application-prod.yml  → points to prod DB, real payment gateway, minimal logging</span>
+</pre>
+
+<h2>18.4 How the "Deploy" Step Physically Works</h2>
+<ol>
+<li><b>Pull:</b> deployment target (server/AKS node) pulls the versioned image from the registry (ACR/ECR/Docker Hub).</li>
+<li><b>Apply config:</b> environment-specific variables/secrets are injected (Kubernetes ConfigMap/Secret, or App Service settings).</li>
+<li><b>Roll out:</b> old containers are replaced per the chosen strategy (Recreate/Rolling/Blue-Green/Canary — see Section 16).</li>
+<li><b>Health check:</b> orchestrator waits for <code>/actuator/health</code> (Spring Boot Actuator) to return healthy before sending traffic.</li>
+<li><b>Smoke test:</b> pipeline hits a few critical endpoints post-deploy to confirm the service is really up.</li>
+</ol>
+
+<h2>18.5 Rollback in Real Time</h2>
+<pre><span class="c1"># Kubernetes instant rollback to previous ReplicaSet</span>
+kubectl rollout undo deployment/order-service -n prod
+
+<span class="c1"># Azure DevOps: re-run the last known-good pipeline stage, or redeploy previous artifact version</span>
+</pre>
+</div>
+
+<!-- 19. INTEGRATION TESTING -->
+<div class="section">
+<h1>19. How Integration Testing Works in a Pipeline</h1>
+
+<h2>19.1 The Test Pyramid</h2>
+<div class="diagram">
+<div class="title">Test Pyramid (Bottom = More Tests, Fastest)</div>
+<div class="flow-row"><div class="node alt">E2E / UI Tests (few, slow)</div></div>
+<div class="flow-row"><div class="node">Integration Tests (medium count)</div></div>
+<div class="flow-row"><div class="node green">Unit Tests (many, fastest)</div></div>
+</div>
+
+<h2>19.2 Where Integration Tests Run in the Pipeline</h2>
+<ul>
+<li><b>Unit tests:</b> run in the Build stage, no external dependencies, mocked (JUnit + Mockito).</li>
+<li><b>Integration tests:</b> run against a real (but temporary) database/queue — usually spun up as a service container in the pipeline itself using <b>Testcontainers</b> or a Docker Compose service.</li>
+<li><b>Contract tests:</b> verify the frontend and backend agree on API shape (e.g., Pact) — run whenever either side changes.</li>
+<li><b>E2E tests:</b> run after deployment to a real environment (QA/Staging) using Selenium/Cypress/Playwright against the deployed URL.</li>
+</ul>
+
+<h2>19.3 Real Example — Spring Boot Integration Test with Testcontainers</h2>
+<pre>@SpringBootTest
+@Testcontainers
+class OrderRepositoryIntegrationTest {
+
+    @Container
+    static PostgreSQLContainer&lt;&gt; postgres = new PostgreSQLContainer&lt;&gt;("postgres:15")
+            .withDatabaseName("orders_test");
+
+    @DynamicPropertySource
+    static void configureProps(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+        registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.password", postgres::getPassword);
+    }
+
+    @Autowired
+    OrderRepository orderRepository;
+
+    @Test
+    void savesAndFetchesOrder() {
+        Order saved = orderRepository.save(new Order("ORD-1001", 500.0));
+        assertThat(orderRepository.findById(saved.getId())).isPresent();
+    }
+}
+</pre>
+<div class="box">In CI, this spins up a <b>real, throwaway Postgres container</b> for the test run only — closer to production behavior than an in-memory H2 database, catching real SQL/dialect bugs early.</div>
+
+<h2>19.4 Pipeline Stage Definition for Integration Tests</h2>
+<pre>- stage: IntegrationTests
+  jobs:
+  - job: RunIntegrationTests
+    steps:
+    - script: mvn verify -Pintegration-tests
+      displayName: 'Run Testcontainers-based Integration Tests'
+</pre>
+
+<h2>19.5 React Side — API Integration Testing</h2>
+<pre><span class="c1">// integration test hitting a mocked backend using MSW (Mock Service Worker)</span>
+test('loads and displays orders from API', async () => {
+  render(&lt;OrderList /&gt;);
+  expect(await screen.findByText('ORD-1001')).toBeInTheDocument();
+});
+</pre>
+<div class="tip"><b>Real scenario:</b> "Our React team uses MSW to intercept API calls in CI so frontend tests never depend on the backend being deployed — this decouples frontend and backend pipelines completely."</div>
+</div>
+
+<!-- 20. DOCKER + KUBERNETES -->
+<div class="section">
+<h1>20. Docker + Kubernetes in the CI/CD Flow</h1>
+
+<h2>20.1 Why Containers Fit CI/CD So Well</h2>
+<p>A container packages the app + its exact runtime dependencies into one portable unit — "works on my machine" becomes "works everywhere," because Dev, QA, Staging and Prod all run the identical image.</p>
+
+<h2>20.2 Where Docker Fits in the Pipeline</h2>
+<div class="diagram">
+<div class="title">Container Flow in CI/CD</div>
+<div class="flow-row">
+<div class="node">mvn package → JAR</div><div class="arrow">→</div><div class="node">docker build</div><div class="arrow">→</div><div class="node">docker push to registry</div><div class="arrow">→</div><div class="node green">kubectl apply / Helm deploy</div>
+</div>
+</div>
+
+<h2>20.3 Kubernetes Deployment Manifest (Real Example)</h2>
+<pre>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+  namespace: prod
+spec:
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate: { maxUnavailable: 1, maxSurge: 1 }
+  selector:
+    matchLabels: { app: order-service }
+  template:
+    metadata:
+      labels: { app: order-service }
+    spec:
+      containers:
+      - name: order-service
+        image: myacr.azurecr.io/order-service:BUILD_ID
+        ports: [{ containerPort: 8080 }]
+        readinessProbe:
+          httpGet: { path: /actuator/health/readiness, port: 8080 }
+          initialDelaySeconds: 10
+        livenessProbe:
+          httpGet: { path: /actuator/health/liveness, port: 8080 }
+          initialDelaySeconds: 20
+        envFrom:
+        - configMapRef: { name: order-service-config }
+        - secretRef: { name: order-service-secrets }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: order-service, namespace: prod }
+spec:
+  selector: { app: order-service }
+  ports: [{ port: 80, targetPort: 8080 }]
+</pre>
+
+<h2>20.4 How the Pipeline Substitutes the Image Tag</h2>
+<pre><span class="c1"># pipeline replaces BUILD_ID placeholder with the real build number, then applies</span>
+sed -i "s/BUILD_ID/$(Build.BuildId)/" k8s/deployment.yml
+kubectl apply -f k8s/deployment.yml -n prod
+</pre>
+
+<h2>20.5 React Frontend in Kubernetes</h2>
+<div class="box">React builds into static files served by Nginx inside a container — same Deployment/Service/Ingress pattern as the backend, just a much smaller, static-file image (multi-stage Docker build keeps final image tiny).</div>
+
+<h2>20.6 Common Kubernetes Concepts Used in CI/CD</h2>
+<table>
+<tr><th>Concept</th><th>Purpose</th></tr>
+<tr><td>Deployment</td><td>Manages replica pods and rollout strategy</td></tr>
+<tr><td>Service</td><td>Stable internal network endpoint for pods</td></tr>
+<tr><td>Ingress</td><td>Routes external HTTP(S) traffic, TLS termination</td></tr>
+<tr><td>ConfigMap</td><td>Non-secret environment configuration</td></tr>
+<tr><td>Secret</td><td>Sensitive values (DB password, API keys), base64-encoded at rest</td></tr>
+<tr><td>Namespace</td><td>Logical isolation per environment (dev/qa/prod namespaces in one cluster)</td></tr>
+<tr><td>HPA (Horizontal Pod Autoscaler)</td><td>Auto-scales pod count based on CPU/memory/custom metrics</td></tr>
+</table>
+</div>
+
+<!-- 21. SECRETS APPROVALS ENVIRONMENTS -->
+<div class="section">
+<h1>21. Secrets, Approvals and Environments</h1>
+
+<h2>21.1 Why Secrets Must Never Be in Code or YAML</h2>
+<div class="warn">Committing a DB password, API key, or token to Git — even in a private repo — is a security incident. It stays in Git history forever unless the history itself is rewritten, and anyone with repo access (including former employees, compromised accounts) can read it.</div>
+
+<h2>21.2 Secrets Storage Options by Tool</h2>
+<table>
+<tr><th>Tool</th><th>Secrets Mechanism</th></tr>
+<tr><td>Jenkins</td><td>Credentials Store (Manage Jenkins → Credentials), injected via <code>withCredentials</code></td></tr>
+<tr><td>GitHub Actions</td><td>Repo/Org/Environment Secrets — <code>${{ secrets.NAME }}</code></td></tr>
+<tr><td>GitLab CI</td><td>CI/CD Variables (masked + protected flags)</td></tr>
+<tr><td>Azure Pipelines</td><td>Variable Groups linked to Azure Key Vault, or Pipeline secret variables</td></tr>
+<tr><td>AWS</td><td>AWS Secrets Manager / SSM Parameter Store, referenced by ARN in buildspec</td></tr>
+</table>
+
+<h2>21.3 Approval Gates — Who Approves What (Real Org Pattern)</h2>
+<table>
+<tr><th>Stage</th><th>Approver</th><th>Why</th></tr>
+<tr><td>Merge PR into develop/main</td><td>Peer developer / Tech Lead (code review)</td><td>Code quality, design correctness</td></tr>
+<tr><td>Deploy to QA</td><td>Usually automatic</td><td>Low risk, easily reverted</td></tr>
+<tr><td>Deploy to Staging/UAT</td><td>QA Lead or Product Owner</td><td>Confirms feature is ready for business validation</td></tr>
+<tr><td>Deploy to Production</td><td>Release Manager / Engineering Manager (sometimes 2-person rule)</td><td>Business risk, customer impact, compliance sign-off</td></tr>
+</table>
+
+<h2>21.4 Environments as a First-Class Pipeline Concept</h2>
+<ul>
+<li><b>GitHub Actions:</b> <code>environment: production</code> in a job + "Required reviewers" configured on that environment.</li>
+<li><b>Azure DevOps:</b> <code>environment: 'Production'</code> in YAML + Approvals/Checks configured on the Environment resource.</li>
+<li><b>GitLab:</b> <code>environment: production</code> + <code>when: manual</code> job, optionally protected environment restricting who can trigger it.</li>
+</ul>
+<div class="tip"><b>Interview tip:</b> Approvals are deliberately kept <b>out of YAML</b> in most modern tools — so a developer changing pipeline code cannot silently remove the approval requirement themselves. Approval rules live in project/environment settings which usually require admin rights to change.</div>
+
+<div class="diagram">
+<div class="title">Real Approval Gate Flow — Dev to Production</div>
+<div class="flow-row"><div class="node green">Dev (auto-deploy)</div><div class="arrow">→</div><div class="node green">QA (auto-deploy)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node alt">Staging — requires QA Lead approval</div></div>
+<div class="arrow-down">↓ pipeline PAUSES here until approved</div>
+<div class="flow-row"><div class="node purple">Production — requires Release Manager approval + no active P1 incident check</div></div>
+</div>
+</div>
+
+<!-- 22. COMMON CICD ISSUES -->
+<div class="section">
+<h1>22. Common CI/CD Issues and How to Fix Them (End to End Troubleshooting)</h1>
+
+<table>
+<tr><th>Issue</th><th>Cause</th><th>Real Fix</th></tr>
+<tr><td>"Works on my machine" but pipeline build fails</td><td>Different JDK/Node version, missing env var, uncommitted local file</td><td>Pin exact tool versions in pipeline (e.g., <code>actions/setup-java@v4</code> with <code>java-version: 17</code>); use containerized/reproducible build agents</td></tr>
+<tr><td>Flaky tests fail randomly in CI</td><td>Test order dependency, shared test DB state, timing/async issues</td><td>Isolate tests (Testcontainers per test class), avoid <code>Thread.sleep</code>, use explicit waits/polling</td></tr>
+<tr><td>Pipeline is very slow</td><td>No caching of Maven/npm dependencies, sequential stages that could run in parallel</td><td>Cache <code>~/.m2</code> and <code>node_modules</code>, parallelize independent jobs, run only affected module tests</td></tr>
+<tr><td>Secrets leaked in logs</td><td>Secret echoed by a script step, masking not applied</td><td>Use built-in secret masking, never <code>echo $SECRET</code>, mark variables secret/protected</td></tr>
+<tr><td>Deployment succeeded but app is down</td><td>No health check gating traffic cut-over</td><td>Add readiness/liveness probes; pipeline should fail if health check doesn't pass post-deploy</td></tr>
+<tr><td>"Works in QA, breaks in Prod"</td><td>Different artifact built per environment, config drift</td><td>Build once, promote same artifact; externalize config via profiles/env vars</td></tr>
+<tr><td>Merge conflicts breaking main branch pipeline</td><td>Long-lived feature branches, infrequent integration</td><td>Enforce short-lived branches, frequent rebase/merge from main, trunk-based development</td></tr>
+<tr><td>Docker image is huge / slow to push</td><td>Not using multi-stage builds, unnecessary layers</td><td>Multi-stage Dockerfile, minimal base image (e.g., <code>eclipse-temurin:17-jre-alpine</code>)</td></tr>
+<tr><td>Pipeline agent runs out of disk space</td><td>Old Docker images/build caches never cleaned</td><td>Add cleanup step, use ephemeral/hosted agents, prune Docker regularly</td></tr>
+<tr><td>Rollback takes too long</td><td>Recreate strategy in prod, no versioned rollback path</td><td>Use Rolling/Blue-Green, keep last N image versions in registry, one-command rollback</td></tr>
+<tr><td>Different teams' pipelines fight for the same environment</td><td>Shared Dev/QA environment, no environment locking</td><td>Namespace isolation per team/feature, ephemeral review environments per PR</td></tr>
+<tr><td>SonarQube/quality gate blocks release near deadline</td><td>Technical debt piled up, coverage threshold not met</td><td>Enforce quality gates early and continuously, not just before release; treat gate failures as blocking from day one</td></tr>
+<tr><td>Pipeline approval step never triggers a notification</td><td>Approvers not configured/subscribed on the Environment resource</td><td>Explicitly configure required reviewers with notification settings on each protected environment, not just access permissions</td></tr>
+<tr><td>Two developers' pipelines both deploy to the same environment simultaneously, causing a race</td><td>No concurrency/lock control on the deployment stage</td><td>Enable concurrency groups / environment locks so only one deployment to a given environment runs at a time, queuing the rest</td></tr>
+<tr><td>A hotfix takes as long to ship as a normal feature</td><td>No separate expedited pipeline path for urgent fixes</td><td>Maintain a lightweight hotfix pipeline/branch strategy that skips non-essential stages (e.g., long-running E2E suites) but keeps critical gates (unit tests, security scan)</td></tr>
+<tr><td>Container vulnerability found only after production deployment</td><td>No image scanning step in the pipeline before deploy</td><td>Add a container scanning step (Trivy/Snyk) immediately after the Docker build stage, failing the pipeline on critical/high severity findings</td></tr>
+</table>
+</div>
+
+<!-- 23. BEST PRACTICES -->
+<div class="section">
+<h1>23. CI/CD Best Practices for Full Stack Teams</h1>
+<ul>
+<li><b>Build once, deploy everywhere</b> — never rebuild the artifact per environment.</li>
+<li><b>Keep pipelines as code</b> — YAML/Jenkinsfile in the repo, reviewed via PR like any other code.</li>
+<li><b>Fail fast</b> — put cheapest/fastest checks (lint, unit tests) first, expensive ones (E2E) last.</li>
+<li><b>Cache dependencies</b> — Maven <code>~/.m2</code>, npm <code>node_modules</code>, Docker layer caching.</li>
+<li><b>Make pipelines idempotent</b> — running the same stage twice should not corrupt state.</li>
+<li><b>Automate rollback</b> — one command/click to revert; don't rely on manual redeploy under pressure.</li>
+<li><b>Trunk-based / short-lived branches</b> — reduces merge pain and integration risk.</li>
+<li><b>Shift security left</b> — SAST/dependency scanning in the pipeline, not after release.</li>
+<li><b>Immutable infrastructure</b> — replace containers/instances, don't patch running ones.</li>
+<li><b>Observability from day one</b> — health checks, structured logs, metrics/alerts tied to each deploy.</li>
+<li><b>Protect main/production</b> — branch policies, mandatory reviews, mandatory approvals for prod.</li>
+<li><b>Keep secrets out of code</b> — always use the platform's secret store / Key Vault.</li>
+</ul>
+</div>
+
+<!-- 24. CHEAT SHEET -->
+<div class="section">
+<h1>24. CI/CD Cheat Sheet</h1>
+<table>
+<tr><th>Concept</th><th>One-Line Meaning</th></tr>
+<tr><td>CI</td><td>Merge + build + test code automatically, frequently</td></tr>
+<tr><td>CD (Delivery)</td><td>Automatically prepare a release, human approves final deploy</td></tr>
+<tr><td>CD (Deployment)</td><td>Automatically deploy to production with no human step</td></tr>
+<tr><td>Pipeline</td><td>The defined sequence of stages/jobs that build/test/deploy code</td></tr>
+<tr><td>Stage</td><td>A logical phase (Build, Test, Deploy)</td></tr>
+<tr><td>Job</td><td>A unit of work inside a stage, can run on its own agent</td></tr>
+<tr><td>Runner/Agent</td><td>The machine (VM/container) that actually executes pipeline steps</td></tr>
+<tr><td>Artifact</td><td>The build output (JAR, Docker image, static bundle) passed between stages</td></tr>
+<tr><td>Service Connection</td><td>Stored credential letting the pipeline talk to an external system</td></tr>
+<tr><td>Environment</td><td>A deployment target (Dev/QA/Staging/Prod) with its own approval rules</td></tr>
+<tr><td>Rolling Deployment</td><td>Replace instances gradually, zero downtime</td></tr>
+<tr><td>Blue-Green</td><td>Two full environments, instant traffic switch + instant rollback</td></tr>
+<tr><td>Canary</td><td>Release to a small % of users first, expand gradually</td></tr>
+<tr><td>Quality Gate</td><td>Automated pass/fail check (coverage, code smells) blocking merge/release</td></tr>
+</table>
+</div>
+
+<!-- 25. INTERVIEW QA -->
+<div class="section">
+<h1>25. Interview Questions &amp; Answers (Basic → Advanced → Scenario Based)</h1>
+
+<div class="qa">
+<div class="q">Q1. What is CI/CD in simple words?</div>
+<div class="a">CI (Continuous Integration) means every code change is automatically built and tested as soon as it's pushed. CD (Continuous Delivery/Deployment) means that validated code is automatically prepared for release, and optionally deployed straight to production.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q2. Difference between Continuous Delivery and Continuous Deployment?</div>
+<div class="a">Continuous Delivery stops one step before production — a human clicks "deploy". Continuous Deployment removes that manual click; every passing build goes live automatically.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q3. Why did organizations need CI/CD before it existed?</div>
+<div class="a">Manual releases were slow, error-prone, and involved painful "integration hell" when many developers merged code once every few weeks. CI/CD automates build/test/deploy so integration happens continuously in small, low-risk increments.</div>
+<div class="scenario">Real scenario: A team that used to do a 2-week manual release with a 6-hour deployment night now deploys 10+ times a day with zero downtime using Rolling deployments and automated pipelines.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q4. What's the difference between Jenkins and GitHub Actions?</div>
+<div class="a">Jenkins is self-hosted — you install, patch, and scale the server yourself, with huge plugin flexibility. GitHub Actions is a managed service built into GitHub with YAML workflows and no infrastructure to maintain, but less control over the runner environment (unless self-hosted runners are used).</div>
+</div>
+
+<div class="qa">
+<div class="q">Q5. How do you handle secrets in a pipeline?</div>
+<div class="a">Never hardcode them. Use the platform's secret store (GitHub Secrets, Azure Key Vault via Variable Groups, GitLab CI/CD Variables, Jenkins Credentials, AWS Secrets Manager), inject as environment variables at runtime, and ensure they're masked in logs.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q6. Explain Blue-Green vs Canary deployment.</div>
+<div class="a">Blue-Green keeps two full environments and switches all traffic at once — fast rollback, but costs double infra momentarily. Canary releases to a small % of real traffic first, watches metrics, then gradually ramps up — lower blast radius but slower full rollout.</div>
+<div class="scenario">Real scenario: A payment service used Blue-Green for instant rollback capability during a major schema migration, while the recommendation engine team used Canary to test a new ML model on 5% of traffic before full rollout.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q7. What happens if a deployment fails midway in Kubernetes with Rolling strategy?</div>
+<div class="a">Kubernetes' <code>maxUnavailable</code>/<code>maxSurge</code> settings mean only a subset of pods are replaced at a time; if new pods fail readiness probes, the rollout pauses and old pods keep serving traffic. You then run <code>kubectl rollout undo</code> to revert to the last stable ReplicaSet.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q8. How do you keep pipelines fast?</div>
+<div class="a">Cache dependencies (Maven/npm), parallelize independent jobs (frontend/backend, unit vs lint), only run affected tests when possible, use lightweight/base Docker images, and split slow E2E suites to run separately from the main gate.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q9. What is a quality gate and why does it matter?</div>
+<div class="a">A quality gate (e.g., SonarQube) is an automated pass/fail rule on metrics like code coverage, duplications, and bugs/vulnerabilities. It blocks a merge or release if code quality drops below the agreed threshold, preventing technical debt from silently piling up.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q10. Who approves deployment to production in your organization?</div>
+<div class="a">In our Azure DevOps setup, the Production environment has an Approvals and Checks gate — typically requiring sign-off from the Release Manager (and sometimes the Team Lead) plus an automated check confirming no active P1 incidents, before the deployment stage is allowed to run.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q11. Explain your Spring Boot CI/CD pipeline end to end.</div>
+<div class="a">Push/PR triggers the pipeline → Maven compiles and runs unit + Testcontainers integration tests → SonarQube quality gate → Docker image built and pushed to ACR → deploy to Dev automatically → deploy to QA automatically → deploy to Staging with QA lead approval → deploy to Production with Release Manager approval, using Rolling deployment in Kubernetes with readiness/liveness probes.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q12. How is a React app's pipeline different from Spring Boot's?</div>
+<div class="a">Instead of Maven, it uses npm/yarn for install/build/test/lint; the build output is a static bundle (not a JAR), packaged into an Nginx-based Docker image (or pushed to a static host like Azure Static Web Apps / S3+CloudFront); environment-specific API URLs are injected at build time via <code>.env</code> files or runtime config.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q13. What's the difference between an Azure DevOps Service Connection and a Variable Group?</div>
+<div class="a">A Service Connection is a credential the pipeline uses to authenticate to an external system (ACR, AKS, GitHub). A Variable Group is a named collection of key/value settings (optionally linked to Key Vault) that pipelines reference for config and secrets — they solve different problems and are often used together.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q14. How would you debug a pipeline that passes locally but fails in CI?</div>
+<div class="a">Check for environment differences first — JDK/Node version, timezone/locale, missing env vars, case-sensitive file paths (Linux runners vs Windows dev machine), and any local-only config/files not committed to Git. Reproduce by running the exact same commands the pipeline uses, ideally in a matching Docker container.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q15. What is the difference between an artifact and an image in CI/CD?</div>
+<div class="a">An artifact is any build output passed between stages — could be a JAR, a test report, or a static bundle. A Docker image is a specific, runnable packaging of an artifact plus its runtime environment, pushed to a registry and used by the deployment step.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q16. Why are pipeline approval rules usually kept out of the YAML file itself?</div>
+<div class="a">If approval logic lived in pipeline YAML, any developer able to edit that file could silently remove the approval requirement. Keeping approvals in project/environment settings (requiring admin rights to change) ensures the control can't be bypassed by a code change alone.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q17. How do you prevent two concurrent deployments from racing against each other in the same environment?</div>
+<div class="a">Use the pipeline platform's concurrency control (e.g., GitHub Actions <code>concurrency</code> groups, Azure DevOps environment locks) so a second deployment to the same environment queues behind the first rather than running simultaneously and causing inconsistent state.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q18. Where should container image vulnerability scanning happen in the pipeline, and why there?</div>
+<div class="a">Immediately after the Docker build stage, before the image is pushed to the registry or deployed anywhere — catching critical/high vulnerabilities at this point blocks a compromised image from ever reaching production, rather than discovering the issue after the fact.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q19. How would you design a faster pipeline path specifically for urgent hotfixes?</div>
+<div class="a">Maintain a lightweight hotfix branch/pipeline that still runs essential gates (unit tests, security scan, a smoke-test deploy) but skips slower, non-essential stages like full E2E suites — balancing speed with not skipping the checks that actually prevent a bad hotfix from making things worse.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q20. What's the real risk of not having notifications configured for pipeline approval requests?</div>
+<div class="a">A deployment can sit silently blocked for hours/days waiting on an approval nobody knows is pending, delaying releases and creating false alarms about "pipeline is broken" — always configure explicit reviewer notifications alongside the approval permission itself.</div>
+</div>
+</div>
+
+<!-- 26. FINAL SUMMARY -->
+<div class="section">
+<h1>26. Final Summary</h1>
+<div class="box">
+<p><b>Before CI/CD:</b> manual builds, manual testing, painful multi-week releases, frequent "it broke in prod" surprises.</p>
+<p><b>After CI/CD:</b> every change is automatically built, tested, quality-gated, containerized, and promoted through Dev → QA → Staging → Production with clear approval ownership, fast rollback, and full traceability from commit to deployed pod.</p>
+<p><b>The 5 tools compared:</b> Jenkins (self-hosted, maximum control), GitHub Actions (native to GitHub, huge marketplace), GitLab CI (tightly integrated with GitLab MRs), Azure Pipelines (enterprise-friendly, deep Azure integration — our current tool), AWS CI/CD (fully native AWS service chain).</p>
+<p><b>Deployment strategies:</b> Recreate (simplest, downtime), Rolling (default, zero downtime), Blue-Green (instant rollback, costly), Canary (safest for large user bases, gradual).</p>
+<p><b>The non-negotiables:</b> build once and promote the same artifact, keep secrets out of code, gate production behind real approvals, and always have a fast rollback path.</p>
+</div>
+<div class="tip">Use this guide alongside the Git/GitHub/GitLab/Bitbucket guide — together they cover the full real-world Java full-stack developer workflow from writing code to it running safely in production.</div>
+</div>
+
+</body>
+</html>

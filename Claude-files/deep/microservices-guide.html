@@ -1,0 +1,1793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Microservices Architecture Complete Guide — Spring Boot, Java Full Stack, Real-Time Banking Example</title>
+<style>
+  @page { size: A4; margin: 18mm 15mm 18mm 15mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #1a1a1a;
+    font-size: 11.5px;
+    line-height: 1.55;
+  }
+  h1, h2, h3, h4 { color: #00695c; font-family: Arial, sans-serif; page-break-after: avoid; }
+  h1 { font-size: 22px; border-bottom: 3px solid #00695c; padding-bottom: 6px; margin-top: 0; }
+  h2 { font-size: 17px; border-bottom: 1px solid #b2dfdb; padding-bottom: 4px; margin-top: 26px; }
+  h3 { font-size: 14px; color: #b03a2e; margin-top: 18px; }
+  h4 { font-size: 12.5px; color: #444; margin-top: 12px; }
+  .section { page-break-before: always; }
+  .cover { page-break-after: always; text-align: center; padding-top: 100px; }
+  .cover h1 { font-size: 30px; border: none; }
+  .cover h3 { color: #333; font-weight: normal; font-size: 16px; margin-top: 16px;}
+  .cover .tag { margin-top: 46px; font-size: 13px; color: #666; }
+  .toc { page-break-after: always; }
+  .toc ol { line-height: 1.9; font-size: 11px; }
+  code, pre { font-family: Consolas, "Courier New", monospace; }
+  code { background: #f1f1f1; padding: 1px 5px; border-radius: 3px; color: #a4141d; }
+  pre {
+    background: #1e1e1e; color: #d4d4d4; padding: 10px 12px; border-radius: 6px;
+    overflow-x: auto; font-size: 10.5px; line-height: 1.5; page-break-inside: avoid;
+    white-space: pre-wrap; word-wrap: break-word;
+  }
+  pre .c1 { color: #6a9955; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0 16px 0; font-size: 11px; }
+  th, td { border: 1px solid #bbb; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #00695c; color: white; }
+  tr:nth-child(even) { background: #f4f7fc; }
+  .box { background: #f8f9fb; border: 1px solid #cdd6e6; border-radius: 6px; padding: 10px 14px; margin: 10px 0; }
+  .warn { background: #fff4e5; border: 1px solid #f0c36d; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .tip { background: #e8f6ee; border: 1px solid #7fc79a; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .qa { border-left: 3px solid #00695c; padding-left: 10px; margin: 10px 0 16px 0; page-break-inside: avoid; }
+  .qa .q { font-weight: bold; color: #00695c; }
+  .qa .a { margin-top: 4px; }
+  .qa .scenario { margin-top: 4px; font-style: italic; color: #555; }
+  .diagram { background: #fff; border: 1px dashed #4db6ac; border-radius: 8px; padding: 16px; margin: 14px 0; page-break-inside: avoid; }
+  .diagram .title { font-weight: bold; color: #00695c; margin-bottom: 10px; text-align:center; }
+  .flow-row { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+  .node { border: 2px solid #00695c; background: #e0f2f1; border-radius: 6px; padding: 8px 12px; font-weight: bold; text-align: center; font-size: 11px; min-width: 90px; }
+  .node.alt { border-color: #b03a2e; background: #fdeceb; }
+  .node.green { border-color: #1e8449; background: #eafaf1; }
+  .node.gray { border-color: #666; background: #eee; }
+  .node.purple { border-color: #8e44ad; background: #f5eefc; }
+  .arrow { font-size: 20px; color: #00695c; font-weight: bold; }
+  .arrow-down { font-size: 20px; color: #00695c; text-align: center; }
+  .pagebreak { page-break-before: always; }
+  ul, ol { margin-top: 4px; }
+  li { margin-bottom: 3px; }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover">
+  <h1>Microservices Architecture — The Complete Guide</h1>
+  <h3>Monolith vs Microservices • Spring Boot • Java Full Stack</h3>
+  <h3>Real-Time Banking Example: Accounts, Cards &amp; Loans Services</h3>
+  <h3>Service Discovery, API Gateway, Resilience, Messaging, Security, Observability, Cloud &amp; Kubernetes</h3>
+  <div class="tag">A practical, simple-language, end-to-end reference for interview preparation and real-world implementation</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+<h1>Table of Contents</h1>
+<ol>
+<li>Types of Applications — Frontend &amp; Backend Systems Overview</li>
+<li>Monolithic Architecture Explained (with Diagram)</li>
+<li>Microservices Architecture Explained (with Diagram)</li>
+<li>Monolith vs Microservices — Full Comparison</li>
+<li>Advantages &amp; Disadvantages of Monolithic Architecture</li>
+<li>Advantages &amp; Disadvantages of Microservices Architecture</li>
+<li>When to Use Monolith vs Microservices — Decision Guide</li>
+<li>Real-World Example — Banking App: Accounts, Cards &amp; Loans (3 Microservices)</li>
+<li>Migrating from Monolith to Microservices (Strangler Fig Pattern)</li>
+<li>Setting Up a Real Spring Boot Microservices Project (Multi-Module)</li>
+<li>Service Discovery — Netflix Eureka</li>
+<li>API Gateway — Spring Cloud Gateway</li>
+<li>Inter-Service Communication — REST</li>
+<li>Feign Client — Declarative REST Calls</li>
+<li>gRPC Basics for Microservices</li>
+<li>Load Balancing (Client-Side &amp; Server-Side)</li>
+<li>Distributed Configuration — Spring Cloud Config Server</li>
+<li>Circuit Breaker Pattern — Resilience4j</li>
+<li>Retry Pattern</li>
+<li>Bulkhead Pattern</li>
+<li>Rate Limiting</li>
+<li>Distributed Transactions &amp; the Saga Pattern</li>
+<li>Choreography vs Orchestration</li>
+<li>Event-Driven Architecture</li>
+<li>Synchronous vs Asynchronous Communication</li>
+<li>Idempotency in Microservices</li>
+<li>Database per Service Pattern</li>
+<li>CQRS — Basic Understanding</li>
+<li>API Versioning Strategies</li>
+<li>Centralized Logging — ELK Stack / Splunk</li>
+<li>Distributed Tracing — OpenTelemetry, Zipkin, Jaeger</li>
+<li>Monitoring &amp; Metrics — Prometheus &amp; Grafana</li>
+<li>Service Registry, Health Checks &amp; Spring Boot Actuator</li>
+<li>Security in Microservices — JWT, OAuth2, Keycloak</li>
+<li>Caching — Redis</li>
+<li>Message Brokers — Kafka &amp; RabbitMQ</li>
+<li>Containerization (Docker) &amp; Orchestration (Kubernetes) Recap for Microservices</li>
+<li>Deployment Strategies — Blue-Green, Canary, Rolling</li>
+<li>Fault Tolerance &amp; High Availability</li>
+<li>How We Implement Microservices in Real-Time (End-to-End)</li>
+<li>How to Maintain Microservices in Production (Real Organization Practices)</li>
+<li>Cloud Deployment — Azure Spring Apps, AKS and Azure Integration</li>
+<li>Common Microservices Issues, Problems &amp; Solutions</li>
+<li>Interview Questions &amp; Answers (Basic → Advanced → Scenario Based)</li>
+<li>Final Summary &amp; Cheat Sheet</li>
+</ol>
+</div>
+
+<!-- 1. TYPES OF APPLICATIONS -->
+<div class="section">
+<h1>1. Types of Applications — Frontend &amp; Backend Systems Overview</h1>
+
+<h2>1.1 Frontend vs Backend — Simple Terms</h2>
+<div class="box"><b>Frontend</b> is everything the user directly sees and interacts with (React, Angular, mobile apps). <b>Backend</b> is everything running on the server that the frontend talks to — business logic, database access, security, integrations (Spring Boot, Node.js, .NET).</div>
+<div class="diagram">
+<div class="title">Frontend ↔ Backend ↔ Database</div>
+<div class="flow-row">
+<div class="node">React / Angular (Frontend)</div><div class="arrow">⇄ REST/HTTPS ⇄</div><div class="node green">Spring Boot (Backend)</div><div class="arrow">⇄ JDBC/SQL ⇄</div><div class="node purple">Database (MySQL/Postgres)</div>
+</div>
+</div>
+
+<h2>1.2 Types of Backend Application Architectures</h2>
+<table>
+<tr><th>Architecture Type</th><th>Description</th><th>Typical Technology</th></tr>
+<tr><td>Monolithic</td><td>One large codebase/deployable unit containing all business logic</td><td>Single Spring Boot WAR/JAR</td></tr>
+<tr><td>Microservices</td><td>Application split into many small, independently deployable services</td><td>Multiple Spring Boot apps + Eureka + Gateway</td></tr>
+<tr><td>Serverless</td><td>Code runs as short-lived functions triggered by events, no server management</td><td>Azure Functions, AWS Lambda</td></tr>
+<tr><td>Service-Oriented Architecture (SOA)</td><td>Predecessor to microservices — larger, coarser-grained services, often with an Enterprise Service Bus (ESB)</td><td>SOAP/XML, legacy enterprise systems</td></tr>
+</table>
+
+<h2>1.3 Where This Guide Fits</h2>
+<p>This guide focuses on <b>Monolithic vs Microservices</b> architecture for Java/Spring Boot backend systems (with React as a typical frontend), covering the full real-world toolset organizations use to build, communicate between, secure, monitor, and deploy microservices — using a real banking-style example (Accounts, Cards, Loans).</p>
+</div>
+
+<!-- 2. MONOLITHIC ARCHITECTURE -->
+<div class="section">
+<h1>2. Monolithic Architecture Explained (with Diagram)</h1>
+
+<h2>2.1 What Is a Monolith?</h2>
+<div class="box">A monolithic application is built and deployed as <b>one single unit</b> — all modules (accounts, cards, loans, notifications, reporting) live in one codebase, share one database, compile into one WAR/JAR, and are deployed together on one (or a few identical) application server instances.</div>
+
+<h2>2.2 Monolith Diagram — Banking Example</h2>
+<div class="diagram">
+<div class="title">Monolithic Banking Application</div>
+<div class="flow-row"><div class="node purple">Single Deployable Unit (one WAR/JAR)</div></div>
+<div class="flow-row">
+<div class="node">Accounts Module</div><div class="node">Cards Module</div><div class="node">Loans Module</div><div class="node">Notifications Module</div>
+</div>
+<div class="arrow-down">↓ all modules call each other via plain Java method calls, in-process</div>
+<div class="flow-row"><div class="node green">One Shared Database (all tables together)</div></div>
+</div>
+
+<h2>2.3 Internal Structure of a Typical Monolith</h2>
+<pre>bank-app/
+├── src/main/java/com/bank/
+│   ├── accounts/    (controller, service, repository, entity)
+│   ├── cards/       (controller, service, repository, entity)
+│   ├── loans/       (controller, service, repository, entity)
+│   └── notifications/
+├── src/main/resources/application.yml
+└── pom.xml   → builds ONE bank-app.war
+</pre>
+<div class="tip">Notice modules can still be organized cleanly by package/layer — the defining trait of a monolith isn't "messy code," it's that everything is <b>compiled, deployed, scaled, and released together as one unit</b>.</div>
+</div>
+
+<!-- 3. MICROSERVICES ARCHITECTURE -->
+<div class="section">
+<h1>3. Microservices Architecture Explained (with Diagram)</h1>
+
+<h2>3.1 What Are Microservices?</h2>
+<div class="box">Microservices architecture splits an application into multiple small, independently deployable services, each owning its own business capability, its own codebase, its own database, and its own deployment lifecycle — services communicate over the network (REST, gRPC, messaging) instead of in-process method calls.</div>
+
+<h2>3.2 Microservices Diagram — Same Banking Example</h2>
+<div class="diagram">
+<div class="title">Microservices Banking Application</div>
+<div class="flow-row"><div class="node purple">API Gateway (single entry point)</div></div>
+<div class="arrow-down">↓ routes requests</div>
+<div class="flow-row">
+<div class="node green">Accounts Service<br/>+ own DB</div>
+<div class="node green">Cards Service<br/>+ own DB</div>
+<div class="node green">Loans Service<br/>+ own DB</div>
+</div>
+<div class="arrow-down">↓ register with</div>
+<div class="flow-row"><div class="node alt">Eureka Service Registry</div></div>
+<div class="arrow-down">↓ cross-cutting concerns</div>
+<div class="flow-row">
+<div class="node gray">Config Server</div><div class="node gray">Kafka (events)</div><div class="node gray">Redis (cache)</div><div class="node gray">Prometheus/Grafana</div>
+</div>
+</div>
+
+<h2>3.3 Key Characteristics of Microservices</h2>
+<ul>
+<li><b>Independently deployable</b> — deploying Cards Service doesn't require redeploying Accounts or Loans.</li>
+<li><b>Own data store</b> — each service owns its schema/database, no other service touches it directly (Database per Service pattern — Section 27).</li>
+<li><b>Communicate over the network</b> — REST, gRPC, or asynchronous messaging (Kafka/RabbitMQ), never direct in-process calls.</li>
+<li><b>Organized around business capability</b> — "Accounts," "Cards," "Loans" are business domains, not technical layers.</li>
+<li><b>Decentralized governance</b> — different services can (in theory) use different languages/databases, though most Java shops keep it consistent with Spring Boot across services.</li>
+<li><b>Built for failure</b> — resilience patterns (circuit breaker, retry, bulkhead) assume any service call might fail.</li>
+</ul>
+</div>
+
+<!-- 4. MONOLITH VS MICROSERVICES COMPARISON -->
+<div class="section">
+<h1>4. Monolith vs Microservices — Full Comparison</h1>
+<table>
+<tr><th>Aspect</th><th>Monolith</th><th>Microservices</th></tr>
+<tr><td>Codebase</td><td>Single repository/codebase</td><td>Multiple repositories, one per service (typical)</td></tr>
+<tr><td>Deployment</td><td>One deployable unit, all-or-nothing release</td><td>Independent deployment per service</td></tr>
+<tr><td>Database</td><td>Usually one shared database</td><td>One database per service</td></tr>
+<tr><td>Scaling</td><td>Scale the entire app, even if only one module is under load</td><td>Scale only the service under load (e.g., just Cards Service during a promo)</td></tr>
+<tr><td>Technology choice</td><td>Single tech stack for the whole app</td><td>Each service can pick its own stack (polyglot), though often standardized</td></tr>
+<tr><td>Team structure</td><td>One large team, or several teams stepping on each other's code</td><td>Small autonomous teams, one (or few) per service ("you build it, you run it")</td></tr>
+<tr><td>Communication</td><td>In-process Java method calls — fast, simple</td><td>Network calls (REST/gRPC/messaging) — slower, needs resilience handling</td></tr>
+<tr><td>Testing</td><td>Simpler end-to-end testing (all in one process)</td><td>Complex — needs contract testing, service virtualization, integration environments</td></tr>
+<tr><td>Failure isolation</td><td>One bug can crash the entire application</td><td>A failing service can be isolated (with circuit breakers) without taking down the whole system</td></tr>
+<tr><td>Operational complexity</td><td>Low — one thing to monitor/deploy</td><td>High — needs service discovery, distributed tracing, centralized logging, API gateway</td></tr>
+<tr><td>Release speed</td><td>Slower — any change requires full regression + full redeploy</td><td>Faster per-service — teams release independently, more frequently</td></tr>
+<tr><td>Initial development speed</td><td>Faster to start — no distributed system complexity upfront</td><td>Slower to start — infrastructure (registry, gateway, config server) must exist first</td></tr>
+</table>
+</div>
+
+<!-- 5. MONOLITH ADV/DISADV -->
+<div class="section">
+<h1>5. Advantages &amp; Disadvantages of Monolithic Architecture</h1>
+<h2>5.1 Advantages</h2>
+<ul>
+<li>Simple to develop, test, and deploy initially — one build, one deployable artifact.</li>
+<li>Easier debugging — a single stack trace across the whole request, no network hops to trace.</li>
+<li>No distributed system complexity — no service discovery, no network latency between modules, no partial failure handling.</li>
+<li>Simpler transactions — a single database means ACID transactions across modules are trivial.</li>
+<li>Lower operational overhead — one thing to monitor, one thing to deploy, one log file.</li>
+<li>Good fit for small teams and early-stage products/startups where speed of initial delivery matters more than independent scaling.</li>
+</ul>
+<h2>5.2 Disadvantages</h2>
+<ul>
+<li>Scaling is all-or-nothing — you can't scale just the "Cards" module without scaling the entire app.</li>
+<li>Slower release cycles — a tiny change in one module requires rebuilding/retesting/redeploying everything.</li>
+<li>Technology lock-in — hard to adopt a new framework/language for just one part of the system.</li>
+<li>Team bottleneck — many developers committing to the same codebase increases merge conflicts and coordination overhead as the team grows.</li>
+<li>Larger blast radius for bugs — a memory leak or bug in one module can crash the entire application, including unrelated modules.</li>
+<li>Harder to onboard new developers as the codebase grows very large over years.</li>
+</ul>
+</div>
+
+<!-- 6. MICROSERVICES ADV/DISADV -->
+<div class="section">
+<h1>6. Advantages &amp; Disadvantages of Microservices Architecture</h1>
+<h2>6.1 Advantages</h2>
+<ul>
+<li>Independent scaling — scale only the service experiencing load (e.g., Loans Service during month-end processing).</li>
+<li>Independent deployment — release Cards Service ten times a day without touching Accounts or Loans.</li>
+<li>Fault isolation — with circuit breakers, a failing Loans Service doesn't necessarily take down Accounts or Cards.</li>
+<li>Technology flexibility — teams can choose the best database/framework per service's needs.</li>
+<li>Team autonomy — small teams own a service end-to-end ("you build it, you run it"), improving ownership and velocity.</li>
+<li>Easier to understand a single service in isolation, once you know the boundaries.</li>
+</ul>
+<h2>6.2 Disadvantages</h2>
+<ul>
+<li>Distributed system complexity — network latency, partial failures, eventual consistency all become real concerns.</li>
+<li>Operational overhead — needs service discovery, API gateway, centralized logging, distributed tracing, container orchestration.</li>
+<li>Data consistency is hard — no more simple cross-module ACID transactions; requires Sagas/eventual consistency (Section 22).</li>
+<li>Testing is harder — end-to-end tests span multiple services/network calls; needs contract testing and test environments per integration.</li>
+<li>Debugging is harder — a single user request might touch 5 services; requires distributed tracing to follow the full path.</li>
+<li>Higher infrastructure cost — many small JVMs/containers running 24/7 vs one larger one, more moving parts to secure and patch.</li>
+<li>Requires DevOps maturity — CI/CD, containerization, and monitoring must all be solid before microservices pay off.</li>
+</ul>
+<div class="tip"><b>Interview tip:</b> Microservices are not "free" — they trade development simplicity for operational flexibility and independent scaling. An organization without strong CI/CD, monitoring, and DevOps practices will often struggle more with microservices than they would with a well-organized monolith.</div>
+</div>
+
+<!-- 7. WHEN TO USE -->
+<div class="section">
+<h1>7. When to Use Monolith vs Microservices — Decision Guide</h1>
+<table>
+<tr><th>Situation</th><th>Recommended Approach</th><th>Why</th></tr>
+<tr><td>Early-stage startup, small team, unclear requirements</td><td>Monolith (well-modularized)</td><td>Fast iteration, no premature distributed system complexity, requirements still shifting</td></tr>
+<tr><td>Large enterprise with multiple independent teams</td><td>Microservices</td><td>Teams need to release independently without blocking each other</td></tr>
+<tr><td>Specific module has very different scaling needs (e.g., payments spike at month-end)</td><td>Microservices (at least for that module)</td><td>Scale only what needs scaling, save infrastructure cost elsewhere</td></tr>
+<tr><td>Strict regulatory/compliance boundaries between business domains (e.g., loans vs accounts)</td><td>Microservices</td><td>Clean data/access boundary per domain, easier to audit and secure independently</td></tr>
+<tr><td>Small internal tool, low traffic, one team</td><td>Monolith</td><td>Operational overhead of microservices isn't justified</td></tr>
+<tr><td>Organization lacks strong CI/CD, containerization, monitoring maturity</td><td>Monolith first</td><td>Build DevOps maturity before taking on distributed system complexity</td></tr>
+<tr><td>Need to release different parts of the system at very different velocities</td><td>Microservices</td><td>Decouples release cadence per team/service</td></tr>
+</table>
+<div class="box"><b>Common real-world pattern:</b> "Start with a well-modularized monolith (modular monolith), and split into microservices only when a specific module has a proven, real need for independent scaling/release/team ownership." Many organizations over-engineer by starting with microservices on day one, before they even understand their domain boundaries.</div>
+</div>
+
+<!-- 8. REAL WORLD BANKING EXAMPLE -->
+<div class="section">
+<h1>8. Real-World Example — Banking App: Accounts, Cards &amp; Loans (3 Microservices)</h1>
+
+<h2>8.1 The Scenario</h2>
+<div class="box">Our organization's core banking platform is split into three microservices — <b>Accounts Service</b>, <b>Cards Service</b>, and <b>Loans Service</b> — each owned by a different team, each with its own Spring Boot codebase, own database schema, and own release cycle. A React customer portal and a mobile app both talk to these services through a single API Gateway.</div>
+
+<h2>8.2 Service Responsibilities</h2>
+<table>
+<tr><th>Service</th><th>Responsibility</th><th>Own Database Tables</th></tr>
+<tr><td>Accounts Service</td><td>Customer accounts, balances, transactions, statements</td><td>customer, account, transaction</td></tr>
+<tr><td>Cards Service</td><td>Debit/credit card issuance, limits, blocking/unblocking, card transactions</td><td>card, card_limit, card_transaction</td></tr>
+<tr><td>Loans Service</td><td>Loan applications, approval workflow, EMI schedules, repayments</td><td>loan, loan_schedule, repayment</td></tr>
+</table>
+
+<h2>8.3 Full Architecture Diagram</h2>
+<div class="diagram">
+<div class="title">Complete Real Banking Microservices Architecture</div>
+<div class="flow-row">
+<div class="node">React Customer Portal</div><div class="node">Mobile App</div>
+</div>
+<div class="arrow-down">↓ HTTPS</div>
+<div class="flow-row"><div class="node purple">API Gateway (Spring Cloud Gateway) — auth, routing, rate limiting</div></div>
+<div class="arrow-down">↓ discovers services via</div>
+<div class="flow-row"><div class="node gray">Eureka Service Registry</div></div>
+<div class="arrow-down">↓ routes to</div>
+<div class="flow-row">
+<div class="node green">Accounts Service :8081<br/>MySQL: accounts_db</div>
+<div class="node green">Cards Service :8082<br/>MySQL: cards_db</div>
+<div class="node green">Loans Service :8083<br/>MySQL: loans_db</div>
+</div>
+<div class="arrow-down">↓ cross-cutting</div>
+<div class="flow-row">
+<div class="node alt">Config Server</div><div class="node alt">Kafka (account-closed, card-blocked events)</div><div class="node alt">Redis Cache</div>
+</div>
+<div class="arrow-down">↓ observability</div>
+<div class="flow-row">
+<div class="node gray">ELK (logs)</div><div class="node gray">Zipkin (tracing)</div><div class="node gray">Prometheus + Grafana (metrics)</div>
+</div>
+</div>
+
+<h2>8.4 A Real Cross-Service Flow — "Close Account" Use Case</h2>
+<ol>
+<li>Customer calls <code>DELETE /accounts/{id}</code> via the Gateway → routed to Accounts Service.</li>
+<li>Accounts Service checks: does this account have any active cards or open loans? It calls Cards Service and Loans Service (via Feign/REST) to confirm.</li>
+<li>If clear, Accounts Service marks the account closed and publishes an <code>AccountClosedEvent</code> to Kafka.</li>
+<li>Cards Service (Kafka consumer) automatically deactivates any lingering cards linked to that account.</li>
+<li>Loans Service (Kafka consumer) flags the customer's loan record as "account closed" for compliance reporting.</li>
+</ol>
+<div class="tip"><b>Why this matters:</b> This single example touches synchronous REST calls (immediate validation), asynchronous events (Kafka, for eventual side effects), and shows why each service having its <b>own</b> database means cross-service checks must go through APIs/events — never direct SQL joins across services.</div>
+</div>
+
+<!-- 9. MIGRATION MONOLITH TO MICROSERVICES -->
+<div class="section">
+<h1>9. Migrating from Monolith to Microservices (Strangler Fig Pattern)</h1>
+
+<h2>9.1 Why Not a "Big Bang" Rewrite?</h2>
+<div class="warn">Rewriting an entire monolith into microservices all at once is extremely risky — it freezes feature delivery for months/years, and by the time it's done, business requirements have often changed. Real organizations use the <b>Strangler Fig Pattern</b>: gradually carve out and replace pieces of the monolith while it keeps running in production.</div>
+
+<h2>9.2 Strangler Fig Pattern — Step by Step</h2>
+<div class="diagram">
+<div class="title">Strangler Fig Migration — Step 1</div>
+<div class="flow-row">
+<div class="node">Client</div><div class="arrow">→</div><div class="node purple">Router/Gateway</div><div class="arrow">→</div><div class="node gray">Monolith (Accounts + Cards + Loans)</div>
+</div>
+</div>
+<div class="diagram">
+<div class="title">Strangler Fig Migration — Step 2 (Extract Cards first)</div>
+<div class="flow-row">
+<div class="node">Client</div><div class="arrow">→</div><div class="node purple">Router/Gateway</div>
+</div>
+<div class="flow-row">
+<div class="node gray">Monolith (Accounts + Loans only)</div>
+<div class="node green">NEW Cards Microservice</div>
+</div>
+<div class="box">The Gateway routes <code>/cards/**</code> traffic to the new Cards Service, while everything else still goes to the monolith. The monolith's own Cards module is eventually deleted once the new service is fully verified in production.</div>
+</div>
+<div class="diagram">
+<div class="title">Strangler Fig Migration — Final State</div>
+<div class="flow-row">
+<div class="node">Client</div><div class="arrow">→</div><div class="node purple">API Gateway</div>
+</div>
+<div class="flow-row">
+<div class="node green">Accounts Service</div><div class="node green">Cards Service</div><div class="node green">Loans Service</div>
+</div>
+<div class="box">The original monolith no longer exists — it has been fully "strangled" and replaced, one module at a time, with zero big-bang cutover risk.</div>
+</div>
+
+<h2>9.3 Practical Migration Steps</h2>
+<ol>
+<li><b>Identify bounded contexts</b> using Domain-Driven Design — figure out natural seams (Accounts, Cards, Loans are separate business domains).</li>
+<li><b>Pick the least risky/most isolated module first</b> (often Cards, since it has fewer cross-cutting dependencies than Accounts).</li>
+<li><b>Extract the module's database tables</b> into a new schema/database dedicated to the new service.</li>
+<li><b>Build the new Spring Boot microservice</b>, replicate the module's functionality, add integration tests comparing old vs new behavior.</li>
+<li><b>Introduce an API Gateway/router</b> in front of both monolith and new service, routing by path.</li>
+<li><b>Dual-write or sync data</b> temporarily if needed during transition (e.g., CDC — Change Data Capture — from old DB to new DB).</li>
+<li><b>Cut over traffic gradually</b> (Canary-style — 5% → 50% → 100%) to the new service, monitoring error rates closely.</li>
+<li><b>Remove the old module's code and tables</b> from the monolith once fully migrated and stable.</li>
+<li><b>Repeat</b> for the next module (Loans, then Accounts) until the monolith is fully replaced.</li>
+</ol>
+<div class="tip"><b>Real scenario:</b> "Our bank ran the old monolith and new Cards microservice side by side for six weeks, with the Gateway splitting traffic by customer ID hash — this let us validate the new service's correctness on real production traffic without risking a full cutover, and roll back instantly by just changing the routing rule if issues appeared."</div>
+</div>
+
+<!-- 10. SPRING BOOT MICROSERVICES PROJECT SETUP -->
+<div class="section">
+<h1>10. Setting Up a Real Spring Boot Microservices Project (Multi-Module)</h1>
+
+<h2>10.1 Real Repository/Module Layout</h2>
+<pre>bank-microservices/
+├── accounts-service/       (Spring Boot app, port 8081)
+├── cards-service/          (Spring Boot app, port 8082)
+├── loans-service/          (Spring Boot app, port 8083)
+├── eureka-server/          (Spring Boot app, port 8761)
+├── config-server/          (Spring Boot app, port 8888)
+├── api-gateway/            (Spring Boot app, port 8072)
+└── common-lib/             (shared DTOs, exception classes — published as a small internal library)
+</pre>
+<div class="box">Each service is a <b>separate Spring Boot project</b> with its own <code>pom.xml</code>, its own Git repository (or a mono-repo folder with independent CI pipelines), and its own database connection — deployed and scaled completely independently.</div>
+
+<h2>10.2 Core Spring Cloud Dependencies Used Across This Guide</h2>
+<pre>&lt;properties&gt;
+    &lt;spring-cloud.version&gt;2023.0.3&lt;/spring-cloud.version&gt;
+&lt;/properties&gt;
+&lt;dependencyManagement&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-dependencies&lt;/artifactId&gt;
+            &lt;version&gt;${spring-cloud.version}&lt;/version&gt;
+            &lt;type&gt;pom&lt;/type&gt;
+            &lt;scope&gt;import&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+</pre>
+
+<h2>10.3 Typical Accounts Service pom.xml Dependencies</h2>
+<pre>&lt;dependencies&gt;
+    &lt;dependency&gt;&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;&lt;/dependency&gt;
+    &lt;dependency&gt;&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;&lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;&lt;/dependency&gt;
+    &lt;dependency&gt;&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;&lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;&lt;/dependency&gt;
+    &lt;dependency&gt;&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;&lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;&lt;/dependency&gt;
+    &lt;dependency&gt;&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;&lt;artifactId&gt;spring-cloud-starter-config&lt;/artifactId&gt;&lt;/dependency&gt;
+    &lt;dependency&gt;&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;&lt;artifactId&gt;spring-cloud-starter-circuitbreaker-resilience4j&lt;/artifactId&gt;&lt;/dependency&gt;
+    &lt;dependency&gt;&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;&lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;&lt;/dependency&gt;
+    &lt;dependency&gt;&lt;groupId&gt;mysql&lt;/groupId&gt;&lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;&lt;/dependency&gt;
+&lt;/dependencies&gt;
+</pre>
+</div>
+
+<!-- 11. SERVICE DISCOVERY - EUREKA -->
+<div class="section">
+<h1>11. Service Discovery — Netflix Eureka</h1>
+
+<h2>11.1 The Problem Service Discovery Solves</h2>
+<div class="box">In a dynamic environment (containers restarting, scaling up/down, IPs changing constantly), hardcoding "Cards Service is at 10.0.4.23:8082" breaks the moment that pod restarts with a new IP. Service Discovery lets services register themselves by <b>name</b> and find each other dynamically at runtime.</div>
+
+<h2>11.2 How Eureka Works</h2>
+<div class="diagram">
+<div class="title">Eureka Service Discovery Flow</div>
+<div class="flow-row">
+<div class="node green">Accounts Service</div><div class="node green">Cards Service</div><div class="node green">Loans Service</div>
+</div>
+<div class="arrow-down">↓ register + heartbeat every 30s</div>
+<div class="flow-row"><div class="node purple">Eureka Server (Registry)</div></div>
+<div class="arrow-down">↓ Accounts Service asks "where is Cards Service?"</div>
+<div class="flow-row"><div class="node alt">Eureka returns list of healthy Cards Service instances</div></div>
+</div>
+
+<h2>11.3 Eureka Server Setup</h2>
+<pre><span class="c1">// EurekaServerApplication.java</span>
+@SpringBootApplication
+@EnableEurekaServer
+public class EurekaServerApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(EurekaServerApplication.class, args);
+    }
+}
+
+<span class="c1"># application.yml</span>
+server.port: 8761
+eureka:
+  client:
+    register-with-eureka: false   <span class="c1"># the server itself doesn't need to register</span>
+    fetch-registry: false
+</pre>
+
+<h2>11.4 Eureka Client Setup (Each Microservice)</h2>
+<pre>@SpringBootApplication
+@EnableDiscoveryClient
+public class AccountsServiceApplication { ... }
+
+<span class="c1"># application.yml</span>
+spring.application.name: accounts-service
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/
+  instance:
+    prefer-ip-address: true
+</pre>
+<div class="tip"><b>Real scenario:</b> "When Cards Service scales from 2 to 6 pods during a promotional campaign, Eureka's registry automatically reflects all 6 healthy instances within seconds — Accounts Service's Feign client picks a healthy instance via client-side load balancing without any manual configuration change."</div>
+</div>
+
+<!-- 12. API GATEWAY -->
+<div class="section">
+<h1>12. API Gateway — Spring Cloud Gateway</h1>
+
+<h2>12.1 Why an API Gateway?</h2>
+<div class="box">Without a gateway, the frontend/mobile app would need to know the address of every microservice individually, handle auth in multiple places, and every service would need to implement rate limiting/CORS separately. The API Gateway is a single entry point that handles routing, authentication, rate limiting, and cross-cutting concerns once, centrally.</div>
+
+<h2>12.2 Gateway Responsibilities</h2>
+<ul>
+<li><b>Routing</b> — forwards <code>/accounts/**</code> to Accounts Service, <code>/cards/**</code> to Cards Service, etc.</li>
+<li><b>Authentication/Authorization</b> — validates JWT tokens once at the edge (Section 33).</li>
+<li><b>Rate limiting</b> — protects backend services from being overwhelmed (Section 20).</li>
+<li><b>Load balancing</b> — spreads requests across healthy service instances (via Eureka integration).</li>
+<li><b>Cross-cutting concerns</b> — CORS, request logging, response header injection.</li>
+</ul>
+
+<h2>12.3 Real Gateway Configuration</h2>
+<pre><span class="c1"># application.yml — api-gateway</span>
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: accounts-route
+          uri: lb://ACCOUNTS-SERVICE       <span class="c1"># lb:// = load-balanced via Eureka</span>
+          predicates:
+            - Path=/accounts/**
+          filters:
+            - RewritePath=/accounts/(?&lt;segment&gt;.*), /$\{segment}
+        - id: cards-route
+          uri: lb://CARDS-SERVICE
+          predicates:
+            - Path=/cards/**
+        - id: loans-route
+          uri: lb://LOANS-SERVICE
+          predicates:
+            - Path=/loans/**
+</pre>
+
+<h2>12.4 Diagram — Gateway in the Full Flow</h2>
+<div class="diagram">
+<div class="title">Request Through the Gateway</div>
+<div class="flow-row">
+<div class="node">Client: GET /cards/1001</div><div class="arrow">→</div><div class="node purple">Gateway validates JWT, checks rate limit</div><div class="arrow">→</div><div class="node green">Cards Service instance (via Eureka lookup)</div>
+</div>
+</div>
+</div>
+
+<!-- 13. REST COMMUNICATION -->
+<div class="section">
+<h1>13. Inter-Service Communication — REST</h1>
+
+<h2>13.1 Simple Synchronous REST Call</h2>
+<div class="box">The most common way microservices talk directly to each other — a plain HTTP call, typically JSON over REST, using Spring's <code>RestTemplate</code> (older, being phased out) or the newer <code>WebClient</code> (reactive, recommended for new code).</div>
+<pre>@Service
+public class AccountsService {
+
+    private final WebClient webClient;
+
+    public CardsDto getCardsForCustomer(Long customerId) {
+        return webClient.get()
+            .uri("http://CARDS-SERVICE/cards/customer/{id}", customerId)
+            .retrieve()
+            .bodyToMono(CardsDto.class)
+            .block();   <span class="c1">// blocking call — simplest to reason about for typical CRUD services</span>
+    }
+}
+</pre>
+
+<h2>13.2 REST Pros &amp; Cons for Inter-Service Calls</h2>
+<table>
+<tr><th>Pros</th><th>Cons</th></tr>
+<tr><td>Simple, widely understood, easy to debug (readable JSON, standard HTTP tools)</td><td>Synchronous — caller waits, coupling availability of caller to callee</td></tr>
+<tr><td>Works with any client (browser, Postman, curl)</td><td>More network overhead than binary protocols (gRPC)</td></tr>
+<tr><td>Easy to version, document (OpenAPI/Swagger)</td><td>No built-in streaming (without extra effort)</td></tr>
+</table>
+</div>
+
+<!-- 14. FEIGN CLIENT -->
+<div class="section">
+<h1>14. Feign Client — Declarative REST Calls</h1>
+
+<h2>14.1 Why Feign?</h2>
+<div class="box">Feign lets you call another microservice as if it were a simple Java interface — no manual URL building, no manual JSON parsing. Spring Cloud OpenFeign integrates directly with Eureka for service discovery and load balancing.</div>
+
+<h2>14.2 Real Feign Client Example</h2>
+<pre>@FeignClient(name = "cards-service")   <span class="c1">// "cards-service" resolved via Eureka automatically</span>
+public interface CardsFeignClient {
+
+    @GetMapping("/cards/customer/{customerId}")
+    ResponseEntity&lt;CardsDto&gt; getCardsByCustomer(@PathVariable Long customerId);
+}
+
+<span class="c1">// Usage inside AccountsService</span>
+@Service
+@RequiredArgsConstructor
+public class AccountsService {
+    private final CardsFeignClient cardsFeignClient;
+
+    public boolean hasActiveCards(Long customerId) {
+        ResponseEntity&lt;CardsDto&gt; response = cardsFeignClient.getCardsByCustomer(customerId);
+        return response.getBody() != null && response.getBody().isActive();
+    }
+}
+
+<span class="c1">// Enable in the main application class</span>
+@SpringBootApplication
+@EnableFeignClients
+public class AccountsServiceApplication { ... }
+</pre>
+<div class="tip"><b>Interview tip:</b> Feign is built on top of the same HTTP mechanics as RestTemplate/WebClient — its value is purely developer ergonomics (declarative interfaces) plus seamless integration with Eureka load balancing and Resilience4j fallback annotations.</div>
+
+<h2>14.3 Feign with Resilience4j Fallback</h2>
+<pre>@FeignClient(name = "cards-service", fallback = CardsFeignFallback.class)
+public interface CardsFeignClient { ... }
+
+@Component
+public class CardsFeignFallback implements CardsFeignClient {
+    @Override
+    public ResponseEntity&lt;CardsDto&gt; getCardsByCustomer(Long customerId) {
+        return ResponseEntity.ok(CardsDto.empty());   <span class="c1">// graceful degradation when Cards Service is down</span>
+    }
+}
+</pre>
+</div>
+
+<!-- 15. gRPC BASICS -->
+<div class="section">
+<h1>15. gRPC Basics for Microservices</h1>
+
+<h2>15.1 What Is gRPC?</h2>
+<div class="box">gRPC is a high-performance RPC (Remote Procedure Call) framework using <b>Protocol Buffers</b> (binary format) instead of JSON, and HTTP/2 instead of HTTP/1.1 — significantly faster and more compact than REST for high-throughput internal service-to-service calls.</div>
+
+<h2>15.2 Simple .proto Definition</h2>
+<pre>syntax = "proto3";
+
+service LoansService {
+  rpc GetLoanDetails (LoanRequest) returns (LoanResponse);
+}
+
+message LoanRequest {
+  int64 loanId = 1;
+}
+
+message LoanResponse {
+  int64 loanId = 1;
+  double outstandingAmount = 2;
+  string status = 3;
+}
+</pre>
+
+<h2>15.3 REST vs gRPC — When to Use Which</h2>
+<table>
+<tr><th>Aspect</th><th>REST (JSON/HTTP)</th><th>gRPC (Protobuf/HTTP2)</th></tr>
+<tr><td>Performance</td><td>Slower (text-based, HTTP/1.1 typical)</td><td>Much faster (binary, HTTP/2 multiplexing)</td></tr>
+<tr><td>Human readability</td><td>High — easy to inspect/debug</td><td>Low — binary, needs tooling to inspect</td></tr>
+<tr><td>Browser support</td><td>Native</td><td>Needs grpc-web proxy for browsers</td></tr>
+<tr><td>Best fit</td><td>Public APIs, frontend-facing endpoints, Gateway-exposed APIs</td><td>High-throughput internal service-to-service calls, streaming use cases</td></tr>
+<tr><td>Real banking example</td><td>Gateway → Accounts Service (customer-facing)</td><td>Loans Service ↔ Risk-Scoring engine (high-volume internal calls)</td></tr>
+</table>
+<div class="tip"><b>Real-world note:</b> Most Java shops use REST/Feign as the default for microservice communication and reserve gRPC for specific high-throughput internal paths (e.g., a fraud-scoring service called on every transaction) where the performance gain is worth the added tooling complexity.</div>
+</div>
+
+<!-- 16. LOAD BALANCING -->
+<div class="section">
+<h1>16. Load Balancing (Client-Side &amp; Server-Side)</h1>
+
+<h2>16.1 Server-Side Load Balancing</h2>
+<div class="box">A dedicated load balancer (Azure Load Balancer, NGINX, Kubernetes Service) sits in front of service instances and distributes incoming requests — the caller doesn't know or care how many instances exist.</div>
+
+<h2>16.2 Client-Side Load Balancing (Spring Cloud LoadBalancer)</h2>
+<div class="box">The calling service itself (via Eureka's list of healthy instances) picks which instance to call — used by Feign/WebClient with <code>lb://</code> URIs. This avoids needing a separate load balancer hop for internal service-to-service calls.</div>
+<div class="diagram">
+<div class="title">Client-Side Load Balancing Flow</div>
+<div class="flow-row">
+<div class="node">Accounts Service asks Eureka for Cards Service instances</div><div class="arrow">→</div><div class="node alt">Gets list: [10.0.1.5:8082, 10.0.1.9:8082, 10.0.1.14:8082]</div><div class="arrow">→</div><div class="node green">Spring Cloud LoadBalancer picks one (round-robin by default)</div>
+</div>
+</div>
+
+<h2>16.3 Load Balancing Strategies</h2>
+<table>
+<tr><th>Strategy</th><th>How It Works</th></tr>
+<tr><td>Round Robin</td><td>Cycles through instances in order — simple, default in many clients</td></tr>
+<tr><td>Random</td><td>Picks a random healthy instance each time</td></tr>
+<tr><td>Weighted Response Time</td><td>Favors instances that have historically responded faster</td></tr>
+<tr><td>Least Connections</td><td>Sends traffic to the instance currently handling the fewest active requests</td></tr>
+</table>
+</div>
+
+<!-- 17. CONFIG SERVER -->
+<div class="section">
+<h1>17. Distributed Configuration — Spring Cloud Config Server</h1>
+
+<h2>17.1 The Problem It Solves</h2>
+<div class="box">With dozens of microservices, each needing environment-specific config (DB URLs, feature flags, third-party API keys), managing individual <code>application.yml</code> files per service per environment becomes unmanageable. Config Server centralizes all configuration in one Git repository, served to every service at startup.</div>
+
+<h2>17.2 Architecture</h2>
+<div class="diagram">
+<div class="title">Spring Cloud Config Flow</div>
+<div class="flow-row">
+<div class="node purple">Git Repo (config-repo)<br/>accounts-service-prod.yml<br/>cards-service-prod.yml</div>
+</div>
+<div class="arrow-down">↓ Config Server reads from Git</div>
+<div class="flow-row"><div class="node gray">Config Server :8888</div></div>
+<div class="arrow-down">↓ each service fetches its own config at startup</div>
+<div class="flow-row">
+<div class="node green">Accounts Service</div><div class="node green">Cards Service</div><div class="node green">Loans Service</div>
+</div>
+</div>
+
+<h2>17.3 Config Server Setup</h2>
+<pre>@SpringBootApplication
+@EnableConfigServer
+public class ConfigServerApplication { ... }
+
+<span class="c1"># application.yml</span>
+server.port: 8888
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/mybank/config-repo
+          default-label: main
+</pre>
+
+<h2>17.4 Client-Side Setup (Each Microservice)</h2>
+<pre><span class="c1"># bootstrap.yml / application.yml in accounts-service</span>
+spring:
+  application:
+    name: accounts-service
+  config:
+    import: optional:configserver:http://config-server:8888
+  profiles:
+    active: prod
+</pre>
+
+<h2>17.5 Refreshing Config Without Restart</h2>
+<pre>@RefreshScope   <span class="c1">// bean re-reads config when a /actuator/refresh event is triggered</span>
+@RestController
+public class FeatureController {
+    @Value("${feature.new-checkout-enabled}")
+    private boolean newCheckoutEnabled;
+}
+</pre>
+<div class="tip"><b>Real scenario:</b> "During an incident, we needed to disable a risky new feature flag across all 12 running Accounts Service pods instantly — updating the value in the config Git repo and hitting <code>/actuator/refresh</code> (via Spring Cloud Bus + Kafka broadcasting the refresh event) applied the change everywhere within seconds, no redeploy needed."</div>
+</div>
+
+<!-- 18. CIRCUIT BREAKER -->
+<div class="section">
+<h1>18. Circuit Breaker Pattern — Resilience4j</h1>
+
+<h2>18.1 The Problem — Cascading Failures</h2>
+<div class="warn">If Cards Service becomes slow/unresponsive, and Accounts Service keeps calling it and waiting on every request, Accounts Service's own threads get exhausted waiting — eventually Accounts Service becomes unresponsive too. One slow service can cascade into a total system outage.</div>
+
+<h2>18.2 How a Circuit Breaker Works</h2>
+<div class="diagram">
+<div class="title">Circuit Breaker States</div>
+<div class="flow-row">
+<div class="node green">CLOSED<br/>(calls flow normally)</div><div class="arrow">→ failure threshold exceeded →</div><div class="node alt">OPEN<br/>(calls fail fast, no real call made)</div>
+</div>
+<div class="arrow-down">↓ after wait duration</div>
+<div class="flow-row"><div class="node">HALF_OPEN<br/>(a few trial calls allowed)</div></div>
+<div class="arrow-down">↓ trial succeeds → back to CLOSED  |  trial fails → back to OPEN</div>
+</div>
+
+<h2>18.3 Resilience4j Circuit Breaker — Real Code</h2>
+<pre>@Service
+public class AccountsService {
+
+    @CircuitBreaker(name = "cardsService", fallbackMethod = "cardsFallback")
+    public CardsDto getCards(Long customerId) {
+        return cardsFeignClient.getCardsByCustomer(customerId).getBody();
+    }
+
+    public CardsDto cardsFallback(Long customerId, Throwable t) {
+        log.warn("Cards Service unavailable, returning fallback for customer {}", customerId);
+        return CardsDto.empty();     <span class="c1">// graceful degradation instead of full failure</span>
+    }
+}
+
+<span class="c1"># application.yml</span>
+resilience4j:
+  circuitbreaker:
+    instances:
+      cardsService:
+        sliding-window-size: 10
+        failure-rate-threshold: 50        <span class="c1"># open circuit if 50% of last 10 calls failed</span>
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 3
+</pre>
+<div class="tip"><b>Interview tip:</b> A Circuit Breaker doesn't prevent failures — it prevents a failing dependency from <b>cascading</b> into your own service by failing fast and giving the downstream service time to recover, while your own service stays responsive (even if in a degraded state).</div>
+</div>
+
+<!-- 19. RETRY PATTERN -->
+<div class="section">
+<h1>19. Retry Pattern</h1>
+
+<h2>19.1 When Retry Helps</h2>
+<div class="box">Some failures are <b>transient</b> — a brief network blip, a momentary spike in load causing a timeout. Retrying the same call a few times, often with a growing delay (exponential backoff), can succeed without any real problem existing.</div>
+
+<h2>19.2 Resilience4j Retry — Real Code</h2>
+<pre>@Retry(name = "cardsService", fallbackMethod = "cardsFallback")
+@CircuitBreaker(name = "cardsService", fallbackMethod = "cardsFallback")
+public CardsDto getCards(Long customerId) {
+    return cardsFeignClient.getCardsByCustomer(customerId).getBody();
+}
+
+resilience4j:
+  retry:
+    instances:
+      cardsService:
+        max-attempts: 3
+        wait-duration: 500ms
+        exponential-backoff-multiplier: 2   <span class="c1"># 500ms, 1000ms, 2000ms between attempts</span>
+        retry-exceptions:
+          - java.io.IOException
+          - java.util.concurrent.TimeoutException
+</pre>
+
+<h2>19.3 Retry Danger — Non-Idempotent Operations</h2>
+<div class="warn">Retrying a "create payment" call blindly can create <b>duplicate payments</b> if the first attempt actually succeeded but the response was lost. Retry should only be applied to idempotent operations, or combined with an idempotency key (Section 25).</div>
+</div>
+
+<!-- 20. BULKHEAD PATTERN -->
+<div class="section">
+<h1>20. Bulkhead Pattern</h1>
+
+<h2>20.1 The Ship Analogy</h2>
+<div class="box">A ship is divided into watertight compartments ("bulkheads") — if one compartment floods, the rest of the ship stays afloat. The Bulkhead pattern applies the same idea to software: isolate resources (thread pools, connection pools) per dependency so one slow/failing dependency can't exhaust resources needed by unrelated calls.</div>
+
+<h2>20.2 Resilience4j Bulkhead — Real Code</h2>
+<pre>@Bulkhead(name = "cardsService", type = Bulkhead.Type.THREADPOOL)
+public CardsDto getCards(Long customerId) { ... }
+
+resilience4j:
+  thread-pool-bulkhead:
+    instances:
+      cardsService:
+        max-thread-pool-size: 10
+        core-thread-pool-size: 5
+        queue-capacity: 20
+</pre>
+<div class="tip"><b>Real scenario:</b> "Before adding bulkheads, a slow Loans Service call was exhausting Accounts Service's entire shared HTTP thread pool, which also blocked unrelated Cards Service calls from getting a thread at all. Isolating each downstream call into its own bounded thread pool meant a slow Loans Service no longer starved Cards Service calls."</div>
+</div>
+
+<!-- 21. RATE LIMITING -->
+<div class="section">
+<h1>21. Rate Limiting</h1>
+
+<h2>21.1 Why Rate Limit?</h2>
+<div class="box">Protects services from being overwhelmed by too many requests (whether from a buggy client, a traffic spike, or an abusive/malicious client) — both at the API Gateway (protecting all backend services) and within individual services for specific expensive operations.</div>
+
+<h2>21.2 Rate Limiting at the Gateway (Redis-Backed)</h2>
+<pre>spring:
+  cloud:
+    gateway:
+      routes:
+        - id: cards-route
+          uri: lb://CARDS-SERVICE
+          predicates:
+            - Path=/cards/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 20   <span class="c1"># 20 requests/sec allowed sustained</span>
+                redis-rate-limiter.burstCapacity: 40    <span class="c1"># allow short bursts up to 40</span>
+</pre>
+
+<h2>21.3 Resilience4j Rate Limiter (Service-Level)</h2>
+<pre>@RateLimiter(name = "loanApplication", fallbackMethod = "rateLimitFallback")
+public LoanResponse applyForLoan(LoanRequest request) { ... }
+
+resilience4j:
+  ratelimiter:
+    instances:
+      loanApplication:
+        limit-for-period: 5
+        limit-refresh-period: 1s
+        timeout-duration: 0s
+</pre>
+<table>
+<tr><th>Algorithm</th><th>How It Works</th></tr>
+<tr><td>Token Bucket</td><td>Tokens refill at a fixed rate; each request consumes a token, request rejected if bucket is empty</td></tr>
+<tr><td>Sliding Window</td><td>Counts requests in a rolling time window, rejects once the limit is exceeded</td></tr>
+<tr><td>Fixed Window</td><td>Simple counter reset every fixed interval — can allow bursts right at window boundaries</td></tr>
+</table>
+</div>
+
+<!-- 22. DISTRIBUTED TRANSACTIONS & SAGA -->
+<div class="section">
+<h1>22. Distributed Transactions &amp; the Saga Pattern</h1>
+
+<h2>22.1 Why Traditional Transactions Don't Work Across Services</h2>
+<div class="warn">In a monolith, "create loan + deduct account balance" is one local ACID transaction. Across microservices with separate databases, there's no single transaction spanning both — a distributed 2-Phase-Commit (2PC) is possible but slow, fragile, and rarely used in modern microservices due to blocking/availability tradeoffs.</div>
+
+<h2>22.2 The Saga Pattern — Solution</h2>
+<div class="box">A Saga breaks a business transaction into a sequence of local transactions, each in one service, with a <b>compensating transaction</b> defined for each step to undo it if a later step fails — trading strict ACID consistency for eventual consistency with guaranteed rollback logic.</div>
+
+<h2>22.3 Real Example — "Apply for Loan and Disburse to Account" Saga</h2>
+<div class="diagram">
+<div class="title">Loan Disbursement Saga — Happy Path</div>
+<div class="flow-row">
+<div class="node green">1. Loans Service: create loan (PENDING)</div><div class="arrow">→</div><div class="node green">2. Accounts Service: credit disbursed amount</div><div class="arrow">→</div><div class="node green">3. Loans Service: mark loan ACTIVE</div>
+</div>
+</div>
+<div class="diagram">
+<div class="title">Loan Disbursement Saga — Failure &amp; Compensation</div>
+<div class="flow-row">
+<div class="node green">1. Loans Service: create loan (PENDING)</div><div class="arrow">→</div><div class="node alt">2. Accounts Service: credit FAILS (account frozen)</div>
+</div>
+<div class="arrow-down">↓ compensating transaction triggered</div>
+<div class="flow-row"><div class="node gray">Loans Service: mark loan CANCELLED (undo step 1)</div></div>
+</div>
+</div>
+
+<!-- 23. CHOREOGRAPHY VS ORCHESTRATION -->
+<div class="section">
+<h1>23. Choreography vs Orchestration</h1>
+
+<h2>23.1 Choreography (Event-Driven, Decentralized)</h2>
+<div class="box">Each service listens for events and reacts independently — no central coordinator. Loans Service publishes "LoanApproved", Accounts Service listens and credits the account, then publishes "AmountCredited", and so on.</div>
+<div class="diagram">
+<div class="title">Choreography — Saga via Kafka Events</div>
+<div class="flow-row">
+<div class="node green">Loans Service</div><div class="arrow">→ publishes LoanApproved →</div><div class="node">Kafka Topic</div><div class="arrow">→ consumed by →</div><div class="node green">Accounts Service</div>
+</div>
+<div class="arrow-down">↓ Accounts Service publishes AmountCredited</div>
+<div class="flow-row"><div class="node green">Loans Service consumes it → marks loan ACTIVE</div></div>
+</div>
+
+<h2>23.2 Orchestration (Centralized Coordinator)</h2>
+<div class="box">A dedicated orchestrator service explicitly calls each participant step by step and handles compensation logic centrally — easier to understand/monitor the overall flow, but introduces a central coordination point.</div>
+<div class="diagram">
+<div class="title">Orchestration — Saga via a Coordinator Service</div>
+<div class="flow-row"><div class="node purple">Loan Orchestrator Service</div></div>
+<div class="flow-row">
+<div class="node">1. Call Loans Service: create loan</div><div class="node">2. Call Accounts Service: credit amount</div><div class="node">3. Call Loans Service: activate</div>
+</div>
+</div>
+
+<h2>23.3 Choreography vs Orchestration — Comparison</h2>
+<table>
+<tr><th>Aspect</th><th>Choreography</th><th>Orchestration</th></tr>
+<tr><td>Coordination</td><td>Decentralized — each service reacts to events</td><td>Centralized — one orchestrator drives the flow</td></tr>
+<tr><td>Coupling</td><td>Loosely coupled, but flow is harder to see in one place</td><td>Coordinator is coupled to all participants, but flow logic is visible in one service</td></tr>
+<tr><td>Complexity as steps grow</td><td>Gets harder to trace/debug ("who reacts to what" spreads across many services)</td><td>Scales better for complex flows — logic lives in one orchestrator</td></tr>
+<tr><td>Best fit</td><td>Simple 2-3 step sagas, highly decoupled teams</td><td>Complex multi-step business processes (loan approval workflows with many steps)</td></tr>
+<tr><td>Common tech</td><td>Kafka/RabbitMQ events</td><td>Camunda, Spring State Machine, or a custom orchestrator service</td></tr>
+</table>
+</div>
+
+<!-- 24. EVENT-DRIVEN ARCHITECTURE -->
+<div class="section">
+<h1>24. Event-Driven Architecture</h1>
+
+<h2>24.1 Core Idea</h2>
+<div class="box">Instead of services calling each other directly and waiting for a response, services publish <b>events</b> ("something happened") to a message broker, and other interested services subscribe and react independently and asynchronously.</div>
+
+<h2>24.2 Real Event Flow — Banking Example</h2>
+<div class="diagram">
+<div class="title">Event-Driven Flow — "Card Blocked" Event</div>
+<div class="flow-row">
+<div class="node green">Cards Service: customer blocks a lost card</div><div class="arrow">→ publishes CardBlockedEvent →</div><div class="node purple">Kafka Topic: card-events</div>
+</div>
+<div class="arrow-down">↓ multiple independent consumers</div>
+<div class="flow-row">
+<div class="node">Notification Service: sends SMS/email</div>
+<div class="node">Fraud Service: flags recent transactions for review</div>
+<div class="node">Analytics Service: updates dashboards</div>
+</div>
+</div>
+
+<h2>24.3 Benefits of Event-Driven Architecture</h2>
+<ul>
+<li>Services are decoupled — Cards Service doesn't need to know Notification/Fraud/Analytics services exist at all.</li>
+<li>New consumers can be added later without changing the publisher.</li>
+<li>Naturally resilient to a consumer being temporarily down — messages queue up and are processed once it recovers.</li>
+</ul>
+<div class="warn">Trade-off: consistency becomes <b>eventual</b>, not immediate — for a brief window, Fraud Service may not yet know about a just-blocked card. Design must account for this (Section 25 — Idempotency, and careful UX messaging like "your request is being processed").</div>
+</div>
+
+<!-- 25. SYNC VS ASYNC -->
+<div class="section">
+<h1>25. Synchronous vs Asynchronous Communication</h1>
+<table>
+<tr><th>Aspect</th><th>Synchronous (REST/gRPC/Feign)</th><th>Asynchronous (Kafka/RabbitMQ)</th></tr>
+<tr><td>Caller behavior</td><td>Waits for a response (blocking) or immediate reactive callback</td><td>Fire-and-forget — publishes and moves on</td></tr>
+<tr><td>Coupling</td><td>Tighter — caller depends on callee being up and responsive right now</td><td>Looser — broker buffers messages if consumer is temporarily down</td></tr>
+<tr><td>Use when</td><td>You need an immediate answer (e.g., "is this account valid?" before proceeding)</td><td>The caller doesn't need to wait (e.g., "send a notification," "update analytics")</td></tr>
+<tr><td>Failure handling</td><td>Circuit breaker/retry/timeout patterns</td><td>Dead-letter queues, consumer retry, message replay</td></tr>
+<tr><td>Real banking example</td><td>Gateway → Accounts Service (customer needs an immediate balance)</td><td>Cards Service → Notification Service (SMS can be sent a few seconds later)</td></tr>
+</table>
+<div class="tip"><b>Interview tip:</b> A well-designed microservices system uses <b>both</b> — synchronous calls for read-your-own-write user-facing needs, asynchronous events for side effects and cross-service consistency that can tolerate a short delay.</div>
+</div>
+
+<!-- 26. IDEMPOTENCY -->
+<div class="section">
+<h1>26. Idempotency in Microservices</h1>
+
+<h2>26.1 What Idempotency Means</h2>
+<div class="box">An operation is idempotent if performing it multiple times produces the <b>same result</b> as performing it once — critical in distributed systems because network retries, timeouts, and duplicate message delivery are normal, expected occurrences, not edge cases.</div>
+
+<h2>26.2 Real Example — Idempotency Key for Loan Disbursement</h2>
+<pre>@PostMapping("/loans/disburse")
+public ResponseEntity&lt;DisbursementResponse&gt; disburse(
+        @RequestHeader("Idempotency-Key") String idempotencyKey,
+        @RequestBody DisbursementRequest request) {
+
+    Optional&lt;Disbursement&gt; existing = disbursementRepository.findByIdempotencyKey(idempotencyKey);
+    if (existing.isPresent()) {
+        return ResponseEntity.ok(toResponse(existing.get()));   <span class="c1">// return the SAME result, don't re-disburse</span>
+    }
+
+    Disbursement result = disbursementService.process(request, idempotencyKey);
+    return ResponseEntity.ok(toResponse(result));
+}
+</pre>
+<div class="box">The client generates a unique <code>Idempotency-Key</code> per logical operation (e.g., a UUID stored client-side) and sends the exact same key on retries — the server recognizes the duplicate and returns the original result instead of processing it again.</div>
+
+<h2>26.3 Where Idempotency Matters Most</h2>
+<ul>
+<li>Payment/disbursement operations (never double-charge or double-credit).</li>
+<li>Kafka consumers (a message can be delivered more than once — "at-least-once" delivery is the norm) — track processed message IDs to avoid double-processing.</li>
+<li>Retry logic on any state-changing (non-GET) API call.</li>
+</ul>
+</div>
+
+<!-- 27. DATABASE PER SERVICE -->
+<div class="section">
+<h1>27. Database per Service Pattern</h1>
+
+<h2>27.1 The Rule</h2>
+<div class="box">Each microservice owns its own database/schema exclusively — no other service is allowed to directly query or modify another service's tables. All access to a service's data goes through its API (or its published events).</div>
+<div class="diagram">
+<div class="title">Database per Service — Banking Example</div>
+<div class="flow-row">
+<div class="node green">Accounts Service<br/>owns accounts_db</div>
+<div class="node green">Cards Service<br/>owns cards_db</div>
+<div class="node green">Loans Service<br/>owns loans_db</div>
+</div>
+<div class="box">Loans Service <b>cannot</b> run <code>SELECT * FROM accounts_db.account</code> directly — it must call Accounts Service's API to get account details.</div>
+</div>
+
+<h2>27.2 Why This Rule Exists</h2>
+<ul>
+<li>Keeps services truly independently deployable — changing Accounts Service's schema doesn't break Loans Service, since Loans never touched those tables directly.</li>
+<li>Preserves clear ownership and encapsulation of business logic/validation within the owning service.</li>
+<li>Allows each service to pick the best-fit database technology (though most Java shops standardize on relational DBs for consistency).</li>
+</ul>
+
+<h2>27.3 The Cost — No More Cross-Service Joins</h2>
+<div class="warn">Building a report needing data from Accounts + Cards + Loans together can no longer be a simple SQL JOIN — it requires either API composition (call all three services and merge in code), a dedicated reporting/read database populated via events (see CQRS, Section 28), or a data warehouse fed by each service's data pipeline.</div>
+</div>
+
+<!-- 28. CQRS BASICS -->
+<div class="section">
+<h1>28. CQRS — Basic Understanding</h1>
+
+<h2>28.1 What CQRS Means</h2>
+<div class="box">CQRS (Command Query Responsibility Segregation) separates the model used to <b>write</b> data (Commands) from the model used to <b>read</b> data (Queries) — they can even live in entirely different databases, optimized independently.</div>
+
+<h2>28.2 Real Example — Loan Reporting Dashboard</h2>
+<div class="diagram">
+<div class="title">CQRS in the Banking Example</div>
+<div class="flow-row">
+<div class="node green">Loans Service (write model)<br/>normalized relational tables</div>
+</div>
+<div class="arrow-down">↓ publishes LoanCreated / LoanUpdated events</div>
+<div class="flow-row"><div class="node purple">Kafka</div></div>
+<div class="arrow-down">↓ consumed and projected into</div>
+<div class="flow-row"><div class="node alt">Reporting DB (read model)<br/>denormalized, pre-joined for fast dashboard queries</div></div>
+</div>
+
+<h2>28.3 Why Bother?</h2>
+<ul>
+<li>Write side stays clean/normalized for correctness; read side is optimized purely for fast queries (denormalized, indexed for dashboards).</li>
+<li>Read load (dashboards, reports) never impacts the performance of the transactional write database.</li>
+<li>Complexity cost is real — you now maintain two models and an event pipeline keeping them in sync; only use CQRS where the read/write patterns genuinely differ enough to justify it (e.g., heavy reporting needs), not for simple CRUD services.</li>
+</ul>
+</div>
+
+<!-- 29. API VERSIONING -->
+<div class="section">
+<h1>29. API Versioning Strategies</h1>
+
+<h2>29.1 Why Versioning Matters</h2>
+<div class="box">Once mobile apps and other services depend on your API, you can't just change its shape — you need a way to evolve the API without breaking existing consumers.</div>
+
+<h2>29.2 Common Strategies</h2>
+<table>
+<tr><th>Strategy</th><th>Example</th><th>Notes</th></tr>
+<tr><td>URI Path Versioning</td><td><code>/api/v1/accounts</code>, <code>/api/v2/accounts</code></td><td>Most common, simple, visible in logs/URLs — used across most real orgs</td></tr>
+<tr><td>Request Header Versioning</td><td><code>Accept: application/vnd.bank.v2+json</code></td><td>Cleaner URLs, but less discoverable/harder to test manually</td></tr>
+<tr><td>Query Parameter Versioning</td><td><code>/accounts?version=2</code></td><td>Simple but easy to forget/misuse, less common in strict APIs</td></tr>
+</table>
+
+<h2>29.3 Real Spring Boot Example (URI Versioning)</h2>
+<pre>@RestController
+@RequestMapping("/api/v1/accounts")
+public class AccountsControllerV1 { ... }
+
+@RestController
+@RequestMapping("/api/v2/accounts")
+public class AccountsControllerV2 { ... }   <span class="c1">// new response shape, old v1 still supported for existing clients</span>
+</pre>
+<div class="tip"><b>Real scenario:</b> "When we added a new required field to the Accounts API response, we didn't change v1 at all — we shipped v2 in parallel, migrated the mobile app to v2 over a few sprints, then deprecated and eventually removed v1 six months later, with clear deprecation headers warning consumers ahead of time."</div>
+</div>
+
+<!-- 30. CENTRALIZED LOGGING -->
+<div class="section">
+<h1>30. Centralized Logging — ELK Stack / Splunk</h1>
+
+<h2>30.1 Why Centralized Logging Is Mandatory for Microservices</h2>
+<div class="warn">A single customer request might touch the Gateway, Accounts Service, Cards Service, and Kafka — with logs scattered across a dozen pods, manually SSHing into each one to grep logs is unworkable. Centralized logging aggregates every service's logs into one searchable place.</div>
+
+<h2>30.2 ELK Stack Architecture</h2>
+<div class="diagram">
+<div class="title">ELK Stack Flow</div>
+<div class="flow-row">
+<div class="node green">Accounts Service</div><div class="node green">Cards Service</div><div class="node green">Loans Service</div>
+</div>
+<div class="arrow-down">↓ structured JSON logs shipped by Filebeat/Fluentd</div>
+<div class="flow-row"><div class="node">Logstash (parse/enrich)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">Elasticsearch (indexed storage)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node alt">Kibana (search &amp; dashboards)</div></div>
+</div>
+
+<h2>30.3 Structured Logging in Spring Boot (Real Config)</h2>
+<pre><span class="c1">// Use a correlation/trace ID in every log line so you can filter one request across all services</span>
+@Slf4j
+@RestController
+public class AccountsController {
+    @GetMapping("/accounts/{id}")
+    public AccountDto getAccount(@PathVariable Long id) {
+        log.info("Fetching account id={} traceId={}", id, MDC.get("traceId"));
+        ...
+    }
+}
+
+<span class="c1"># logback-spring.xml pattern includes trace id from MDC (populated by tracing library, Section 31)</span>
+&lt;pattern&gt;%d{ISO8601} [%X{traceId}] %-5level %logger{36} - %msg%n&lt;/pattern&gt;
+</pre>
+
+<h2>30.4 Splunk as an Alternative</h2>
+<div class="box">Splunk is a commercial log aggregation and analytics platform, often preferred by larger enterprises for its powerful search language (SPL), alerting, and compliance/audit features — functionally solves the same centralized logging problem as ELK but as a paid, fully managed/on-prem enterprise product.</div>
+</div>
+
+<!-- 31. DISTRIBUTED TRACING -->
+<div class="section">
+<h1>31. Distributed Tracing — OpenTelemetry, Zipkin, Jaeger</h1>
+
+<h2>31.1 The Problem Tracing Solves</h2>
+<div class="box">Logs alone tell you what happened <b>inside</b> one service. Distributed tracing tells you the full journey of one request <b>across</b> all services it touched, with exact timing at each hop — essential for finding which service is the actual bottleneck in a slow multi-service call chain.</div>
+
+<h2>31.2 How It Works — Trace &amp; Span</h2>
+<div class="diagram">
+<div class="title">Distributed Trace — "Get Account Summary" Request</div>
+<div class="flow-row"><div class="node purple">Trace ID: abc-123 (whole request)</div></div>
+<div class="flow-row">
+<div class="node">Span 1: Gateway (5ms)</div><div class="node">Span 2: Accounts Service (40ms)</div><div class="node alt">Span 3: Cards Service call (300ms ← slow!)</div><div class="node">Span 4: Loans Service call (20ms)</div>
+</div>
+</div>
+<ul>
+<li><b>Trace:</b> represents the entire end-to-end request.</li>
+<li><b>Span:</b> one unit of work within the trace (one service's handling of the request, or one downstream call) — spans are nested/linked to show the call hierarchy and exact duration.</li>
+</ul>
+
+<h2>31.3 OpenTelemetry — The Modern Standard</h2>
+<div class="box">OpenTelemetry (OTel) is the current industry-standard, vendor-neutral instrumentation framework — it auto-instruments Spring Boot apps (HTTP calls, JDBC, Kafka) and can export trace data to <b>any</b> backend (Zipkin, Jaeger, Grafana Tempo, Datadog) without changing application code, avoiding vendor lock-in.</div>
+<pre><span class="c1">// build.gradle / pom.xml: add OpenTelemetry Java agent, attached at JVM startup, zero code changes needed</span>
+java -javaagent:opentelemetry-javaagent.jar \
+     -Dotel.service.name=accounts-service \
+     -Dotel.exporter.otlp.endpoint=http://otel-collector:4317 \
+     -jar accounts-service.jar
+</pre>
+
+<h2>31.4 Zipkin vs Jaeger</h2>
+<table>
+<tr><th>Tool</th><th>Origin</th><th>Notes</th></tr>
+<tr><td>Zipkin</td><td>Twitter</td><td>Simpler, lightweight, easy to run locally, good for small-to-mid scale</td></tr>
+<tr><td>Jaeger</td><td>Uber (CNCF project)</td><td>More scalable storage backends (Elasticsearch/Cassandra), richer UI, common in larger Kubernetes-native orgs</td></tr>
+</table>
+<div class="tip"><b>Real scenario:</b> "Using Jaeger, we discovered that a 'slow account summary' complaint was actually caused by Cards Service making a synchronous, un-cached call to a third-party card network API on every request — the trace showed 300ms spent purely in that one span, immediately pointing us at the real bottleneck instead of guessing."</div>
+</div>
+
+<!-- 32. MONITORING & METRICS -->
+<div class="section">
+<h1>32. Monitoring &amp; Metrics — Prometheus &amp; Grafana</h1>
+
+<h2>32.1 Metrics vs Logs vs Traces</h2>
+<table>
+<tr><th>Signal</th><th>Answers</th><th>Tooling</th></tr>
+<tr><td>Logs</td><td>What exactly happened (detailed events, errors, stack traces)</td><td>ELK/Splunk</td></tr>
+<tr><td>Metrics</td><td>How is the system performing overall, over time (aggregated numbers)</td><td>Prometheus/Grafana</td></tr>
+<tr><td>Traces</td><td>Where did time go for one specific request across services</td><td>Zipkin/Jaeger/OTel</td></tr>
+</table>
+
+<h2>32.2 Spring Boot + Micrometer + Prometheus</h2>
+<pre>&lt;dependency&gt;
+  &lt;groupId&gt;io.micrometer&lt;/groupId&gt;
+  &lt;artifactId&gt;micrometer-registry-prometheus&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+<span class="c1"># application.yml</span>
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus, metrics
+</pre>
+<pre><span class="c1">// custom business metric — e.g., count loan applications</span>
+@Service
+@RequiredArgsConstructor
+public class LoansService {
+    private final MeterRegistry meterRegistry;
+
+    public void applyForLoan(LoanRequest request) {
+        meterRegistry.counter("loan.applications", "type", request.getLoanType()).increment();
+        ...
+    }
+}
+</pre>
+
+<h2>32.3 Grafana Dashboards (What Real Teams Watch)</h2>
+<ul>
+<li>Request rate, error rate, and latency percentiles (p50/p95/p99) per service — the classic "RED metrics" (Rate, Errors, Duration).</li>
+<li>JVM metrics — heap usage, garbage collection pause times, thread pool saturation.</li>
+<li>Business metrics — loan applications per hour, card blocks per day, failed payment rate.</li>
+<li>Alertmanager rules firing to Slack/PagerDuty when error rate or latency crosses a threshold for a sustained period.</li>
+</ul>
+</div>
+
+<!-- 33. SERVICE REGISTRY, HEALTH CHECKS, ACTUATOR -->
+<div class="section">
+<h1>33. Service Registry, Health Checks &amp; Spring Boot Actuator</h1>
+
+<h2>33.1 Actuator — Built-In Operational Endpoints</h2>
+<div class="box">Spring Boot Actuator exposes production-ready endpoints out of the box for health, metrics, and environment info — the backbone of Kubernetes probes, Eureka health checks, and monitoring dashboards.</div>
+<table>
+<tr><th>Endpoint</th><th>Purpose</th></tr>
+<tr><td><code>/actuator/health</code></td><td>Overall health status (UP/DOWN), including DB/Kafka connectivity checks</td></tr>
+<tr><td><code>/actuator/health/readiness</code></td><td>Is the app ready to receive traffic (used by K8s readiness probes)</td></tr>
+<tr><td><code>/actuator/health/liveness</code></td><td>Is the app alive at all (used by K8s liveness probes)</td></tr>
+<tr><td><code>/actuator/info</code></td><td>Build/version metadata</td></tr>
+<tr><td><code>/actuator/metrics</code></td><td>Raw metrics (also scraped via /actuator/prometheus)</td></tr>
+<tr><td><code>/actuator/env</code></td><td>Current active configuration properties (should be secured in prod)</td></tr>
+<tr><td><code>/actuator/refresh</code></td><td>Reloads <code>@RefreshScope</code> beans with new Config Server values</td></tr>
+</table>
+
+<h2>33.2 Custom Health Indicator</h2>
+<pre>@Component
+public class CardsServiceHealthIndicator implements HealthIndicator {
+    @Override
+    public Health health() {
+        boolean reachable = pingCardsService();
+        return reachable ? Health.up().build()
+                         : Health.down().withDetail("reason", "Cards Service unreachable").build();
+    }
+}
+</pre>
+
+<h2>33.3 How Eureka Uses Health Checks</h2>
+<div class="box">Eureka clients send heartbeats every 30 seconds by default; if a service's Actuator health check fails, Spring Cloud can be configured (<code>eureka.client.healthcheck.enabled=true</code>) to mark the instance OUT_OF_SERVICE in the registry, so it stops receiving new traffic without needing to be killed outright.</div>
+</div>
+
+<!-- 34. SECURITY -->
+<div class="section">
+<h1>34. Security in Microservices — JWT, OAuth2, Keycloak</h1>
+
+<h2>34.1 Why Security Is Harder in Microservices</h2>
+<div class="box">In a monolith, authenticating once at the front door and using a server-side session is simple. Across many independently-scaled, stateless microservices, you need a token-based approach that any service can verify without a shared session store.</div>
+
+<h2>34.2 JWT (JSON Web Token) — How It Works</h2>
+<div class="diagram">
+<div class="title">JWT Authentication Flow</div>
+<div class="flow-row">
+<div class="node">Client logs in with username/password</div><div class="arrow">→</div><div class="node purple">Auth Server issues signed JWT</div>
+</div>
+<div class="arrow-down">↓ client sends JWT in Authorization header on every request</div>
+<div class="flow-row">
+<div class="node green">API Gateway validates JWT signature + expiry</div><div class="arrow">→</div><div class="node">Forwards request (with claims) to Accounts/Cards/Loans Service</div>
+</div>
+</div>
+<div class="box">A JWT contains three parts — <b>Header</b> (algorithm), <b>Payload</b> (claims: user ID, roles, expiry), <b>Signature</b> (verifies it wasn't tampered with) — any service holding the public key/secret can verify it independently, with no need to call back to the auth server for every request.</div>
+
+<h2>34.3 OAuth2 — The Authorization Framework</h2>
+<table>
+<tr><th>OAuth2 Concept</th><th>Meaning</th></tr>
+<tr><td>Resource Owner</td><td>The end user who owns the data</td></tr>
+<tr><td>Client</td><td>The application requesting access (e.g., our React app)</td></tr>
+<tr><td>Authorization Server</td><td>Issues tokens after authenticating the user (e.g., Keycloak)</td></tr>
+<tr><td>Resource Server</td><td>The microservice that hosts the protected data and validates the token (e.g., Accounts Service)</td></tr>
+<tr><td>Grant Types</td><td>Authorization Code (web apps), Client Credentials (service-to-service), Refresh Token (renew access without re-login)</td></tr>
+</table>
+
+<h2>34.4 Keycloak — Real Identity Provider</h2>
+<div class="box">Keycloak is a popular open-source Identity and Access Management (IAM) server implementing OAuth2/OIDC — handles login screens, MFA, user federation (LDAP/AD), role/group management, and issues JWTs, so individual microservices never need to implement login logic themselves.</div>
+<pre><span class="c1"># Spring Boot Resource Server config — validates JWTs issued by Keycloak</span>
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://keycloak.mybank.com/realms/bank-realm
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(auth -> auth
+                .requestMatchers("/actuator/health").permitAll()
+                .requestMatchers("/loans/**").hasRole("LOAN_OFFICER")
+                .anyRequest().authenticated())
+            .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
+        return http.build();
+    }
+}
+</pre>
+
+<h2>34.5 Service-to-Service Security</h2>
+<div class="box">Internal calls (Accounts → Cards via Feign) also carry the propagated JWT (or a service-specific client-credentials token) so downstream services can enforce their own authorization rules and know which original user/service initiated the request — never trust internal network location alone as "authenticated."</div>
+</div>
+
+<!-- 35. CACHING -->
+<div class="section">
+<h1>35. Caching — Redis</h1>
+
+<h2>35.1 Why Cache in Microservices</h2>
+<div class="box">Repeated calls for the same rarely-changing data (customer profile, card product catalog, interest rate tables) hitting the database or another service every time wastes resources and adds latency. Redis, an in-memory data store, is the most common caching layer used across Java microservices.</div>
+
+<h2>35.2 Spring Boot + Redis — Real Code</h2>
+<pre>&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+@Service
+public class CardsService {
+
+    @Cacheable(value = "cardLimits", key = "#cardId")
+    public CardLimitDto getCardLimit(Long cardId) {
+        return cardLimitRepository.findByCardId(cardId);   <span class="c1">// only hits DB on cache miss</span>
+    }
+
+    @CacheEvict(value = "cardLimits", key = "#cardId")
+    public void updateCardLimit(Long cardId, BigDecimal newLimit) {
+        cardLimitRepository.updateLimit(cardId, newLimit);  <span class="c1">// invalidate stale cache on update</span>
+    }
+}
+
+<span class="c1"># application.yml</span>
+spring:
+  cache:
+    type: redis
+  data:
+    redis:
+      host: redis-cluster
+      port: 6379
+</pre>
+
+<h2>35.3 What to Cache (and What Not To)</h2>
+<table>
+<tr><th>Good Candidates</th><th>Bad Candidates</th></tr>
+<tr><td>Reference/lookup data (interest rates, product catalogs)</td><td>Real-time account balances (must always be fresh)</td></tr>
+<tr><td>Expensive computed results (credit score calculations)</td><td>Highly volatile, security-sensitive data without careful TTL/invalidation</td></tr>
+<tr><td>Session/token validation results (short TTL)</td><td>Data requiring strict read-your-own-write consistency</td></tr>
+</table>
+<div class="tip"><b>Real scenario:</b> "Caching the card product catalog (which changes maybe once a week) in Redis with a 1-hour TTL cut Cards Service's database load by 70%, while account balance lookups deliberately bypass cache entirely since customers must always see their true current balance."</div>
+</div>
+
+<!-- 36. MESSAGE BROKERS -->
+<div class="section">
+<h1>36. Message Brokers — Kafka &amp; RabbitMQ</h1>
+
+<h2>36.1 Apache Kafka — Real Producer/Consumer Code</h2>
+<pre><span class="c1">// Producer — Cards Service publishes an event</span>
+@Service
+@RequiredArgsConstructor
+public class CardsEventPublisher {
+    private final KafkaTemplate&lt;String, CardBlockedEvent&gt; kafkaTemplate;
+
+    public void publishCardBlocked(CardBlockedEvent event) {
+        kafkaTemplate.send("card-events", event.getCardId().toString(), event);
+    }
+}
+
+<span class="c1">// Consumer — Notification Service reacts</span>
+@Component
+public class CardEventListener {
+    @KafkaListener(topics = "card-events", groupId = "notification-service")
+    public void handleCardBlocked(CardBlockedEvent event) {
+        notificationService.sendSms(event.getCustomerPhone(), "Your card ending " + event.getLast4() + " has been blocked.");
+    }
+}
+</pre>
+
+<h2>36.2 Kafka Core Concepts</h2>
+<table>
+<tr><th>Concept</th><th>Meaning</th></tr>
+<tr><td>Topic</td><td>A named stream of events (e.g., <code>card-events</code>)</td></tr>
+<tr><td>Partition</td><td>A topic is split into partitions for parallelism and ordering-per-key guarantees</td></tr>
+<tr><td>Producer</td><td>Publishes events to a topic</td></tr>
+<tr><td>Consumer Group</td><td>A set of consumers sharing the work of reading a topic — each partition read by only one consumer in the group</td></tr>
+<tr><td>Offset</td><td>A consumer's position/checkpoint in a partition — enables replay and at-least-once delivery</td></tr>
+<tr><td>Retention</td><td>Kafka retains messages for a configured period regardless of consumption — enables replay, unlike traditional queues</td></tr>
+</table>
+
+<h2>36.3 RabbitMQ — Basic Concepts (Alternative to Kafka)</h2>
+<div class="box">RabbitMQ is a traditional message queue/broker (AMQP protocol) — simpler mental model (Exchange → Queue → Consumer), great for task queues and simpler pub/sub, but not built for the same massive-scale event streaming/replay use cases Kafka excels at.</div>
+<pre>@RabbitListener(queues = "loan.notification.queue")
+public void handleLoanApproved(LoanApprovedEvent event) {
+    notificationService.notifyCustomer(event.getCustomerId(), "Your loan has been approved!");
+}
+</pre>
+
+<h2>36.4 Kafka vs RabbitMQ — When to Use Which</h2>
+<table>
+<tr><th>Aspect</th><th>Kafka</th><th>RabbitMQ</th></tr>
+<tr><td>Model</td><td>Distributed commit log — durable, replayable event stream</td><td>Traditional message queue/broker</td></tr>
+<tr><td>Throughput</td><td>Very high, built for large-scale event streaming</td><td>Good for moderate throughput, more per-message routing flexibility</td></tr>
+<tr><td>Message replay</td><td>Yes — consumers can rewind and reprocess historical events</td><td>No — once consumed/acked, typically gone</td></tr>
+<tr><td>Best fit</td><td>Event-driven architecture, event sourcing, audit trails, analytics pipelines</td><td>Task queues, RPC-style messaging, simpler routing needs (fanout/topic exchanges)</td></tr>
+<tr><td>Real banking example</td><td>Account/card/loan domain events feeding multiple downstream consumers + audit log</td><td>Sending a one-off email/SMS task to a background worker</td></tr>
+</table>
+</div>
+
+<!-- 37. DOCKER & K8S RECAP -->
+<div class="section">
+<h1>37. Containerization (Docker) &amp; Orchestration (Kubernetes) Recap for Microservices</h1>
+
+<h2>37.1 Why This Matters Specifically for Microservices</h2>
+<div class="box">Microservices without containers/orchestration quickly become unmanageable — dozens of services, each needing consistent deployment, scaling, and networking, is exactly the problem Docker + Kubernetes were built to solve (full details in the companion Docker &amp; Kubernetes guide).</div>
+
+<h2>37.2 One Deployment Per Microservice</h2>
+<pre>apiVersion: apps/v1
+kind: Deployment
+metadata: { name: cards-service, namespace: prod }
+spec:
+  replicas: 4
+  selector: { matchLabels: { app: cards-service } }
+  template:
+    metadata: { labels: { app: cards-service } }
+    spec:
+      containers:
+      - name: cards-service
+        image: mybank.azurecr.io/cards-service:212
+        ports: [{ containerPort: 8082 }]
+        readinessProbe: { httpGet: { path: /actuator/health/readiness, port: 8082 } }
+        livenessProbe:  { httpGet: { path: /actuator/health/liveness,  port: 8082 } }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: cards-service, namespace: prod }
+spec:
+  selector: { app: cards-service }
+  ports: [{ port: 80, targetPort: 8082 }]
+</pre>
+
+<h2>37.3 Key Takeaways for Microservices Specifically</h2>
+<ul>
+<li>Each microservice gets its own Deployment, Service, HPA — scaled and released completely independently.</li>
+<li>Namespaces isolate environments (dev/qa/prod), sometimes also per-team.</li>
+<li>Kubernetes' built-in DNS (<code>cards-service.prod.svc.cluster.local</code>) often complements or can replace Eureka on Kubernetes-native platforms — some organizations use both together during migration, others rely on Kubernetes Service discovery alone once fully containerized.</li>
+</ul>
+</div>
+
+<!-- 38. DEPLOYMENT STRATEGIES -->
+<div class="section">
+<h1>38. Deployment Strategies — Blue-Green, Canary, Rolling</h1>
+
+<h2>38.1 Why This Matters More With Microservices</h2>
+<div class="box">With many independently deployable services, each team needs a safe way to release their service frequently without risking the whole platform — these three strategies (fully detailed with diagrams in the companion CI/CD guide) are applied per-service.</div>
+
+<h2>38.2 Quick Recap Table</h2>
+<table>
+<tr><th>Strategy</th><th>How</th><th>Best Fit for Microservices</th></tr>
+<tr><td>Rolling</td><td>Replace pods gradually, zero downtime</td><td>Default choice for most stateless microservices (Accounts, Cards, Loans)</td></tr>
+<tr><td>Blue-Green</td><td>Two full environments, instant traffic switch</td><td>Critical services needing instant rollback (e.g., Loans disbursement engine)</td></tr>
+<tr><td>Canary</td><td>Gradual traffic ramp-up to new version</td><td>High-traffic customer-facing services where blast radius must be minimized (Accounts Service)</td></tr>
+</table>
+<div class="tip"><b>Real scenario:</b> "Cards Service (lower risk, high release frequency) uses Rolling updates by default. Loans Service (high financial risk per transaction) uses Canary — 5% of loan applications routed to the new version first, monitored closely for a full business day before ramping to 100%."</div>
+</div>
+
+<!-- 39. FAULT TOLERANCE & HA -->
+<div class="section">
+<h1>39. Fault Tolerance &amp; High Availability</h1>
+
+<h2>39.1 What "High Availability" Really Means</h2>
+<div class="box">HA means the system keeps serving requests correctly even when individual components fail — no single point of failure, redundancy at every layer (multiple pod replicas, multiple availability zones, replicated databases).</div>
+
+<h2>39.2 Layers of Fault Tolerance in Our Banking Example</h2>
+<table>
+<tr><th>Layer</th><th>Fault Tolerance Mechanism</th></tr>
+<tr><td>Pod/Instance level</td><td>Multiple replicas per service (min 3), Kubernetes self-healing restarts crashed pods</td></tr>
+<tr><td>Node/Zone level</td><td>Pods spread across multiple Availability Zones via pod anti-affinity rules</td></tr>
+<tr><td>Service-to-service calls</td><td>Circuit Breaker + Retry + Bulkhead + Timeout (Resilience4j)</td></tr>
+<tr><td>Database level</td><td>Managed DB with automatic failover/replicas (e.g., Azure Database for MySQL with HA)</td></tr>
+<tr><td>Messaging level</td><td>Kafka replication factor 3, consumer group rebalancing on consumer failure</td></tr>
+<tr><td>Region level</td><td>Multi-region active-passive or active-active setup for disaster recovery of critical services</td></tr>
+</table>
+
+<h2>39.3 Timeout — The Most Underrated Resilience Pattern</h2>
+<pre>resilience4j:
+  timelimiter:
+    instances:
+      cardsService:
+        timeout-duration: 2s   <span class="c1"># never wait indefinitely on a downstream call</span>
+</pre>
+<div class="warn">Without an explicit timeout, a hung downstream call can tie up caller threads indefinitely — always set a sane timeout on every inter-service call, tuned to realistic p99 latency plus margin.</div>
+</div>
+
+<!-- 40. HOW WE IMPLEMENT IN REAL TIME -->
+<div class="section">
+<h1>40. How We Implement Microservices in Real-Time (End-to-End)</h1>
+
+<h2>40.1 The Full Implementation Journey</h2>
+<ol>
+<li><b>Domain analysis:</b> identify bounded contexts using Domain-Driven Design workshops with business stakeholders (Accounts, Cards, Loans emerge as natural boundaries).</li>
+<li><b>Define APIs first (API-first design):</b> write OpenAPI/Swagger contracts for each service before writing implementation code, so teams can work in parallel against agreed contracts.</li>
+<li><b>Scaffold infrastructure services:</b> stand up Eureka, Config Server, and API Gateway first — every business microservice depends on these.</li>
+<li><b>Build each microservice:</b> Spring Boot app with layered structure (Controller → Service → Repository), its own database, unit + integration tests (Testcontainers).</li>
+<li><b>Add resilience:</b> Resilience4j circuit breaker/retry/bulkhead/timeout on every inter-service call from day one, not as an afterthought.</li>
+<li><b>Add observability:</b> Actuator health endpoints, Micrometer metrics, OpenTelemetry tracing, structured JSON logging with correlation IDs — built in from the start.</li>
+<li><b>Add security:</b> JWT validation via Keycloak/OAuth2 at the Gateway and enforced again at each service (defense in depth).</li>
+<li><b>Containerize:</b> Dockerfile per service, docker-compose for local multi-service development.</li>
+<li><b>Set up CI/CD:</b> one pipeline per service (Azure DevOps/Jenkins/GitHub Actions) — build, test, scan, containerize, deploy independently.</li>
+<li><b>Deploy to Kubernetes:</b> namespaces per environment, HPA for autoscaling, Ingress for routing, monitored via Prometheus/Grafana.</li>
+<li><b>Iterate:</b> add new microservices only when a genuine new bounded context emerges — resist splitting too finely too early ("nanoservices" anti-pattern).</li>
+</ol>
+
+<h2>40.2 Real Team Structure (Conway's Law in Action)</h2>
+<div class="box">"Organizations design systems that mirror their own communication structure" (Conway's Law). Our bank organizes around the same three services: an Accounts team, a Cards team, and a Loans team, each owning their service's full lifecycle — code, database, on-call, deployment — with a shared Platform/DevOps team owning Eureka, Gateway, Config Server, and the Kubernetes cluster itself.</div>
+
+<h2>40.3 Communication Between Teams (Not Just Services)</h2>
+<ul>
+<li><b>API contracts as the interface</b> between teams — changes to a shared API go through a review process (often using consumer-driven contract testing, e.g., Pact) so a breaking change is caught before it reaches production.</li>
+<li><b>Shared platform standards</b> — common logging format, common base Docker images, common Resilience4j default configs — maintained by the Platform team, adopted by all service teams.</li>
+<li><b>Regular architecture sync</b> — service teams meet periodically to discuss cross-service events/contracts, especially before introducing new Kafka topics or breaking API changes.</li>
+</ul>
+</div>
+
+<!-- 41. HOW TO MAINTAIN IN PRODUCTION -->
+<div class="section">
+<h1>41. How to Maintain Microservices in Production (Real Organization Practices)</h1>
+
+<h2>41.1 Day-2 Operations Checklist</h2>
+<ul>
+<li><b>On-call rotation per service team</b> — the team that built Cards Service is paged when Cards Service alerts fire ("you build it, you run it").</li>
+<li><b>Runbooks</b> — documented step-by-step recovery procedures for common incidents (e.g., "Cards Service circuit breaker stuck open — check Card Network API status page first").</li>
+<li><b>Dependency map kept up to date</b> — a living diagram of which services call which, so impact analysis during incidents is fast.</li>
+<li><b>Regular chaos testing</b> — deliberately killing pods/injecting latency (Chaos Monkey-style) in non-prod to verify circuit breakers/retries actually work as designed.</li>
+<li><b>Capacity planning</b> — reviewing HPA scaling history and resource requests/limits quarterly against real traffic growth.</li>
+<li><b>Dependency upgrades</b> — regular scheduled Spring Boot/Spring Cloud version upgrades across all services (staggered, not all at once) to avoid falling far behind and facing a painful "big bang" upgrade later.</li>
+</ul>
+
+<h2>41.2 Versioning &amp; Backward Compatibility Discipline</h2>
+<div class="box">Since services deploy independently, Accounts Service v42 must be able to talk to Cards Service v38 (an older version, mid-rollout) without breaking — this means API changes must be backward compatible by default (add new optional fields, never remove/rename existing ones without a version bump per Section 29).</div>
+
+<h2>41.3 Real Incident Response Flow</h2>
+<div class="diagram">
+<div class="title">Real Incident Response Flow</div>
+<div class="flow-row">
+<div class="node alt">Alertmanager fires: Cards Service error rate &gt; 10%</div><div class="arrow">→</div><div class="node">PagerDuty pages on-call engineer</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+<div class="node">Check Grafana dashboard (RED metrics)</div><div class="arrow">→</div><div class="node">Check Jaeger trace of a failing request</div><div class="arrow">→</div><div class="node">Check centralized logs (Kibana) filtered by trace ID</div>
+</div>
+<div class="arrow-down">↓ root cause found: downstream Card Network API is down</div>
+<div class="flow-row"><div class="node green">Circuit breaker already open, degraded mode active — no full outage, just reduced functionality</div></div>
+</div>
+
+<h2>41.4 Change Management for Independent Deployments</h2>
+<ul>
+<li>Feature flags (via Config Server + <code>@RefreshScope</code>) to decouple deployment from release — deploy dark, enable gradually.</li>
+<li>Automated smoke tests post-deploy in every environment before traffic ramps up.</li>
+<li>Clear rollback procedure documented and tested for every service (image tag-based instant rollback via <code>kubectl rollout undo</code> or pipeline re-run).</li>
+</ul>
+</div>
+
+<!-- 42. CLOUD DEPLOYMENT -->
+<div class="section">
+<h1>42. Cloud Deployment — Azure Spring Apps, AKS and Azure Integration</h1>
+
+<h2>42.1 Azure Options for Running Microservices</h2>
+<table>
+<tr><th>Azure Service</th><th>What It Provides</th><th>Best Fit</th></tr>
+<tr><td>Azure Kubernetes Service (AKS)</td><td>Full Kubernetes control — you manage Deployments/Services/Ingress yourself</td><td>Teams wanting full container orchestration control, multi-cloud portability</td></tr>
+<tr><td>Azure Spring Apps</td><td>Fully managed Spring Boot/Spring Cloud hosting — built-in Eureka-equivalent service registry and Config Server support, no Kubernetes YAML needed</td><td>Java/Spring Boot-heavy shops wanting less operational overhead than raw AKS</td></tr>
+<tr><td>Azure Container Apps</td><td>Serverless containers built on Kubernetes/KEDA under the hood, simpler than AKS</td><td>Event-driven microservices, scale-to-zero workloads</td></tr>
+<tr><td>Azure App Service</td><td>PaaS for web apps, simplest to deploy a single service to</td><td>Simpler monoliths or a handful of services, less microservices-native</td></tr>
+</table>
+
+<h2>42.2 Full Azure Architecture — Our Real Setup (AKS-Based)</h2>
+<div class="diagram">
+<div class="title">Banking Microservices on Azure</div>
+<div class="flow-row">
+<div class="node">Azure Front Door / App Gateway (TLS, WAF)</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">AKS Cluster — Spring Cloud Gateway pod (Ingress)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+<div class="node green">Accounts Service pods</div><div class="node green">Cards Service pods</div><div class="node green">Loans Service pods</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+<div class="node">Azure Database for MySQL (x3, one per service)</div><div class="node">Azure Cache for Redis</div><div class="node">Azure Event Hubs (Kafka-compatible) / Kafka on AKS</div>
+</div>
+<div class="arrow-down">↓ cross-cutting</div>
+<div class="flow-row">
+<div class="node alt">Azure Key Vault (secrets)</div><div class="node alt">Azure Monitor + Container Insights</div><div class="node alt">Azure AD (Keycloak alternative: Azure AD B2C for customer identity)</div>
+</div>
+</div>
+
+<h2>42.3 Azure DevOps Pipeline Per Microservice (Real Pattern)</h2>
+<pre><span class="c1"># azure-pipelines.yml — cards-service (one pipeline per service, same pattern repeated for all)</span>
+trigger: { branches: { include: [ main ] }, paths: { include: [ cards-service/* ] } }
+pool: { vmImage: 'ubuntu-latest' }
+variables: [ { group: cards-service-secrets } ]
+
+stages:
+- stage: Build
+  jobs:
+  - job: BuildTest
+    steps:
+    - task: Maven@4
+      inputs: { mavenPomFile: 'cards-service/pom.xml', goals: 'clean verify' }
+    - task: SonarQubePublish@5
+
+- stage: DockerBuild
+  jobs:
+  - job: Docker
+    steps:
+    - task: Docker@2
+      inputs: { containerRegistry: 'ACR-ServiceConnection', repository: 'cards-service', command: 'buildAndPush', tags: '$(Build.BuildId)' }
+
+- stage: DeployAKS
+  jobs:
+  - deployment: Deploy
+    environment: 'Production'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: KubernetesManifest@1
+            inputs:
+              action: 'deploy'
+              namespace: 'prod'
+              manifests: 'cards-service/k8s/*.yml'
+              containers: 'mybank.azurecr.io/cards-service:$(Build.BuildId)'
+</pre>
+<div class="tip"><b>Real scenario:</b> "Each of our three services has its own Azure DevOps pipeline scoped by <code>paths.include</code>, so a change to Cards Service only triggers Cards Service's pipeline — Accounts and Loans are completely unaffected, exactly the independent-deployment benefit microservices are meant to deliver."</div>
+
+<h2>42.4 Cost &amp; Scaling Notes</h2>
+<ul>
+<li>Non-prod environments (Dev/QA) often share one smaller AKS cluster with separate namespaces to save cost; Production typically gets its own dedicated cluster.</li>
+<li>Azure Spring Apps can reduce operational cost for pure Spring Boot workloads by removing the need to manage Kubernetes YAML for service discovery/config directly.</li>
+<li>Reserved instances/savings plans for baseline AKS node capacity, autoscaling for burst capacity — a common real-world cost optimization.</li>
+</ul>
+</div>
+
+<!-- 43. COMMON ISSUES -->
+<div class="section">
+<h1>43. Common Microservices Issues, Problems &amp; Solutions</h1>
+<table>
+<tr><th>Issue</th><th>Cause</th><th>Real Solution</th></tr>
+<tr><td>Cascading failures across services</td><td>No circuit breaker/timeout on inter-service calls</td><td>Add Resilience4j circuit breaker + timeout on every downstream call; design fallbacks</td></tr>
+<tr><td>Data inconsistency between services</td><td>No saga/compensation logic for multi-service business transactions</td><td>Implement Saga pattern (choreography or orchestration) with explicit compensating transactions</td></tr>
+<tr><td>Duplicate processing (double payment, duplicate notification)</td><td>Retries or at-least-once message delivery without idempotency handling</td><td>Idempotency keys on write APIs, track processed Kafka message IDs</td></tr>
+<tr><td>"Which service is slow?" — can't tell</td><td>No distributed tracing in place</td><td>Instrument with OpenTelemetry, visualize in Jaeger/Zipkin</td></tr>
+<tr><td>Debugging one request across 5 services is painful</td><td>Logs not correlated across services</td><td>Propagate a correlation/trace ID through every log line and every downstream call header</td></tr>
+<tr><td>Config drift between environments</td><td>Manually managed application.yml per service per environment</td><td>Centralize with Spring Cloud Config Server backed by Git</td></tr>
+<tr><td>Chatty services causing high latency</td><td>Over-decomposed services requiring many sequential network calls per user request</td><td>Reconsider service boundaries; consider API composition/BFF pattern, or merge overly fine-grained services</td></tr>
+<tr><td>Database becomes a shared bottleneck</td><td>Multiple services accidentally sharing one database</td><td>Enforce Database per Service; migrate shared tables to the owning service via API</td></tr>
+<tr><td>Difficult local development (need 10 services running)</td><td>No easy way to run the full stack locally</td><td>Docker Compose for full local stack; or use service virtualization/stubs (WireMock) for services not under active development</td></tr>
+<tr><td>Breaking changes deployed without warning</td><td>No API versioning discipline or contract testing</td><td>Enforce backward-compatible changes + consumer-driven contract tests (Pact) in CI</td></tr>
+<tr><td>Alert fatigue — too many noisy alerts</td><td>Alerting on raw metrics without meaningful thresholds/SLOs</td><td>Define SLOs per service, alert only on symptoms that affect users (error rate, latency), not every internal blip</td></tr>
+<tr><td>Difficult to reason about system-wide impact of a change</td><td>No up-to-date service dependency map</td><td>Maintain (and auto-generate where possible, e.g., via tracing data) a live service dependency graph</td></tr>
+</table>
+</div>
+
+<!-- 44. INTERVIEW Q&A -->
+<div class="section">
+<h1>44. Interview Questions &amp; Answers (Basic → Advanced → Scenario Based)</h1>
+
+<div class="qa"><div class="q">Q1. What is the difference between monolithic and microservices architecture?</div>
+<div class="a">A monolith is one deployable unit with all modules sharing a codebase and database. Microservices split the application into small, independently deployable services, each with its own database, communicating over the network.</div></div>
+
+<div class="qa"><div class="q">Q2. When would you recommend staying with a monolith instead of moving to microservices?</div>
+<div class="a">For small teams, early-stage products with unclear domain boundaries, low traffic internal tools, or organizations lacking mature CI/CD and monitoring practices — the operational overhead of microservices isn't justified until there's a proven need for independent scaling or release cadence.</div></div>
+
+<div class="qa"><div class="q">Q3. How does Eureka enable service discovery, and what happens if Eureka itself goes down?</div>
+<div class="a">Services register with Eureka and send heartbeats; clients query Eureka for healthy instances of a service name. Eureka clients cache the last known registry locally, so brief Eureka downtime doesn't immediately break service-to-service calls — but new service instances can't register until Eureka recovers.</div></div>
+
+<div class="qa"><div class="q">Q4. Explain the Saga pattern and why it's needed.</div>
+<div class="a">Since microservices can't share a single ACID transaction across databases, a Saga breaks a business transaction into a sequence of local transactions per service, each with a compensating transaction to undo it if a later step fails — trading strict consistency for eventual consistency with guaranteed rollback.</div>
+<div class="scenario">Real scenario: Loan disbursement — if crediting the account fails after the loan was created, a compensating transaction cancels the loan record instead of leaving the system in an inconsistent state.</div></div>
+
+<div class="qa"><div class="q">Q5. Difference between Choreography and Orchestration sagas?</div>
+<div class="a">Choreography is decentralized — each service reacts to events independently, no central coordinator. Orchestration has a dedicated coordinator service explicitly directing each step. Choreography suits simple flows; orchestration scales better for complex multi-step business processes.</div></div>
+
+<div class="qa"><div class="q">Q6. What problem does a Circuit Breaker solve, and how does it differ from a simple try-catch?</div>
+<div class="a">A Circuit Breaker prevents cascading failures by tracking failure rates over a sliding window and "opening" to fail fast (skip the real call entirely) once a threshold is breached, giving the downstream service time to recover — a try-catch alone still makes the call and waits for it to fail/timeout every single time.</div></div>
+
+<div class="qa"><div class="q">Q7. Why is idempotency important, and how do you implement it?</div>
+<div class="a">Network retries and at-least-once message delivery mean the same operation can be triggered more than once; idempotency ensures repeating it produces the same result instead of duplicate side effects (e.g., double payment). Implemented via an idempotency key that the server checks before processing.</div></div>
+
+<div class="qa"><div class="q">Q8. Why does each microservice need its own database?</div>
+<div class="a">It preserves independent deployability and encapsulation — if services shared a database, a schema change for one service could break another, defeating the purpose of splitting into microservices. Cross-service data needs go through APIs or events, not direct queries.</div></div>
+
+<div class="qa"><div class="q">Q9. How do you handle reporting/analytics that need data from multiple services?</div>
+<div class="a">Either API composition (call each service and merge results in code, fine for small-scale needs), or CQRS-style read models fed by domain events published to Kafka and projected into a dedicated reporting database optimized for queries.</div></div>
+
+<div class="qa"><div class="q">Q10. What's the difference between REST and gRPC for inter-service communication, and when would you choose gRPC?</div>
+<div class="a">REST/JSON is simple, human-readable, and universally supported but slower; gRPC uses binary Protobuf over HTTP/2, much faster, ideal for high-throughput internal service-to-service calls where performance matters more than human readability (e.g., a fraud-scoring service called on every transaction).</div></div>
+
+<div class="qa"><div class="q">Q11. How do you secure microservices end to end?</div>
+<div class="a">Authenticate once at the edge (API Gateway validates JWT issued by an OAuth2/OIDC provider like Keycloak), propagate the token to downstream services, and enforce authorization again at each service (defense in depth) rather than trusting internal network location as implicit trust.</div></div>
+
+<div class="qa"><div class="q">Q12. How do you debug a slow request that spans multiple microservices?</div>
+<div class="a">Use distributed tracing (OpenTelemetry + Jaeger/Zipkin) to see the exact time spent in each service/span for that specific trace ID, then cross-reference centralized logs (ELK) filtered by the same trace/correlation ID to see detailed context for the slow span.</div></div>
+
+<div class="qa"><div class="q">Q13. What is the Strangler Fig pattern and why use it over a full rewrite?</div>
+<div class="a">It incrementally extracts pieces of a monolith into microservices one module at a time, routing traffic gradually via a gateway, while the monolith keeps running — avoiding the high risk of a big-bang rewrite where the business can't ship features for a long freeze period.</div></div>
+
+<div class="qa"><div class="q">Q14. How would you design the "close account" use case across Accounts, Cards, and Loans services?</div>
+<div class="a">Accounts Service synchronously checks (via REST/Feign) for active cards/loans before allowing closure; once closed, it publishes an AccountClosedEvent to Kafka, which Cards Service and Loans Service consume asynchronously to perform their own side effects (deactivate cards, flag loan records) — combining synchronous validation with asynchronous eventual-consistency side effects.</div></div>
+
+<div class="qa"><div class="q">Q15. What are the biggest challenges you've faced with microservices in production, and how did you solve them?</div>
+<div class="a">Example: cascading failures from a slow downstream Card Network API — solved by adding Resilience4j circuit breaker + bulkhead + timeout, so a slow dependency degrades gracefully (fallback response) instead of exhausting Accounts Service's own thread pool and causing a full outage.</div></div>
+
+<div class="qa"><div class="q">Q16. How do you deploy 20+ microservices without them stepping on each other?</div>
+<div class="a">Each service has its own independent CI/CD pipeline (scoped to its own repo/folder), its own Kubernetes Deployment/Service/HPA, and its own database — deployments are fully decoupled. Shared infrastructure (Gateway, Config Server, Eureka) is owned by a platform team and changed more conservatively.</div></div>
+
+<div class="qa"><div class="q">Q17. What is API versioning and why is it necessary in microservices?</div>
+<div class="a">Since services deploy independently, older and newer versions of a service coexist during rollout, and external consumers (mobile apps) can't always upgrade instantly — versioning (typically URI path-based, e.g., /api/v2/) lets you evolve APIs without breaking existing consumers.</div></div>
+
+<div class="qa"><div class="q">Q18. Explain the Bulkhead pattern with a real example.</div>
+<div class="a">Bulkhead isolates resources (e.g., thread pools) per downstream dependency so a slow/failing one doesn't exhaust resources needed for unrelated calls — e.g., giving Loans Service calls their own dedicated thread pool so a slowdown there doesn't also block Cards Service calls sharing the same caller.</div></div>
+
+<div class="qa"><div class="q">Q19. How does Kubernetes complement microservices architecture?</div>
+<div class="a">It provides per-service independent scaling (HPA), self-healing (restarts/reschedules failed pods), rolling/canary/blue-green deployment support, built-in DNS-based service discovery, and namespace-based environment isolation — solving most of the operational challenges that come with running many small services.</div></div>
+
+<div class="qa"><div class="q">Q20. What would you consider before splitting a monolith into microservices?</div>
+<div class="a">Whether bounded contexts are actually well understood (DDD analysis), whether the team has mature CI/CD/monitoring/containerization practices, whether there's a genuine need for independent scaling/release cadence per module, and a realistic incremental migration plan (Strangler Fig) rather than a risky big-bang rewrite.</div></div>
+</div>
+
+<!-- 45. FINAL SUMMARY -->
+<div class="section">
+<h1>45. Final Summary &amp; Cheat Sheet</h1>
+<div class="box">
+<p><b>Monolith:</b> one deployable unit, one database, simple to start with, but scales and releases as a whole.</p>
+<p><b>Microservices:</b> independently deployable services organized around business capabilities, each with its own database, communicating over REST/gRPC/events — powerful but operationally complex.</p>
+<p><b>Our banking example:</b> Accounts, Cards, and Loans services, each owning their data, communicating synchronously (Feign/REST) for immediate needs and asynchronously (Kafka) for decoupled side effects, protected by circuit breakers/retries/bulkheads, secured with JWT/OAuth2/Keycloak, observed via Actuator/Micrometer/Prometheus/Grafana/OpenTelemetry/Jaeger/ELK, and deployed independently via Azure DevOps to AKS.</p>
+<p><b>The golden rule:</b> don't adopt microservices because it's trendy — adopt it when bounded contexts are clear, teams need independent release cadence, and your organization has the DevOps maturity (CI/CD, containerization, observability) to operate a distributed system reliably.</p>
+</div>
+
+<h2>45.1 Quick Cheat Sheet</h2>
+<table>
+<tr><th>Term</th><th>One-Line Meaning</th></tr>
+<tr><td>Bounded Context</td><td>A clear business domain boundary — the basis for defining a microservice</td></tr>
+<tr><td>Eureka</td><td>Service registry — services register and discover each other by name</td></tr>
+<tr><td>API Gateway</td><td>Single entry point handling routing, auth, rate limiting</td></tr>
+<tr><td>Feign</td><td>Declarative REST client with Eureka + load balancing integration</td></tr>
+<tr><td>Circuit Breaker</td><td>Fails fast once a dependency's failure rate crosses a threshold</td></tr>
+<tr><td>Retry</td><td>Re-attempts transient failures, dangerous without idempotency</td></tr>
+<tr><td>Bulkhead</td><td>Isolates resources per dependency so one failure doesn't starve others</td></tr>
+<tr><td>Saga</td><td>Sequence of local transactions + compensations replacing distributed ACID transactions</td></tr>
+<tr><td>Choreography</td><td>Decentralized event reactions, no coordinator</td></tr>
+<tr><td>Orchestration</td><td>Centralized coordinator drives the multi-step flow</td></tr>
+<tr><td>Idempotency Key</td><td>Ensures repeated requests don't cause duplicate side effects</td></tr>
+<tr><td>Database per Service</td><td>Each service owns its data exclusively — no cross-service DB access</td></tr>
+<tr><td>CQRS</td><td>Separate write and read models, often synced via events</td></tr>
+<tr><td>Distributed Tracing</td><td>Follows one request's full journey across services (Jaeger/Zipkin)</td></tr>
+<tr><td>Kafka</td><td>Durable, replayable event streaming platform for async communication</td></tr>
+<tr><td>JWT/OAuth2/Keycloak</td><td>Token-based auth verified independently by each stateless service</td></tr>
+<tr><td>Strangler Fig</td><td>Incrementally replace a monolith module by module, no big-bang rewrite</td></tr>
+</table>
+
+<div class="tip">Use this guide alongside the Git/GitHub/GitLab/Bitbucket guide, the CI/CD guide, and the Docker &amp; Kubernetes guide — together they cover the complete real-world Java full-stack developer journey: writing and versioning code, automating build/test/deploy, packaging into containers, orchestrating on Kubernetes, and designing/operating a resilient microservices architecture in production.</div>
+</div>
+
+</body>
+</html>
+

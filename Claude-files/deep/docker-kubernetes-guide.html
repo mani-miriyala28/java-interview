@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Docker &amp; Kubernetes Complete Guide — Real-Time Deployment for Java Full Stack Developers</title>
+<style>
+  @page { size: A4; margin: 18mm 15mm 18mm 15mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #1a1a1a;
+    font-size: 11.5px;
+    line-height: 1.55;
+  }
+  h1, h2, h3, h4 { color: #0d47a1; font-family: Arial, sans-serif; page-break-after: avoid; }
+  h1 { font-size: 22px; border-bottom: 3px solid #0d47a1; padding-bottom: 6px; margin-top: 0; }
+  h2 { font-size: 17px; border-bottom: 1px solid #bbdefb; padding-bottom: 4px; margin-top: 26px; }
+  h3 { font-size: 14px; color: #b03a2e; margin-top: 18px; }
+  h4 { font-size: 12.5px; color: #444; margin-top: 12px; }
+  .section { page-break-before: always; }
+  .cover { page-break-after: always; text-align: center; padding-top: 110px; }
+  .cover h1 { font-size: 32px; border: none; }
+  .cover h3 { color: #333; font-weight: normal; font-size: 17px; margin-top: 18px;}
+  .cover .tag { margin-top: 50px; font-size: 13px; color: #666; }
+  .toc { page-break-after: always; }
+  .toc ol { line-height: 2; }
+  code, pre { font-family: Consolas, "Courier New", monospace; }
+  code { background: #f1f1f1; padding: 1px 5px; border-radius: 3px; color: #a4141d; }
+  pre {
+    background: #1e1e1e; color: #d4d4d4; padding: 10px 12px; border-radius: 6px;
+    overflow-x: auto; font-size: 10.5px; line-height: 1.5; page-break-inside: avoid;
+    white-space: pre-wrap; word-wrap: break-word;
+  }
+  pre .c1 { color: #6a9955; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0 16px 0; font-size: 11px; }
+  th, td { border: 1px solid #bbb; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #0d47a1; color: white; }
+  tr:nth-child(even) { background: #f4f7fc; }
+  .box { background: #f8f9fb; border: 1px solid #cdd6e6; border-radius: 6px; padding: 10px 14px; margin: 10px 0; }
+  .warn { background: #fff4e5; border: 1px solid #f0c36d; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .tip { background: #e8f6ee; border: 1px solid #7fc79a; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .qa { border-left: 3px solid #0d47a1; padding-left: 10px; margin: 10px 0 16px 0; page-break-inside: avoid; }
+  .qa .q { font-weight: bold; color: #0d47a1; }
+  .qa .a { margin-top: 4px; }
+  .qa .scenario { margin-top: 4px; font-style: italic; color: #555; }
+  .diagram { background: #fff; border: 1px dashed #64b5f6; border-radius: 8px; padding: 16px; margin: 14px 0; page-break-inside: avoid; }
+  .diagram .title { font-weight: bold; color: #0d47a1; margin-bottom: 10px; text-align:center; }
+  .flow-row { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+  .node { border: 2px solid #0d47a1; background: #e3f2fd; border-radius: 6px; padding: 8px 12px; font-weight: bold; text-align: center; font-size: 11px; min-width: 90px; }
+  .node.alt { border-color: #b03a2e; background: #fdeceb; }
+  .node.green { border-color: #1e8449; background: #eafaf1; }
+  .node.gray { border-color: #666; background: #eee; }
+  .node.purple { border-color: #8e44ad; background: #f5eefc; }
+  .arrow { font-size: 20px; color: #0d47a1; font-weight: bold; }
+  .arrow-down { font-size: 20px; color: #0d47a1; text-align: center; }
+  .pagebreak { page-break-before: always; }
+  ul, ol { margin-top: 4px; }
+  li { margin-bottom: 3px; }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover">
+  <h1>Docker &amp; Kubernetes — The Complete Guide</h1>
+  <h3>Real-Time Deployment for Java Full Stack Developers (Spring Boot + React)</h3>
+  <h3>Traditional Servers → VMs → Containers → Docker → Kubernetes → Azure (AKS + Azure DevOps)</h3>
+  <h3>Commands • Dockerfile Internals • Security • Monitoring • Microservices • Interview Q&amp;A</h3>
+  <div class="tag">A practical, simple-language reference for interview preparation and daily real-world use</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+<h1>Table of Contents</h1>
+<ol>
+<li>Before Docker — Traditional Servers, VMs and Their Problems</li>
+<li>Why Docker Came — The Real-World Story</li>
+<li>Docker Core Concepts (Image, Container, Registry, Layers)</li>
+<li>Docker Architecture — How It Works Internally</li>
+<li>Installing &amp; Setting Up Docker (Real Steps)</li>
+<li>Dockerfile Deep Dive — Every Instruction Explained</li>
+<li>How Many Images Can You Create From One Dockerfile? (Tags, Layers, Multi-Stage)</li>
+<li>Dockerfile for Spring Boot — Full Real Example</li>
+<li>Dockerfile for React — Full Real Example (Multi-Stage with Nginx)</li>
+<li>Docker Compose — Running Microservices Together</li>
+<li>Docker Networking &amp; Volumes Explained</li>
+<li>Docker Commands — Full Reference with What Each One Does</li>
+<li>Docker Security — Before Docker vs After Docker</li>
+<li>Common Docker Issues &amp; Real-Time Fixes</li>
+<li>Docker Real-World Organization Scenario (End to End)</li>
+<li>Introduction to Kubernetes — Why We Needed It After Docker</li>
+<li>Kubernetes Architecture — Master &amp; Worker Nodes Explained</li>
+<li>Core Kubernetes Objects (Pod, ReplicaSet, Deployment, Service, Ingress)</li>
+<li>ConfigMaps, Secrets, Namespaces Explained</li>
+<li>Kubernetes YAML — Full Real Examples (Spring Boot + React)</li>
+<li>Kubernetes Commands (kubectl) — Full Reference</li>
+<li>Monitoring &amp; Observability Tools for Pods (Rancher, Prometheus, Grafana, Lens, K9s, Datadog)</li>
+<li>Kubernetes Autoscaling &amp; Self-Healing</li>
+<li>Kubernetes Security — Before K8s vs After K8s</li>
+<li>Common Kubernetes Issues &amp; Real-Time Fixes</li>
+<li>Microservices on Kubernetes — Real Organization Setup</li>
+<li>Azure Integration — AKS, ACR and Azure DevOps Pipeline</li>
+<li>End-to-End Real-Time Implementation Flow (Code → Prod)</li>
+<li>Docker vs Kubernetes vs Other Tools — Comparison</li>
+<li>Interview Questions &amp; Answers (Basic → Advanced → Scenario Based)</li>
+<li>Final Summary &amp; Cheat Sheet</li>
+</ol>
+</div>
+
+<!-- 1. BEFORE DOCKER -->
+<div class="section">
+<h1>1. Before Docker — Traditional Servers, VMs and Their Problems</h1>
+
+<h2>1.1 Era 1 — Physical/Traditional Servers</h2>
+<div class="box">Before virtualization, every application ran on its own physical machine bought, racked, and cabled in a data center. If you had 5 applications, you bought and maintained 5 physical servers.</div>
+<div class="diagram">
+<div class="title">Traditional Physical Server Era</div>
+<div class="flow-row">
+<div class="node gray">Physical Server 1<br/>App A + full OS</div>
+<div class="node gray">Physical Server 2<br/>App B + full OS</div>
+<div class="node gray">Physical Server 3<br/>App C + full OS</div>
+</div>
+</div>
+<ul>
+<li><b>Problem 1 — Massive waste:</b> each server used maybe 10-15% of its CPU/RAM capacity, but you still paid for 100% of the hardware.</li>
+<li><b>Problem 2 — Slow provisioning:</b> ordering, racking, and configuring a new physical server took days to weeks.</li>
+<li><b>Problem 3 — No isolation flexibility:</b> one app crashing the OS could take the whole physical box down.</li>
+<li><b>Problem 4 — Scaling was physical:</b> "scale up" meant literally buying more hardware.</li>
+</ul>
+
+<h2>1.2 Era 2 — Virtual Machines (VMware, Hyper-V, KVM)</h2>
+<div class="box">Virtualization let one physical server run multiple <b>Virtual Machines</b>, each with its own full guest OS, via a hypervisor. This solved the "one app per box" waste problem.</div>
+<div class="diagram">
+<div class="title">Virtual Machine Era</div>
+<div class="flow-row"><div class="node purple">Physical Server (Host)</div></div>
+<div class="arrow-down">↓ Hypervisor (VMware/Hyper-V)</div>
+<div class="flow-row">
+<div class="node gray">VM 1<br/>Guest OS + App A</div>
+<div class="node gray">VM 2<br/>Guest OS + App B</div>
+<div class="node gray">VM 3<br/>Guest OS + App C</div>
+</div>
+</div>
+<ul>
+<li><b>Better:</b> much higher hardware utilization, isolated environments, snapshots/backups became easy.</li>
+<li><b>Still a Problem 1 — Heavy:</b> every VM carries a <b>full guest operating system</b> (kernel + libraries), often several GB, and takes minutes to boot.</li>
+<li><b>Still a Problem 2 — Resource overhead:</b> running 10 VMs means 10 full OS kernels consuming CPU/RAM just for the OS itself, not the app.</li>
+<li><b>Still a Problem 3 — "Works on my machine":</b> a developer's laptop, the QA VM, and the production VM often had subtly different OS patches, library versions, or configs — causing bugs that only appeared in one environment.</li>
+<li><b>Still a Problem 4 — Slow CI/CD:</b> spinning up a new VM for testing was slow (minutes), which slowed down automated pipelines.</li>
+</ul>
+
+<h2>1.3 What Java/Spring Boot Teams Actually Faced (Real Story)</h2>
+<div class="box">A typical pre-container Java shop had: a shared Tomcat server with multiple WARs deployed on it, an ops team manually copying WAR files via FTP/SCP, an <code>ops-checklist.docx</code> describing 20 manual steps to prepare a new environment, and constant "which JDK/library version is on this server?" confusion between Dev, QA and Prod.</div>
+<div class="tip"><b>Real scenario:</b> "Our order-service used Java 8 update 202 in production, but a new VM provisioned for a scale-out event had Java 8 update 265 installed by default — a subtle date-parsing bug that only reproduced on the newer patch version caused an outage. This was purely an environment inconsistency problem — the exact class of issue containers were built to solve."</div>
+
+<h2>1.4 Summary of Problems Before Docker</h2>
+<table>
+<tr><th>Problem</th><th>Physical Servers</th><th>Virtual Machines</th></tr>
+<tr><td>Resource utilization</td><td>Very poor</td><td>Better, but each VM still carries a full OS</td></tr>
+<tr><td>Provisioning speed</td><td>Days/weeks</td><td>Minutes, still slow for CI/CD</td></tr>
+<tr><td>Environment consistency</td><td>Poor</td><td>Still inconsistent — OS patches/config drift</td></tr>
+<tr><td>Portability</td><td>None</td><td>Limited — VM images are huge, hypervisor-specific</td></tr>
+<tr><td>Startup time</td><td>Minutes (boot server)</td><td>Minutes (boot guest OS)</td></tr>
+<tr><td>Density (apps per host)</td><td>1 app per server</td><td>Several VMs per host, but overhead-heavy</td></tr>
+</table>
+</div>
+
+<!-- 2. WHY DOCKER CAME -->
+<div class="section">
+<h1>2. Why Docker Came — The Real-World Story</h1>
+
+<h2>2.1 The Core Idea Docker Introduced (2013)</h2>
+<div class="box">Instead of virtualizing an entire computer (like a VM), Docker virtualizes at the <b>operating system level</b> — many containers share the <b>same host OS kernel</b>, but each is isolated with its own filesystem, process space, and network. No guest OS needed per app.</div>
+<div class="diagram">
+<div class="title">VM vs Container — Side by Side</div>
+<div class="flow-row">
+<div class="node purple">Host OS + Hypervisor</div>
+</div>
+<div class="flow-row">
+<div class="node gray">VM: Guest OS + Libs + App (GBs, slow boot)</div>
+</div>
+<div class="arrow-down">— vs —</div>
+<div class="flow-row">
+<div class="node purple">Host OS + Docker Engine</div>
+</div>
+<div class="flow-row">
+<div class="node green">Container: Libs + App only (MBs, boots in seconds)</div>
+<div class="node green">Container: Libs + App only (MBs, boots in seconds)</div>
+</div>
+</div>
+
+<h2>2.2 What Problems Docker Actually Solved</h2>
+<table>
+<tr><th>Old Problem</th><th>How Docker Solves It</th></tr>
+<tr><td>"Works on my machine" bugs</td><td>The exact same image (app + dependencies + runtime) runs identically on laptop, QA, and Prod</td></tr>
+<tr><td>Heavy VMs, slow boot</td><td>Containers share the host kernel — start in seconds, images are typically MBs not GBs</td></tr>
+<tr><td>Manual environment setup</td><td>Dockerfile codifies the entire environment as version-controlled text</td></tr>
+<tr><td>Low server density</td><td>You can run dozens of containers on a host that could only fit a few VMs</td></tr>
+<tr><td>Slow CI/CD feedback</td><td>Spinning up a container for a test job takes seconds, enabling fast pipelines</td></tr>
+<tr><td>Dependency hell (conflicting library versions)</td><td>Each container has its own isolated filesystem/dependencies, no clashes between apps on the same host</td></tr>
+</table>
+
+<h2>2.3 From a Spring Boot Perspective</h2>
+<div class="box">Spring Boot already bundles an embedded Tomcat/Jetty into a single executable JAR — this made it a perfect fit for containers: <code>java -jar app.jar</code> inside a small JRE-based image is basically the entire deployment story. No external application server to install/configure on the host anymore.</div>
+
+<h2>2.4 From a React Perspective</h2>
+<div class="box">React builds into static HTML/CSS/JS files. Before Docker, these were manually copied to a web server (Apache/Nginx/IIS) with environment-specific config. With Docker, the build output + a minimal Nginx server are packaged into one small image that behaves identically everywhere.</div>
+
+<h2>2.5 The Container Philosophy (Simple Terms)</h2>
+<ul>
+<li><b>Build once, run anywhere</b> — a Docker image is a single portable unit.</li>
+<li><b>Immutable artifacts</b> — you don't patch a running container, you replace it with a new image version.</li>
+<li><b>Declarative environment</b> — the Dockerfile is the single source of truth for what's inside.</li>
+<li><b>Process isolation, not full OS duplication</b> — lightweight compared to VMs.</li>
+</ul>
+<div class="tip"><b>Interview one-liner:</b> "Docker solves environment inconsistency and heavy resource usage by packaging an app with its exact dependencies into a lightweight, portable container that shares the host OS kernel instead of duplicating a full guest OS like a VM does."</div>
+</div>
+
+<!-- 3. DOCKER CORE CONCEPTS -->
+<div class="section">
+<h1>3. Docker Core Concepts (Image, Container, Registry, Layers)</h1>
+
+<h2>3.1 The Four Building Blocks</h2>
+<div class="diagram">
+<div class="title">Docker Core Concepts Flow</div>
+<div class="flow-row">
+<div class="node">Dockerfile (recipe)</div><div class="arrow">→</div><div class="node green">Image (built, read-only template)</div><div class="arrow">→</div><div class="node alt">Container (running instance of image)</div>
+</div>
+<div class="arrow-down">↓ push / pull</div>
+<div class="flow-row"><div class="node purple">Registry (Docker Hub / ACR / ECR / GitLab Registry)</div></div>
+</div>
+
+<h2>3.2 Dockerfile</h2>
+<p>A plain text file with step-by-step instructions to build an image — base OS/runtime, files to copy, dependencies to install, command to run.</p>
+
+<h2>3.3 Image</h2>
+<p>The built, immutable, read-only template made of stacked <b>layers</b>. An image is not running — it's a snapshot ready to be started as a container. Identified by <code>name:tag</code>, e.g., <code>order-service:1.4.2</code>.</p>
+
+<h2>3.4 Container</h2>
+<p>A running (or stopped) instance of an image, with a thin writable layer on top for runtime changes. You can run many containers from the same image, each isolated from the others.</p>
+
+<h2>3.5 Registry</h2>
+<p>A storage/distribution service for images. Examples: Docker Hub (public), Azure Container Registry (ACR), Amazon ECR, GitLab Container Registry, self-hosted Harbor/Nexus.</p>
+
+<h2>3.6 Image Layers Explained</h2>
+<div class="box">Every instruction in a Dockerfile (<code>FROM</code>, <code>RUN</code>, <code>COPY</code>, etc.) creates a new, cached <b>layer</b>. Layers are stacked and shared across images — if two images both start <code>FROM eclipse-temurin:17-jre</code>, that base layer is downloaded/stored only once on a host.</div>
+<div class="diagram">
+<div class="title">Image Layer Stack (Spring Boot Example)</div>
+<div class="flow-row"><div class="node gray">Layer 1: Base OS (Alpine Linux)</div></div>
+<div class="flow-row"><div class="node gray">Layer 2: JRE 17 runtime</div></div>
+<div class="flow-row"><div class="node">Layer 3: WORKDIR + app user setup</div></div>
+<div class="flow-row"><div class="node green">Layer 4: COPY app.jar</div></div>
+<div class="flow-row"><div class="node alt">Thin writable layer (only exists once container runs)</div></div>
+</div>
+<div class="tip"><b>Why this matters:</b> Docker caches each layer. If you only change your application code (last <code>COPY</code> layer) and not your dependencies, rebuilding reuses all earlier cached layers — massively speeding up builds. This is why Dockerfile instruction <b>order</b> matters (see Section 6).</div>
+</div>
+
+<!-- 4. DOCKER ARCHITECTURE -->
+<div class="section">
+<h1>4. Docker Architecture — How It Works Internally</h1>
+
+<h2>4.1 Client-Server Architecture</h2>
+<div class="diagram">
+<div class="title">Docker Engine Architecture</div>
+<div class="flow-row">
+<div class="node">Docker CLI (docker run, docker build...)</div><div class="arrow">→</div><div class="node purple">Docker Daemon (dockerd) — REST API</div>
+</div>
+<div class="arrow-down">↓ manages</div>
+<div class="flow-row">
+<div class="node green">Images</div><div class="node green">Containers</div><div class="node green">Networks</div><div class="node green">Volumes</div>
+</div>
+</div>
+<ul>
+<li><b>Docker CLI:</b> what you type (<code>docker build</code>, <code>docker run</code>) — sends commands to the daemon.</li>
+<li><b>Docker Daemon (dockerd):</b> the background service that actually builds images, runs containers, manages networking/storage.</li>
+<li><b>containerd + runc:</b> lower-level components that daemon delegates to for actually creating and running containers using Linux kernel features (namespaces, cgroups).</li>
+</ul>
+
+<h2>4.2 The Linux Kernel Features That Make Containers Possible</h2>
+<table>
+<tr><th>Kernel Feature</th><th>What It Provides</th></tr>
+<tr><td>Namespaces</td><td>Isolation — each container gets its own view of process IDs, network interfaces, mount points, hostname</td></tr>
+<tr><td>cgroups (control groups)</td><td>Resource limiting — caps CPU, memory, disk I/O per container</td></tr>
+<tr><td>Union/Overlay filesystem</td><td>Layered image storage — stacks read-only layers with one writable layer on top</td></tr>
+</table>
+
+<h2>4.3 Docker on Windows/Mac (How It Really Runs)</h2>
+<div class="box">Docker containers need a Linux kernel. On Windows/Mac, Docker Desktop runs a lightweight Linux VM (via WSL2 on Windows, or a hypervisor on Mac) under the hood, and your containers actually run inside that VM — this is why Docker Desktop asks you to enable WSL2/Hyper-V.</div>
+
+<h2>4.4 Build → Run Flow End to End</h2>
+<div class="diagram">
+<div class="title">docker build → docker run Flow</div>
+<div class="flow-row">
+<div class="node">Dockerfile + source code</div><div class="arrow">→</div><div class="node">docker build -t order-service:1.0 .</div><div class="arrow">→</div><div class="node green">Image stored locally</div>
+</div>
+<div class="arrow-down">↓ docker push</div>
+<div class="flow-row"><div class="node purple">Registry (ACR/Docker Hub)</div></div>
+<div class="arrow-down">↓ docker pull (on another machine/server)</div>
+<div class="flow-row">
+<div class="node green">Image</div><div class="arrow">→</div><div class="node alt">docker run -p 8080:8080 order-service:1.0</div><div class="arrow">→</div><div class="node">Running Container</div>
+</div>
+</div>
+</div>
+
+<!-- 5. INSTALLING DOCKER -->
+<div class="section">
+<h1>5. Installing &amp; Setting Up Docker (Real Steps)</h1>
+
+<h2>5.1 Local Developer Machine Setup</h2>
+<ol>
+<li>Install <b>Docker Desktop</b> (Windows/Mac) or <b>Docker Engine</b> directly (Linux).</li>
+<li>On Windows: enable WSL2 backend for better performance than the legacy Hyper-V backend.</li>
+<li>Verify installation: <code>docker --version</code> and <code>docker run hello-world</code>.</li>
+<li>Log in to your organization's registry: <code>docker login myregistry.azurecr.io</code>.</li>
+</ol>
+
+<h2>5.2 Real Organization Server/Build-Agent Setup</h2>
+<ul>
+<li>CI/CD build agents (Jenkins agent, Azure Pipelines self-hosted agent) have Docker Engine pre-installed so pipeline steps can run <code>docker build</code>/<code>docker push</code>.</li>
+<li>Production Kubernetes nodes use a container runtime (containerd, historically Docker Engine, now often <b>containerd</b> directly per Kubernetes' removal of "dockershim").</li>
+<li>Registries are private (ACR/ECR/Harbor) with role-based access — only CI/CD service principals and admins can push.</li>
+</ul>
+
+<h2>5.3 First Commands to Sanity-Check Everything</h2>
+<pre>docker --version                     <span class="c1"># confirms Docker CLI is installed</span>
+docker info                          <span class="c1"># shows daemon status, storage driver, resource info</span>
+docker run hello-world               <span class="c1"># pulls a tiny test image and confirms daemon works end-to-end</span>
+docker images                        <span class="c1"># lists locally stored images</span>
+docker ps                            <span class="c1"># lists running containers</span>
+</pre>
+</div>
+
+<!-- 6. DOCKERFILE DEEP DIVE -->
+<div class="section">
+<h1>6. Dockerfile Deep Dive — Every Instruction Explained</h1>
+
+<h2>6.1 A Complete Annotated Dockerfile</h2>
+<pre><span class="c1"># Stage 1: Build (only needed to compile, not shipped in final image)</span>
+FROM maven:3.9-eclipse-temurin-17 AS build      <span class="c1"># base image with Maven + JDK 17</span>
+WORKDIR /app                                     <span class="c1"># sets working directory inside the image</span>
+COPY pom.xml .                                   <span class="c1"># copy pom.xml first (for dependency layer caching)</span>
+RUN mvn dependency:go-offline                    <span class="c1"># pre-download deps — cached unless pom.xml changes</span>
+COPY src ./src                                   <span class="c1"># now copy source code (changes most often)</span>
+RUN mvn clean package -DskipTests                <span class="c1"># compile and package into a JAR</span>
+
+<span class="c1"># Stage 2: Runtime (this is what actually ships to production — small!)</span>
+FROM eclipse-temurin:17-jre-alpine               <span class="c1"># minimal JRE-only base image (no Maven, no JDK)</span>
+RUN addgroup -S app &amp;&amp; adduser -S app -G app     <span class="c1"># create a non-root user (security best practice)</span>
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar      <span class="c1"># copy only the built JAR from Stage 1</span>
+USER app                                         <span class="c1"># run container as non-root</span>
+EXPOSE 8080                                      <span class="c1"># documents the port the app listens on</span>
+ENV SPRING_PROFILES_ACTIVE=prod                  <span class="c1"># default environment variable</span>
+HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- http://localhost:8080/actuator/health || exit 1
+ENTRYPOINT ["java", "-jar", "app.jar"]            <span class="c1"># fixed command that always runs</span>
+</pre>
+
+<h2>6.2 Every Instruction Explained</h2>
+<table>
+<tr><th>Instruction</th><th>What It Does</th></tr>
+<tr><td><code>FROM</code></td><td>Chooses the base image to start from — every Dockerfile must start with this (or <code>ARG</code> before it)</td></tr>
+<tr><td><code>WORKDIR</code></td><td>Sets/creates the working directory for subsequent instructions — avoids messy absolute paths</td></tr>
+<tr><td><code>COPY</code></td><td>Copies files from build context (your machine/CI) into the image</td></tr>
+<tr><td><code>ADD</code></td><td>Like COPY but also supports remote URLs and auto-extracting tar archives — generally COPY is preferred unless you need those extras</td></tr>
+<tr><td><code>RUN</code></td><td>Executes a command <b>at build time</b>, result is committed as a new layer (e.g., installing packages, compiling code)</td></tr>
+<tr><td><code>ENV</code></td><td>Sets an environment variable available at build and container run time</td></tr>
+<tr><td><code>ARG</code></td><td>A build-time-only variable (not available in the running container unless also set as ENV)</td></tr>
+<tr><td><code>EXPOSE</code></td><td>Documents which port the container listens on (does not actually publish it — that's <code>-p</code> on <code>docker run</code>)</td></tr>
+<tr><td><code>USER</code></td><td>Switches the user the rest of the instructions/container run as — critical for security (avoid root)</td></tr>
+<tr><td><code>CMD</code></td><td>Default command/arguments if none given at <code>docker run</code> — can be overridden</td></tr>
+<tr><td><code>ENTRYPOINT</code></td><td>The fixed main command that always runs — harder to override, often combined with CMD for default args</td></tr>
+<tr><td><code>HEALTHCHECK</code></td><td>Tells Docker how to test if the container is actually healthy, not just "running"</td></tr>
+<tr><td><code>VOLUME</code></td><td>Marks a directory as a mount point for persistent/external storage</td></tr>
+<tr><td><code>LABEL</code></td><td>Adds metadata (maintainer, version, git commit hash) to the image</td></tr>
+</table>
+
+<h2>6.3 CMD vs ENTRYPOINT — The Classic Confusion</h2>
+<table>
+<tr><th></th><th>CMD</th><th>ENTRYPOINT</th></tr>
+<tr><td>Overridable?</td><td>Yes, easily replaced by <code>docker run image other-command</code></td><td>No (unless <code>--entrypoint</code> flag used) — meant to be fixed</td></tr>
+<tr><td>Typical use</td><td>Default arguments</td><td>The actual program that must always run</td></tr>
+<tr><td>Best pattern</td><td colspan="2">Combine both: <code>ENTRYPOINT ["java","-jar","app.jar"]</code> with optional <code>CMD ["--spring.profiles.active=dev"]</code> as default overridable args</td></tr>
+</table>
+
+<h2>6.4 Dockerfile Instruction Order Matters (Build Speed)</h2>
+<div class="warn">Put things that change <b>least often</b> (base image, dependency manifests) at the <b>top</b>, and things that change <b>most often</b> (your source code) at the <b>bottom</b>. This maximizes Docker's layer cache reuse and dramatically speeds up rebuilds — this is why <code>COPY pom.xml</code> happens before <code>COPY src</code> in the example above.</div>
+
+<h2>6.5 .dockerignore — Don't Forget This</h2>
+<pre><span class="c1"># .dockerignore — keeps build context small and avoids leaking secrets/junk into images</span>
+target/
+node_modules/
+.git/
+*.log
+.env
+</pre>
+</div>
+
+<!-- 7. HOW MANY IMAGES -->
+<div class="section">
+<h1>7. How Many Images Can You Create From One Dockerfile? (Tags, Layers, Multi-Stage)</h1>
+
+<h2>7.1 One Dockerfile → Unlimited Images (via Tags)</h2>
+<div class="box">A Dockerfile is just a build recipe. Every time you run <code>docker build</code>, you can tag the result differently — so a single Dockerfile can produce as many distinct, independently stored images as you want, each identified by its own <code>name:tag</code>.</div>
+<pre>docker build -t order-service:1.0.0 .
+docker build -t order-service:1.0.1 .
+docker build -t order-service:latest .
+docker build --build-arg APP_ENV=qa -t order-service:qa-1.0.0 .
+</pre>
+<ul>
+<li>Same Dockerfile + same source code, built twice → produces two images with <b>identical layer hashes</b> (Docker recognizes no change occurred, near-instant "build" due to caching).</li>
+<li>Same Dockerfile + different source code/args each build → each build produces a genuinely new image with a new content hash, even under the same tag name (old tag reference simply moves to the new image).</li>
+</ul>
+
+<h2>7.2 Multi-Stage Builds — Multiple "Images" in One Dockerfile</h2>
+<div class="box">A single Dockerfile can define multiple named <code>FROM ... AS stageName</code> stages. Each stage technically builds its own intermediate image, but only the <b>final stage</b> becomes the image you actually ship — earlier stages (compilers, build tools) are discarded, keeping the shipped image small and secure.</div>
+<pre>FROM node:20 AS build          <span class="c1"># Stage 1 — has Node, npm, dev dependencies (large)</span>
+...
+FROM nginx:alpine AS final      <span class="c1"># Stage 2 — final shipped image (small, no Node at all)</span>
+COPY --from=build /app/dist /usr/share/nginx/html
+</pre>
+<ul>
+<li>You can even build and tag <b>intermediate stages</b> separately for debugging: <code>docker build --target build -t order-service:build-debug .</code></li>
+<li>Real orgs commonly keep 3 tags per release: the immutable <code>&lt;build-number&gt;</code> tag, a semantic version tag like <code>1.4.2</code>, and a moving <code>latest</code>/<code>stable</code> tag.</li>
+</ul>
+
+<h2>7.3 Tagging Strategy Used in Real Organizations</h2>
+<table>
+<tr><th>Tag Style</th><th>Example</th><th>Purpose</th></tr>
+<tr><td>Build number</td><td><code>order-service:482</code></td><td>Immutable, traceable to exact CI/CD pipeline run</td></tr>
+<tr><td>Git SHA</td><td><code>order-service:a1b2c3d</code></td><td>Traceable to exact commit, useful for debugging "what code is actually running"</td></tr>
+<tr><td>Semantic version</td><td><code>order-service:2.3.0</code></td><td>Human-readable release version, follows semver</td></tr>
+<tr><td>Environment moving tag</td><td><code>order-service:qa-latest</code></td><td>Always points to whatever is currently deployed in QA</td></tr>
+<tr><td><code>latest</code></td><td><code>order-service:latest</code></td><td>Avoid relying on this in production — ambiguous, not reproducible</td></tr>
+</table>
+<div class="tip"><b>Interview tip:</b> Never deploy production using the <code>latest</code> tag — it's a moving target and you can't be 100% sure which exact build is running. Always deploy an immutable tag (build number or git SHA).</div>
+</div>
+
+<!-- 8. DOCKERFILE FOR SPRING BOOT -->
+<div class="section">
+<h1>8. Dockerfile for Spring Boot — Full Real Example</h1>
+
+<h2>8.1 Project Structure</h2>
+<pre>order-service/
+├── src/main/java/...
+├── src/main/resources/application.yml
+├── pom.xml
+├── Dockerfile
+└── .dockerignore
+</pre>
+
+<h2>8.2 Production-Grade Multi-Stage Dockerfile</h2>
+<pre>FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
+COPY src ./src
+RUN mvn clean package -DskipTests -B
+
+FROM eclipse-temurin:17-jre-alpine
+RUN addgroup -S spring &amp;&amp; adduser -S spring -G spring
+WORKDIR /app
+COPY --from=build /app/target/order-service-*.jar app.jar
+RUN chown spring:spring app.jar
+USER spring
+EXPOSE 8080
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
+  CMD wget -qO- http://localhost:8080/actuator/health | grep UP || exit 1
+ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]
+</pre>
+<div class="box"><b>Why <code>-XX:+UseContainerSupport</code> and <code>MaxRAMPercentage</code>?</b> Without these JVM flags, older JVMs could misread the <b>host's</b> total memory instead of the container's cgroup memory limit, causing OOM-killed containers even when heap usage looked "fine" from the JVM's own perspective. Modern JDKs (10+) detect cgroup limits automatically, but explicitly setting <code>MaxRAMPercentage</code> is still a common real-world safeguard.</div>
+
+<h2>8.3 Building &amp; Running It</h2>
+<pre>docker build -t order-service:1.0.0 .
+docker run -d -p 8080:8080 --name order-service \
+  -e SPRING_PROFILES_ACTIVE=prod \
+  -e DB_URL=jdbc:postgresql://prod-db:5432/orders \
+  order-service:1.0.0
+</pre>
+
+<h2>8.4 Image Size Comparison (Real Numbers)</h2>
+<table>
+<tr><th>Base Image Choice</th><th>Approx. Final Image Size</th><th>Notes</th></tr>
+<tr><td><code>ubuntu</code> + manual JDK install</td><td>~450-600 MB</td><td>Avoid — large, more attack surface</td></tr>
+<tr><td><code>eclipse-temurin:17-jdk</code></td><td>~280 MB</td><td>Full JDK not needed at runtime</td></tr>
+<tr><td><code>eclipse-temurin:17-jre-alpine</code></td><td>~120-150 MB</td><td>Good real-world default for Spring Boot</td></tr>
+<tr><td>Distroless Java base</td><td>~100 MB, no shell at all</td><td>Best security posture, harder to debug interactively</td></tr>
+</table>
+</div>
+
+<!-- 9. DOCKERFILE FOR REACT -->
+<div class="section">
+<h1>9. Dockerfile for React — Full Real Example (Multi-Stage with Nginx)</h1>
+
+<h2>9.1 Project Structure</h2>
+<pre>customer-portal/
+├── src/
+├── public/
+├── package.json
+├── .env.production
+├── Dockerfile
+├── nginx.conf
+└── .dockerignore
+</pre>
+
+<h2>9.2 Multi-Stage Dockerfile</h2>
+<pre><span class="c1"># Stage 1: Build the static bundle</span>
+FROM node:20-alpine AS build
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci                                 <span class="c1"># reproducible install using the lock file</span>
+COPY . .
+RUN npm run build                          <span class="c1"># produces /app/build (or /dist for Vite)</span>
+
+<span class="c1"># Stage 2: Serve with Nginx — tiny final image, no Node.js at all</span>
+FROM nginx:1.27-alpine
+COPY --from=build /app/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+HEALTHCHECK --interval=30s CMD wget -qO- http://localhost:80 || exit 1
+CMD ["nginx", "-g", "daemon off;"]
+</pre>
+
+<h2>9.3 nginx.conf (Handles React Router + API Proxy)</h2>
+<pre>server {
+    listen 80;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    location / {
+        try_files $uri /index.html;      <span class="c1"># React Router — always fall back to index.html</span>
+    }
+
+    location /api/ {
+        proxy_pass http://order-service:8080/;  <span class="c1"># proxy calls to backend service inside the cluster</span>
+    }
+}
+</pre>
+
+<h2>9.4 Environment Config for React (Build-Time vs Runtime)</h2>
+<div class="warn">React environment variables (<code>REACT_APP_*</code> / Vite's <code>VITE_*</code>) are baked into the static bundle <b>at build time</b> — they cannot be changed after the image is built like a backend env var can. Real orgs solve this by either (a) building one image per environment, or (b) injecting a small <code>env-config.js</code> file at container startup that the app reads at runtime.</div>
+<pre><span class="c1"># Runtime-injectable config approach — entrypoint script generates env-config.js from container env vars</span>
+#!/bin/sh
+echo "window._env_ = { API_URL: \"$API_URL\" };" > /usr/share/nginx/html/env-config.js
+exec nginx -g 'daemon off;'
+</pre>
+
+<h2>9.5 Building &amp; Running It</h2>
+<pre>docker build -t customer-portal:1.0.0 .
+docker run -d -p 80:80 --name customer-portal customer-portal:1.0.0
+</pre>
+</div>
+
+<!-- 10. DOCKER COMPOSE -->
+<div class="section">
+<h1>10. Docker Compose — Running Microservices Together</h1>
+
+<h2>10.1 Why Compose Exists</h2>
+<div class="box">A real application is rarely one container — it's a Spring Boot backend + a Postgres database + Redis cache + a React frontend, all needing to talk to each other. Docker Compose lets you define this whole multi-container stack in one YAML file and start it with a single command — perfect for local development and demos.</div>
+
+<h2>10.2 Real docker-compose.yml — Microservices Example</h2>
+<pre>version: "3.9"
+services:
+  order-service:
+    build: ./order-service
+    image: order-service:local
+    ports: [ "8080:8080" ]
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      DB_URL: jdbc:postgresql://postgres:5432/orders
+    depends_on:
+      postgres: { condition: service_healthy }
+    networks: [ backend-net ]
+
+  customer-portal:
+    build: ./customer-portal
+    image: customer-portal:local
+    ports: [ "80:80" ]
+    depends_on: [ order-service ]
+    networks: [ backend-net ]
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: orders
+      POSTGRES_PASSWORD: devpass
+    volumes: [ "pgdata:/var/lib/postgresql/data" ]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 5
+    networks: [ backend-net ]
+
+  redis:
+    image: redis:7-alpine
+    networks: [ backend-net ]
+
+volumes:
+  pgdata:
+
+networks:
+  backend-net:
+</pre>
+
+<h2>10.3 Key Commands</h2>
+<pre>docker compose up -d          <span class="c1"># builds (if needed) and starts the whole stack in background</span>
+docker compose logs -f order-service   <span class="c1"># tail logs of one service</span>
+docker compose down           <span class="c1"># stops and removes containers/networks (add -v to also remove volumes)</span>
+docker compose ps             <span class="c1"># status of all services in the stack</span>
+</pre>
+<div class="tip"><b>Real scenario:</b> "New developers onboarding to our team run <code>docker compose up</code> once and get the full backend + database + cache + frontend running locally in under 2 minutes — no manual Postgres install, no version mismatch, no 20-step setup doc."</div>
+</div>
+
+<!-- 11. NETWORKING & VOLUMES -->
+<div class="section">
+<h1>11. Docker Networking &amp; Volumes Explained</h1>
+
+<h2>11.1 Docker Networking Modes</h2>
+<table>
+<tr><th>Network Type</th><th>Behavior</th><th>Typical Use</th></tr>
+<tr><td>Bridge (default)</td><td>Private internal network on the host; containers reach each other by name</td><td>Local dev, Compose stacks</td></tr>
+<tr><td>Host</td><td>Container shares the host's network namespace directly (no port mapping needed)</td><td>Performance-sensitive cases, rare in prod</td></tr>
+<tr><td>None</td><td>No networking at all</td><td>Fully isolated batch jobs</td></tr>
+<tr><td>Overlay</td><td>Spans multiple Docker hosts (Swarm) — conceptually similar to Kubernetes' pod networking</td><td>Multi-host clustering</td></tr>
+</table>
+<div class="diagram">
+<div class="title">Compose Bridge Network — Service Discovery by Name</div>
+<div class="flow-row">
+<div class="node">customer-portal container</div><div class="arrow">→ calls http://order-service:8080 →</div><div class="node green">order-service container</div><div class="arrow">→ calls postgres:5432 →</div><div class="node purple">postgres container</div>
+</div>
+</div>
+
+<h2>11.2 Volumes — Persisting Data Beyond the Container's Life</h2>
+<div class="box">Containers are ephemeral by design — delete one and its writable layer is gone. A <b>Volume</b> is storage managed by Docker outside the container's lifecycle, so data (like a database's files) survives container restarts/recreation.</div>
+<table>
+<tr><th>Storage Type</th><th>Managed By</th><th>Survives container removal?</th><th>Typical Use</th></tr>
+<tr><td>Named Volume</td><td>Docker</td><td>Yes</td><td>Database data directories</td></tr>
+<tr><td>Bind Mount</td><td>You (maps a host path directly)</td><td>Yes (it's just a host folder)</td><td>Local dev — live-reload source code into a container</td></tr>
+<tr><td>tmpfs Mount</td><td>Docker (in-memory)</td><td>No — gone on stop</td><td>Sensitive temp data, caches</td></tr>
+</table>
+<pre>docker volume create pgdata
+docker run -d -v pgdata:/var/lib/postgresql/data postgres:15-alpine
+docker run -d -v $(pwd)/src:/app/src order-service:dev   <span class="c1"># bind mount for live dev</span>
+</pre>
+</div>
+
+<!-- 12. DOCKER COMMANDS -->
+<div class="section">
+<h1>12. Docker Commands — Full Reference with What Each One Does</h1>
+
+<h2>12.1 Image Commands</h2>
+<table>
+<tr><th>Command</th><th>What It Does</th></tr>
+<tr><td><code>docker build -t name:tag .</code></td><td>Builds an image from a Dockerfile in the current directory</td></tr>
+<tr><td><code>docker images</code></td><td>Lists all locally stored images</td></tr>
+<tr><td><code>docker pull image:tag</code></td><td>Downloads an image from a registry</td></tr>
+<tr><td><code>docker push image:tag</code></td><td>Uploads an image to a registry (must be logged in and tagged correctly)</td></tr>
+<tr><td><code>docker tag src:tag new:tag</code></td><td>Creates an additional tag pointing to the same image</td></tr>
+<tr><td><code>docker rmi image:tag</code></td><td>Removes a local image</td></tr>
+<tr><td><code>docker history image:tag</code></td><td>Shows each layer and its size — useful for finding what's bloating an image</td></tr>
+<tr><td><code>docker image prune -a</code></td><td>Removes all unused images to free disk space</td></tr>
+</table>
+
+<h2>12.2 Container Commands</h2>
+<table>
+<tr><th>Command</th><th>What It Does</th></tr>
+<tr><td><code>docker run -d -p 8080:8080 image</code></td><td>Starts a new container in detached mode, mapping host port 8080 to container port 8080</td></tr>
+<tr><td><code>docker ps</code></td><td>Lists running containers</td></tr>
+<tr><td><code>docker ps -a</code></td><td>Lists all containers including stopped ones</td></tr>
+<tr><td><code>docker stop container</code></td><td>Gracefully stops a running container (sends SIGTERM, then SIGKILL after timeout)</td></tr>
+<tr><td><code>docker start container</code></td><td>Restarts a previously stopped container</td></tr>
+<tr><td><code>docker restart container</code></td><td>Stops then starts a container</td></tr>
+<tr><td><code>docker rm container</code></td><td>Deletes a stopped container</td></tr>
+<tr><td><code>docker logs -f container</code></td><td>Streams the container's stdout/stderr logs live</td></tr>
+<tr><td><code>docker exec -it container sh</code></td><td>Opens an interactive shell inside a running container — key debugging tool</td></tr>
+<tr><td><code>docker inspect container</code></td><td>Dumps full JSON metadata — IP address, mounts, env vars, health status</td></tr>
+<tr><td><code>docker stats</code></td><td>Live CPU/memory/network usage per running container</td></tr>
+<tr><td><code>docker cp container:/path ./local</code></td><td>Copies a file out of (or into) a container</td></tr>
+<tr><td><code>docker top container</code></td><td>Shows running processes inside a container</td></tr>
+</table>
+
+<h2>12.3 System &amp; Cleanup Commands</h2>
+<table>
+<tr><th>Command</th><th>What It Does</th></tr>
+<tr><td><code>docker system df</code></td><td>Shows disk space used by images, containers, volumes, cache</td></tr>
+<tr><td><code>docker system prune -a --volumes</code></td><td>Deep clean — removes all unused containers, images, networks, and volumes (use carefully!)</td></tr>
+<tr><td><code>docker network ls</code></td><td>Lists networks</td></tr>
+<tr><td><code>docker volume ls</code></td><td>Lists volumes</td></tr>
+</table>
+
+<h2>12.4 Real-Time Debugging Scenario Using Commands</h2>
+<div class="tip"><b>Real scenario:</b> "Container keeps restarting" — first <code>docker ps -a</code> to see exit code, then <code>docker logs container_id</code> to see the crash reason, then <code>docker inspect container_id</code> to check memory limits (an exit code 137 usually means OOM-killed), then reproduce interactively with <code>docker run -it --entrypoint sh image</code> to poke around before the crash-looping entrypoint runs.</div>
+</div>
+
+<!-- 13. DOCKER SECURITY -->
+<div class="section">
+<h1>13. Docker Security — Before Docker vs After Docker</h1>
+
+<h2>13.1 Security Before Docker (VM/Physical Era)</h2>
+<ul>
+<li>Isolation was at the OS/hypervisor level — strong, but coarse-grained (one whole VM per workload).</li>
+<li>Patch management meant patching whole guest OS images per VM — slow, inconsistent across teams.</li>
+<li>Attack surface = entire OS + all installed packages, even ones the app didn't need.</li>
+<li>Secrets were often placed in server-level config files or environment scripts, sometimes checked into shared file shares.</li>
+</ul>
+
+<h2>13.2 Security Concerns Docker Introduced</h2>
+<div class="warn">Because containers share the host kernel, a container escape vulnerability is more impactful than a VM escape (rarer, but the blast radius includes the whole host). Also, most base images historically defaulted to running as <b>root</b> inside the container, which is risky if an app is compromised.</div>
+
+<h2>13.3 Docker Security Best Practices (After Docker, Done Right)</h2>
+<table>
+<tr><th>Practice</th><th>Why</th></tr>
+<tr><td>Run as non-root (<code>USER app</code>)</td><td>Limits what an attacker can do if the app process is compromised</td></tr>
+<tr><td>Use minimal base images (Alpine/Distroless)</td><td>Smaller attack surface — fewer packages, fewer CVEs</td></tr>
+<tr><td>Multi-stage builds</td><td>Build tools/compilers never ship in the final image</td></tr>
+<tr><td>Scan images (Trivy, Snyk, Docker Scout, ACR/ECR built-in scanning)</td><td>Finds known CVEs in base image + dependencies before deployment</td></tr>
+<tr><td>Sign images (Docker Content Trust / Cosign)</td><td>Verifies the image wasn't tampered with between build and deploy</td></tr>
+<tr><td>Never bake secrets into images</td><td>Anyone who pulls the image can extract layer contents — secrets must come from Key Vault/Secrets Manager at runtime</td></tr>
+<tr><td>Read-only root filesystem (<code>--read-only</code>)</td><td>Prevents malware/tampering from writing to the container filesystem at runtime</td></tr>
+<tr><td>Drop unnecessary Linux capabilities (<code>--cap-drop=ALL</code>)</td><td>Reduces what a compromised process could exploit at the kernel level</td></tr>
+<tr><td>Resource limits (<code>--memory</code>, <code>--cpus</code>)</td><td>Prevents one compromised/runaway container from starving the whole host</td></tr>
+<tr><td>Private registries with RBAC</td><td>Prevents unauthorized push/pull of production images</td></tr>
+</table>
+
+<h2>13.4 Real Image Scanning in a Pipeline</h2>
+<pre><span class="c1"># Trivy scan step added to CI before pushing to registry</span>
+trivy image --severity HIGH,CRITICAL --exit-code 1 order-service:1.0.0
+<span class="c1"># pipeline fails the build if HIGH/CRITICAL vulnerabilities are found — blocks insecure images from shipping</span>
+</pre>
+
+<h2>13.5 Summary Table — Before vs After</h2>
+<table>
+<tr><th>Aspect</th><th>Before Docker</th><th>After Docker (Done Right)</th></tr>
+<tr><td>Isolation granularity</td><td>Whole VM/server</td><td>Per-process container, but shares host kernel</td></tr>
+<tr><td>Patch scope</td><td>Whole guest OS</td><td>Rebuild + redeploy small image layers</td></tr>
+<tr><td>Default user</td><td>Varies by server config</td><td>Should always be explicit non-root user</td></tr>
+<tr><td>Vulnerability visibility</td><td>Manual OS-level audits, infrequent</td><td>Automated image scanning on every build</td></tr>
+<tr><td>Secret handling</td><td>Config files on shared servers</td><td>Injected at runtime from Key Vault/Secrets Manager, never in image layers</td></tr>
+</table>
+</div>
+
+<!-- 14. COMMON DOCKER ISSUES -->
+<div class="section">
+<h1>14. Common Docker Issues &amp; Real-Time Fixes</h1>
+<div class="diagram">
+<div class="title">Dockerfile Instruction Order — Why It Controls Build Speed</div>
+<div class="flow-row"><div class="node alt">Bad: COPY . . → RUN npm install (every code change invalidates the install layer)</div></div>
+<div class="flow-row"><div class="node green">Good: COPY package.json → RUN npm install → COPY . . (install layer cached until package.json changes)</div></div>
+</div>
+<table>
+<tr><th>Issue</th><th>Cause</th><th>Real Fix</th></tr>
+<tr><td>Container exits immediately after start</td><td>Main process (ENTRYPOINT/CMD) finished or crashed instantly</td><td><code>docker logs</code> to see the error; ensure the main process runs in the foreground (not backgrounded/daemonized)</td></tr>
+<tr><td>"Port already in use" on <code>docker run</code></td><td>Host port already bound by another process/container</td><td>Use a different host port mapping (<code>-p 8081:8080</code>) or stop the conflicting container</td></tr>
+<tr><td>Image is huge (GBs)</td><td>Not using multi-stage build, wrong base image, leftover build cache/tools in final layer</td><td>Multi-stage build, minimal base image (Alpine/Distroless), clean apt/npm caches in same RUN layer</td></tr>
+<tr><td>Every code change rebuilds everything from scratch (slow)</td><td>Wrong instruction order — source code copied before dependency manifest</td><td>Reorder Dockerfile: copy dependency files first, install deps, then copy source</td></tr>
+<tr><td>Container OOM-killed (exit code 137)</td><td>No/incorrect memory limits, JVM not respecting container cgroup limits</td><td>Set <code>--memory</code> limit matching real usage, use <code>-XX:MaxRAMPercentage</code> for JVM apps, profile actual heap needs</td></tr>
+<tr><td>"Cannot connect to the Docker daemon"</td><td>Docker Desktop/daemon not running, or permission issue (non-root user not in <code>docker</code> group on Linux)</td><td>Start Docker Desktop/daemon; on Linux add user to docker group or use sudo appropriately</td></tr>
+<tr><td>Container can't reach another container by name</td><td>Containers on different Docker networks, or not using Compose's automatic network</td><td>Ensure both are on the same user-defined network; avoid relying on default bridge for service discovery</td></tr>
+<tr><td>Secrets visible in <code>docker history</code>/image layers</td><td>Secret was passed via <code>ENV</code>/<code>ARG</code> baked into a layer instead of runtime injection</td><td>Never bake secrets in build; use runtime env vars/secret mounts, use <code>--secret</code> with BuildKit if a build-time secret is unavoidable</td></tr>
+<tr><td>Disk fills up on build servers</td><td>Old dangling images/build cache never cleaned</td><td>Regular <code>docker system prune</code> in CI agent maintenance, or use ephemeral hosted agents</td></tr>
+<tr><td>"Works on my machine" even with Docker</td><td>Different base image tag pulled (e.g., <code>latest</code> drifted), platform mismatch (ARM Mac vs x86 prod)</td><td>Pin exact base image digests, build multi-platform images (<code>docker buildx</code>) if dev/prod architectures differ</td></tr>
+<tr><td>Container healthy locally but fails health check in CI/registry scan</td><td>Missing <code>HEALTHCHECK</code> instruction, or scan runs before app fully starts</td><td>Add an explicit <code>HEALTHCHECK</code> with a realistic start period; don't rely solely on process-exists checks</td></tr>
+<tr><td>Build fails only on the CI agent, never locally</td><td>CI agent uses a different Docker/BuildKit version or lacks build cache warm from previous runs</td><td>Pin Docker/BuildKit version in the pipeline, enable registry-based layer caching so CI benefits from the same cache as local builds</td></tr>
+</table>
+</div>
+
+<!-- 15. DOCKER REAL WORLD SCENARIO -->
+<div class="section">
+<h1>15. Docker Real-World Organization Scenario (End to End)</h1>
+
+<h2>15.1 The Scenario</h2>
+<div class="box">A mid-size fintech company runs a Spring Boot "order-service", a Spring Boot "payment-service", a React "customer-portal", Postgres, and Redis. All developers use Docker Compose locally; CI builds and scans Docker images; images are pushed to Azure Container Registry; production runs on Kubernetes (covered from Section 16 onward).</div>
+
+<h2>15.2 End-to-End Flow</h2>
+<div class="diagram">
+<div class="title">Docker Stage of the Real Org Pipeline</div>
+<div class="flow-row">
+<div class="node">Developer: docker compose up (local)</div><div class="arrow">→</div><div class="node">git push / PR</div><div class="arrow">→</div><div class="node green">CI: mvn/npm build + tests</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+<div class="node">docker build (multi-stage)</div><div class="arrow">→</div><div class="node alt">Trivy scan (block on HIGH/CRITICAL)</div><div class="arrow">→</div><div class="node purple">docker push to ACR (tag = build number + git SHA)</div>
+</div>
+<div class="arrow-down">↓ handed off to Kubernetes deployment (Section 20+)</div>
+<div class="flow-row"><div class="node green">AKS pulls the image and runs it as pods</div></div>
+</div>
+
+<h2>15.3 What Each Team Owns</h2>
+<table>
+<tr><th>Team</th><th>Responsibility</th></tr>
+<tr><td>Backend developers</td><td>Write/maintain each service's Dockerfile, keep image small and secure</td></tr>
+<tr><td>Frontend developers</td><td>Maintain React Dockerfile + nginx.conf, manage env-config injection</td></tr>
+<tr><td>DevOps/Platform team</td><td>Own the CI pipeline steps, registry access policy, scanning gate rules</td></tr>
+<tr><td>Security team</td><td>Defines which CVEs block a release, reviews base image approval list</td></tr>
+</table>
+<div class="tip"><b>Real scenario:</b> "When the security team mandated a switch from <code>eclipse-temurin:17-jdk</code> to <code>eclipse-temurin:17-jre-alpine</code> org-wide, every team's Dockerfile FROM line was updated via a shared base-image standard, cutting average image size by 60% and closing a batch of previously flagged CVEs in one release cycle."</div>
+</div>
+
+<!-- 16. INTRO TO KUBERNETES -->
+<div class="section">
+<h1>16. Introduction to Kubernetes — Why We Needed It After Docker</h1>
+
+<h2>16.1 The Problem Docker Alone Doesn't Solve</h2>
+<div class="box">Docker is excellent at packaging and running <b>one</b> container on <b>one</b> host. But real organizations run hundreds of containers across many hosts, and need answers to: What happens when a container crashes? How do we scale to 10 replicas during peak traffic? How do containers on different hosts find each other? How do we roll out updates without downtime? Docker alone doesn't answer these — that's what <b>Kubernetes (K8s)</b> (originally built by Google, based on their internal "Borg" system) was built for.</div>
+
+<h2>16.2 What Kubernetes Actually Does</h2>
+<table>
+<tr><th>Need</th><th>What Kubernetes Provides</th></tr>
+<tr><td>Container crashes</td><td>Automatically restarts it (self-healing)</td></tr>
+<tr><td>Traffic spikes</td><td>Horizontal Pod Autoscaler adds more replicas automatically</td></tr>
+<tr><td>Multi-host networking</td><td>Built-in cluster networking so pods find each other by name regardless of which node they're on</td></tr>
+<tr><td>Zero-downtime updates</td><td>Rolling updates, readiness probes control when new pods receive traffic</td></tr>
+<tr><td>Node failure</td><td>Reschedules pods from a dead node onto healthy nodes automatically</td></tr>
+<tr><td>Config/secret management at scale</td><td>ConfigMaps and Secrets decoupled from container images</td></tr>
+<tr><td>Declarative infrastructure</td><td>You describe the desired state (YAML); Kubernetes continuously works to match reality to it</td></tr>
+</table>
+
+<h2>16.3 Kubernetes vs Plain Docker — Side by Side</h2>
+<div class="diagram">
+<div class="title">Docker Alone vs Docker + Kubernetes</div>
+<div class="flow-row">
+<div class="node gray">Docker alone: you manually run/restart/scale containers on each host</div>
+</div>
+<div class="arrow-down">— vs —</div>
+<div class="flow-row">
+<div class="node green">Kubernetes: you declare "I want 4 replicas of order-service, always healthy" — K8s makes it true, continuously</div>
+</div>
+</div>
+<div class="tip"><b>Interview one-liner:</b> "Docker packages and runs a single container; Kubernetes orchestrates many containers across many machines — handling scheduling, scaling, networking, self-healing, and rollouts automatically based on a declared desired state."</div>
+</div>
+
+<!-- 17. KUBERNETES ARCHITECTURE -->
+<div class="section">
+<h1>17. Kubernetes Architecture — Master &amp; Worker Nodes Explained</h1>
+
+<h2>17.1 Cluster Overview</h2>
+<div class="diagram">
+<div class="title">Kubernetes Cluster Architecture</div>
+<div class="flow-row"><div class="node purple">Control Plane (Master Node)</div></div>
+<div class="flow-row">
+<div class="node">API Server</div><div class="node">etcd (cluster state DB)</div><div class="node">Scheduler</div><div class="node">Controller Manager</div>
+</div>
+<div class="arrow-down">↓ manages</div>
+<div class="flow-row">
+<div class="node green">Worker Node 1<br/>kubelet + kube-proxy + pods</div>
+<div class="node green">Worker Node 2<br/>kubelet + kube-proxy + pods</div>
+<div class="node green">Worker Node 3<br/>kubelet + kube-proxy + pods</div>
+</div>
+</div>
+
+<h2>17.2 Control Plane Components</h2>
+<table>
+<tr><th>Component</th><th>Role</th></tr>
+<tr><td>API Server</td><td>The front door — every <code>kubectl</code> command and internal component talks to the cluster only through this REST API</td></tr>
+<tr><td>etcd</td><td>Distributed key-value store holding the entire cluster's desired/actual state — the single source of truth</td></tr>
+<tr><td>Scheduler</td><td>Decides which worker node a new pod should run on, based on resource requests/limits, affinity rules, taints</td></tr>
+<tr><td>Controller Manager</td><td>Runs control loops that constantly reconcile actual state to desired state (e.g., "I need 4 replicas but only see 3 — create one more")</td></tr>
+</table>
+
+<h2>17.3 Worker Node Components</h2>
+<table>
+<tr><th>Component</th><th>Role</th></tr>
+<tr><td>kubelet</td><td>Agent on each node that talks to the API server and ensures containers described for that node are actually running</td></tr>
+<tr><td>Container Runtime (containerd)</td><td>Actually pulls images and runs containers (Docker Engine historically, now typically containerd directly)</td></tr>
+<tr><td>kube-proxy</td><td>Manages network rules on the node so Services can route traffic to the right pods</td></tr>
+</table>
+
+<h2>17.4 The Reconciliation Loop (Core Kubernetes Philosophy)</h2>
+<div class="box">Every controller in Kubernetes follows the same pattern: <b>Observe</b> current state → <b>Compare</b> to desired state (your YAML) → <b>Act</b> to close the gap → repeat forever. This is why deleting a pod managed by a Deployment doesn't actually remove it for long — the ReplicaSet controller immediately notices "3 desired, 2 actual" and creates a replacement.</div>
+</div>
+
+<!-- 18. CORE KUBERNETES OBJECTS -->
+<div class="section">
+<h1>18. Core Kubernetes Objects (Pod, ReplicaSet, Deployment, Service, Ingress)</h1>
+
+<h2>18.1 The Object Hierarchy</h2>
+<div class="diagram">
+<div class="title">How K8s Objects Relate</div>
+<div class="flow-row"><div class="node purple">Ingress (external HTTP routing + TLS)</div></div>
+<div class="arrow-down">↓ routes to</div>
+<div class="flow-row"><div class="node">Service (stable internal DNS name + load balancing)</div></div>
+<div class="arrow-down">↓ selects pods via labels</div>
+<div class="flow-row"><div class="node green">Deployment (manages rollout strategy)</div></div>
+<div class="arrow-down">↓ creates/manages</div>
+<div class="flow-row"><div class="node alt">ReplicaSet (ensures N pod replicas exist)</div></div>
+<div class="arrow-down">↓ creates</div>
+<div class="flow-row"><div class="node gray">Pod</div><div class="node gray">Pod</div><div class="node gray">Pod</div></div>
+</div>
+
+<h2>18.2 Pod</h2>
+<p>The smallest deployable unit in Kubernetes — one or more tightly coupled containers that share network/storage (usually just 1 container per pod for microservices, e.g., one Spring Boot container).</p>
+
+<h2>18.3 ReplicaSet</h2>
+<p>Ensures a specified number of identical pod replicas are running at all times — replaces a crashed pod automatically. You rarely create these directly; Deployments manage them for you.</p>
+
+<h2>18.4 Deployment</h2>
+<p>The object you actually work with day-to-day. Manages ReplicaSets, handles rolling updates/rollbacks, and describes the desired state of your application (image version, replica count, resource limits, probes).</p>
+
+<h2>18.5 Service</h2>
+<p>Gives a stable network identity (a DNS name and virtual IP) to a set of pods, even as individual pods are replaced. Types: <code>ClusterIP</code> (internal only, default), <code>NodePort</code> (exposes on each node's IP), <code>LoadBalancer</code> (provisions a cloud load balancer, e.g., Azure Load Balancer).</p>
+
+<h2>18.6 Ingress</h2>
+<p>Manages external HTTP/HTTPS access into the cluster, with host/path-based routing and TLS termination — usually backed by an Ingress Controller like NGINX Ingress or Azure Application Gateway Ingress Controller (AGIC).</p>
+
+<h2>18.7 StatefulSet &amp; DaemonSet (Good to Know)</h2>
+<table>
+<tr><th>Object</th><th>Use Case</th></tr>
+<tr><td>StatefulSet</td><td>For stateful apps needing stable network identity and storage per replica (e.g., a Kafka broker, self-managed database)</td></tr>
+<tr><td>DaemonSet</td><td>Ensures one pod runs on every (or selected) node — used for log collectors, monitoring agents</td></tr>
+<tr><td>Job / CronJob</td><td>Run-to-completion batch tasks, or scheduled recurring tasks (e.g., nightly report generation)</td></tr>
+</table>
+</div>
+
+<!-- 19. CONFIGMAPS SECRETS NAMESPACES -->
+<div class="section">
+<h1>19. ConfigMaps, Secrets, Namespaces Explained</h1>
+
+<h2>19.1 ConfigMap</h2>
+<div class="box">Stores non-sensitive configuration (URLs, feature flags, log levels) separately from the container image, so the same image can run in Dev/QA/Prod with different config injected as env vars or mounted files.</div>
+<pre>apiVersion: v1
+kind: ConfigMap
+metadata: { name: order-service-config, namespace: prod }
+data:
+  LOG_LEVEL: "INFO"
+  FEATURE_NEW_CHECKOUT: "true"
+</pre>
+
+<h2>19.2 Secret</h2>
+<div class="box">Same idea as ConfigMap but intended for sensitive values — base64-encoded at rest by default (not encrypted unless you enable encryption-at-rest or use an external secrets provider like Azure Key Vault via CSI driver).</div>
+<pre>apiVersion: v1
+kind: Secret
+metadata: { name: order-service-secrets, namespace: prod }
+type: Opaque
+data:
+  DB_PASSWORD: cGFzc3dvcmQxMjM=   <span class="c1"># base64 encoded — NOT encryption, just encoding</span>
+</pre>
+<div class="warn">Base64 is <b>not</b> encryption — anyone with API access can decode it instantly. Real organizations integrate an external secret manager (Azure Key Vault Provider for Secrets Store CSI Driver, HashiCorp Vault) so actual secret values never sit in etcd in a reversible format, and enable etcd encryption-at-rest as a baseline.</div>
+
+<h2>19.3 Namespaces — Logical Isolation</h2>
+<div class="box">A Namespace partitions one physical cluster into multiple virtual clusters — commonly one per environment (<code>dev</code>, <code>qa</code>, <code>staging</code>, <code>prod</code>) or per team, with its own resource quotas and RBAC rules.</div>
+<pre>kubectl create namespace dev
+kubectl get pods -n prod
+kubectl config set-context --current --namespace=dev   <span class="c1"># switch default namespace for convenience</span>
+</pre>
+<table>
+<tr><th>Namespace</th><th>Typical Use</th></tr>
+<tr><td>kube-system</td><td>Kubernetes' own control components (DNS, kube-proxy, etc.) — don't touch</td></tr>
+<tr><td>dev / qa / staging / prod</td><td>One cluster shared across environments, isolated logically (common cost-saving pattern for non-prod)</td></tr>
+<tr><td>monitoring</td><td>Prometheus, Grafana, Alertmanager stack</td></tr>
+<tr><td>ingress-nginx</td><td>Ingress controller components</td></tr>
+</table>
+</div>
+
+<!-- 20. K8S YAML FULL EXAMPLES -->
+<div class="section">
+<h1>20. Kubernetes YAML — Full Real Examples (Spring Boot + React)</h1>
+
+<h2>20.1 Spring Boot — Deployment + Service + Ingress</h2>
+<pre>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+  namespace: prod
+  labels: { app: order-service }
+spec:
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate: { maxUnavailable: 1, maxSurge: 1 }
+  selector:
+    matchLabels: { app: order-service }
+  template:
+    metadata:
+      labels: { app: order-service }
+    spec:
+      containers:
+      - name: order-service
+        image: myacr.azurecr.io/order-service:482
+        ports: [{ containerPort: 8080 }]
+        resources:
+          requests: { cpu: "250m", memory: "384Mi" }
+          limits:   { cpu: "500m", memory: "512Mi" }
+        readinessProbe:
+          httpGet: { path: /actuator/health/readiness, port: 8080 }
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          httpGet: { path: /actuator/health/liveness, port: 8080 }
+          initialDelaySeconds: 20
+          periodSeconds: 10
+        envFrom:
+        - configMapRef: { name: order-service-config }
+        - secretRef: { name: order-service-secrets }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: order-service, namespace: prod }
+spec:
+  selector: { app: order-service }
+  ports: [{ port: 80, targetPort: 8080 }]
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: order-service-ingress
+  namespace: prod
+  annotations: { nginx.ingress.kubernetes.io/rewrite-target: / }
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: api.mycompany.com
+    http:
+      paths:
+      - path: /orders
+        pathType: Prefix
+        backend:
+          service: { name: order-service, port: { number: 80 } }
+  tls:
+  - hosts: [ api.mycompany.com ]
+    secretName: mycompany-tls
+</pre>
+
+<h2>20.2 React Frontend — Deployment + Service + Ingress</h2>
+<pre>apiVersion: apps/v1
+kind: Deployment
+metadata: { name: customer-portal, namespace: prod }
+spec:
+  replicas: 3
+  selector: { matchLabels: { app: customer-portal } }
+  template:
+    metadata: { labels: { app: customer-portal } }
+    spec:
+      containers:
+      - name: customer-portal
+        image: myacr.azurecr.io/customer-portal:212
+        ports: [{ containerPort: 80 }]
+        resources:
+          requests: { cpu: "100m", memory: "128Mi" }
+          limits:   { cpu: "250m", memory: "256Mi" }
+        readinessProbe:
+          httpGet: { path: /, port: 80 }
+          initialDelaySeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata: { name: customer-portal, namespace: prod }
+spec:
+  selector: { app: customer-portal }
+  ports: [{ port: 80, targetPort: 80 }]
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: { name: customer-portal-ingress, namespace: prod }
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: app.mycompany.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: { name: customer-portal, port: { number: 80 } }
+</pre>
+<div class="tip"><b>Real scenario:</b> "api.mycompany.com routes to backend services and app.mycompany.com routes to the React frontend — both share the same NGINX Ingress Controller and the same wildcard TLS certificate managed by cert-manager, which auto-renews from Let's Encrypt."</div>
+</div>
+
+<!-- 21. KUBECTL COMMANDS -->
+<div class="section">
+<h1>21. Kubernetes Commands (kubectl) — Full Reference</h1>
+
+<h2>21.1 Cluster &amp; Context</h2>
+<table>
+<tr><th>Command</th><th>What It Does</th></tr>
+<tr><td><code>kubectl cluster-info</code></td><td>Shows the control plane and DNS endpoint of the connected cluster</td></tr>
+<tr><td><code>kubectl config get-contexts</code></td><td>Lists available cluster contexts (useful with multiple clusters/environments)</td></tr>
+<tr><td><code>kubectl config use-context aks-prod</code></td><td>Switches the active cluster context</td></tr>
+</table>
+
+<h2>21.2 Viewing Resources</h2>
+<table>
+<tr><th>Command</th><th>What It Does</th></tr>
+<tr><td><code>kubectl get pods -n prod</code></td><td>Lists pods in the prod namespace</td></tr>
+<tr><td><code>kubectl get pods -o wide</code></td><td>Adds node name and IP to pod listing</td></tr>
+<tr><td><code>kubectl get deployments,svc,ingress -n prod</code></td><td>Lists multiple resource types at once</td></tr>
+<tr><td><code>kubectl describe pod order-service-abc123 -n prod</code></td><td>Full details + recent events — first command to run when a pod misbehaves</td></tr>
+<tr><td><code>kubectl get events -n prod --sort-by=.lastTimestamp</code></td><td>Chronological cluster events — great for diagnosing scheduling failures</td></tr>
+</table>
+
+<h2>21.3 Logs &amp; Debugging</h2>
+<table>
+<tr><th>Command</th><th>What It Does</th></tr>
+<tr><td><code>kubectl logs order-service-abc123 -n prod</code></td><td>Shows container logs</td></tr>
+<tr><td><code>kubectl logs -f order-service-abc123 --previous</code></td><td>Streams logs, <code>--previous</code> shows logs from before the last crash/restart</td></tr>
+<tr><td><code>kubectl exec -it order-service-abc123 -- sh</code></td><td>Opens an interactive shell inside the running pod's container</td></tr>
+<tr><td><code>kubectl port-forward svc/order-service 8080:80 -n prod</code></td><td>Tunnels a local port to a service/pod inside the cluster for local debugging</td></tr>
+<tr><td><code>kubectl top pods -n prod</code></td><td>Live CPU/memory usage per pod (needs metrics-server)</td></tr>
+</table>
+
+<h2>21.4 Applying &amp; Managing Changes</h2>
+<table>
+<tr><th>Command</th><th>What It Does</th></tr>
+<tr><td><code>kubectl apply -f deployment.yml</code></td><td>Creates or updates resources to match the YAML (declarative — the standard way)</td></tr>
+<tr><td><code>kubectl set image deployment/order-service order-service=myacr.azurecr.io/order-service:483 -n prod</code></td><td>Updates just the image version, triggering a rolling update</td></tr>
+<tr><td><code>kubectl rollout status deployment/order-service -n prod</code></td><td>Watches a rollout until it completes or fails</td></tr>
+<tr><td><code>kubectl rollout history deployment/order-service -n prod</code></td><td>Lists previous rollout revisions</td></tr>
+<tr><td><code>kubectl rollout undo deployment/order-service -n prod</code></td><td>Instantly rolls back to the previous revision</td></tr>
+<tr><td><code>kubectl scale deployment/order-service --replicas=8 -n prod</code></td><td>Manually scales replica count</td></tr>
+<tr><td><code>kubectl delete pod order-service-abc123 -n prod</code></td><td>Deletes a pod — its Deployment/ReplicaSet immediately creates a replacement</td></tr>
+</table>
+
+<h2>21.5 Real Debugging Sequence (What You Actually Type)</h2>
+<pre>kubectl get pods -n prod                          <span class="c1"># see CrashLoopBackOff / Pending / ImagePullBackOff status</span>
+kubectl describe pod order-service-abc123 -n prod  <span class="c1"># check Events section at the bottom for the real reason</span>
+kubectl logs order-service-abc123 -n prod --previous <span class="c1"># see the crash logs from before the restart</span>
+kubectl get events -n prod --sort-by=.lastTimestamp <span class="c1"># check for node pressure, scheduling failures, etc.</span>
+</pre>
+</div>
+
+<!-- 22. MONITORING TOOLS -->
+<div class="section">
+<h1>22. Monitoring &amp; Observability Tools for Pods (Rancher, Prometheus, Grafana, Lens, K9s, Datadog)</h1>
+
+<h2>22.1 Why You Need Dedicated Monitoring Tools</h2>
+<div class="box">Running <code>kubectl get pods</code> repeatedly does not scale for real production clusters with hundreds of pods across multiple namespaces. Organizations use dedicated tools for a visual, historical, and alerting-capable view of cluster and application health.</div>
+
+<h2>22.2 Rancher — Cluster Management UI</h2>
+<div class="box">Rancher provides a web UI to manage multiple Kubernetes clusters (on-prem, cloud, hybrid) from one place — view pods/deployments/logs, manage RBAC users, install apps from its catalog, and get a unified view across clusters that might otherwise use different cloud consoles (AKS, EKS, GKE, on-prem RKE).</div>
+<ul>
+<li><b>Best for:</b> organizations managing multiple clusters across different clouds/on-prem, wanting a single pane of glass with built-in RBAC and app catalog.</li>
+</ul>
+
+<h2>22.3 Prometheus + Grafana — The Industry-Standard Metrics Stack</h2>
+<div class="diagram">
+<div class="title">Prometheus + Grafana Flow</div>
+<div class="flow-row">
+<div class="node">App exposes /actuator/prometheus metrics</div><div class="arrow">→</div><div class="node green">Prometheus scrapes metrics periodically</div><div class="arrow">→</div><div class="node alt">Grafana dashboards + Alertmanager notifications</div>
+</div>
+</div>
+<ul>
+<li><b>Prometheus:</b> a time-series database that scrapes metrics endpoints (Spring Boot Actuator exposes one via Micrometer) and stores them.</li>
+<li><b>Grafana:</b> visualizes Prometheus data as dashboards — CPU/memory per pod, request latency, error rates, custom business metrics.</li>
+<li><b>Alertmanager:</b> fires alerts (Slack, email, PagerDuty) based on Prometheus alert rules — e.g., "error rate &gt; 5% for 5 minutes."</li>
+</ul>
+
+<h2>22.4 Lens &amp; K9s — Developer-Focused Cluster Tools</h2>
+<table>
+<tr><th>Tool</th><th>Type</th><th>What It's Good For</th></tr>
+<tr><td>Lens</td><td>Desktop GUI IDE for Kubernetes</td><td>Visual pod/resource browsing, built-in metrics, editing YAML live, great for day-to-day developer use</td></tr>
+<tr><td>K9s</td><td>Terminal UI (TUI)</td><td>Extremely fast keyboard-driven navigation of pods/logs/exec without leaving the terminal — popular with SREs/DevOps</td></tr>
+</table>
+
+<h2>22.5 Datadog / New Relic / Dynatrace — Full Observability SaaS Platforms</h2>
+<div class="box">Commercial APM (Application Performance Monitoring) platforms that combine metrics, distributed tracing, log aggregation, and infrastructure monitoring in one paid SaaS product — popular in larger enterprises that want a fully managed observability stack instead of running/maintaining Prometheus/Grafana themselves.</div>
+
+<h2>22.6 ELK / EFK Stack — Centralized Logging</h2>
+<div class="box">Elasticsearch + Logstash/Fluentd + Kibana (or the Loki + Grafana alternative) aggregate logs from every pod across the cluster into one searchable place — essential since pods are ephemeral and their local logs disappear when they're deleted/rescheduled.</div>
+
+<h2>22.7 Real Organization Monitoring Stack Comparison</h2>
+<table>
+<tr><th>Tool</th><th>Category</th><th>Real-World Fit</th></tr>
+<tr><td>Rancher</td><td>Cluster management UI</td><td>Multi-cluster, hybrid/on-prem heavy orgs</td></tr>
+<tr><td>Prometheus + Grafana</td><td>Metrics + dashboards (self-hosted, open source)</td><td>Most common default in Kubernetes-native shops</td></tr>
+<tr><td>Lens / K9s</td><td>Developer daily-driver tools</td><td>Individual developer/SRE productivity, not a replacement for team dashboards</td></tr>
+<tr><td>Datadog/New Relic/Dynatrace</td><td>Full observability SaaS</td><td>Enterprises preferring managed tooling over self-hosting, willing to pay for it</td></tr>
+<tr><td>ELK/EFK/Loki</td><td>Centralized logging</td><td>Any org needing searchable historical logs across ephemeral pods</td></tr>
+<tr><td>Azure Monitor / Container Insights</td><td>Native Azure monitoring for AKS</td><td>Azure-native shops — integrates directly with AKS with minimal setup</td></tr>
+</table>
+<div class="tip"><b>Real scenario:</b> "Our platform team moved from Rancher-only visibility to Rancher (cluster/RBAC management) + Prometheus/Grafana (metrics) + Loki (logs) + Alertmanager wired into our on-call Slack channel — this combination gave us both the management UI and the deep, queryable observability Rancher alone didn't provide."</div>
+</div>
+
+<!-- 23. AUTOSCALING & SELF HEALING -->
+<div class="section">
+<h1>23. Kubernetes Autoscaling &amp; Self-Healing</h1>
+
+<h2>23.1 Self-Healing Mechanisms</h2>
+<table>
+<tr><th>Failure</th><th>How K8s Self-Heals</th></tr>
+<tr><td>Container crashes</td><td>kubelet restarts it per the pod's restart policy</td></tr>
+<tr><td>Pod fails readiness probe</td><td>Removed from Service load-balancing until it passes again — no traffic sent to unhealthy pods</td></tr>
+<tr><td>Pod fails liveness probe repeatedly</td><td>Kubelet kills and restarts the container</td></tr>
+<tr><td>Node goes down</td><td>Controller Manager notices missed heartbeats, reschedules its pods onto healthy nodes</td></tr>
+<tr><td>Fewer pods than desired replicas</td><td>ReplicaSet controller creates new pods immediately</td></tr>
+</table>
+
+<h2>23.2 Horizontal Pod Autoscaler (HPA)</h2>
+<pre>apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata: { name: order-service-hpa, namespace: prod }
+spec:
+  scaleTargetRef: { apiVersion: apps/v1, kind: Deployment, name: order-service }
+  minReplicas: 4
+  maxReplicas: 20
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target: { type: Utilization, averageUtilization: 70 }
+</pre>
+<div class="box">HPA watches a metric (CPU by default, or custom metrics via Prometheus Adapter — e.g., queue length, requests/sec) and automatically adds/removes pod replicas to keep it near the target.</div>
+
+<h2>23.3 Cluster Autoscaler / Node Autoscaling</h2>
+<div class="box">While HPA scales <b>pods</b>, the Cluster Autoscaler (or AKS's built-in node autoscaling) scales the actual number of <b>worker nodes</b> — if pods can't be scheduled due to insufficient node capacity, it provisions new VM nodes automatically, and scales down idle nodes to save cost.</div>
+
+<h2>23.4 Vertical Pod Autoscaler (VPA)</h2>
+<p>Instead of adding more pod replicas, VPA adjusts the CPU/memory <b>requests/limits</b> of existing pods based on observed usage — less commonly used in production for latency-sensitive apps since it requires pod restarts to apply new resource values.</p>
+</div>
+
+<!-- 24. KUBERNETES SECURITY -->
+<div class="section">
+<h1>24. Kubernetes Security — Before K8s vs After K8s</h1>
+
+<h2>24.1 Security Before Kubernetes (Plain Docker on Servers)</h2>
+<ul>
+<li>No standard RBAC across many hosts — access control was per-server SSH keys/users.</li>
+<li>No built-in network policy — any container could often reach any other container/service on the host network.</li>
+<li>Secrets scattered across server config files, scripts, and shared drives.</li>
+<li>Manual, inconsistent patching per host.</li>
+</ul>
+
+<h2>24.2 What Kubernetes Adds for Security</h2>
+<table>
+<tr><th>Feature</th><th>Purpose</th></tr>
+<tr><td>RBAC (Role-Based Access Control)</td><td>Fine-grained control over who can do what, per namespace/resource (e.g., QA team can only view pods in the qa namespace)</td></tr>
+<tr><td>Network Policies</td><td>Firewall-like rules restricting which pods can talk to which — default is "all pods can talk to all pods" unless policies are applied</td></tr>
+<tr><td>Pod Security Standards / Admission Controllers</td><td>Blocks pods from running as root, using host networking, or mounting sensitive host paths, unless explicitly allowed</td></tr>
+<tr><td>Secrets + external secret providers</td><td>Centralizes and (with add-ons) encrypts sensitive config, integrates with Key Vault/Vault</td></tr>
+<tr><td>Service Accounts</td><td>Identity for pods/apps to authenticate to the Kubernetes API or cloud services (e.g., AKS pod identity/workload identity to access Azure resources without embedded credentials)</td></tr>
+<tr><td>Image Pull Secrets + private registries</td><td>Ensures only authorized images from trusted registries can be deployed</td></tr>
+<tr><td>etcd encryption at rest</td><td>Protects the cluster's own state store (which contains Secrets) from disk-level exposure</td></tr>
+</table>
+
+<h2>24.3 Example RBAC Role (Real Pattern)</h2>
+<pre>apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata: { namespace: qa, name: qa-read-only }
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "deployments"]
+  verbs: ["get", "list", "watch"]     <span class="c1"># read-only — QA team can view but not modify</span>
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: { name: qa-team-binding, namespace: qa }
+subjects:
+- kind: Group
+  name: "qa-team"
+roleRef: { kind: Role, name: qa-read-only, apiGroup: rbac.authorization.k8s.io }
+</pre>
+
+<h2>24.4 Example Network Policy (Zero-Trust Style)</h2>
+<pre>apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: { name: order-service-allow, namespace: prod }
+spec:
+  podSelector: { matchLabels: { app: order-service } }
+  policyTypes: [ Ingress ]
+  ingress:
+  - from:
+    - podSelector: { matchLabels: { app: customer-portal } }   <span class="c1"># only frontend can call order-service</span>
+    ports: [{ port: 8080 }]
+</pre>
+<div class="tip"><b>Interview tip:</b> By default, Kubernetes networking is "flat" — any pod can reach any other pod. Network Policies let you move to a zero-trust model where services must be explicitly allowed to talk to each other, drastically reducing lateral movement if one service is compromised.</div>
+</div>
+
+<!-- 25. COMMON K8S ISSUES -->
+<div class="section">
+<h1>25. Common Kubernetes Issues &amp; Real-Time Fixes</h1>
+<table>
+<tr><th>Issue</th><th>Cause</th><th>Real Fix</th></tr>
+<tr><td><code>ImagePullBackOff</code></td><td>Wrong image tag/registry, or missing/expired imagePullSecret</td><td>Verify the tag exists in the registry; check <code>imagePullSecrets</code> and registry credentials</td></tr>
+<tr><td><code>CrashLoopBackOff</code></td><td>App crashes on startup (bad config, missing env var, DB unreachable)</td><td><code>kubectl logs --previous</code> to see the crash reason; fix config/secret and redeploy</td></tr>
+<tr><td>Pod stuck in <code>Pending</code></td><td>Insufficient node CPU/memory capacity, or unsatisfied node affinity/taints</td><td><code>kubectl describe pod</code> to see scheduling failure reason; scale nodes or adjust resource requests</td></tr>
+<tr><td>Readiness probe failing, pod never gets traffic</td><td>Probe path wrong, or app takes longer to start than <code>initialDelaySeconds</code> allows</td><td>Fix the health endpoint path, increase <code>initialDelaySeconds</code>/<code>timeoutSeconds</code></td></tr>
+<tr><td>Rolling update stuck halfway</td><td>New pods failing readiness probe, so old pods are kept (by design) to avoid downtime</td><td>Investigate why new version fails readiness; rollback with <code>kubectl rollout undo</code> if urgent</td></tr>
+<tr><td>Service not routing to any pod</td><td>Service <code>selector</code> labels don't match pod labels</td><td>Confirm labels match exactly with <code>kubectl get pods --show-labels</code></td></tr>
+<tr><td>DNS resolution failing between services</td><td>CoreDNS pod issue, or wrong service name/namespace referenced</td><td>Use fully qualified name <code>service.namespace.svc.cluster.local</code>; check CoreDNS pods are healthy</td></tr>
+<tr><td>OOMKilled pods</td><td>Memory limit set too low for actual usage</td><td>Profile real memory usage, raise <code>resources.limits.memory</code>, fix memory leaks</td></tr>
+<tr><td>Secrets exposed to too many users</td><td>Overly broad RBAC roles, or secrets not namespace-scoped properly</td><td>Apply least-privilege RBAC, split secrets per namespace/environment</td></tr>
+<tr><td>Cluster running out of resources during traffic spike</td><td>No autoscaling configured, or max node count too low</td><td>Configure HPA + Cluster Autoscaler with realistic min/max limits, load test beforehand</td></tr>
+<tr><td>"It works in one namespace but not another"</td><td>Missing ConfigMap/Secret/NetworkPolicy in the new namespace</td><td>Ensure per-namespace manifests (config, secrets, policies) are deployed consistently, ideally via Helm/Kustomize templates</td></tr>
+<tr><td>kubectl apply succeeds but nothing actually changes</td><td>YAML applied to the wrong namespace/context, or a stale cached manifest reapplied</td><td>Always verify current context (<code>kubectl config current-context</code>) and target namespace explicitly with <code>-n</code> before applying</td></tr>
+<tr><td>Ingress returns 502/504 for a healthy-looking service</td><td>Ingress Controller misconfigured backend path/port, or Service selector mismatch</td><td>Check Ingress Controller logs, confirm Service endpoints list actual pod IPs with <code>kubectl get endpoints</code></td></tr>
+</table>
+</div>
+
+<!-- 26. MICROSERVICES ON K8S -->
+<div class="section">
+<h1>26. Microservices on Kubernetes — Real Organization Setup</h1>
+
+<h2>26.1 Typical Real Microservices Landscape</h2>
+<div class="diagram">
+<div class="title">Real Org Microservices on One Cluster</div>
+<div class="flow-row">
+<div class="node">customer-portal (React)</div><div class="node">order-service</div><div class="node">payment-service</div><div class="node">inventory-service</div><div class="node">notification-service</div>
+</div>
+<div class="arrow-down">↓ all behind</div>
+<div class="flow-row"><div class="node purple">Ingress Controller + API Gateway</div></div>
+</div>
+
+<h2>26.2 Service-to-Service Communication Patterns</h2>
+<ul>
+<li><b>Synchronous (REST/gRPC):</b> order-service calls payment-service directly via its ClusterIP Service DNS name — simple but couples availability.</li>
+<li><b>Asynchronous (messaging):</b> order-service publishes an "OrderCreated" event to Kafka/RabbitMQ; inventory-service and notification-service consume independently — more resilient, decoupled.</li>
+<li><b>Service Mesh (Istio/Linkerd):</b> adds mTLS between services, fine-grained traffic splitting (for Canary), and detailed service-to-service observability without changing app code.</li>
+</ul>
+
+<h2>26.3 Helm — Packaging Microservices for Kubernetes</h2>
+<div class="box">Helm is the de-facto package manager for Kubernetes — a "Helm chart" templates your YAML (Deployment/Service/Ingress/ConfigMap) so the same chart can be reused across order-service, payment-service, etc., with only values (image tag, replica count, resource limits) differing per service/environment via a <code>values.yaml</code> file.</div>
+<pre>helm install order-service ./charts/microservice -f values-prod.yaml -n prod
+helm upgrade order-service ./charts/microservice --set image.tag=483 -n prod
+helm rollback order-service 1 -n prod
+</pre>
+
+<h2>26.4 Shared Platform Concerns for Microservices</h2>
+<table>
+<tr><th>Concern</th><th>Real Solution</th></tr>
+<tr><td>Centralized logging across services</td><td>EFK/Loki stack aggregating all pod logs</td></tr>
+<tr><td>Distributed tracing (a request spanning multiple services)</td><td>OpenTelemetry + Jaeger/Zipkin, correlating trace IDs across service calls</td></tr>
+<tr><td>Config consistency</td><td>Shared Helm chart + per-environment values files, or a config-server pattern</td></tr>
+<tr><td>Service discovery</td><td>Built into Kubernetes DNS — no separate service registry (like Eureka) strictly needed on K8s</td></tr>
+<tr><td>API Gateway concerns (auth, rate limiting)</td><td>Dedicated gateway (Kong, Azure API Management, or Spring Cloud Gateway) in front of all services</td></tr>
+</table>
+</div>
+
+<!-- 27. AZURE INTEGRATION -->
+<div class="section">
+<h1>27. Azure Integration — AKS, ACR and Azure DevOps Pipeline</h1>
+
+<h2>27.1 The Azure-Native Service Mapping</h2>
+<table>
+<tr><th>Generic Concept</th><th>Azure Service</th></tr>
+<tr><td>Kubernetes cluster</td><td>Azure Kubernetes Service (AKS) — managed control plane, you manage node pools</td></tr>
+<tr><td>Container registry</td><td>Azure Container Registry (ACR)</td></tr>
+<tr><td>Secrets management</td><td>Azure Key Vault (via Secrets Store CSI Driver into pods)</td></tr>
+<tr><td>Cluster monitoring</td><td>Azure Monitor / Container Insights</td></tr>
+<tr><td>Load balancer / Ingress</td><td>Azure Load Balancer, or Application Gateway Ingress Controller (AGIC)</td></tr>
+<tr><td>Pod-to-Azure-resource identity</td><td>Azure AD Workload Identity (replaces embedding service principal credentials in pods)</td></tr>
+</table>
+
+<h2>27.2 Real Azure DevOps Pipeline — Docker Build → AKS Deploy</h2>
+<pre>trigger: { branches: { include: [ main ] } }
+pool: { vmImage: 'ubuntu-latest' }
+
+variables:
+  - group: prod-secrets
+
+stages:
+- stage: BuildAndPush
+  jobs:
+  - job: Docker
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'ACR-ServiceConnection'
+        repository: 'order-service'
+        command: 'buildAndPush'
+        Dockerfile: 'Dockerfile'
+        tags: '$(Build.BuildId)'
+    - script: |
+        trivy image --severity HIGH,CRITICAL --exit-code 1 \
+          myacr.azurecr.io/order-service:$(Build.BuildId)
+      displayName: 'Trivy Security Scan (blocks on HIGH/CRITICAL)'
+
+- stage: DeployAKS
+  dependsOn: BuildAndPush
+  jobs:
+  - deployment: DeployToAKS
+    environment: 'Production'          <span class="c1"># approval gate configured on this Environment</span>
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: KubernetesManifest@1
+            inputs:
+              action: 'deploy'
+              kubernetesServiceConnection: 'AKS-Prod-ServiceConnection'
+              namespace: 'prod'
+              manifests: |
+                k8s/deployment.yml
+                k8s/service.yml
+                k8s/ingress.yml
+              containers: 'myacr.azurecr.io/order-service:$(Build.BuildId)'
+</pre>
+
+<h2>27.3 AKS Cluster Setup Basics (Real Steps)</h2>
+<pre>az group create --name myapp-rg --location eastus
+az aks create --resource-group myapp-rg --name myapp-aks \
+  --node-count 3 --enable-cluster-autoscaler --min-count 3 --max-count 10 \
+  --attach-acr myacr
+az aks get-credentials --resource-group myapp-rg --name myapp-aks   <span class="c1"># configures local kubectl context</span>
+kubectl get nodes                                                    <span class="c1"># verify cluster access</span>
+</pre>
+
+<h2>27.4 How Azure DevOps + AKS + ACR Fit Together End to End</h2>
+<div class="diagram">
+<div class="title">Our Real Azure Setup</div>
+<div class="flow-row">
+<div class="node">Azure Repos (code)</div><div class="arrow">→</div><div class="node">Azure Pipelines (build/test/scan)</div><div class="arrow">→</div><div class="node purple">ACR (image registry)</div>
+</div>
+<div class="arrow-down">↓ approval gate on Production environment</div>
+<div class="flow-row"><div class="node green">AKS Prod cluster pulls image, rolling update via KubernetesManifest task</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node alt">Azure Monitor / Container Insights + Key Vault-backed secrets</div></div>
+</div>
+</div>
+
+<!-- 28. END TO END FLOW -->
+<div class="section">
+<h1>28. End-to-End Real-Time Implementation Flow (Code → Prod)</h1>
+<ol>
+<li>Developer writes Spring Boot/React code locally, tests using <code>docker compose up</code> against local Postgres/Redis containers.</li>
+<li>Push to feature branch → PR opened in Azure Repos with linked work item.</li>
+<li>PR triggers CI: unit tests, integration tests (Testcontainers), SonarQube quality gate.</li>
+<li>PR merged (2 reviewers) → full pipeline runs: Maven/npm build → Docker multi-stage build → Trivy security scan → push to ACR tagged with build ID.</li>
+<li>Auto-deploy to Dev namespace in AKS → smoke tests run against Dev.</li>
+<li>Auto-deploy to QA namespace → QA team runs manual + automated regression.</li>
+<li>Manual approval (QA Lead) → deploy to Staging namespace → business/UAT sign-off.</li>
+<li>Manual approval (Release Manager) → deploy to Production namespace using Rolling strategy with readiness/liveness probes gating traffic cut-over.</li>
+<li>Post-deploy: Azure Monitor/Prometheus dashboards watched for error-rate/latency spikes; HPA reacts to real traffic; on-call alerted via Alertmanager/PagerDuty if thresholds are breached.</li>
+<li>If something goes wrong: <code>kubectl rollout undo</code> or re-run pipeline with the previous build's image tag — production restored in minutes.</li>
+</ol>
+</div>
+
+<!-- 29. DOCKER VS K8S VS OTHER TOOLS -->
+<div class="section">
+<h1>29. Docker vs Kubernetes vs Other Tools — Comparison</h1>
+<table>
+<tr><th>Tool</th><th>Category</th><th>What It Solves</th></tr>
+<tr><td>Docker</td><td>Container runtime/packaging</td><td>Package an app + dependencies into one portable, isolated unit</td></tr>
+<tr><td>Docker Compose</td><td>Local multi-container orchestration</td><td>Run a small multi-service stack on one machine easily</td></tr>
+<tr><td>Kubernetes</td><td>Container orchestration at scale</td><td>Scheduling, scaling, self-healing, rollouts across many machines</td></tr>
+<tr><td>Docker Swarm</td><td>Simpler built-in orchestrator</td><td>Lightweight orchestration; largely surpassed by Kubernetes' ecosystem in most orgs</td></tr>
+<tr><td>Helm</td><td>Package manager for K8s</td><td>Templating and versioning of Kubernetes YAML across services/environments</td></tr>
+<tr><td>Rancher</td><td>Cluster management UI</td><td>Multi-cluster visibility and RBAC across cloud/on-prem clusters</td></tr>
+<tr><td>Istio/Linkerd</td><td>Service mesh</td><td>mTLS, traffic shaping, deep service-to-service observability</td></tr>
+<tr><td>ArgoCD/Flux</td><td>GitOps continuous delivery</td><td>Cluster state is continuously reconciled from a Git repo, not just a one-time pipeline push</td></tr>
+</table>
+<div class="tip"><b>Interview tip:</b> Docker and Kubernetes are not competitors — Kubernetes commonly <b>runs</b> containers built by Docker (or built via any OCI-compliant tool); the question "Docker vs Kubernetes" is really "packaging tool vs orchestration platform," and most real systems use both together.</div>
+</div>
+
+<!-- 30. INTERVIEW Q&A -->
+<div class="section">
+<h1>30. Interview Questions &amp; Answers (Basic → Advanced → Scenario Based)</h1>
+
+<div class="qa">
+<div class="q">Q1. Why did Docker replace/reduce reliance on Virtual Machines?</div>
+<div class="a">Docker containers share the host OS kernel instead of bundling a full guest OS per workload, making them far lighter (MBs vs GBs), faster to start (seconds vs minutes), and more portable — the same image runs identically on any host with a compatible container runtime.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q2. What is the difference between an image and a container?</div>
+<div class="a">An image is an immutable, read-only build template made of layers. A container is a running (or stopped) instance of that image with an added writable layer for runtime changes. One image can produce many running containers.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q3. Explain multi-stage Docker builds and why they matter.</div>
+<div class="a">Multi-stage builds let you use one Dockerfile with several <code>FROM ... AS stage</code> blocks — a heavy "build" stage compiles the app, and a minimal "runtime" stage copies only the final artifact. This keeps the shipped image small and avoids bundling compilers/build tools that increase size and attack surface.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q4. How many images can one Dockerfile produce?</div>
+<div class="a">Unlimited — a Dockerfile is just a recipe. Every <code>docker build</code> run (with different tags, build args, or source code state) produces a distinct image. Real orgs commonly tag by build number, git SHA, and semantic version for the same underlying Dockerfile.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q5. What's the difference between CMD and ENTRYPOINT?</div>
+<div class="a">ENTRYPOINT defines the fixed command that always runs and is hard to override; CMD provides default arguments that can be easily overridden at <code>docker run</code>. The common real-world pattern combines both — ENTRYPOINT for the binary, CMD for overridable default args.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q6. How do you keep Docker images secure?</div>
+<div class="a">Use minimal base images (Alpine/Distroless), run as a non-root user, use multi-stage builds so build tools don't ship, scan images for CVEs (Trivy/Snyk) in the pipeline, never bake secrets into layers, and pull only from trusted private registries.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q7. Why do we need Kubernetes if we already have Docker?</div>
+<div class="a">Docker runs a single container on a single host well, but doesn't handle multi-host scheduling, automatic scaling, self-healing after crashes/node failures, zero-downtime rollouts, or service discovery across many machines — Kubernetes orchestrates all of that declaratively.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q8. Explain the relationship between Pod, ReplicaSet, and Deployment.</div>
+<div class="a">A Pod is the smallest deployable unit (one or more containers). A ReplicaSet ensures a set number of identical Pods are always running. A Deployment manages ReplicaSets and adds rollout/rollback strategy on top — in practice, you almost always work with Deployments directly.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q9. What's the difference between a readiness probe and a liveness probe?</div>
+<div class="a">A readiness probe determines if a pod is ready to receive traffic — if it fails, the pod is removed from the Service's endpoints but not restarted. A liveness probe determines if a pod is alive at all — if it fails repeatedly, kubelet kills and restarts the container.</div>
+<div class="scenario">Real scenario: A Spring Boot service that's still warming up its cache on startup should fail readiness (so it gets no traffic yet) without failing liveness (so it isn't needlessly restarted while legitimately starting up).</div>
+</div>
+
+<div class="qa">
+<div class="q">Q10. How does a rolling update actually achieve zero downtime?</div>
+<div class="a">The Deployment creates new pods gradually (controlled by <code>maxSurge</code>) while removing old pods gradually (controlled by <code>maxUnavailable</code>), and only routes traffic to new pods once they pass their readiness probe — so there's always a sufficient number of healthy pods serving traffic throughout the rollout.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q11. What tools do you use for monitoring pods in production, and why more than one?</div>
+<div class="a">Rancher for multi-cluster management/RBAC visibility, Prometheus + Grafana for metrics and dashboards, Loki/EFK for centralized logs, and Alertmanager for on-call alerting. Each tool covers a different observability pillar (management, metrics, logs, alerts) — no single tool covers all of them well.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q12. How do Secrets differ from ConfigMaps, and are Kubernetes Secrets actually secure by default?</div>
+<div class="a">ConfigMaps hold non-sensitive config; Secrets hold sensitive values but are only base64-encoded by default — not encrypted. Real production setups add etcd encryption-at-rest and/or integrate an external secret manager like Azure Key Vault via the Secrets Store CSI Driver for genuine encryption and centralized rotation.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q13. A pod is stuck in CrashLoopBackOff — walk through your debugging steps.</div>
+<div class="a">First <code>kubectl describe pod</code> to see recent events and exit code; then <code>kubectl logs --previous</code> to see the crash's actual error output; check for missing/incorrect ConfigMap or Secret values, a misconfigured health check path, or an unreachable dependency (DB/downstream service); fix and reapply, watching <code>kubectl rollout status</code>.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q14. How would you roll back a bad production deployment in Kubernetes?</div>
+<div class="a"><code>kubectl rollout undo deployment/order-service -n prod</code> instantly reverts to the previous ReplicaSet revision — no rebuild needed since the previous image is still in the registry and the previous ReplicaSet spec is retained in rollout history.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q15. How does Kubernetes autoscaling work end to end during a traffic spike?</div>
+<div class="a">The Horizontal Pod Autoscaler watches a metric (e.g., CPU utilization) and increases pod replicas when it exceeds the target. If the cluster's existing nodes can't fit the new pods, the Cluster Autoscaler (or AKS node autoscaling) provisions additional worker nodes automatically, and scales back down once demand drops.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q16. How do you integrate Docker/Kubernetes into an Azure DevOps pipeline?</div>
+<div class="a">A Docker@2 task builds and pushes the image to Azure Container Registry using a Service Connection; a subsequent deployment job targeting a Kubernetes-backed Environment (with approval gates) uses the KubernetesManifest@1 task with an AKS Service Connection to apply the Deployment/Service/Ingress manifests, substituting the new image tag.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q17. What real-world issue have you faced with Docker/Kubernetes and how did you fix it?</div>
+<div class="a">Example: a Spring Boot service was repeatedly OOMKilled in production despite "normal-looking" heap usage — root cause was the JVM not respecting the container's cgroup memory limit on an older JDK image. Fixed by upgrading the base image and explicitly setting <code>-XX:MaxRAMPercentage</code>, aligned with the pod's configured memory limit.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q18. What is the difference between a Service and an Ingress?</div>
+<div class="a">A Service provides a stable internal (or basic external via LoadBalancer/NodePort) network endpoint for a set of pods. An Ingress sits in front of Services and handles external HTTP/HTTPS routing by host/path plus TLS termination, typically via a single shared Ingress Controller for the whole cluster instead of one LoadBalancer per service.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q19. How do microservices communicate on Kubernetes, and what's the tradeoff between sync and async calls?</div>
+<div class="a">Synchronous REST/gRPC calls via Service DNS names are simple but couple the caller's availability to the callee's uptime. Asynchronous messaging (Kafka/RabbitMQ) decouples services — the publisher doesn't wait on the consumer — improving resilience at the cost of added infrastructure and eventual-consistency complexity.</div>
+</div>
+
+<div class="qa">
+<div class="q">Q20. What's the difference between Docker Swarm and Kubernetes?</div>
+<div class="a">Both orchestrate containers, but Kubernetes has a far larger ecosystem, more granular objects (ConfigMaps, RBAC, NetworkPolicies, CRDs), and is the de-facto industry standard; Swarm is simpler to set up but has largely fallen out of favor in real organizations compared to Kubernetes (especially managed offerings like AKS/EKS/GKE).</div>
+</div>
+</div>
+
+<!-- 31. FINAL SUMMARY -->
+<div class="section">
+<h1>31. Final Summary &amp; Cheat Sheet</h1>
+
+<div class="box">
+<p><b>Before Docker:</b> physical servers and VMs were heavy, slow to provision, and caused "works on my machine" inconsistency between Dev/QA/Prod.</p>
+<p><b>After Docker:</b> apps are packaged with their exact dependencies into small, fast, portable images that run identically everywhere.</p>
+<p><b>Before Kubernetes:</b> running many containers across many hosts required manual scaling, manual restarts, and manual networking glue.</p>
+<p><b>After Kubernetes:</b> you declare desired state (replica count, resources, health checks) and the cluster continuously self-heals, scales, and rolls out updates with zero downtime.</p>
+<p><b>Our real Azure setup:</b> Azure Repos → Azure Pipelines (build, test, Trivy scan) → Azure Container Registry → Azure Kubernetes Service, with approval gates on Staging/Production Environments, secrets from Azure Key Vault, and monitoring via Azure Monitor/Prometheus/Grafana.</p>
+</div>
+
+<h2>31.1 Quick Cheat Sheet</h2>
+<table>
+<tr><th>Term</th><th>One-Line Meaning</th></tr>
+<tr><td>Dockerfile</td><td>Text recipe describing how to build an image</td></tr>
+<tr><td>Image</td><td>Immutable, layered, versioned build output</td></tr>
+<tr><td>Container</td><td>A running instance of an image</td></tr>
+<tr><td>Registry</td><td>Where images are stored/distributed (ACR/Docker Hub/ECR)</td></tr>
+<tr><td>Multi-stage build</td><td>One Dockerfile, multiple stages, only final stage ships</td></tr>
+<tr><td>Pod</td><td>Smallest deployable unit in Kubernetes</td></tr>
+<tr><td>Deployment</td><td>Manages ReplicaSets, handles rollout/rollback strategy</td></tr>
+<tr><td>Service</td><td>Stable internal network identity for a set of pods</td></tr>
+<tr><td>Ingress</td><td>External HTTP routing + TLS termination into the cluster</td></tr>
+<tr><td>ConfigMap/Secret</td><td>Externalized non-sensitive/sensitive configuration</td></tr>
+<tr><td>Namespace</td><td>Logical isolation within one physical cluster</td></tr>
+<tr><td>HPA</td><td>Automatically scales pod replicas based on metrics</td></tr>
+<tr><td>Rolling Update</td><td>Default zero-downtime deployment strategy in Kubernetes</td></tr>
+<tr><td>Rancher</td><td>Multi-cluster management UI</td></tr>
+<tr><td>Prometheus/Grafana</td><td>Metrics collection + dashboards/alerts</td></tr>
+<tr><td>Helm</td><td>Package manager / templating for Kubernetes YAML</td></tr>
+</table>
+
+<div class="tip">Use this guide alongside the Git/GitHub/GitLab/Bitbucket guide and the CI/CD guide — together they cover the complete real-world Java full-stack developer journey: writing code, versioning it, automating build/test/deploy, and running it reliably in containers on Kubernetes in production.</div>
+</div>
+
+</body>
+</html>
+

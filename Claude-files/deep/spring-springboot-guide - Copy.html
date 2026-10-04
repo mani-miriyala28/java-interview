@@ -1,0 +1,2442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Spring &amp; Spring Boot Complete Guide — From Java Evolution to Production-Grade Microservices</title>
+<style>
+  @page { size: A4; margin: 18mm 15mm 18mm 15mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Arial, sans-serif; color: #1a1a1a; font-size: 11.5px; line-height: 1.55; }
+  a { text-decoration: none; color: #558b2f; }
+  h1, h2, h3, h4 { color: #33691e; font-family: Arial, sans-serif; page-break-after: avoid; }
+  h1 { font-size: 22px; border-bottom: 3px solid #33691e; padding-bottom: 6px; margin-top: 0; }
+  h2 { font-size: 17px; border-bottom: 1px solid #dcedc8; padding-bottom: 4px; margin-top: 26px; }
+  h3 { font-size: 14px; color: #b03a2e; margin-top: 18px; }
+  h4 { font-size: 12.5px; color: #444; margin-top: 12px; }
+  .section { page-break-before: always; }
+  .cover { page-break-after: always; text-align: center; padding-top: 86px; }
+  .cover h1 { font-size: 30px; border: none; }
+  .cover h3 { color: #333; font-weight: normal; font-size: 16px; margin-top: 16px;}
+  .cover .tag { margin-top: 40px; font-size: 13px; color: #666; }
+  .toc { page-break-after: always; }
+  .toc ol { line-height: 1.75; font-size: 10.5px; }
+  code, pre { font-family: Consolas, "Courier New", monospace; }
+  code { background: #f1f1f1; padding: 1px 5px; border-radius: 3px; color: #a4141d; }
+  pre { background: #1e1e1e; color: #d4d4d4; padding: 10px 12px; border-radius: 6px; overflow-x: auto; font-size: 10.5px; line-height: 1.5; page-break-inside: avoid; white-space: pre-wrap; word-wrap: break-word; }
+  pre .c1 { color: #6a9955; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0 16px 0; font-size: 11px; }
+  th, td { border: 1px solid #e6e6e6; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #f5f5f5; color: #33691e; }
+  tr:nth-child(even) { background: #f9fafc; }
+  .box { background: #f8f9fb; border: 1px solid #cdd6e6; border-radius: 6px; padding: 10px 14px; margin: 10px 0; }
+  .warn { background: #fff4e5; border: 1px solid #f0c36d; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .tip { background: #e8f6ee; border: 1px solid #7fc79a; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .qa { border-left: 3px solid #33691e; padding-left: 10px; margin: 10px 0 16px 0; page-break-inside: avoid; }
+  .qa .q { font-weight: bold; color: #33691e; }
+  .qa .a { margin-top: 4px; }
+  .qa .scenario { margin-top: 4px; font-style: italic; color: #555; }
+  .diagram { background: #fff; border: 1px dashed #9ccc65; border-radius: 8px; padding: 16px; margin: 14px 0; page-break-inside: avoid; }
+  .diagram .title { font-weight: bold; color: #33691e; margin-bottom: 10px; text-align:center; }
+  .flow-row { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+  .node { border: 2px solid #33691e; background: #f1f8e9; border-radius: 6px; padding: 8px 12px; font-weight: bold; text-align: center; font-size: 11px; min-width: 90px; }
+  .node.alt { border-color: #b03a2e; background: #fdeceb; }
+  .node.green { border-color: #1e8449; background: #eafaf1; }
+  .node.gray { border-color: #666; background: #eee; }
+  .node.purple { border-color: #8e44ad; background: #f5eefc; }
+  .arrow { font-size: 20px; color: #33691e; font-weight: bold; }
+  .arrow-down { font-size: 20px; color: #33691e; text-align: center; }
+  .pagebreak { page-break-before: always; }
+  ul, ol { margin-top: 4px; }
+  li { margin-bottom: 3px; }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover">
+  <h1>Spring &amp; Spring Boot — The Complete Guide</h1>
+  <h3>Before Spring: Java Evolution, Servlets, JDBC, Hibernate</h3>
+  <h3>Spring Core • Spring MVC • Spring Boot • Transactions • Testing • Caching/Redis</h3>
+  <h3>Production-Level Implementation, Real Organization Project Structures, Interview Q&amp;A</h3>
+  <div class="tag">A practical, simple-language, end-to-end reference for interview preparation and real-world implementation</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+<h1>Table of Contents</h1>
+<ol>
+<li>Before Spring — The Evolution of Java Enterprise Development</li>
+<li>Introduction to Servlets — What They Are and Their Problems</li>
+<li>JDBC — Direct Database Access Before ORM</li>
+<li>Hibernate &amp; ORM Evolution</li>
+<li>Introduction to Spring Framework — Why It Was Created</li>
+<li>Introduction to Spring MVC</li>
+<li>Introduction to Spring Boot</li>
+<li>Struts vs Spring vs Spring MVC vs Spring Boot — Full Comparison</li>
+<li>Project Structure — Plain Servlet/JSP Application</li>
+<li>Project Structure — Spring MVC Application</li>
+<li>Project Structure — Spring Boot Application (Real Organization Layout)</li>
+<li>Spring Core — The IOC Container</li>
+<li>Dependency Injection — Types and Real Examples</li>
+<li>Spring Bean Lifecycle</li>
+<li>Spring Bean Scopes</li>
+<li>Autowiring in Spring</li>
+<li>Configuration — XML vs Java Config vs Annotations</li>
+<li>Spring Annotations — The Complete Reference</li>
+<li>Spring Expression Language (SpEL)</li>
+<li>AOP — Aspect Oriented Programming</li>
+<li>Spring MVC Architecture — The Full Picture</li>
+<li>DispatcherServlet Explained in Depth</li>
+<li>Controllers in Spring MVC</li>
+<li>View Resolver</li>
+<li>Request Mapping — Full Reference</li>
+<li>Model and ModelMap</li>
+<li>Form Handling in Spring MVC</li>
+<li>Data Binding</li>
+<li>Validation in Spring MVC</li>
+<li>Exception Handling in Spring MVC</li>
+<li>Interceptors</li>
+<li>JSP Integration &amp; Thymeleaf Integration</li>
+<li>Spring Boot — Auto Configuration Explained</li>
+<li>Starter Dependencies</li>
+<li>Application Properties / YAML Configuration</li>
+<li>Spring Profiles</li>
+<li>Spring Boot Actuator</li>
+<li>Embedded Tomcat</li>
+<li>CommandLineRunner &amp; ApplicationRunner</li>
+<li>@ConfigurationProperties</li>
+<li>Logging in Spring Boot</li>
+<li>Spring Transactions — @Transactional Deep Dive</li>
+<li>Transaction Propagation</li>
+<li>Transaction Isolation Levels</li>
+<li>Rollback Handling</li>
+<li>Distributed Transactions</li>
+<li>Spring Testing — JUnit 5</li>
+<li>Mockito</li>
+<li>MockMvc</li>
+<li>Integration Testing in Spring Boot</li>
+<li>TestContainers</li>
+<li>Caching in Spring Boot — Complete Deep Dive</li>
+<li>Redis with Spring Boot — Complete Deep Dive</li>
+<li>How We Develop Spring Boot Applications in Real-Time (Organization Level)</li>
+<li>Common Spring/Spring Boot Issues, Problems &amp; Solutions</li>
+<li>Most Important Interview Topics — Deep Dive Recap</li>
+<li>Interview Questions &amp; Answers (Basic → Advanced → Scenario Based)</li>
+<li>Final Summary &amp; Cheat Sheet</li>
+</ol>
+</div>
+
+<!-- 1. BEFORE SPRING - JAVA EVOLUTION -->
+<div class="section">
+<h1>1. Before Spring — The Evolution of Java Enterprise Development</h1>
+
+<h2>1.1 The Starting Point — Plain Java (Core Java)</h2>
+<div class="box">Java began as a general-purpose language — classes, objects, methods, no built-in concept of "web application." To build a web application in early Java, developers needed additional specifications and containers on top of Core Java.</div>
+
+<h2>1.2 The Full Evolution Timeline</h2>
+<div class="diagram">
+<div class="title">Java Enterprise Development — The Full Journey</div>
+<div class="flow-row">
+<div class="node gray">Core Java (1995)</div><div class="arrow">→</div><div class="node">Servlets + JSP (1997-99)</div><div class="arrow">→</div><div class="node">JDBC (manual SQL)</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+<div class="node">Struts (2000-01)<br/>MVC framework on Servlets</div><div class="arrow">→</div><div class="node">EJB / Hibernate (early 2000s)<br/>ORM &amp; enterprise beans</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">Spring Framework (2003)<br/>Lightweight, POJO-based alternative</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">Spring MVC (2003+)<br/>Cleaner MVC on top of Spring</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">Spring Boot (2014)<br/>Convention over configuration, embedded servers</div></div>
+</div>
+
+<h2>1.3 Why Each Step Existed — Real Problems Solved</h2>
+<table>
+<tr><th>Technology</th><th>Problem It Solved</th><th>New Problem It Introduced</th></tr>
+<tr><td>Servlets</td><td>Let Java handle HTTP requests dynamically (vs static HTML)</td><td>Mixing Java code and HTML output directly in one class was messy and hard to maintain</td></tr>
+<tr><td>JSP</td><td>Let HTML-heavy pages embed Java logic more naturally</td><td>Business logic scattered directly inside view pages — poor separation of concerns</td></tr>
+<tr><td>JDBC</td><td>Standard way to talk to relational databases from Java</td><td>Enormous boilerplate — manual connections, statements, result set mapping, resource cleanup</td></tr>
+<tr><td>Struts</td><td>Brought proper MVC structure on top of raw Servlets/JSP</td><td>Heavy XML configuration, tightly coupled to the framework's own base classes</td></tr>
+<tr><td>EJB (early versions)</td><td>Enterprise features — transactions, security, remote objects</td><td>Extremely heavyweight, required an EJB container, very slow development cycle, hard to unit test</td></tr>
+<tr><td>Hibernate</td><td>Solved JDBC's boilerplate via Object-Relational Mapping</td><td>Still needed manual wiring/configuration; didn't solve the broader application architecture problem</td></tr>
+<tr><td>Spring Framework</td><td>Lightweight, POJO-based, solved EJB's heaviness with Dependency Injection</td><td>Still required substantial XML/Java configuration to wire everything together</td></tr>
+<tr><td>Spring Boot</td><td>Auto-configuration, embedded servers, starter dependencies — "just run it"</td><td>(Widely considered to have solved most prior pain points for typical applications)</td></tr>
+</table>
+<div class="tip"><b>Interview one-liner:</b> "Each layer of the Java web stack's history exists because the previous layer solved one problem but created operational/boilerplate pain of its own — Spring Boot is the current end state of decades of the community trying to make Java web development simpler without losing enterprise-grade power."</div>
+</div>
+
+<!-- 2. SERVLETS -->
+<div class="section">
+<h1>2. Introduction to Servlets — What They Are and Their Problems</h1>
+
+<h2>2.1 What Is a Servlet?</h2>
+<div class="box">A Servlet is a Java class that runs inside a Servlet Container (like Apache Tomcat) and handles HTTP requests/responses directly — it's the foundational building block that every Java web framework (Struts, Spring MVC, Spring Boot) is ultimately built on top of.</div>
+
+<h2>2.2 A Real, Raw Servlet</h2>
+<pre>public class AccountServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        String accountId = req.getParameter("id");
+        Account account = accountDao.findById(Long.parseLong(accountId));   <span class="c1">// manual lookup</span>
+
+        resp.setContentType("text/html");
+        PrintWriter out = resp.getWriter();
+        out.println("&lt;html&gt;&lt;body&gt;");
+        out.println("&lt;h1&gt;Balance: " + account.getBalance() + "&lt;/h1&gt;");   <span class="c1">// HTML hardcoded directly in Java!</span>
+        out.println("&lt;/body&gt;&lt;/html&gt;");
+    }
+}
+
+<span class="c1">&lt;!-- web.xml — manual URL mapping, no annotations in early Servlet versions --&gt;</span>
+&lt;servlet&gt;
+  &lt;servlet-name&gt;AccountServlet&lt;/servlet-name&gt;
+  &lt;servlet-class&gt;com.bank.AccountServlet&lt;/servlet-class&gt;
+&lt;/servlet&gt;
+&lt;servlet-mapping&gt;
+  &lt;servlet-name&gt;AccountServlet&lt;/servlet-name&gt;
+  &lt;url-pattern&gt;/account&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;
+</pre>
+
+<h2>2.3 Real Problems With Raw Servlets</h2>
+<ul>
+<li><b>HTML mixed with Java code</b> — printing HTML tags via <code>out.println()</code> is unmaintainable for any real UI.</li>
+<li><b>One servlet class per URL,</b> or a lot of manual if/else routing logic inside a single servlet — no clean routing framework.</li>
+<li><b>Verbose XML configuration</b> (<code>web.xml</code>) for every servlet mapping.</li>
+<li><b>No separation of concerns</b> — a single class often handled request parsing, business logic, and HTML rendering.</li>
+<li><b>No built-in dependency injection</b> — objects were manually instantiated (<code>new AccountDao()</code>) everywhere, making unit testing hard.</li>
+</ul>
+<div class="tip">JSP (JavaServer Pages) was introduced specifically to fix the "HTML mixed with Java" problem by flipping the model — write HTML normally, embed small Java snippets only where needed (<code>&lt;% %&gt;</code> scriptlets) — but this created its own mess of business logic leaking into view pages, which MVC frameworks like Struts and later Spring MVC solved properly (Section 20).</div>
+</div>
+
+<!-- 3. JDBC -->
+<div class="section">
+<h1>3. JDBC — Direct Database Access Before ORM</h1>
+
+<h2>3.1 What Is JDBC?</h2>
+<div class="box">JDBC (Java Database Connectivity) is the standard low-level API for connecting Java applications to relational databases — every ORM (including Hibernate) is ultimately built on top of JDBC underneath.</div>
+
+<h2>3.2 Real Raw JDBC Code (What Developers Wrote Before Hibernate)</h2>
+<pre>public Account findAccountById(Long id) {
+    Connection conn = null;
+    PreparedStatement stmt = null;
+    ResultSet rs = null;
+    try {
+        conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);   <span class="c1">// manual connection management</span>
+        stmt = conn.prepareStatement("SELECT * FROM account WHERE id = ?");
+        stmt.setLong(1, id);
+        rs = stmt.executeQuery();
+        if (rs.next()) {
+            Account account = new Account();
+            account.setId(rs.getLong("id"));                 <span class="c1">// manual column-by-column mapping</span>
+            account.setBalance(rs.getBigDecimal("balance"));
+            account.setStatus(rs.getString("status"));
+            return account;
+        }
+        return null;
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    } finally {
+        <span class="c1">// manual resource cleanup — easy to forget, causes connection leaks</span>
+        try { if (rs != null) rs.close(); } catch (SQLException ignored) {}
+        try { if (stmt != null) stmt.close(); } catch (SQLException ignored) {}
+        try { if (conn != null) conn.close(); } catch (SQLException ignored) {}
+    }
+}
+</pre>
+
+<h2>3.3 Real Problems With Raw JDBC</h2>
+<table>
+<tr><th>Problem</th><th>Why It Hurts</th></tr>
+<tr><td>Enormous boilerplate</td><td>The same connection/statement/resultset/cleanup pattern repeated for every single query</td></tr>
+<tr><td>Manual object mapping</td><td>Every row-to-object mapping written by hand, error-prone and tedious at scale</td></tr>
+<tr><td>Easy to leak resources</td><td>Forgetting to close a Connection/Statement/ResultSet in the finally block causes connection pool exhaustion over time</td></tr>
+<tr><td>No object relationships</td><td>Fetching an Account with its Cards required manually writing and combining multiple queries by hand</td></tr>
+<tr><td>SQL scattered everywhere</td><td>Raw SQL strings embedded directly in Java code across the codebase, hard to maintain/refactor</td></tr>
+</table>
+<div class="tip">This exact pain — repetitive boilerplate and manual object mapping — is precisely what Hibernate/JPA (Section 4) and later Spring's <code>JdbcTemplate</code>/Spring Data JPA were built to eliminate.</div>
+</div>
+
+<!-- 4. HIBERNATE ORM -->
+<div class="section">
+<h1>4. Hibernate &amp; ORM Evolution</h1>
+
+<h2>4.1 What Is ORM (Object-Relational Mapping)?</h2>
+<div class="box">ORM maps Java objects directly to database tables/rows, letting developers work with regular Java objects and let the framework generate and execute the actual SQL — Hibernate was the dominant Java ORM implementation that made this mainstream in the early-to-mid 2000s.</div>
+
+<h2>4.2 The Same Query, With Hibernate</h2>
+<pre>@Entity
+@Table(name = "account")
+public class Account {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private BigDecimal balance;
+    private String status;
+    <span class="c1">// getters/setters</span>
+}
+
+<span class="c1">// Fetching — Hibernate handles connection, SQL generation, and object mapping automatically</span>
+Session session = sessionFactory.openSession();
+Account account = session.get(Account.class, id);   <span class="c1">// ONE line replaces the entire raw JDBC method from Section 3.2</span>
+</pre>
+
+<h2>4.3 JPA vs Hibernate — A Common Point of Confusion</h2>
+<table>
+<tr><th></th><th>JPA</th><th>Hibernate</th></tr>
+<tr><td>What it is</td><td>A specification (interfaces/annotations) — <code>@Entity</code>, <code>@Id</code>, <code>EntityManager</code></td><td>A concrete implementation of that specification (the actual working code)</td></tr>
+<tr><td>Analogy</td><td>Like an interface</td><td>Like a class implementing that interface</td></tr>
+<tr><td>Alternatives</td><td>—</td><td>EclipseLink, OpenJPA are other JPA implementations</td></tr>
+</table>
+<div class="tip"><b>Interview tip:</b> When you use <code>@Entity</code> and <code>EntityManager</code> in a Spring Boot app, you're coding against the <b>JPA specification</b>; Spring Boot's default underlying implementation providing the actual behavior is <b>Hibernate</b>.</div>
+
+<h2>4.4 What Hibernate/JPA Solved (and What Still Needed Solving)</h2>
+<ul>
+<li>Eliminated manual SQL/ResultSet mapping boilerplate.</li>
+<li>Provided caching, lazy loading, and relationship management (<code>@OneToMany</code>, <code>@ManyToOne</code>) out of the box.</li>
+<li><b>Still needed:</b> a way to wire together DAOs/Services/Controllers cleanly, manage transactions declaratively, and avoid manually creating a <code>SessionFactory</code>/<code>EntityManagerFactory</code> in every application — exactly the gap Spring Framework filled next.</li>
+</ul>
+</div>
+
+<!-- 5. INTRO TO SPRING -->
+<div class="section">
+<h1>5. Introduction to Spring Framework — Why It Was Created</h1>
+
+<h2>5.1 The Problem Spring Solved (2003)</h2>
+<div class="warn">At the time, "Enterprise Java" meant heavyweight EJB (Enterprise JavaBeans) — requiring a full EJB container, verbose boilerplate interfaces, and painfully slow development/testing cycles. Rod Johnson created Spring as a lightweight alternative built on <b>plain old Java objects (POJOs)</b> and <b>Dependency Injection</b>, proving you could get enterprise-grade features (transactions, security) without EJB's heaviness.</div>
+
+<h2>5.2 Spring's Core Idea</h2>
+<div class="box">Instead of your code creating and wiring its own dependencies (<code>new AccountDao()</code> scattered everywhere), you describe what your objects need, and the <b>Spring IoC Container</b> creates and injects them for you — objects become simple, testable POJOs with no framework-specific base classes to extend (unlike EJB).</div>
+<div class="diagram">
+<div class="title">Before Spring vs With Spring</div>
+<div class="flow-row"><div class="node gray">AccountService manually does: new AccountRepository(), new EmailService() — tightly coupled, hard to test</div></div>
+<div class="arrow-down">— vs —</div>
+<div class="flow-row"><div class="node green">Spring Container creates AccountRepository and EmailService, injects them into AccountService automatically</div></div>
+</div>
+
+<h2>5.3 What Spring Actually Provides (High Level)</h2>
+<table>
+<tr><th>Module</th><th>Purpose</th></tr>
+<tr><td>Spring Core (IoC/DI)</td><td>Object creation and wiring (Section 12-16)</td></tr>
+<tr><td>Spring AOP</td><td>Cross-cutting concerns like logging/transactions without cluttering business code (Section 20)</td></tr>
+<tr><td>Spring MVC</td><td>Web framework built on Servlets, with clean separation of concerns (Section 21+)</td></tr>
+<tr><td>Spring Data</td><td>Simplifies JPA/Hibernate repository code even further</td></tr>
+<tr><td>Spring Security</td><td>Authentication/authorization framework</td></tr>
+<tr><td>Spring Boot</td><td>Auto-configuration and convention-over-configuration on top of all the above (Section 7)</td></tr>
+</table>
+</div>
+
+<!-- 6. INTRO TO SPRING MVC -->
+<div class="section">
+<h1>6. Introduction to Spring MVC</h1>
+
+<h2>6.1 What Spring MVC Added on Top of Spring Core</h2>
+<div class="box">Spring MVC is Spring's own web framework — built on top of the Servlet API, providing a clean Model-View-Controller structure, annotation-based routing (<code>@RequestMapping</code>), and automatic data binding/validation, replacing the need for older frameworks like Struts.</div>
+
+<h2>6.2 A Quick Preview (Full Detail in Section 21+)</h2>
+<pre>@Controller
+public class AccountController {
+    @Autowired
+    private AccountService accountService;   <span class="c1">// Spring injects this automatically — no "new"</span>
+
+    @GetMapping("/account/{id}")
+    public String getAccount(@PathVariable Long id, Model model) {
+        model.addAttribute("account", accountService.findById(id));
+        return "accountView";   <span class="c1">// name of a view (JSP/Thymeleaf template) to render</span>
+    }
+}
+</pre>
+<div class="tip">Notice how dramatically cleaner this is than the raw Servlet in Section 2.2 — no manual HTML printing, no manual object creation, clean separation between routing (<code>@GetMapping</code>), business logic (<code>accountService</code>), and rendering (the returned view name).</div>
+</div>
+
+<!-- 7. INTRO TO SPRING BOOT -->
+<div class="section">
+<h1>7. Introduction to Spring Boot</h1>
+
+<h2>7.1 The Problem Spring Boot Solved (2014)</h2>
+<div class="warn">Plain Spring (even Spring MVC) still required substantial manual configuration — XML or Java config classes wiring up a DataSource, a ViewResolver, a TransactionManager, and deploying a WAR file to an external Tomcat server you had to install and configure yourself. Spring Boot was created to eliminate nearly all of this via <b>auto-configuration</b> and <b>embedded servers</b>.</div>
+
+<h2>7.2 What Spring Boot Actually Adds</h2>
+<table>
+<tr><th>Feature</th><th>What It Means</th></tr>
+<tr><td>Auto Configuration</td><td>Spring Boot inspects what's on your classpath and automatically configures beans you'd otherwise wire manually (Section 33)</td></tr>
+<tr><td>Starter Dependencies</td><td>One dependency (e.g., <code>spring-boot-starter-web</code>) pulls in everything needed for a typical use case (Section 34)</td></tr>
+<tr><td>Embedded Server</td><td>Tomcat/Jetty/Undertow is embedded directly in your JAR — just run <code>java -jar app.jar</code>, no separate server install (Section 38)</td></tr>
+<tr><td>Opinionated Defaults</td><td>Sensible defaults for everything, all overridable via <code>application.yml</code> (Section 35)</td></tr>
+<tr><td>Production-Ready Features</td><td>Actuator gives health checks/metrics out of the box (Section 37)</td></tr>
+</table>
+
+<h2>7.3 A Complete, Runnable Spring Boot App (Minimal)</h2>
+<pre>@SpringBootApplication
+public class BankApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(BankApplication.class, args);   <span class="c1">// starts embedded Tomcat + entire Spring context</span>
+    }
+}
+</pre>
+<div class="tip">This is the entire bootstrap needed — no <code>web.xml</code>, no external server install, no manual DataSource/ViewResolver XML configuration for typical use cases. This is precisely why Spring Boot became the default choice for virtually all new Java web/microservices development.</div>
+</div>
+
+<!-- 8. STRUTS VS SPRING VS SPRING MVC VS SPRING BOOT -->
+<div class="section">
+<h1>8. Struts vs Spring vs Spring MVC vs Spring Boot — Full Comparison</h1>
+<table>
+<tr><th>Aspect</th><th>Struts</th><th>Spring (Core)</th><th>Spring MVC</th><th>Spring Boot</th></tr>
+<tr><td>Category</td><td>Web MVC framework</td><td>General-purpose IoC/DI framework</td><td>Web MVC framework (built on Spring Core)</td><td>Convention-over-configuration layer on top of the entire Spring ecosystem</td></tr>
+<tr><td>Configuration</td><td>Heavy XML (struts-config.xml)</td><td>XML or Java Config, still manual wiring</td><td>Annotations + some Java Config, still needs manual bean setup</td><td>Auto-configuration — minimal explicit config needed</td></tr>
+<tr><td>Server</td><td>Deployed as WAR to external Tomcat</td><td>N/A (not web-specific)</td><td>Deployed as WAR to external Tomcat</td><td>Embedded Tomcat — runs as executable JAR</td></tr>
+<tr><td>Testability</td><td>Harder — tightly coupled to framework base classes</td><td>Good — POJOs, easy to unit test</td><td>Good</td><td>Excellent — plus built-in testing support (Section 45+)</td></tr>
+<tr><td>Status today</td><td>Largely legacy/retired (Apache Struts 1 esp.)</td><td>Still the foundation underneath Spring MVC/Boot</td><td>Still used, usually via Spring Boot now</td><td>The de facto standard for new Java web/microservices projects</td></tr>
+</table>
+<div class="tip"><b>Interview one-liner:</b> "Spring Core provides the IoC container; Spring MVC is a web framework built on top of Spring Core; Spring Boot is a convention-over-configuration layer built on top of both, adding auto-configuration and embedded servers — they're layered, not competing alternatives."</div>
+</div>
+
+<!-- 9. PROJECT STRUCTURE - SERVLET -->
+<div class="section">
+<h1>9. Project Structure — Plain Servlet/JSP Application</h1>
+<pre>bank-servlet-app/
+├── src/main/java/com/bank/
+│   ├── servlet/
+│   │   ├── AccountServlet.java         <span class="c1"># extends HttpServlet, handles /account URL manually</span>
+│   │   └── LoginServlet.java
+│   ├── dao/
+│   │   └── AccountDao.java             <span class="c1"># raw JDBC code (Section 3)</span>
+│   └── model/
+│       └── Account.java                <span class="c1"># plain POJO, no annotations</span>
+├── src/main/webapp/
+│   ├── WEB-INF/
+│   │   ├── web.xml                     <span class="c1"># manual servlet-to-URL mapping (no annotations)</span>
+│   │   └── jsp/
+│   │       └── accountView.jsp         <span class="c1"># JSP mixing HTML and Java scriptlets</span>
+│   └── index.html
+└── pom.xml                             <span class="c1"># packaging: war — deployed to an external Tomcat</span>
+</pre>
+<div class="box">Notice everything is manual: URL routing (web.xml), object creation (<code>new AccountDao()</code> inside servlets), and no clear separation between the DAO/service/controller layers — this is the exact structure that motivated Struts and later Spring MVC.</div>
+</div>
+
+<!-- 10. PROJECT STRUCTURE - SPRING MVC -->
+<div class="section">
+<h1>10. Project Structure — Spring MVC Application</h1>
+<pre>bank-springmvc-app/
+├── src/main/java/com/bank/
+│   ├── config/
+│   │   ├── WebConfig.java               <span class="c1"># @EnableWebMvc, ViewResolver bean, interceptor registration</span>
+│   │   └── AppConfig.java               <span class="c1"># DataSource, TransactionManager beans (Java Config)</span>
+│   ├── controller/
+│   │   └── AccountController.java       <span class="c1"># @Controller, @RequestMapping methods</span>
+│   ├── service/
+│   │   ├── AccountService.java          <span class="c1"># interface</span>
+│   │   └── impl/AccountServiceImpl.java <span class="c1"># @Service, business logic</span>
+│   ├── repository/
+│   │   └── AccountRepository.java       <span class="c1"># @Repository, Hibernate/JPA-based</span>
+│   └── model/
+│       └── Account.java                 <span class="c1"># @Entity</span>
+├── src/main/webapp/
+│   └── WEB-INF/
+│       ├── web.xml                       <span class="c1"># registers Spring's DispatcherServlet (Section 22)</span>
+│       └── views/
+│           └── accountView.jsp
+└── pom.xml                               <span class="c1"># packaging: war — still deployed to an external Tomcat</span>
+</pre>
+<div class="box">Real separation of concerns now exists (controller → service → repository), and Spring's IoC container wires everything via <code>@Autowired</code> — but you still write <code>web.xml</code> (or a <code>WebApplicationInitializer</code>) to register the DispatcherServlet, and deploy a WAR to an external, separately-installed Tomcat server.</div>
+</div>
+
+<!-- 11. PROJECT STRUCTURE - SPRING BOOT -->
+<div class="section">
+<h1>11. Project Structure — Spring Boot Application (Real Organization Layout)</h1>
+
+<h2>11.1 Standard Layered Spring Boot Project (Real Org Pattern)</h2>
+<pre>accounts-service/
+├── src/main/java/com/bank/accounts/
+│   ├── AccountsServiceApplication.java   <span class="c1"># @SpringBootApplication — single entry point, embeds Tomcat</span>
+│   ├── config/
+│   │   ├── SecurityConfig.java           <span class="c1"># Spring Security / JWT configuration</span>
+│   │   ├── SwaggerConfig.java             <span class="c1"># OpenAPI configuration</span>
+│   │   ├── RedisConfig.java               <span class="c1"># Cache configuration (Section 52)</span>
+│   │   └── CorsConfig.java
+│   ├── controller/
+│   │   └── AccountController.java        <span class="c1"># @RestController — REST API layer</span>
+│   ├── service/
+│   │   ├── AccountService.java            <span class="c1"># interface — business logic contract</span>
+│   │   └── impl/AccountServiceImpl.java   <span class="c1"># @Service — actual business logic</span>
+│   ├── repository/
+│   │   └── AccountRepository.java         <span class="c1"># extends JpaRepository — Spring Data JPA</span>
+│   ├── entity/
+│   │   └── Account.java                   <span class="c1"># @Entity — JPA-managed database model</span>
+│   ├── dto/
+│   │   ├── AccountDto.java                <span class="c1"># response shape</span>
+│   │   └── CreateAccountRequest.java      <span class="c1"># request shape</span>
+│   ├── mapper/
+│   │   └── AccountMapper.java             <span class="c1"># Entity ↔ DTO conversion (often MapStruct-generated)</span>
+│   ├── exception/
+│   │   ├── AccountNotFoundException.java
+│   │   └── GlobalExceptionHandler.java    <span class="c1"># @RestControllerAdvice</span>
+│   └── client/
+│       └── CardsFeignClient.java          <span class="c1"># inter-service communication</span>
+├── src/main/resources/
+│   ├── application.yml                    <span class="c1"># default config</span>
+│   ├── application-dev.yml
+│   ├── application-qa.yml
+│   ├── application-prod.yml
+│   └── db/migration/                      <span class="c1"># Flyway/Liquibase SQL migration scripts</span>
+│       └── V1__create_account_table.sql
+├── src/test/java/com/bank/accounts/
+│   ├── controller/AccountControllerTest.java   <span class="c1"># @WebMvcTest (Section 47)</span>
+│   ├── service/AccountServiceTest.java         <span class="c1"># Mockito unit tests (Section 46)</span>
+│   └── integration/AccountIntegrationTest.java <span class="c1"># @SpringBootTest + Testcontainers (Section 49)</span>
+├── Dockerfile
+├── pom.xml                                     <span class="c1"># packaging: jar — runs standalone with embedded Tomcat</span>
+└── docker-compose.yml                          <span class="c1"># local dev: this service + Postgres + Redis</span>
+</pre>
+
+<h2>11.2 Why This Layered Structure (Real Reasoning)</h2>
+<table>
+<tr><th>Layer</th><th>Responsibility</th><th>Should NOT Contain</th></tr>
+<tr><td>Controller</td><td>HTTP concerns only — request/response mapping, validation trigger, calling the service</td><td>Business logic, direct database access</td></tr>
+<tr><td>Service</td><td>Business logic, orchestration, transaction boundaries</td><td>HTTP-specific code (HttpServletRequest, ResponseEntity)</td></tr>
+<tr><td>Repository</td><td>Data access only</td><td>Business rules/validation</td></tr>
+<tr><td>Entity</td><td>Database-mapped model</td><td>Ever being returned directly from a Controller (Section 45, API guide)</td></tr>
+<tr><td>DTO</td><td>Public API contract shape</td><td>JPA annotations, database concerns</td></tr>
+</table>
+
+<h2>11.3 Struts vs Spring MVC vs Spring Boot Project Structure — Side by Side</h2>
+<div class="diagram">
+<div class="title">Project Structure Evolution</div>
+<div class="flow-row">
+<div class="node gray">Servlet App<br/>WAR, web.xml, external Tomcat</div>
+<div class="node">Spring MVC App<br/>WAR, DispatcherServlet in web.xml, external Tomcat</div>
+<div class="node green">Spring Boot App<br/>JAR, embedded Tomcat, application.yml, zero XML</div>
+</div>
+</div>
+<div class="tip"><b>Real scenario:</b> "Our organization standardized this exact package-by-layer structure (controller/service/repository/entity/dto/mapper/exception/client) across all 15+ microservices — any developer moving from Cards Service to Loans Service instantly knows where to find things, because the structural convention never changes, only the business logic inside it."</div>
+</div>
+
+<!-- 12. IOC CONTAINER -->
+<div class="section">
+<h1>12. Spring Core — The IOC Container</h1>
+
+<h2>12.1 What Is Inversion of Control (IoC)?</h2>
+<div class="box">Normally, your code controls object creation (<code>new AccountService()</code>). With IoC, that control is "inverted" — a container creates and manages your objects (called <b>Beans</b>) for you, and hands them to whoever needs them. You describe dependencies; the container resolves and provides them.</div>
+
+<h2>12.2 The IoC Container Visualized</h2>
+<div class="diagram">
+<div class="title">Spring IoC Container</div>
+<div class="flow-row">
+<div class="node">@Component classes<br/>(Controller, Service, Repository)</div><div class="arrow">→ scanned/registered by →</div><div class="node purple">Spring IoC Container (ApplicationContext)</div>
+</div>
+<div class="arrow-down">↓ creates, configures, wires, and manages the full lifecycle of</div>
+<div class="flow-row"><div class="node green">Beans (managed objects)</div></div>
+</div>
+
+<h2>12.3 BeanFactory vs ApplicationContext</h2>
+<table>
+<tr><th></th><th>BeanFactory</th><th>ApplicationContext</th></tr>
+<tr><td>What it is</td><td>The most basic IoC container interface — lazy bean initialization</td><td>A more feature-rich extension of BeanFactory — the one actually used in real applications</td></tr>
+<tr><td>Extra features</td><td>—</td><td>Event publishing, internationalization, AOP integration, eager singleton initialization by default</td></tr>
+<tr><td>Real usage</td><td>Rarely used directly</td><td>Always what Spring Boot uses under the hood (<code>SpringApplication.run()</code> returns one)</td></tr>
+</table>
+
+<h2>12.4 How the Container Discovers Beans</h2>
+<pre>@SpringBootApplication   <span class="c1">// includes @ComponentScan — scans the current package and sub-packages for @Component-annotated classes</span>
+public class BankApplication { ... }
+
+@Service   <span class="c1">// a specialization of @Component — registered as a bean automatically</span>
+public class AccountService { ... }
+</pre>
+</div>
+
+<!-- 13. DEPENDENCY INJECTION -->
+<div class="section">
+<h1>13. Dependency Injection — Types and Real Examples</h1>
+
+<h2>13.1 The Three Types of Dependency Injection</h2>
+<table>
+<tr><th>Type</th><th>How</th><th>Recommended?</th></tr>
+<tr><td>Constructor Injection</td><td>Dependencies passed via the constructor</td><td><b>Yes — the recommended default</b> for mandatory dependencies</td></tr>
+<tr><td>Setter Injection</td><td>Dependencies set via a setter method</td><td>Used for optional dependencies</td></tr>
+<tr><td>Field Injection</td><td><code>@Autowired</code> directly on a field</td><td>Discouraged in production code — harder to unit test, hides required dependencies</td></tr>
+</table>
+
+<h2>13.2 Real Code — All Three Types</h2>
+<pre><span class="c1">// Constructor Injection (RECOMMENDED) — dependencies are final, impossible to construct in an invalid state</span>
+@Service
+public class AccountService {
+    private final AccountRepository accountRepository;
+    private final EmailService emailService;
+
+    public AccountService(AccountRepository accountRepository, EmailService emailService) {
+        this.accountRepository = accountRepository;
+        this.emailService = emailService;
+    }
+}
+
+<span class="c1">// With Lombok, even shorter:</span>
+@Service
+@RequiredArgsConstructor   <span class="c1">// generates the constructor automatically for all final fields</span>
+public class AccountService {
+    private final AccountRepository accountRepository;
+    private final EmailService emailService;
+}
+
+<span class="c1">// Setter Injection</span>
+@Service
+public class ReportService {
+    private NotificationService notificationService;   <span class="c1">// optional dependency</span>
+
+    @Autowired(required = false)
+    public void setNotificationService(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
+}
+
+<span class="c1">// Field Injection (DISCOURAGED)</span>
+@Service
+public class LegacyService {
+    @Autowired
+    private AccountRepository accountRepository;   <span class="c1">// works, but can't be made final, hard to unit test without reflection</span>
+}
+</pre>
+<div class="tip"><b>Interview tip:</b> Constructor injection is preferred because it makes dependencies explicit and immutable (<code>final</code>), fails fast at startup if a dependency is missing, and makes unit testing trivial — you just call <code>new AccountService(mockRepo, mockEmailService)</code> without needing Spring or reflection tricks at all.</div>
+
+<h2>13.3 Resolving Ambiguity — @Qualifier and @Primary</h2>
+<pre>public interface NotificationSender { void send(String message); }
+
+@Service("smsSender")
+public class SmsSender implements NotificationSender { ... }
+
+@Service("emailSender")
+@Primary   <span class="c1">// used by default when multiple candidates exist and no @Qualifier is specified</span>
+public class EmailSender implements NotificationSender { ... }
+
+@Service
+public class AlertService {
+    private final NotificationSender sender;
+
+    public AlertService(@Qualifier("smsSender") NotificationSender sender) {   <span class="c1">// explicitly picks the SMS bean</span>
+        this.sender = sender;
+    }
+}
+</pre>
+</div>
+
+<!-- 14. BEAN LIFECYCLE -->
+<div class="section">
+<h1>14. Spring Bean Lifecycle</h1>
+
+<h2>14.1 The Full Bean Lifecycle, Step by Step</h2>
+<div class="diagram">
+<div class="title">Spring Bean Lifecycle</div>
+<div class="flow-row"><div class="node">1. Instantiate<br/>(constructor called)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">2. Populate Properties<br/>(dependency injection happens)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node alt">3. Aware Interfaces<br/>(BeanNameAware, ApplicationContextAware, etc.)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">4. @PostConstruct / InitializingBean / init-method<br/>(custom initialization logic)</div></div>
+<div class="arrow-down">↓ bean is now fully ready and usable</div>
+<div class="flow-row"><div class="node purple">5. Bean In Use</div></div>
+<div class="arrow-down">↓ container shutdown</div>
+<div class="flow-row"><div class="node gray">6. @PreDestroy / DisposableBean / destroy-method<br/>(cleanup logic)</div></div>
+</div>
+
+<h2>14.2 Real Code — Hooking Into the Lifecycle</h2>
+<pre>@Component
+public class ConnectionPoolManager {
+
+    @PostConstruct
+    public void init() {
+        log.info("Initializing connection pool...");   <span class="c1">// runs once, right after dependency injection completes</span>
+    }
+
+    @PreDestroy
+    public void cleanup() {
+        log.info("Closing connection pool gracefully...");   <span class="c1">// runs during graceful application shutdown</span>
+    }
+}
+</pre>
+<div class="tip"><b>Real scenario:</b> "Our Kafka consumer service uses <code>@PreDestroy</code> to finish processing any in-flight message and commit its offset before the pod actually terminates during a Kubernetes rolling deployment — without this, a mid-shutdown pod kill could silently drop a message."</div>
+</div>
+
+<!-- 15. BEAN SCOPES -->
+<div class="section">
+<h1>15. Spring Bean Scopes</h1>
+<table>
+<tr><th>Scope</th><th>Meaning</th><th>Real Use Case</th></tr>
+<tr><td>singleton (default)</td><td>Exactly one instance per Spring container, shared everywhere</td><td>Stateless services, repositories — the vast majority of beans</td></tr>
+<tr><td>prototype</td><td>A brand-new instance created every time the bean is requested</td><td>Stateful, non-thread-safe helper objects needed per-use</td></tr>
+<tr><td>request</td><td>One instance per HTTP request (web-aware contexts only)</td><td>Request-scoped data holders in a web app</td></tr>
+<tr><td>session</td><td>One instance per HTTP session</td><td>User-session-specific state (rare in stateless REST APIs)</td></tr>
+<tr><td>application</td><td>One instance per ServletContext</td><td>Rarely used directly</td></tr>
+</table>
+<pre>@Component
+@Scope("prototype")
+public class ReportGenerator { ... }   <span class="c1">// a new instance every time it's injected/requested</span>
+</pre>
+<div class="warn"><b>Common mistake:</b> Injecting a <code>prototype</code>-scoped bean into a <code>singleton</code>-scoped bean via normal field/constructor injection only creates the prototype bean <b>once</b> (at singleton creation time) — you need a special pattern (<code>ObjectProvider</code> or a scoped proxy) to actually get a fresh prototype instance on every use.</div>
+</div>
+
+<!-- 16. AUTOWIRING -->
+<div class="section">
+<h1>16. Autowiring in Spring</h1>
+
+<h2>16.1 How Autowiring Resolves Dependencies</h2>
+<div class="diagram">
+<div class="title">Autowiring Resolution Order</div>
+<div class="flow-row">
+<div class="node">1. Match by Type</div><div class="arrow">→</div><div class="node">2. If multiple matches, use @Qualifier/@Primary</div><div class="arrow">→</div><div class="node green">3. Fall back to matching by field/parameter name</div>
+</div>
+</div>
+
+<h2>16.2 Real Autowiring Examples</h2>
+<pre>@Autowired   <span class="c1">// matches by type — works fine if only ONE bean of type NotificationSender exists</span>
+private NotificationSender sender;
+
+@Autowired
+@Qualifier("smsSender")   <span class="c1">// disambiguates when multiple beans of the same type exist</span>
+private NotificationSender sender;
+
+@Autowired(required = false)   <span class="c1">// won't throw an error if no matching bean is found — sender stays null</span>
+private NotificationSender optionalSender;
+</pre>
+<div class="tip">Real production code almost always uses constructor injection (Section 13.2) instead of field-level <code>@Autowired</code> — but understanding autowiring resolution rules is still a very common interview question.</div>
+</div>
+
+<!-- 17. CONFIGURATION XML JAVA -->
+<div class="section">
+<h1>17. Configuration — XML vs Java Config vs Annotations</h1>
+
+<h2>17.1 The Three Ways to Configure Spring (Historical Evolution)</h2>
+<table>
+<tr><th>Style</th><th>Era</th><th>Still Used Today?</th></tr>
+<tr><td>XML Configuration</td><td>Original Spring style (2003+)</td><td>Rare in new projects, still seen in legacy codebases</td></tr>
+<tr><td>Java Config (<code>@Configuration</code>/<code>@Bean</code>)</td><td>Introduced Spring 3 (2009)</td><td>Common for third-party beans you don't own the source of</td></tr>
+<tr><td>Annotation-Based (<code>@Component</code>, <code>@Service</code>, etc.)</td><td>Increasingly dominant since Spring 2.5+/Spring Boot</td><td>The default approach in virtually all modern Spring Boot code</td></tr>
+</table>
+
+<h2>17.2 Real XML Configuration (Legacy Style)</h2>
+<pre>&lt;beans xmlns="http://www.springframework.org/schema/beans"&gt;
+    &lt;bean id="accountService" class="com.bank.service.AccountService"&gt;
+        &lt;constructor-arg ref="accountRepository"/&gt;
+    &lt;/bean&gt;
+    &lt;bean id="accountRepository" class="com.bank.repository.AccountRepositoryImpl"/&gt;
+&lt;/beans&gt;
+</pre>
+
+<h2>17.3 Real Java Config</h2>
+<pre>@Configuration
+public class AppConfig {
+    @Bean
+    public AccountService accountService(AccountRepository repo) {
+        return new AccountService(repo);   <span class="c1">// used typically for beans you don't control the source of (3rd-party libraries)</span>
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+}
+</pre>
+
+<h2>17.4 Real Annotation-Based Configuration (The Modern Default)</h2>
+<pre>@Service
+@RequiredArgsConstructor
+public class AccountService {
+    private final AccountRepository accountRepository;   <span class="c1">// Spring finds and injects this automatically, zero explicit config needed</span>
+}
+</pre>
+<div class="tip"><b>Real practice:</b> Use annotations (<code>@Component</code>/<code>@Service</code>/<code>@Repository</code>) for your own application classes, and Java Config (<code>@Configuration</code>/<code>@Bean</code>) specifically for wiring third-party library objects (like a <code>RestTemplate</code>, <code>ObjectMapper</code>, or a Redis <code>RedisTemplate</code>) that you can't annotate directly since you don't own their source code.</div>
+</div>
+
+<!-- 18. SPRING ANNOTATIONS REFERENCE -->
+<div class="section">
+<h1>18. Spring Annotations — The Complete Reference</h1>
+<table>
+<tr><th>Annotation</th><th>Purpose</th></tr>
+<tr><td><code>@Component</code></td><td>Generic stereotype — marks a class as a Spring-managed bean</td></tr>
+<tr><td><code>@Service</code></td><td>Specialization of @Component for the service/business logic layer</td></tr>
+<tr><td><code>@Repository</code></td><td>Specialization of @Component for the data access layer; also enables automatic exception translation (JDBC exceptions → Spring's DataAccessException hierarchy)</td></tr>
+<tr><td><code>@Controller</code></td><td>Specialization of @Component for MVC web controllers returning views</td></tr>
+<tr><td><code>@RestController</code></td><td><code>@Controller</code> + <code>@ResponseBody</code> combined — every method return value is serialized directly as the HTTP response body (JSON)</td></tr>
+<tr><td><code>@Configuration</code></td><td>Marks a class as a source of bean definitions (Java Config)</td></tr>
+<tr><td><code>@Bean</code></td><td>Marks a method inside a @Configuration class as producing a bean</td></tr>
+<tr><td><code>@Autowired</code></td><td>Requests dependency injection for a field/constructor/setter</td></tr>
+<tr><td><code>@Qualifier</code></td><td>Disambiguates which specific bean to inject when multiple candidates of the same type exist</td></tr>
+<tr><td><code>@Primary</code></td><td>Marks a bean as the default choice when multiple candidates exist and no @Qualifier is specified</td></tr>
+<tr><td><code>@Value</code></td><td>Injects a value from application.yml/properties (or a SpEL expression) into a field</td></tr>
+<tr><td><code>@Scope</code></td><td>Declares a bean's scope (singleton, prototype, etc.)</td></tr>
+<tr><td><code>@PostConstruct</code> / <code>@PreDestroy</code></td><td>Lifecycle hooks (Section 14)</td></tr>
+<tr><td><code>@ComponentScan</code></td><td>Tells Spring which packages to scan for @Component-annotated classes</td></tr>
+<tr><td><code>@Transactional</code></td><td>Declares a method/class as running within a database transaction (Section 41)</td></tr>
+<tr><td><code>@Aspect</code></td><td>Marks a class as an AOP aspect (Section 19)</td></tr>
+<tr><td><code>@SpringBootApplication</code></td><td>Combines @Configuration + @EnableAutoConfiguration + @ComponentScan (Section 33)</td></tr>
+</table>
+</div>
+
+<!-- 19. SPEL -->
+<div class="section">
+<h1>19. Spring Expression Language (SpEL)</h1>
+
+<h2>19.1 What SpEL Is</h2>
+<div class="box">SpEL (Spring Expression Language) is a powerful expression language that lets you evaluate expressions dynamically inside annotations and configuration — used heavily in <code>@Value</code>, Spring Security method security, and caching annotations.</div>
+
+<h2>19.2 Real SpEL Examples</h2>
+<pre><span class="c1">// Injecting a simple property value</span>
+@Value("${app.max-retry-count}")
+private int maxRetryCount;
+
+<span class="c1">// Injecting a computed/default value with SpEL</span>
+@Value("#{systemProperties['user.timezone'] ?: 'UTC'}")
+private String timezone;
+
+<span class="c1">// Referencing another bean's property via SpEL</span>
+@Value("#{accountConfig.defaultCurrency}")
+private String defaultCurrency;
+
+<span class="c1">// SpEL used in Spring Security method-level authorization</span>
+@PreAuthorize("#customerId == authentication.principal.customerId or hasRole('ADMIN')")
+public AccountDto getAccount(Long customerId) { ... }
+
+<span class="c1">// SpEL used in caching to build a dynamic cache key (Section 51)</span>
+@Cacheable(value = "accounts", key = "#customerId + '-' + #accountType")
+public List&lt;Account&gt; findAccounts(Long customerId, String accountType) { ... }
+</pre>
+<div class="tip"><b>Real scenario:</b> "Our <code>@PreAuthorize</code> SpEL expressions enforce that a customer can only view their own account data unless they hold an ADMIN role — this security rule lives declaratively right next to the method it protects, instead of being buried in imperative if-checks scattered through the service layer."</div>
+</div>
+
+<!-- 20. AOP -->
+<div class="section">
+<h1>20. AOP — Aspect Oriented Programming</h1>
+
+<h2>20.1 What Problem AOP Solves</h2>
+<div class="box">Cross-cutting concerns (logging, security checks, transaction management, auditing) would otherwise need to be repeated in every single business method. AOP lets you define this logic <b>once</b>, as an "Aspect," and apply it declaratively across many methods/classes matching a pattern ("Pointcut") — without cluttering the actual business logic.</div>
+
+<h2>20.2 Core AOP Terminology</h2>
+<table>
+<tr><th>Term</th><th>Meaning</th></tr>
+<tr><td>Aspect</td><td>A module encapsulating a cross-cutting concern (e.g., a LoggingAspect class)</td></tr>
+<tr><td>Advice</td><td>The actual action taken (what code runs) — Before, After, Around, AfterReturning, AfterThrowing</td></tr>
+<tr><td>Pointcut</td><td>An expression defining WHICH methods the advice applies to</td></tr>
+<tr><td>Join Point</td><td>A specific point during execution (e.g., a method call) where an aspect can be applied</td></tr>
+<tr><td>Weaving</td><td>The process of applying aspects to target objects (Spring does this at runtime via proxies)</td></tr>
+</table>
+
+<h2>20.3 Real AOP Code — Logging Every Service Method's Execution Time</h2>
+<pre>@Aspect
+@Component
+public class PerformanceLoggingAspect {
+
+    @Around("execution(* com.bank.accounts.service.*.*(..))")   <span class="c1">// Pointcut: every method in the service package</span>
+    public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
+        long start = System.currentTimeMillis();
+        Object result = joinPoint.proceed();   <span class="c1">// actually calls the real method</span>
+        long duration = System.currentTimeMillis() - start;
+        log.info("{} executed in {}ms", joinPoint.getSignature(), duration);
+        return result;
+    }
+}
+</pre>
+
+<h2>20.4 Real AOP Code — Custom @Auditable Annotation (Recap From API Guide)</h2>
+<pre>@Aspect
+@Component
+public class AuditAspect {
+    @Around("@annotation(Auditable)")
+    public Object audit(ProceedingJoinPoint joinPoint) throws Throwable {
+        String user = SecurityContextHolder.getContext().getAuthentication().getName();
+        Object result = joinPoint.proceed();
+        auditLogRepository.save(new AuditLog(user, joinPoint.getSignature().getName(), Instant.now()));
+        return result;
+    }
+}
+</pre>
+
+<h2>20.5 How AOP Actually Works Under the Hood</h2>
+<div class="box">Spring AOP creates a <b>proxy</b> object wrapping your real bean — when you call a method, you're actually calling the proxy first, which runs the aspect logic and then delegates to the real method. This is why <code>@Transactional</code>/AOP-based advice doesn't work when calling a method on <code>this</code> from within the same class — that internal call bypasses the proxy entirely.</div>
+<div class="warn"><b>Common gotcha:</b> If method A calls method B in the same class, and B has <code>@Transactional</code>, calling A won't trigger B's transaction behavior — because the call goes directly (this.B()), never passing through the Spring-generated proxy. Real fix: move B into a separate bean/service and inject it, or use <code>AopContext.currentProxy()</code> (less clean).</div>
+</div>
+
+<!-- 21. SPRING MVC ARCHITECTURE -->
+<div class="section">
+<h1>21. Spring MVC Architecture — The Full Picture</h1>
+
+<h2>21.1 The MVC Pattern</h2>
+<div class="box">Model-View-Controller separates an application into three responsibilities: the <b>Model</b> (data), the <b>View</b> (presentation/rendering), and the <b>Controller</b> (handles requests, coordinates between Model and View) — this separation is exactly what raw Servlets (Section 2) lacked.</div>
+
+<h2>21.2 Full Spring MVC Request Flow Diagram</h2>
+<div class="diagram">
+<div class="title">Complete Spring MVC Request Lifecycle</div>
+<div class="flow-row"><div class="node">Client sends HTTP request</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">DispatcherServlet (Front Controller)</div></div>
+<div class="arrow-down">↓ asks</div>
+<div class="flow-row"><div class="node">HandlerMapping<br/>"which Controller method handles this URL?"</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">Controller Method Executes<br/>(calls Service layer, populates Model)</div></div>
+<div class="arrow-down">↓ returns a logical view name (e.g., "accountView")</div>
+<div class="flow-row"><div class="node alt">ViewResolver<br/>resolves logical name → actual view file</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">View (JSP/Thymeleaf) renders using Model data</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">DispatcherServlet sends final HTML response back to client</div></div>
+</div>
+<div class="tip">This entire flow (Section 21.2) is one of the single most commonly asked Spring interview questions — "explain the Spring MVC request flow end to end" — make sure you can draw and narrate this diagram confidently.</div>
+</div>
+
+<!-- 22. DISPATCHERSERVLET -->
+<div class="section">
+<h1>22. DispatcherServlet Explained in Depth</h1>
+
+<h2>22.1 What Is DispatcherServlet?</h2>
+<div class="box">DispatcherServlet is Spring MVC's <b>Front Controller</b> — a single Servlet that receives every incoming HTTP request for the application and delegates to the appropriate Controller, ViewResolver, and other components. It's the one and only Servlet a Spring MVC/Boot web app actually registers with the underlying Servlet container.</div>
+
+<h2>22.2 How DispatcherServlet Gets Registered</h2>
+<pre><span class="c1">&lt;!-- Traditional Spring MVC — web.xml --&gt;</span>
+&lt;servlet&gt;
+  &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+  &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+&lt;/servlet&gt;
+&lt;servlet-mapping&gt;
+  &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+  &lt;url-pattern&gt;/&lt;/url-pattern&gt;   <span class="c1">&lt;!-- catches EVERY request --&gt;</span>
+&lt;/servlet-mapping&gt;
+
+<span class="c1">// Spring Boot — registered AUTOMATICALLY, zero configuration needed</span>
+<span class="c1">// (auto-configured by DispatcherServletAutoConfiguration when spring-boot-starter-web is on the classpath)</span>
+</pre>
+
+<h2>22.3 What DispatcherServlet Actually Coordinates</h2>
+<table>
+<tr><th>Component</th><th>Role</th></tr>
+<tr><td>HandlerMapping</td><td>Determines which controller method should handle the incoming URL</td></tr>
+<tr><td>HandlerAdapter</td><td>Actually invokes the chosen controller method with the right arguments</td></tr>
+<tr><td>HandlerExceptionResolver</td><td>Handles exceptions thrown during request processing (Section 29)</td></tr>
+<tr><td>ViewResolver</td><td>Resolves a returned logical view name into an actual renderable View (Section 24)</td></tr>
+<tr><td>HandlerInterceptor</td><td>Pre/post-processing hooks around controller execution (Section 30)</td></tr>
+</table>
+<div class="tip"><b>Interview tip:</b> DispatcherServlet is a real implementation of the "Front Controller" design pattern — a single entry point that all requests pass through, rather than each URL being handled by a completely separate, independent Servlet as in the raw Servlet era (Section 2).</div>
+</div>
+
+<!-- 23. CONTROLLERS -->
+<div class="section">
+<h1>23. Controllers in Spring MVC</h1>
+
+<h2>23.1 @Controller vs @RestController</h2>
+<table>
+<tr><th></th><th>@Controller</th><th>@RestController</th></tr>
+<tr><td>Return value meaning</td><td>A logical view name to be resolved and rendered (HTML page)</td><td>The actual response body directly (typically JSON), via implicit @ResponseBody on every method</td></tr>
+<tr><td>Typical use</td><td>Traditional server-rendered web apps (JSP/Thymeleaf)</td><td>REST APIs — the standard choice for Spring Boot microservices</td></tr>
+</table>
+
+<h2>23.2 Real @Controller (Server-Rendered View)</h2>
+<pre>@Controller
+public class AccountViewController {
+    @GetMapping("/accounts/{id}/view")
+    public String viewAccount(@PathVariable Long id, Model model) {
+        model.addAttribute("account", accountService.findById(id));
+        return "accountView";   <span class="c1">// a VIEW NAME, resolved by ViewResolver into an actual JSP/Thymeleaf file</span>
+    }
+}
+</pre>
+
+<h2>23.3 Real @RestController (JSON API)</h2>
+<pre>@RestController
+@RequestMapping("/api/v1/accounts")
+public class AccountController {
+    @GetMapping("/{id}")
+    public AccountDto getAccount(@PathVariable Long id) {
+        return accountService.findById(id);   <span class="c1">// serialized DIRECTLY to JSON, no view resolution happens at all</span>
+    }
+}
+</pre>
+</div>
+
+<!-- 24. VIEW RESOLVER -->
+<div class="section">
+<h1>24. View Resolver</h1>
+
+<h2>24.1 What ViewResolver Does</h2>
+<div class="box">A ViewResolver translates the logical view name a controller returns (e.g., <code>"accountView"</code>) into an actual View object capable of rendering — typically by prepending a prefix and appending a suffix to form a real file path.</div>
+
+<h2>24.2 Real ViewResolver Configuration</h2>
+<pre>@Bean
+public InternalResourceViewResolver viewResolver() {
+    InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+    resolver.setPrefix("/WEB-INF/views/");
+    resolver.setSuffix(".jsp");
+    return resolver;   <span class="c1">// "accountView" resolves to /WEB-INF/views/accountView.jsp</span>
+}
+
+<span class="c1"># Spring Boot equivalent — Thymeleaf auto-configuration via application.yml</span>
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html   <span class="c1"># "accountView" resolves to classpath:/templates/accountView.html</span>
+</pre>
+<div class="tip"><b>Real-world note:</b> Most modern Spring Boot REST APIs never use a ViewResolver at all — <code>@RestController</code> bypasses view resolution entirely by serializing return values directly to JSON. ViewResolvers are only relevant for traditional server-rendered UIs (JSP/Thymeleaf), covered further in Sections 31-32.</div>
+</div>
+
+<!-- 25. REQUEST MAPPING -->
+<div class="section">
+<h1>25. Request Mapping — Full Reference</h1>
+
+<h2>25.1 The Full @RequestMapping Family</h2>
+<table>
+<tr><th>Annotation</th><th>Equivalent To</th></tr>
+<tr><td><code>@GetMapping</code></td><td><code>@RequestMapping(method = RequestMethod.GET)</code></td></tr>
+<tr><td><code>@PostMapping</code></td><td><code>@RequestMapping(method = RequestMethod.POST)</code></td></tr>
+<tr><td><code>@PutMapping</code></td><td><code>@RequestMapping(method = RequestMethod.PUT)</code></td></tr>
+<tr><td><code>@PatchMapping</code></td><td><code>@RequestMapping(method = RequestMethod.PATCH)</code></td></tr>
+<tr><td><code>@DeleteMapping</code></td><td><code>@RequestMapping(method = RequestMethod.DELETE)</code></td></tr>
+</table>
+
+<h2>25.2 Real Parameter-Binding Annotations</h2>
+<pre>@RestController
+@RequestMapping("/api/v1/accounts")
+public class AccountController {
+
+    @GetMapping("/{id}")   <span class="c1">// path variable</span>
+    public AccountDto getAccount(@PathVariable Long id) { ... }
+
+    @GetMapping   <span class="c1">// query parameters</span>
+    public List&lt;AccountDto&gt; search(@RequestParam String status,
+                                     @RequestParam(defaultValue = "0") int page) { ... }
+
+    @PostMapping   <span class="c1">// request body</span>
+    public AccountDto create(@RequestBody @Valid CreateAccountRequest request) { ... }
+
+    @GetMapping("/lookup")   <span class="c1">// request header</span>
+    public AccountDto lookup(@RequestHeader("X-Customer-Id") String customerId) { ... }
+
+    @PostMapping("/upload")   <span class="c1">// multipart file upload</span>
+    public void upload(@RequestPart MultipartFile file) { ... }
+}
+</pre>
+</div>
+
+<!-- 26. MODEL AND MODELMAP -->
+<div class="section">
+<h1>26. Model and ModelMap</h1>
+
+<h2>26.1 What Model/ModelMap Are For</h2>
+<div class="box">In traditional (non-REST) Spring MVC controllers, the <code>Model</code> (or <code>ModelMap</code>) is how the controller passes data to the view for rendering — attributes added to it become available as variables inside the JSP/Thymeleaf template.</div>
+
+<h2>26.2 Real Code</h2>
+<pre>@Controller
+public class AccountViewController {
+    @GetMapping("/accounts/{id}/view")
+    public String viewAccount(@PathVariable Long id, Model model) {
+        Account account = accountService.findById(id);
+        model.addAttribute("account", account);          <span class="c1">// available as ${account} in the view</span>
+        model.addAttribute("pageTitle", "Account Details");
+        return "accountView";
+    }
+}
+
+<span class="c1">&lt;!-- accountView.jsp --&gt;</span>
+&lt;h1&gt;${pageTitle}&lt;/h1&gt;
+&lt;p&gt;Balance: ${account.balance}&lt;/p&gt;
+</pre>
+<table>
+<tr><th></th><th>Model</th><th>ModelMap</th><th>ModelAndView</th></tr>
+<tr><td>Type</td><td>Interface</td><td>A concrete Map-like implementation</td><td>Combines both the model data AND the view name in one object</td></tr>
+<tr><td>Common use</td><td>Most common, simplest choice</td><td>When Map-specific methods are convenient</td><td>When you want to set the view name and model together in one return object</td></tr>
+</table>
+</div>
+
+<!-- 27. FORM HANDLING -->
+<div class="section">
+<h1>27. Form Handling in Spring MVC</h1>
+
+<h2>27.1 Real Form-Backed Controller</h2>
+<pre>@Controller
+@RequestMapping("/accounts")
+public class AccountFormController {
+
+    @GetMapping("/new")
+    public String showForm(Model model) {
+        model.addAttribute("accountForm", new CreateAccountForm());   <span class="c1">// empty form-backing object</span>
+        return "newAccountForm";
+    }
+
+    @PostMapping("/new")
+    public String submitForm(@ModelAttribute @Valid CreateAccountForm form,
+                              BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "newAccountForm";   <span class="c1">// re-render the SAME form with validation error messages</span>
+        }
+        accountService.create(form);
+        return "redirect:/accounts/success";   <span class="c1">// Post-Redirect-Get pattern — avoids duplicate submission on refresh</span>
+    }
+}
+</pre>
+
+<h2>27.2 Real JSP Form Tags</h2>
+<pre>&lt;form:form modelAttribute="accountForm" method="POST"&gt;
+    &lt;form:label path="customerName"&gt;Customer Name&lt;/form:label&gt;
+    &lt;form:input path="customerName"/&gt;
+    &lt;form:errors path="customerName" cssClass="error"/&gt;
+
+    &lt;form:label path="initialDeposit"&gt;Initial Deposit&lt;/form:label&gt;
+    &lt;form:input path="initialDeposit"/&gt;
+    &lt;button type="submit"&gt;Create Account&lt;/button&gt;
+&lt;/form:form&gt;
+</pre>
+<div class="tip"><b>Post-Redirect-Get (PRG) pattern:</b> After a successful form POST, redirect to a GET URL rather than rendering a view directly — this prevents the classic "confirm form resubmission" browser warning if the user refreshes the page after submitting.</div>
+</div>
+
+<!-- 28. DATA BINDING -->
+<div class="section">
+<h1>28. Data Binding</h1>
+
+<h2>28.1 What Data Binding Does</h2>
+<div class="box">Data Binding is Spring's automatic process of converting incoming HTTP request data (form fields, query params, JSON body) into strongly-typed Java objects — you never manually call <code>request.getParameter("name")</code> and parse it yourself.</div>
+
+<h2>28.2 Real Example — Automatic Type Conversion</h2>
+<pre><span class="c1">// Incoming form data: customerName=John&initialDeposit=5000.50&birthDate=1990-05-15</span>
+public class CreateAccountForm {
+    private String customerName;
+    private BigDecimal initialDeposit;     <span class="c1">// Spring automatically converts "5000.50" → BigDecimal</span>
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate birthDate;           <span class="c1">// Spring automatically converts "1990-05-15" → LocalDate</span>
+}
+</pre>
+
+<h2>28.3 Custom Property Editors / Converters (For Non-Standard Types)</h2>
+<pre>@Component
+public class StringToAccountTypeConverter implements Converter&lt;String, AccountType&gt; {
+    @Override
+    public AccountType convert(String source) {
+        return AccountType.valueOf(source.toUpperCase());   <span class="c1">// custom conversion logic for a domain enum</span>
+    }
+}
+</pre>
+</div>
+
+<!-- 29. VALIDATION IN SPRING MVC -->
+<div class="section">
+<h1>29. Validation in Spring MVC</h1>
+
+<h2>29.1 Recap — Bean Validation Annotations (Full Detail in API Guide Section 15)</h2>
+<pre>public class CreateAccountForm {
+    @NotBlank(message = "Customer name is required")
+    private String customerName;
+
+    @NotNull @Positive(message = "Deposit must be positive")
+    private BigDecimal initialDeposit;
+}
+</pre>
+
+<h2>29.2 Real Validation in a Form-Based (View-Rendering) Controller</h2>
+<pre>@PostMapping("/new")
+public String submitForm(@ModelAttribute @Valid CreateAccountForm form, BindingResult bindingResult) {
+    if (bindingResult.hasErrors()) {
+        return "newAccountForm";   <span class="c1">// BindingResult MUST immediately follow the @Valid parameter, or Spring throws an exception instead</span>
+    }
+    ...
+}
+</pre>
+<div class="warn"><b>Common gotcha:</b> In a <code>@Controller</code> (view-based) method, <code>BindingResult</code> must appear as the parameter immediately after the <code>@Valid</code>-annotated object — if anything else comes between them, or BindingResult is omitted, Spring throws a <code>MethodArgumentNotValidException</code> instead of letting you handle errors gracefully in the same method.</div>
+
+<h2>29.3 Custom Validators (Recap From API Guide, Section 15.3)</h2>
+<div class="box">For business-rule validation beyond simple annotations (e.g., "account type must be one of these specific values"), implement a custom <code>ConstraintValidator</code> — already covered in full in the API Development guide.</div>
+</div>
+
+<!-- 30. EXCEPTION HANDLING IN SPRING MVC -->
+<div class="section">
+<h1>30. Exception Handling in Spring MVC</h1>
+
+<h2>30.1 Three Ways to Handle Exceptions</h2>
+<table>
+<tr><th>Approach</th><th>Scope</th><th>Real Use</th></tr>
+<tr><td><code>@ExceptionHandler</code> (local)</td><td>Only within the same controller class</td><td>A specific exception unique to one controller</td></tr>
+<tr><td><code>@ControllerAdvice</code> / <code>@RestControllerAdvice</code> (global)</td><td>Application-wide, across all controllers</td><td>The standard real-world approach (full example already in API guide Section 14)</td></tr>
+<tr><td><code>HandlerExceptionResolver</code> (low-level)</td><td>Application-wide, more manual/programmatic control</td><td>Rarely needed directly — @ControllerAdvice covers nearly all real cases</td></tr>
+</table>
+
+<h2>30.2 Local Exception Handling — Real Example</h2>
+<pre>@Controller
+public class AccountViewController {
+
+    @GetMapping("/accounts/{id}/view")
+    public String viewAccount(@PathVariable Long id, Model model) {
+        return "accountView";
+    }
+
+    @ExceptionHandler(AccountNotFoundException.class)   <span class="c1">// only handles this exception WITHIN this one controller</span>
+    public String handleNotFound(AccountNotFoundException ex, Model model) {
+        model.addAttribute("errorMessage", ex.getMessage());
+        return "errorPage";
+    }
+}
+</pre>
+<div class="tip">Full production-grade global exception handling with a consistent JSON error response shape is already covered in depth in the API Development guide (Section 14) — the concept and annotations are identical whether you're building a REST API or a traditional server-rendered app; only the response TYPE (JSON vs a rendered error view) differs.</div>
+</div>
+
+<!-- 31. INTERCEPTORS -->
+<div class="section">
+<h1>31. Interceptors</h1>
+
+<h2>31.1 What Interceptors Do</h2>
+<div class="box">A <code>HandlerInterceptor</code> lets you run code before, after, or around controller method execution — similar in spirit to AOP (Section 20) but specifically integrated into the Spring MVC request lifecycle, commonly used for logging, authentication checks, and adding common response headers.</div>
+
+<h2>31.2 Real Interceptor Implementation</h2>
+<pre>@Component
+public class RequestTimingInterceptor implements HandlerInterceptor {
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        request.setAttribute("startTime", System.currentTimeMillis());
+        return true;   <span class="c1">// returning false stops the request here — the controller method never runs</span>
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+        long start = (Long) request.getAttribute("startTime");
+        log.info("{} took {}ms", request.getRequestURI(), System.currentTimeMillis() - start);
+    }
+}
+
+<span class="c1">// Registration</span>
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new RequestTimingInterceptor())
+                .addPathPatterns("/api/**")
+                .excludePathPatterns("/api/v1/auth/**");   <span class="c1">// skip auth endpoints</span>
+    }
+}
+</pre>
+
+<h2>31.3 Interceptor vs Filter — A Common Interview Question</h2>
+<table>
+<tr><th></th><th>Servlet Filter</th><th>Spring HandlerInterceptor</th></tr>
+<tr><td>Layer</td><td>Servlet container level — runs before Spring even gets the request</td><td>Spring MVC level — runs within DispatcherServlet's processing</td></tr>
+<tr><td>Access to Spring context</td><td>No direct access to Spring beans/handler method info</td><td>Full access to the Spring container, the specific controller method being called, etc.</td></tr>
+<tr><td>Best for</td><td>Cross-cutting concerns not specific to Spring (e.g., CORS, gzip compression, raw request logging)</td><td>Spring-aware concerns (e.g., checking annotations on the target controller method)</td></tr>
+</table>
+</div>
+
+<!-- 32. JSP AND THYMELEAF INTEGRATION -->
+<div class="section">
+<h1>32. JSP Integration &amp; Thymeleaf Integration</h1>
+
+<h2>32.1 What JSP Is (Recap)</h2>
+<div class="box">JavaServer Pages (JSP) lets you write HTML pages with embedded Java logic and custom tags, compiled into a Servlet by the container at runtime — the traditional view technology for Spring MVC applications before Thymeleaf became the modern default.</div>
+
+<h2>32.2 Real JSP Page Using Spring/JSTL Tags</h2>
+<pre>&lt;%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %&gt;
+&lt;html&gt;
+&lt;body&gt;
+    &lt;h1&gt;Account Details&lt;/h1&gt;
+    &lt;p&gt;Balance: ${account.balance}&lt;/p&gt;
+
+    &lt;c:if test="${account.status == 'ACTIVE'}"&gt;
+        &lt;span class="badge-green"&gt;Active&lt;/span&gt;
+    &lt;/c:if&gt;
+
+    &lt;c:forEach var="card" items="${account.cards}"&gt;
+        &lt;li&gt;Card ending in ${card.last4Digits}&lt;/li&gt;
+    &lt;/c:forEach&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<h2>32.3 Real Limitations That Led Away From JSP</h2>
+<ul>
+<li>JSP files must be compiled by a Servlet container — can't easily be unit tested standalone or previewed outside a running server.</li>
+<li>Not naturally packagable inside an executable JAR (Spring Boot's embedded Tomcat has restrictions here) — this alone pushed most new Spring Boot projects toward Thymeleaf.</li>
+<li>JSTL tag syntax feels dated compared to modern template engines.</li>
+</ul>
+
+<h2>32.4 Thymeleaf Integration (The Modern Spring Boot Default)</h2>
+<div class="box">Thymeleaf is a modern server-side template engine designed to work naturally with Spring Boot's embedded server (no compilation-in-container restriction like JSP) — templates are valid HTML that can even be opened and previewed directly in a browser without running the application at all ("natural templating").</div>
+<pre>&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+<span class="c1">&lt;!-- src/main/resources/templates/accountView.html --&gt;</span>
+&lt;html xmlns:th="http://www.thymeleaf.org"&gt;
+&lt;body&gt;
+    &lt;h1&gt;Account Details&lt;/h1&gt;
+    &lt;p th:text="'Balance: ' + ${account.balance}"&gt;Balance placeholder&lt;/p&gt;
+
+    &lt;span th:if="${account.status == 'ACTIVE'}" class="badge-green"&gt;Active&lt;/span&gt;
+
+    &lt;ul&gt;
+        &lt;li th:each="card : ${account.cards}" th:text="'Card ending in ' + ${card.last4Digits}"&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<h2>32.5 JSP vs Thymeleaf — Comparison</h2>
+<table>
+<tr><th>Aspect</th><th>JSP</th><th>Thymeleaf</th></tr>
+<tr><td>Compilation</td><td>Compiled into a Servlet by the container at runtime</td><td>Parsed directly as HTML by the Thymeleaf engine, no container-specific compilation</td></tr>
+<tr><td>Works well with Spring Boot embedded JAR</td><td>Awkward, has known limitations</td><td>Yes — the natural default choice for Spring Boot apps</td></tr>
+<tr><td>Natural templating (valid HTML on its own)</td><td>No — JSP syntax isn't valid plain HTML</td><td>Yes — designers can open the .html file directly in a browser</td></tr>
+<tr><td>Current recommendation</td><td>Legacy projects only</td><td>The default choice for any new Spring Boot server-rendered UI</td></tr>
+</table>
+<div class="tip"><b>Interview tip:</b> Most new Spring Boot projects that need server-rendered HTML (rather than a separate React/Angular SPA) use Thymeleaf, not JSP — JSP is mostly relevant now for understanding/maintaining legacy Spring MVC applications.</div>
+</div>
+
+<!-- 33. AUTO CONFIGURATION -->
+<div class="section">
+<h1>33. Spring Boot — Auto Configuration Explained</h1>
+
+<h2>33.1 How Auto Configuration Actually Works</h2>
+<div class="box">When your application starts, Spring Boot inspects what's on the classpath (which JAR dependencies are present) and conditionally registers beans you would otherwise have to configure manually — e.g., seeing <code>spring-boot-starter-data-jpa</code> and a database driver on the classpath, it automatically configures a <code>DataSource</code>, an <code>EntityManagerFactory</code>, and a <code>TransactionManager</code>.</div>
+
+<h2>33.2 The Mechanism — @Conditional Annotations</h2>
+<pre><span class="c1">// Simplified version of what a real Spring Boot auto-configuration class looks like internally</span>
+@Configuration
+@ConditionalOnClass(DataSource.class)              <span class="c1">// only activates if DataSource is on the classpath</span>
+@ConditionalOnMissingBean(DataSource.class)         <span class="c1">// only activates if the developer hasn't already defined their own DataSource bean</span>
+@EnableConfigurationProperties(DataSourceProperties.class)
+public class DataSourceAutoConfiguration {
+    @Bean
+    public DataSource dataSource(DataSourceProperties properties) {
+        return properties.initializeDataSourceBuilder().build();
+    }
+}
+</pre>
+
+<h2>33.3 @SpringBootApplication — What It Really Combines</h2>
+<div class="diagram">
+<div class="title">@SpringBootApplication Is Three Annotations in One</div>
+<div class="flow-row">
+<div class="node">@Configuration<br/>"this class can define beans"</div>
+<div class="node green">@EnableAutoConfiguration<br/>"turn on auto-configuration"</div>
+<div class="node purple">@ComponentScan<br/>"scan this package + sub-packages for beans"</div>
+</div>
+</div>
+
+<h2>33.4 Overriding Auto Configuration (You're Always in Control)</h2>
+<pre><span class="c1">// Defining your OWN DataSource bean automatically disables Spring Boot's auto-configured one</span>
+@Bean
+public DataSource dataSource() {
+    return DataSourceBuilder.create()
+        .url("jdbc:postgresql://custom-host:5432/mydb")
+        .build();   <span class="c1">// @ConditionalOnMissingBean means auto-config backs off entirely once you provide your own</span>
+}
+</pre>
+<div class="tip"><b>Interview tip:</b> Auto-configuration always defers to explicit developer configuration — it's designed to be a sensible default, never a forced behavior, thanks to <code>@ConditionalOnMissingBean</code>-style checks throughout Spring Boot's internals.</div>
+
+<h2>33.5 Debugging What Got Auto-Configured</h2>
+<pre># Run with this flag to see a full report of what was and wasn't auto-configured, and why
+java -jar app.jar --debug
+
+# Or check programmatically via Actuator
+GET /actuator/conditions
+</pre>
+</div>
+
+<!-- 34. STARTER DEPENDENCIES -->
+<div class="section">
+<h1>34. Starter Dependencies</h1>
+
+<h2>34.1 What Starters Are</h2>
+<div class="box">A "starter" is a curated dependency bundle — one Maven/Gradle dependency that pulls in every library typically needed for a specific use case, with tested, compatible versions, so you don't have to hunt down and manually align a dozen individual library versions yourself.</div>
+
+<h2>34.2 Real Starters Commonly Used</h2>
+<table>
+<tr><th>Starter</th><th>Pulls In</th></tr>
+<tr><td><code>spring-boot-starter-web</code></td><td>Spring MVC, embedded Tomcat, Jackson (JSON), validation basics</td></tr>
+<tr><td><code>spring-boot-starter-data-jpa</code></td><td>Hibernate, Spring Data JPA, HikariCP connection pool</td></tr>
+<tr><td><code>spring-boot-starter-security</code></td><td>Spring Security core + auto-configuration</td></tr>
+<tr><td><code>spring-boot-starter-test</code></td><td>JUnit 5, Mockito, AssertJ, Spring Test, MockMvc — everything for testing (Sections 47-49)</td></tr>
+<tr><td><code>spring-boot-starter-actuator</code></td><td>Production-ready monitoring endpoints (Section 37)</td></tr>
+<tr><td><code>spring-boot-starter-data-redis</code></td><td>Redis client + Spring Data Redis (Section 53)</td></tr>
+<tr><td><code>spring-boot-starter-validation</code></td><td>Bean Validation (Hibernate Validator)</td></tr>
+<tr><td><code>spring-boot-starter-thymeleaf</code></td><td>Thymeleaf template engine integration (Section 32)</td></tr>
+</table>
+<pre>&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;!-- ONE line brings in Spring MVC + embedded Tomcat + Jackson — no version numbers needed,
+         inherited from the spring-boot-starter-parent / dependency management BOM --&gt;
+&lt;/dependencies&gt;
+</pre>
+</div>
+
+<!-- 35. APPLICATION PROPERTIES YAML -->
+<div class="section">
+<h1>35. Application Properties / YAML Configuration</h1>
+
+<h2>35.1 Properties vs YAML — Same Purpose, Different Syntax</h2>
+<pre><span class="c1"># application.properties</span>
+server.port=8081
+spring.datasource.url=jdbc:postgresql://localhost:5432/accounts_db
+spring.jpa.hibernate.ddl-auto=validate
+logging.level.com.bank=INFO
+
+<span class="c1"># application.yml — same config, hierarchical/nested (generally preferred in real orgs)</span>
+server:
+  port: 8081
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/accounts_db
+  jpa:
+    hibernate:
+      ddl-auto: validate
+logging:
+  level:
+    com.bank: INFO
+</pre>
+
+<h2>35.2 Real Configuration Precedence (Highest to Lowest — Common Interview Q)</h2>
+<div class="diagram">
+<div class="title">Configuration Override Precedence</div>
+<div class="flow-row">
+<div class="node alt">Command-line args<br/>(highest priority)</div><div class="arrow">→</div><div class="node">Environment variables</div><div class="arrow">→</div><div class="node">application-{profile}.yml</div><div class="arrow">→</div><div class="node gray">application.yml<br/>(lowest priority, default)</div>
+</div>
+</div>
+<pre># Command-line override wins over everything in application.yml
+java -jar app.jar --server.port=9090
+
+# Environment variable equivalent (common in Docker/Kubernetes)
+SERVER_PORT=9090 java -jar app.jar
+</pre>
+</div>
+
+<!-- 36. PROFILES -->
+<div class="section">
+<h1>36. Spring Profiles</h1>
+
+<h2>36.1 What Profiles Solve</h2>
+<div class="box">Profiles let the exact same JAR run with different configuration per environment (Dev, QA, Prod) — critical for the "build once, promote everywhere" principle covered in the CI/CD guide (never rebuild the artifact per environment, only change config).</div>
+
+<h2>36.2 Real Profile-Specific Files</h2>
+<pre><span class="c1"># application.yml — common defaults</span>
+spring:
+  application:
+    name: accounts-service
+
+<span class="c1"># application-dev.yml</span>
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/accounts_dev
+logging:
+  level:
+    root: DEBUG
+
+<span class="c1"># application-prod.yml</span>
+spring:
+  datasource:
+    url: jdbc:postgresql://prod-db-cluster:5432/accounts_prod
+logging:
+  level:
+    root: INFO
+</pre>
+<pre># Activating a profile at runtime
+java -jar accounts-service.jar --spring.profiles.active=prod
+</pre>
+
+<h2>36.3 @Profile Annotation on Beans</h2>
+<pre>@Configuration
+public class NotificationConfig {
+
+    @Bean
+    @Profile("prod")
+    public NotificationSender realSmsSender() {
+        return new TwilioSmsSender();   <span class="c1">// real SMS provider only active in production</span>
+    }
+
+    @Bean
+    @Profile("!prod")   <span class="c1">// active in every profile EXCEPT prod</span>
+    public NotificationSender fakeSmsSender() {
+        return new ConsoleLoggingSmsSender();   <span class="c1">// just logs to console in dev/QA, avoids real SMS costs</span>
+    }
+}
+</pre>
+</div>
+
+<!-- 37. ACTUATOR -->
+<div class="section">
+<h1>37. Spring Boot Actuator</h1>
+<div class="box">Full detail already covered in the Observability &amp; Monitoring guide (Section 20) and the Microservices guide (Section 33) — Actuator exposes production-ready operational endpoints (health, metrics, env, loggers, thread dump, heap dump) that form the backbone of Kubernetes probes, Prometheus scraping, and live production troubleshooting.</div>
+<table>
+<tr><th>Endpoint</th><th>Purpose</th></tr>
+<tr><td><code>/actuator/health</code></td><td>UP/DOWN status, including DB/Redis/Kafka connectivity checks</td></tr>
+<tr><td><code>/actuator/info</code></td><td>Build/version metadata</td></tr>
+<tr><td><code>/actuator/metrics</code></td><td>Micrometer-collected metrics</td></tr>
+<tr><td><code>/actuator/env</code></td><td>All active configuration properties (secure this in prod!)</td></tr>
+<tr><td><code>/actuator/beans</code></td><td>Every bean currently registered in the ApplicationContext — great for debugging DI issues</td></tr>
+<tr><td><code>/actuator/mappings</code></td><td>Every registered @RequestMapping URL in the application</td></tr>
+</table>
+<pre>management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, prometheus, beans, mappings
+  endpoint:
+    health:
+      show-details: when-authorized   <span class="c1"># don't leak internal DB/dependency details to unauthenticated callers</span>
+</pre>
+</div>
+
+<!-- 38. EMBEDDED TOMCAT -->
+<div class="section">
+<h1>38. Embedded Tomcat</h1>
+
+<h2>38.1 What "Embedded" Actually Means</h2>
+<div class="box">Instead of installing Tomcat separately on a server and deploying a WAR file into it, Spring Boot packages Tomcat's core libraries directly <b>inside</b> your application's executable JAR — <code>java -jar app.jar</code> starts both your application code AND a fully functional Tomcat server in one process.</div>
+
+<h2>38.2 Real Benefits</h2>
+<ul>
+<li>No separate server installation/version management across environments.</li>
+<li>The exact same Tomcat version is guaranteed in Dev, QA, and Prod (bundled with the JAR) — eliminates "works on my Tomcat but not theirs" issues.</li>
+<li>Fits perfectly with Docker/Kubernetes — one container = one self-contained runnable JAR, no separate app-server layer needed.</li>
+</ul>
+
+<h2>38.3 Switching to a Different Embedded Server</h2>
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;exclusions&gt;
+        &lt;exclusion&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-tomcat&lt;/artifactId&gt;
+        &lt;/exclusion&gt;
+    &lt;/exclusions&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-undertow&lt;/artifactId&gt;   <span class="c1">&lt;!-- lighter-weight alternative to Tomcat --&gt;</span>
+&lt;/dependency&gt;
+</pre>
+<table>
+<tr><th>Embedded Server</th><th>Notes</th></tr>
+<tr><td>Tomcat (default)</td><td>Most widely used, mature, well understood, thread-per-request model</td></tr>
+<tr><td>Jetty</td><td>Lightweight, historically popular for embedded use cases</td></tr>
+<tr><td>Undertow</td><td>High-performance, non-blocking, commonly paired with Spring WebFlux (reactive)</td></tr>
+</table>
+</div>
+
+<!-- 39. COMMANDLINERUNNER -->
+<div class="section">
+<h1>39. CommandLineRunner &amp; ApplicationRunner</h1>
+
+<h2>39.1 What They're For</h2>
+<div class="box">Both let you run custom code exactly once, right after the Spring application context is fully initialized but before the application starts actually serving traffic — commonly used for startup data seeding, cache warm-up, or verifying critical dependencies are reachable.</div>
+
+<h2>39.2 Real Code — Both Variants</h2>
+<pre>@Component
+public class DataSeeder implements CommandLineRunner {
+    @Override
+    public void run(String... args) throws Exception {
+        if (accountRepository.count() == 0) {
+            accountRepository.save(new Account("Demo Customer", BigDecimal.valueOf(1000)));   <span class="c1"># seed initial demo data in dev/QA only</span>
+        }
+    }
+}
+
+@Component
+public class ApplicationRunnerExample implements ApplicationRunner {
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        <span class="c1">// ApplicationArguments gives structured access to named options, e.g. --env=prod</span>
+        if (args.containsOption("env")) {
+            log.info("Started with env={}", args.getOptionValues("env"));
+        }
+    }
+}
+</pre>
+<table>
+<tr><th></th><th>CommandLineRunner</th><th>ApplicationRunner</th></tr>
+<tr><td>Argument access</td><td>Raw <code>String[] args</code></td><td>Structured <code>ApplicationArguments</code> (named options vs positional args)</td></tr>
+<tr><td>Real use</td><td>Simple startup tasks</td><td>When you need to distinguish <code>--key=value</code> options cleanly</td></tr>
+</table>
+<div class="warn"><b>Real practice:</b> Never use <code>CommandLineRunner</code>/<code>ApplicationRunner</code> for production data seeding — use a proper database migration tool (Flyway/Liquibase, Section 11.1) so seed data is versioned, repeatable, and doesn't accidentally run destructive logic on every single application restart.</div>
+</div>
+
+<!-- 40. CONFIGURATIONPROPERTIES -->
+<div class="section">
+<h1>40. @ConfigurationProperties</h1>
+
+<h2>40.1 @Value vs @ConfigurationProperties</h2>
+<div class="box">For a handful of individual properties, <code>@Value</code> (Section 19) works fine. For a group of related settings, <code>@ConfigurationProperties</code> binds an entire configuration section to a strongly-typed Java object — cleaner, supports validation, and avoids repeating <code>@Value("${...}")</code> dozens of times.</div>
+
+<h2>40.2 Real Example</h2>
+<pre><span class="c1"># application.yml</span>
+bank:
+  loan:
+    max-amount: 5000000
+    min-credit-score: 650
+    interest-rate: 8.5
+    allowed-types: [ PERSONAL, HOME, AUTO ]
+
+@Component
+@ConfigurationProperties(prefix = "bank.loan")
+@Validated
+@Data   <span class="c1">// Lombok — generates getters/setters, required for property binding to work</span>
+public class LoanProperties {
+    @NotNull @Positive
+    private BigDecimal maxAmount;
+
+    @Min(300) @Max(900)
+    private int minCreditScore;
+
+    private double interestRate;
+    private List&lt;String&gt; allowedTypes;
+}
+
+<span class="c1">// Usage — inject the whole strongly-typed group wherever needed</span>
+@Service
+@RequiredArgsConstructor
+public class LoanService {
+    private final LoanProperties loanProperties;
+
+    public boolean isEligible(BigDecimal amount, int creditScore) {
+        return amount.compareTo(loanProperties.getMaxAmount()) &lt;= 0
+            && creditScore &gt;= loanProperties.getMinCreditScore();
+    }
+}
+</pre>
+<div class="tip"><b>Real scenario:</b> "Our Loans Service uses one <code>@ConfigurationProperties</code> class for every business rule threshold (max amount, min credit score, interest rate bands) — when the business team changes a lending policy, we update <code>application-prod.yml</code> via our Config Server (Microservices guide, Section 17) and refresh, with zero code changes or redeployment needed."</div>
+</div>
+
+<!-- 41. LOGGING IN SPRING BOOT -->
+<div class="section">
+<h1>41. Logging in Spring Boot</h1>
+<div class="box">Full deep-dive on logging fundamentals (SLF4J, Logback, Log4j2, log levels, structured logging, correlation IDs) is covered extensively in the Observability &amp; Monitoring guide — this section focuses specifically on Spring Boot's built-in logging configuration conventions.</div>
+
+<h2>41.1 Spring Boot's Default Logging Setup</h2>
+<pre># application.yml — Spring Boot's built-in logging configuration shortcuts
+logging:
+  level:
+    root: INFO
+    com.bank.accounts: DEBUG        <span class="c1"># fine-grained per-package level</span>
+    org.hibernate.SQL: DEBUG        <span class="c1"># see the actual generated SQL — useful for debugging N+1 issues</span>
+  file:
+    name: logs/accounts-service.log
+  pattern:
+    console: "%d{HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n"
+</pre>
+
+<h2>41.2 Real Scenario — Enabling SQL Logging Temporarily in Production</h2>
+<pre># Using Actuator's /actuator/loggers endpoint (Section 4.4, Observability guide) — no redeploy needed
+POST /actuator/loggers/org.hibernate.SQL
+{ "configuredLevel": "DEBUG" }
+
+# Remember to set it back to a normal level afterward — SQL logging at scale is expensive
+</pre>
+</div>
+
+<!-- 42. TRANSACTIONAL DEEP DIVE -->
+<div class="section">
+<h1>42. Spring Transactions — @Transactional Deep Dive</h1>
+
+<h2>42.1 What a Transaction Is (Recap)</h2>
+<div class="box">A transaction is a unit of work that must either fully succeed (commit) or fully fail (rollback) as one atomic operation — e.g., "debit account A and credit account B" must never partially apply.</div>
+
+<h2>42.2 How @Transactional Actually Works — AOP Proxies</h2>
+<div class="box">Just like other AOP-based features (Section 20), <code>@Transactional</code> works via a Spring-generated proxy wrapping your bean — when a transactional method is called externally, the proxy opens a transaction, calls your real method, then commits or rolls back based on the outcome. This is exactly why the "self-invocation" gotcha (Section 20.5) applies to <code>@Transactional</code> too.</div>
+
+<h2>42.3 Real Code</h2>
+<pre>@Service
+@RequiredArgsConstructor
+public class TransferService {
+    private final AccountRepository accountRepository;
+
+    @Transactional
+    public void transfer(Long fromId, Long toId, BigDecimal amount) {
+        Account from = accountRepository.findById(fromId).orElseThrow();
+        Account to = accountRepository.findById(toId).orElseThrow();
+
+        from.debit(amount);
+        to.credit(amount);
+
+        accountRepository.save(from);
+        accountRepository.save(to);
+        <span class="c1">// if ANY exception is thrown anywhere above, EVERYTHING here rolls back automatically</span>
+    }
+}
+</pre>
+
+<h2>42.4 Key @Transactional Attributes</h2>
+<table>
+<tr><th>Attribute</th><th>Purpose</th></tr>
+<tr><td><code>propagation</code></td><td>How this transaction relates to an existing one, if any (Section 43)</td></tr>
+<tr><td><code>isolation</code></td><td>How isolated this transaction is from other concurrent transactions (Section 44)</td></tr>
+<tr><td><code>readOnly</code></td><td>Hints the underlying driver/Hibernate this is a read-only transaction, enabling performance optimizations</td></tr>
+<tr><td><code>timeout</code></td><td>Maximum seconds the transaction may run before being forcibly rolled back</td></tr>
+<tr><td><code>rollbackFor</code> / <code>noRollbackFor</code></td><td>Explicitly controls which exceptions trigger (or don't trigger) a rollback (Section 45)</td></tr>
+</table>
+<pre>@Transactional(readOnly = true, timeout = 5)
+public List&lt;AccountDto&gt; getAllAccounts() { ... }   <span class="c1">// read-only queries — performance hint, no write-lock overhead</span>
+</pre>
+
+<h2>42.5 Where to Put @Transactional — Real Practice</h2>
+<div class="warn"><b>Best practice:</b> Put <code>@Transactional</code> on <b>Service</b> layer methods, never on Controllers (HTTP concerns shouldn't dictate transaction boundaries) and never on Repository methods individually (a single business operation often spans multiple repository calls that must succeed/fail together, as shown in Section 42.3).</div>
+</div>
+
+<!-- 43. TRANSACTION PROPAGATION -->
+<div class="section">
+<h1>43. Transaction Propagation</h1>
+
+<h2>43.1 What Propagation Controls</h2>
+<div class="box">Propagation defines what happens when a <code>@Transactional</code> method is called from within another method that's already running inside a transaction — does it join the existing one, or start a completely separate one?</div>
+
+<h2>43.2 The Propagation Types</h2>
+<table>
+<tr><th>Propagation</th><th>Behavior</th><th>Real Use Case</th></tr>
+<tr><td>REQUIRED (default)</td><td>Joins the existing transaction if one exists, otherwise creates a new one</td><td>The vast majority of service methods — normal business operations</td></tr>
+<tr><td>REQUIRES_NEW</td><td>Always suspends any existing transaction and starts a brand-new, independent one</td><td>Audit logging that must be saved even if the main business transaction later rolls back</td></tr>
+<tr><td>NESTED</td><td>Creates a savepoint within the existing transaction — can roll back to that savepoint without rolling back the whole outer transaction</td><td>A sub-step that might fail and needs partial rollback without aborting everything</td></tr>
+<tr><td>SUPPORTS</td><td>Joins an existing transaction if present, otherwise runs non-transactionally</td><td>Read operations that don't strictly require a transaction but can use one if available</td></tr>
+<tr><td>NOT_SUPPORTED</td><td>Suspends any existing transaction and runs without one</td><td>Rare — a long-running read that shouldn't hold a DB transaction/lock open</td></tr>
+<tr><td>MANDATORY</td><td>Must run within an existing transaction — throws an exception if none exists</td><td>Enforcing that a method is never called standalone, only as part of a larger transactional flow</td></tr>
+<tr><td>NEVER</td><td>Must NOT run within a transaction — throws an exception if one exists</td><td>Rare edge cases</td></tr>
+</table>
+
+<h2>43.3 Real Example — REQUIRES_NEW for Audit Logging</h2>
+<pre>@Service
+@RequiredArgsConstructor
+public class LoanService {
+    private final AuditService auditService;
+
+    @Transactional
+    public void approveLoan(Long loanId) {
+        Loan loan = loanRepository.findById(loanId).orElseThrow();
+        loan.approve();
+        loanRepository.save(loan);
+
+        auditService.logApproval(loanId);   <span class="c1">// runs in its OWN independent transaction</span>
+
+        if (someRiskCheckFails()) {
+            throw new RuntimeException("Risk check failed after approval");   <span class="c1">// rolls back the loan approval...</span>
+        }
+    }
+}
+
+@Service
+public class AuditService {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void logApproval(Long loanId) {
+        auditLogRepository.save(new AuditLog("LOAN_APPROVED", loanId));
+        <span class="c1">// ...but this audit record is ALREADY COMMITTED in its own transaction — it survives the rollback above!</span>
+    }
+}
+</pre>
+<div class="diagram">
+<div class="title">REQUIRES_NEW vs REQUIRED — Visual Difference</div>
+<div class="flow-row">
+<div class="node alt">Outer transaction rolls back</div><div class="arrow">→ REQUIRED: inner also rolls back</div>
+</div>
+<div class="flow-row">
+<div class="node alt">Outer transaction rolls back</div><div class="arrow">→ REQUIRES_NEW: inner already committed independently, survives</div>
+</div>
+</div>
+</div>
+
+<!-- 44. ISOLATION LEVELS -->
+<div class="section">
+<h1>44. Transaction Isolation Levels</h1>
+
+<h2>44.1 What Isolation Controls</h2>
+<div class="box">Isolation defines how much one transaction can "see" the uncommitted or concurrently-changing data of another transaction running at the same time — a direct tradeoff between data consistency and performance/concurrency.</div>
+
+<h2>44.2 The Isolation Levels and the Problems They Prevent</h2>
+<table>
+<tr><th>Isolation Level</th><th>Prevents</th><th>Still Allows</th></tr>
+<tr><td>READ_UNCOMMITTED</td><td>Nothing</td><td>Dirty reads, non-repeatable reads, phantom reads (rarely used in practice)</td></tr>
+<tr><td>READ_COMMITTED (common default, e.g., PostgreSQL)</td><td>Dirty reads</td><td>Non-repeatable reads, phantom reads</td></tr>
+<tr><td>REPEATABLE_READ (MySQL's default)</td><td>Dirty reads, non-repeatable reads</td><td>Phantom reads (mostly, depends on DB implementation)</td></tr>
+<tr><td>SERIALIZABLE</td><td>Dirty reads, non-repeatable reads, phantom reads (fully serial-equivalent execution)</td><td>Nothing — strongest, but slowest and most lock-heavy</td></tr>
+</table>
+
+<h2>44.3 The Three Core Anomalies, Explained Simply</h2>
+<ul>
+<li><b>Dirty Read:</b> Transaction A reads data that Transaction B has changed but not yet committed — if B then rolls back, A read data that never really existed.</li>
+<li><b>Non-Repeatable Read:</b> Transaction A reads the same row twice, but gets different values because Transaction B updated and committed that row in between A's two reads.</li>
+<li><b>Phantom Read:</b> Transaction A runs the same query twice, but gets a different <b>number of rows</b> because Transaction B inserted/deleted a matching row in between.</li>
+</ul>
+
+<h2>44.4 Real Code — Setting Isolation Explicitly</h2>
+<pre>@Transactional(isolation = Isolation.SERIALIZABLE)
+public void transferWithStrictConsistency(Long fromId, Long toId, BigDecimal amount) {
+    <span class="c1">// used sparingly — e.g., for a critical financial reconciliation step where correctness</span>
+    <span class="c1">// matters more than throughput, since SERIALIZABLE can cause more lock contention/retries</span>
+}
+</pre>
+<div class="tip"><b>Real scenario:</b> "Our standard account transfer method runs at the database's default READ_COMMITTED isolation for good throughput. Our monthly interest calculation batch job — which reads and aggregates across the entire accounts table and absolutely cannot tolerate phantom reads — explicitly uses SERIALIZABLE isolation, accepting the performance cost for correctness during that one critical process."</div>
+</div>
+
+<!-- 45. ROLLBACK HANDLING -->
+<div class="section">
+<h1>45. Rollback Handling</h1>
+
+<h2>45.1 The Default Rollback Rule (A Very Common Interview Trap)</h2>
+<div class="warn"><b>Critical default behavior:</b> By default, Spring only rolls back a transaction automatically for <b>unchecked exceptions</b> (RuntimeException and its subclasses, plus Error) — <b>checked exceptions do NOT trigger a rollback by default</b>. This surprises many developers coming from a "any exception should roll back" assumption.</div>
+
+<h2>45.2 Real Example of the Trap</h2>
+<pre>@Transactional
+public void processPayment(PaymentRequest request) throws PaymentGatewayException {   <span class="c1">// CHECKED exception</span>
+    paymentRepository.save(new Payment(request));
+    if (gatewayCallFails()) {
+        throw new PaymentGatewayException("Gateway timeout");   <span class="c1">// checked — does NOT roll back by default!</span>
+    }
+    <span class="c1">// the Payment record above STAYS COMMITTED even though the gateway call failed — a real bug waiting to happen</span>
+}
+</pre>
+
+<h2>45.3 The Fix — rollbackFor</h2>
+<pre>@Transactional(rollbackFor = PaymentGatewayException.class)   <span class="c1">// now explicitly rolls back for this checked exception too</span>
+public void processPayment(PaymentRequest request) throws PaymentGatewayException { ... }
+
+<span class="c1">// Or the inverse — prevent rollback for a specific exception that's expected/non-fatal</span>
+@Transactional(noRollbackFor = MinorValidationWarning.class)
+public void processWithWarnings() { ... }
+</pre>
+
+<h2>45.4 Programmatic Rollback (Manual Control)</h2>
+<pre>@Transactional
+public void conditionalProcess() {
+    if (someBusinessConditionFails()) {
+        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();   <span class="c1">// force a rollback without throwing an exception</span>
+        return;
+    }
+    <span class="c1">// normal processing continues</span>
+}
+</pre>
+<div class="tip"><b>Interview tip:</b> Always explicitly review whether your custom exceptions are checked or unchecked, and use <code>rollbackFor</code> deliberately rather than assuming Spring's default rollback behavior matches your business expectations — this exact gotcha has caused real production data-consistency bugs at many organizations.</div>
+</div>
+
+<!-- 46. DISTRIBUTED TRANSACTIONS -->
+<div class="section">
+<h1>46. Distributed Transactions</h1>
+
+<h2>46.1 Why Local @Transactional Isn't Enough Across Microservices</h2>
+<div class="box">Everything in Sections 42-45 works for a single database within a single service. Once a business operation spans multiple microservices with separate databases (e.g., Loans Service + Accounts Service), there's no single local transaction that can span both — this is exactly the problem the Saga Pattern (Microservices guide, Section 22) solves.</div>
+
+<h2>46.2 Two-Phase Commit (2PC) — The Older Approach</h2>
+<div class="box">2PC uses a transaction coordinator to ask all participants to "prepare" (lock resources, ready to commit), then tells everyone to actually "commit" only if all participants confirmed readiness — technically possible via JTA (Java Transaction API) but rarely used in modern microservices due to blocking behavior, tight coupling, and poor availability characteristics (if the coordinator or any participant is down, everything blocks).</div>
+
+<h2>46.3 The Modern Approach — Saga Pattern (Recap)</h2>
+<div class="box">Full detail already in the Microservices guide (Section 22) — break the distributed operation into a sequence of local <code>@Transactional</code> steps, each in its own service, with compensating actions to undo earlier steps if a later one fails, trading strict atomicity for eventual consistency with guaranteed rollback logic.</div>
+<div class="diagram">
+<div class="title">Local @Transactional vs Distributed Saga</div>
+<div class="flow-row"><div class="node green">Single Service: @Transactional handles atomicity automatically within one DB</div></div>
+<div class="arrow-down">— vs —</div>
+<div class="flow-row">
+<div class="node">Loans Service: @Transactional (local step 1)</div><div class="arrow">→</div><div class="node">Accounts Service: @Transactional (local step 2)</div><div class="arrow">→</div><div class="node alt">Compensating @Transactional method if step 2 fails</div>
+</div>
+</div>
+<div class="tip"><b>Interview tip:</b> "@Transactional guarantees atomicity within a single database/service. Across microservices, we don't try to force a distributed transaction — we use the Saga pattern, where each service's own local @Transactional method handles its own piece, and a compensating transaction undoes it if a later step in the saga fails."</div>
+</div>
+
+<!-- 47. JUNIT 5 -->
+<div class="section">
+<h1>47. Spring Testing — JUnit 5</h1>
+
+<h2>47.1 The Testing Pyramid Recap</h2>
+<div class="diagram">
+<div class="title">Spring Boot Testing Pyramid</div>
+<div class="flow-row"><div class="node alt">Integration/E2E Tests (few, slow) — Sections 50-51</div></div>
+<div class="flow-row"><div class="node">Controller Tests (MockMvc) — Section 49</div></div>
+<div class="flow-row"><div class="node green">Unit Tests (many, fast) — JUnit 5 + Mockito</div></div>
+</div>
+
+<h2>47.2 Real JUnit 5 Unit Test</h2>
+<pre>class AccountServiceTest {
+
+    @Test
+    void shouldReturnAccountWhenExists() {
+        <span class="c1">// arrange, act, assert — the standard test structure</span>
+        AccountRepository mockRepo = mock(AccountRepository.class);
+        when(mockRepo.findById(1001L)).thenReturn(Optional.of(new Account(1001L, BigDecimal.TEN)));
+
+        AccountService service = new AccountService(mockRepo);
+        AccountDto result = service.findById(1001L);
+
+        assertThat(result.balance()).isEqualByComparingTo(BigDecimal.TEN);
+    }
+
+    @Test
+    void shouldThrowWhenAccountNotFound() {
+        AccountRepository mockRepo = mock(AccountRepository.class);
+        when(mockRepo.findById(anyLong())).thenReturn(Optional.empty());
+        AccountService service = new AccountService(mockRepo);
+
+        assertThrows(AccountNotFoundException.class, () -> service.findById(9999L));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"", " ", "   "})
+    void shouldRejectBlankCustomerNames(String blankName) {
+        assertThrows(ValidationException.class, () -> service.createAccount(blankName, BigDecimal.TEN));
+    }
+}
+</pre>
+
+<h2>47.3 Key JUnit 5 Annotations</h2>
+<table>
+<tr><th>Annotation</th><th>Purpose</th></tr>
+<tr><td><code>@Test</code></td><td>Marks a method as a test case</td></tr>
+<tr><td><code>@BeforeEach</code> / <code>@AfterEach</code></td><td>Runs before/after every single test method</td></tr>
+<tr><td><code>@BeforeAll</code> / <code>@AfterAll</code></td><td>Runs once before/after all tests in the class (must be static)</td></tr>
+<tr><td><code>@ParameterizedTest</code></td><td>Runs the same test logic with multiple different input values</td></tr>
+<tr><td><code>@DisplayName</code></td><td>Human-readable test name shown in reports</td></tr>
+<tr><td><code>@Disabled</code></td><td>Temporarily skips a test (use sparingly, with a comment explaining why)</td></tr>
+</table>
+</div>
+
+<!-- 48. MOCKITO -->
+<div class="section">
+<h1>48. Mockito</h1>
+
+<h2>48.1 Why Mocking Matters</h2>
+<div class="box">A true unit test should test ONE class in isolation — Mockito lets you create fake ("mock") versions of a class's dependencies, so you can test business logic without needing a real database, a real network call, or a real third-party API.</div>
+
+<h2>48.2 Real Mockito Test — Cleaner With Annotations</h2>
+<pre>@ExtendWith(MockitoExtension.class)
+class LoanServiceTest {
+
+    @Mock
+    private LoanRepository loanRepository;
+
+    @Mock
+    private CreditBureauClient creditBureauClient;
+
+    @InjectMocks   <span class="c1">// Mockito automatically injects the @Mock fields above into this real object</span>
+    private LoanService loanService;
+
+    @Test
+    void shouldApproveLoanWhenCreditScoreIsGood() {
+        when(creditBureauClient.getScore("CUST-1")).thenReturn(new CreditScore(750));
+        when(loanRepository.save(any(Loan.class))).thenAnswer(inv -> inv.getArgument(0));
+
+        LoanResponse response = loanService.applyForLoan("CUST-1", BigDecimal.valueOf(500000));
+
+        assertThat(response.getStatus()).isEqualTo("APPROVED");
+        verify(loanRepository, times(1)).save(any(Loan.class));   <span class="c1">// verify a specific interaction happened</span>
+    }
+
+    @Test
+    void shouldRejectLoanWhenCreditBureauThrowsException() {
+        when(creditBureauClient.getScore(anyString())).thenThrow(new CreditBureauException("timeout"));
+
+        LoanResponse response = loanService.applyForLoan("CUST-2", BigDecimal.valueOf(500000));
+
+        assertThat(response.getStatus()).isEqualTo("REJECTED_MANUAL_REVIEW");   <span class="c1">// verify graceful fallback behavior</span>
+    }
+}
+</pre>
+
+<h2>48.3 Key Mockito Concepts</h2>
+<table>
+<tr><th>Concept</th><th>Purpose</th></tr>
+<tr><td><code>@Mock</code></td><td>Creates a fake implementation of a dependency</td></tr>
+<tr><td><code>@InjectMocks</code></td><td>Creates the real object under test, auto-wiring the @Mock fields into it</td></tr>
+<tr><td><code>when(...).thenReturn(...)</code></td><td>Stubs a mock's behavior for a given input</td></tr>
+<tr><td><code>verify(...)</code></td><td>Asserts that a specific method WAS (or wasn't) called, and how many times</td></tr>
+<tr><td><code>ArgumentCaptor</code></td><td>Captures the actual argument passed to a mock, for deeper assertions</td></tr>
+<tr><td><code>@Spy</code></td><td>Wraps a REAL object but lets you selectively override specific method behaviors</td></tr>
+</table>
+</div>
+
+<!-- 49. MOCKMVC -->
+<div class="section">
+<h1>49. MockMvc</h1>
+
+<h2>49.1 What MockMvc Tests</h2>
+<div class="box">MockMvc lets you test the full Spring MVC request-handling pipeline (routing, controller method invocation, validation, JSON serialization, exception handling) WITHOUT starting a real HTTP server — much faster than a full end-to-end test, while still testing more than a pure unit test would.</div>
+
+<h2>49.2 Real @WebMvcTest — Slice Testing the Controller Layer</h2>
+<pre>@WebMvcTest(AccountController.class)   <span class="c1">// only loads the web layer, NOT the full application context — fast</span>
+class AccountControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean   <span class="c1">// replaces the real AccountService bean with a Mockito mock inside the Spring context</span>
+    private AccountService accountService;
+
+    @Test
+    void shouldReturnAccountJson() throws Exception {
+        when(accountService.findById(1001L)).thenReturn(new AccountDto(1001L, BigDecimal.valueOf(4500), "ACTIVE"));
+
+        mockMvc.perform(get("/api/v1/accounts/1001"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.balance").value(4500))
+            .andExpect(jsonPath("$.status").value("ACTIVE"));
+    }
+
+    @Test
+    void shouldReturn404WhenAccountNotFound() throws Exception {
+        when(accountService.findById(9999L)).thenThrow(new AccountNotFoundException(9999L));
+
+        mockMvc.perform(get("/api/v1/accounts/9999"))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.message").value(containsString("9999")));
+    }
+
+    @Test
+    void shouldReturn400WhenRequestBodyInvalid() throws Exception {
+        mockMvc.perform(post("/api/v1/accounts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{ \"initialDeposit\": -100 }"))   <span class="c1">// invalid — negative deposit, missing customerName</span>
+            .andExpect(status().isBadRequest());
+    }
+}
+</pre>
+<div class="tip"><b>Interview tip:</b> <code>@WebMvcTest</code> only loads Controllers, filters, and MVC-related infrastructure (a "slice" of the full context) — it deliberately does NOT load @Service/@Repository beans, which is exactly why you need <code>@MockBean</code> to fake the service layer, making these tests much faster than a full <code>@SpringBootTest</code>.</div>
+</div>
+
+<!-- 50. INTEGRATION TESTING -->
+<div class="section">
+<h1>50. Integration Testing in Spring Boot</h1>
+
+<h2>50.1 What Integration Tests Cover That Unit Tests Don't</h2>
+<div class="box">Integration tests load the REAL, full Spring application context (or a large slice of it) and test how components actually work together — including real database interaction, real Spring Data JPA query generation, and real bean wiring — catching issues that mocked unit tests can miss entirely.</div>
+
+<h2>50.2 Real @SpringBootTest</h2>
+<pre>@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+class AccountIntegrationTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private AccountRepository accountRepository;   <span class="c1">// the REAL repository, backed by a real (test) database</span>
+
+    @Test
+    void shouldCreateAndRetrieveAccount() throws Exception {
+        mockMvc.perform(post("/api/v1/accounts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"customerName\":\"John\",\"initialDeposit\":1000}"))
+            .andExpect(status().isCreated());
+
+        assertThat(accountRepository.findAll()).hasSize(1);   <span class="c1">// verifying REAL data actually persisted to the database</span>
+    }
+}
+</pre>
+<div class="warn"><b>Real problem this avoids:</b> A pure unit test with a mocked repository can pass even if your actual JPQL query has a typo or your entity mapping is wrong — because the mock never really executes SQL. Integration tests catch these real wiring/query bugs that unit tests structurally cannot.</div>
+</div>
+
+<!-- 51. TESTCONTAINERS -->
+<div class="section">
+<h1>51. TestContainers</h1>
+
+<h2>51.1 The Problem Testcontainers Solves</h2>
+<div class="box">Integration tests need a real database — but using an in-memory database (H2) instead of your real production database (PostgreSQL/MySQL) risks subtle SQL dialect differences that hide real bugs until production. Testcontainers spins up a real, throwaway Docker container of your actual database engine, just for the test run.</div>
+
+<h2>51.2 Real Testcontainers Code (Recap From Microservices Guide, Section 19.3)</h2>
+<pre>@SpringBootTest
+@Testcontainers
+class OrderRepositoryIntegrationTest {
+
+    @Container
+    static PostgreSQLContainer&lt;&gt; postgres = new PostgreSQLContainer&lt;&gt;("postgres:15")
+            .withDatabaseName("accounts_test");
+
+    @DynamicPropertySource
+    static void configureProps(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+        registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.password", postgres::getPassword);
+    }
+
+    @Autowired
+    private AccountRepository accountRepository;
+
+    @Test
+    void savesAndFetchesAccount() {
+        Account saved = accountRepository.save(new Account("Jane Doe", BigDecimal.valueOf(2500)));
+        assertThat(accountRepository.findById(saved.getId())).isPresent();
+    }
+}
+</pre>
+
+<h2>51.3 Real Testcontainers for Redis Too</h2>
+<pre>@Container
+static GenericContainer&lt;&gt; redis = new GenericContainer&lt;&gt;("redis:7-alpine").withExposedPorts(6379);
+
+@DynamicPropertySource
+static void redisProps(DynamicPropertyRegistry registry) {
+    registry.add("spring.data.redis.host", redis::getHost);
+    registry.add("spring.data.redis.port", () -&gt; redis.getMappedPort(6379));
+}
+</pre>
+<div class="tip"><b>Interview tip:</b> Testcontainers gives you the confidence of testing against the exact same database/cache engine used in production, without needing a shared, always-on test database — every test run gets a fresh, isolated, disposable container, eliminating "tests pass locally but fail in CI due to leftover data" issues entirely.</div>
+</div>
+
+<!-- 52. CACHING COMPLETE DEEP DIVE -->
+<div class="section">
+<h1>52. Caching in Spring Boot — Complete Deep Dive</h1>
+
+<h2>52.1 Why Caching Matters (Recap)</h2>
+<div class="box">Repeated calls for the same rarely-changing data (product catalogs, interest rate tables, customer profile lookups) hitting the database every single time wastes resources and adds latency — caching stores the result of an expensive operation so subsequent identical calls return instantly from memory.</div>
+
+<h2>52.2 Enabling Caching in Spring Boot</h2>
+<pre>@SpringBootApplication
+@EnableCaching   <span class="c1">// turns on Spring's caching abstraction</span>
+public class BankApplication { ... }
+</pre>
+
+<h2>52.3 The Core Caching Annotations</h2>
+<table>
+<tr><th>Annotation</th><th>Purpose</th></tr>
+<tr><td><code>@Cacheable</code></td><td>Caches the method's return value; on a cache hit, the method body is skipped entirely</td></tr>
+<tr><td><code>@CachePut</code></td><td>Always executes the method AND updates the cache with the new result (used for updates)</td></tr>
+<tr><td><code>@CacheEvict</code></td><td>Removes an entry (or all entries) from the cache — used after deletes/updates that invalidate cached data</td></tr>
+<tr><td><code>@Caching</code></td><td>Combines multiple caching annotations on one method</td></tr>
+<tr><td><code>@CacheConfig</code></td><td>Class-level shared cache configuration (e.g., default cache name) for all methods in that class</td></tr>
+</table>
+
+<h2>52.4 Real Code — Full Cache Lifecycle</h2>
+<pre>@Service
+@CacheConfig(cacheNames = "accounts")
+@RequiredArgsConstructor
+public class AccountService {
+    private final AccountRepository accountRepository;
+
+    @Cacheable(key = "#id")
+    public AccountDto findById(Long id) {
+        log.info("Cache MISS — hitting the database for account {}", id);   <span class="c1">// only logs on an actual cache miss</span>
+        return mapper.toDto(accountRepository.findById(id).orElseThrow());
+    }
+
+    @CachePut(key = "#result.id")   <span class="c1">// always runs, then refreshes the cache with the updated value</span>
+    public AccountDto updateAccount(Long id, UpdateAccountRequest request) {
+        Account account = accountRepository.findById(id).orElseThrow();
+        account.updateFrom(request);
+        return mapper.toDto(accountRepository.save(account));
+    }
+
+    @CacheEvict(key = "#id")   <span class="c1">// removes the stale entry so the next read is a fresh cache miss</span>
+    public void closeAccount(Long id) {
+        accountRepository.deleteById(id);
+    }
+
+    @CacheEvict(allEntries = true)   <span class="c1">// nukes the ENTIRE "accounts" cache — used sparingly, e.g., after a bulk import job</span>
+    public void evictAllAccountsCache() { }
+}
+</pre>
+
+<h2>52.5 Diagram — @Cacheable Flow</h2>
+<div class="diagram">
+<div class="title">@Cacheable Decision Flow</div>
+<div class="flow-row"><div class="node">Method called: findById(1001)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node alt">Is "accounts::1001" already in cache?</div></div>
+<div class="arrow-down">↓ YES</div>
+<div class="flow-row"><div class="node green">Return cached value INSTANTLY — method body never executes, no DB call</div></div>
+<div class="arrow-down">↓ NO (cache miss)</div>
+<div class="flow-row"><div class="node">Execute method body → hit DB → store result in cache → return it</div></div>
+</div>
+
+<h2>52.6 Cache Providers Spring Boot Supports</h2>
+<table>
+<tr><th>Provider</th><th>Notes</th></tr>
+<tr><td>Simple (ConcurrentHashMap, default)</td><td>In-memory, per-instance only — fine for local dev, NOT suitable for multi-instance production (each pod has its own separate cache, causing inconsistency)</td></tr>
+<tr><td>Caffeine</td><td>High-performance in-memory Java cache with size/TTL eviction — still per-instance, good for single-instance or read-mostly local caching</td></tr>
+<tr><td>Redis</td><td>External, shared, distributed cache — the standard real-world choice for multi-instance microservices (Section 53)</td></tr>
+<tr><td>EhCache</td><td>Older, mature caching library, still seen in legacy applications</td></tr>
+</table>
+<div class="warn"><b>Critical real-world gotcha:</b> The default Simple/ConcurrentHashMap cache is <b>per-JVM-instance</b> — if you run 4 replicas of Accounts Service behind a load balancer, each pod has its OWN separate cache, meaning a cache update on pod 1 is invisible to pods 2-4. Any real multi-instance microservice MUST use an external shared cache like Redis, or risk serving stale/inconsistent cached data depending on which pod handles the request.</div>
+
+<h2>52.7 Cache Key Design (Using SpEL — Recap From Section 19)</h2>
+<pre>@Cacheable(key = "#customerId + '-' + #accountType")   <span class="c1">// composite key from multiple parameters</span>
+public List&lt;AccountDto&gt; findAccounts(Long customerId, String accountType) { ... }
+
+@Cacheable(condition = "#customerId != null", unless = "#result == null")  <span class="c1">// conditional caching</span>
+public AccountDto findByCustomerId(Long customerId) { ... }
+</pre>
+</div>
+
+<!-- 53. REDIS COMPLETE DEEP DIVE -->
+<div class="section">
+<h1>53. Redis with Spring Boot — Complete Deep Dive</h1>
+
+<h2>53.1 What Redis Is</h2>
+<div class="box">Redis is an in-memory key-value data store — extremely fast (sub-millisecond) reads/writes, supporting rich data structures (strings, hashes, lists, sets, sorted sets) — the most common real-world choice for distributed caching, session storage, rate limiting, and even simple message queuing (Pub/Sub).</div>
+
+<h2>53.2 Real Dependency and Configuration</h2>
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+<span class="c1"># application.yml</span>
+spring:
+  data:
+    redis:
+      host: redis-cluster.prod.internal
+      port: 6379
+      password: ${REDIS_PASSWORD}       <span class="c1"># from Azure Key Vault / Variable Group, never hardcoded</span
+      timeout: 2000ms
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000              <span class="c1"># default TTL: 1 hour, in milliseconds</span>
+</pre>
+
+<h2>53.3 Redis as Spring's Cache Provider (Connects Directly to Section 52)</h2>
+<pre>@Configuration
+public class RedisConfig {
+    @Bean
+    public RedisCacheConfiguration cacheConfiguration() {
+        return RedisCacheConfiguration.defaultCacheConfig()
+            .entryTtl(Duration.ofMinutes(30))
+            .serializeValuesWith(RedisSerializationContext.SerializationPair
+                .fromSerializer(new GenericJackson2JsonRedisSerializer()));   <span class="c1">// store cached objects as JSON, not raw Java serialization</span>
+    }
+
+    @Bean
+    public CacheManager cacheManager(RedisConnectionFactory factory, RedisCacheConfiguration config) {
+        return RedisCacheManager.builder(factory)
+            .cacheDefaults(config)
+            .withCacheConfiguration("accounts", config.entryTtl(Duration.ofHours(1)))   <span class="c1">// per-cache-name overrides</span>
+            .withCacheConfiguration("productCatalog", config.entryTtl(Duration.ofDays(1)))
+            .build();
+    }
+}
+
+<span class="c1">// The SAME @Cacheable annotations from Section 52 now transparently use Redis instead of local memory</span>
+@Cacheable(cacheNames = "accounts", key = "#id")
+public AccountDto findById(Long id) { ... }
+</pre>
+
+<h2>53.4 Using Redis Directly — RedisTemplate (Beyond Simple Caching)</h2>
+<pre>@Service
+@RequiredArgsConstructor
+public class SessionTokenService {
+    private final RedisTemplate&lt;String, String&gt; redisTemplate;
+
+    public void storeToken(String sessionId, String token) {
+        redisTemplate.opsForValue().set("session:" + sessionId, token, Duration.ofMinutes(15));   <span class="c1">// with TTL</span>
+    }
+
+    public String getToken(String sessionId) {
+        return redisTemplate.opsForValue().get("session:" + sessionId);
+    }
+
+    public void incrementLoginAttempts(String username) {
+        redisTemplate.opsForValue().increment("login-attempts:" + username);   <span class="c1">// atomic counter — great for rate limiting</span>
+    }
+}
+</pre>
+
+<h2>53.5 Real Redis Use Cases in Our Organization</h2>
+<table>
+<tr><th>Use Case</th><th>Redis Feature Used</th></tr>
+<tr><td>API response caching</td><td>Spring Cache abstraction backed by Redis (Section 52.6/53.3)</td></tr>
+<tr><td>Rate limiting (API Gateway)</td><td>Atomic counters + TTL (Microservices guide, Section 20)</td></tr>
+<tr><td>Session/token storage</td><td>Key-value with expiry, shared across all service instances</td></tr>
+<tr><td>Distributed locks</td><td>Redisson/Redis SETNX pattern — preventing duplicate concurrent processing across multiple pods</td></tr>
+<tr><td>Leaderboards/rankings</td><td>Redis Sorted Sets (ZSET) for fast ranked queries</td></tr>
+<tr><td>Pub/Sub for lightweight real-time notifications</td><td>Redis Pub/Sub channels (not a replacement for Kafka's durability, but fine for ephemeral fan-out)</td></tr>
+</table>
+
+<h2>53.6 Redis Eviction Policies (What Happens When Redis Runs Out of Memory)</h2>
+<table>
+<tr><th>Policy</th><th>Behavior</th></tr>
+<tr><td>noeviction</td><td>Rejects new writes once memory is full — errors instead of losing data (risky for a pure cache use case)</td></tr>
+<tr><td>allkeys-lru</td><td>Evicts the Least Recently Used key across all keys — the most common choice for a pure cache</td></tr>
+<tr><td>volatile-lru</td><td>Evicts LRU only among keys that have a TTL set, leaving permanent keys untouched</td></tr>
+<tr><td>allkeys-random</td><td>Evicts a random key — rarely the best choice, but very cheap to compute</td></tr>
+</table>
+
+<h2>53.7 Redis Cache Invalidation — The Hardest Problem in Caching</h2>
+<div class="warn">"There are only two hard things in computer science: cache invalidation and naming things." Real bugs happen when an update path forgets to evict/refresh the cache — e.g., updating a card limit directly via a batch SQL script bypasses <code>@CachePut</code>/<code>@CacheEvict</code> entirely, leaving Redis serving a stale limit until the TTL expires.</div>
+<div class="tip"><b>Real scenario:</b> "A production incident once involved a customer seeing an outdated card limit after our support team manually corrected a data issue directly in the database — bypassing the application layer entirely meant Redis never got evicted. We fixed the process by requiring all manual data corrections to go through an authenticated internal API endpoint that properly triggers cache eviction, never direct SQL against production."</div>
+</div>
+
+<!-- 54. HOW WE DEVELOP IN REAL TIME -->
+<div class="section">
+<h1>54. How We Develop Spring Boot Applications in Real-Time (Organization Level)</h1>
+
+<h2>54.1 The Full Development Lifecycle</h2>
+<ol>
+<li><b>Requirement &amp; API contract design</b> — agree on the OpenAPI spec with frontend/consuming teams before coding (API guide, Section 39).</li>
+<li><b>Scaffold the project</b> using Spring Initializr with the org's standard starter dependencies and package structure (Section 11).</li>
+<li><b>Set up the database</b> — create migration scripts (Flyway/Liquibase), never rely on <code>ddl-auto: update</code> in production.</li>
+<li><b>Implement layer by layer</b> — Entity → Repository → Service (with @Transactional boundaries) → DTO/Mapper → Controller (with validation) → GlobalExceptionHandler.</li>
+<li><b>Add caching</b> where read-heavy, rarely-changing data justifies it (Sections 52-53).</li>
+<li><b>Add resilience</b> for any outbound calls (Resilience4j — Microservices guide Section 18).</li>
+<li><b>Write tests as you go</b> — unit tests (Mockito) alongside the service logic, MockMvc tests for the controller layer, integration tests for critical flows.</li>
+<li><b>Document via Swagger/OpenAPI annotations</b> directly in the controller code (API guide, Section 16).</li>
+<li><b>Local verification</b> — run the full stack via <code>docker compose up</code> (Docker &amp; Kubernetes guide, Section 10) including Postgres/Redis/Kafka.</li>
+<li><b>Push to a feature branch, open a PR</b> — CI pipeline runs build, unit tests, integration tests (Testcontainers), SonarQube quality gate, security scan.</li>
+<li><b>Code review + merge</b> — at least 2 reviewers, linked work item (Git/CI-CD guide conventions).</li>
+<li><b>Automated deploy</b> to Dev → QA → Staging (with approval) → Production (with approval), per the CI/CD guide's Azure DevOps pipeline pattern.</li>
+<li><b>Monitor in production</b> via Actuator/Micrometer/Grafana dashboards specific to this service's Golden Signals (Observability guide).</li>
+</ol>
+
+<h2>54.2 Real Sprint-Level Workflow (Agile Team Practice)</h2>
+<div class="diagram">
+<div class="title">Real Sprint Workflow for a New Feature</div>
+<div class="flow-row">
+<div class="node">Sprint planning: story assigned</div><div class="arrow">→</div><div class="node">Design: API contract + DB schema change reviewed</div><div class="arrow">→</div><div class="node green">Implementation + tests (TDD-style where practical)</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+<div class="node">PR + code review</div><div class="arrow">→</div><div class="node">CI pipeline (build/test/scan)</div><div class="arrow">→</div><div class="node alt">Deploy to Dev/QA automatically</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">QA sign-off → Staging → Production (approval gates)</div></div>
+</div>
+
+<h2>54.3 Code Review Standards Real Teams Enforce</h2>
+<ul>
+<li>Constructor injection only, no field injection (Section 13).</li>
+<li>No entities returned directly from controllers — DTOs mandatory (API guide, Section 9).</li>
+<li>Every new outbound call must have a timeout and, where appropriate, a circuit breaker.</li>
+<li>Every new endpoint must have Swagger annotations and at least one MockMvc test.</li>
+<li>No hardcoded secrets/config — must come from application.yml/Config Server/Key Vault.</li>
+<li>SonarQube quality gate must pass (coverage threshold, no new critical code smells).</li>
+</ul>
+</div>
+
+<!-- 55. COMMON ISSUES -->
+<div class="section">
+<h1>55. Common Spring/Spring Boot Issues, Problems &amp; Solutions</h1>
+<table>
+<tr><th>Issue</th><th>Cause</th><th>Real Solution</th></tr>
+<tr><td>"No qualifying bean of type X" at startup</td><td>Missing @Component/@Service annotation, or bean not in a scanned package</td><td>Verify annotation exists, check @ComponentScan base package covers the class's package</td></tr>
+<tr><td>Circular dependency exception</td><td>Bean A depends on Bean B which depends back on Bean A</td><td>Refactor to break the cycle (extract shared logic into a third bean), or use @Lazy as a last resort</td></tr>
+<tr><td>@Transactional method doesn't roll back on exception</td><td>Checked exception thrown without rollbackFor, or self-invocation bypassing the proxy</td><td>Use rollbackFor explicitly (Section 45); move self-invoked method to a separate bean (Section 20.5)</td></tr>
+<tr><td>LazyInitializationException</td><td>Accessing a lazy-loaded JPA relationship outside an active transaction/session (e.g., in the controller after the service method returned)</td><td>Map to DTOs within the transactional service method, or use JOIN FETCH/entity graphs (API guide, Section 45)</td></tr>
+<tr><td>Application works locally but fails with a different cache result across pods</td><td>Using the default per-JVM cache (ConcurrentHashMap) in a multi-instance deployment</td><td>Switch to Redis as the shared cache backend (Section 52.6)</td></tr>
+<tr><td>Bean initialized before its dependency is ready ("chicken and egg")</td><td>Complex @PostConstruct ordering issues</td><td>Use ApplicationListener&lt;ContextRefreshedEvent&gt; or restructure dependencies instead of relying on init order</td></tr>
+<tr><td>Slow application startup</td><td>Too much component scanning, heavy @PostConstruct logic, large auto-configuration surface</td><td>Narrow @ComponentScan base packages, move heavy startup work to lazy/async initialization</td></tr>
+<tr><td>@Value injection returns null</td><td>Property genuinely missing from active profile, or class not a Spring-managed bean at all</td><td>Verify property exists in the active profile's yml; ensure the class is annotated as a bean (not manually "newed")</td></tr>
+<tr><td>Tests pass locally but fail in CI</td><td>Reliance on local machine state (H2 instead of real DB, hardcoded ports, timezone assumptions)</td><td>Use Testcontainers (Section 51) for real-database parity, avoid environment-dependent assumptions</td></tr>
+<tr><td>MockMvc test fails with 403/401 unexpectedly</td><td>Spring Security auto-configuration active in the test slice, blocking the request</td><td>Add @WithMockUser for the test, or explicitly configure/mock the security context for @WebMvcTest</td></tr>
+</table>
+</div>
+
+<!-- 56. MOST IMPORTANT INTERVIEW TOPICS RECAP -->
+<div class="section">
+<h1>56. Most Important Interview Topics — Deep Dive Recap</h1>
+<div class="box">These are the topics interviewers ask about most frequently for Spring/Spring Boot roles — cross-referenced back to their full explanation sections. Make sure you can explain each one confidently, ideally while drawing the relevant diagram.</div>
+<table>
+<tr><th>Topic</th><th>Section</th><th>One-Line Recap</th></tr>
+<tr><td>Dependency Injection</td><td>13</td><td>Container creates/injects dependencies instead of your code manually instantiating them</td></tr>
+<tr><td>IoC Container</td><td>12</td><td>ApplicationContext creates, wires, and manages the full lifecycle of all beans</td></tr>
+<tr><td>Bean Lifecycle</td><td>14</td><td>Instantiate → Populate Properties → Aware Interfaces → @PostConstruct → In Use → @PreDestroy</td></tr>
+<tr><td>AOP</td><td>20</td><td>Cross-cutting concerns applied via proxies without cluttering business logic</td></tr>
+<tr><td>Spring MVC Request Flow</td><td>21</td><td>DispatcherServlet → HandlerMapping → Controller → ViewResolver → View</td></tr>
+<tr><td>Auto Configuration</td><td>33</td><td>Classpath-driven, conditional bean registration — always overridable</td></tr>
+<tr><td>Profiles</td><td>36</td><td>Same JAR, different config per environment via active profile</td></tr>
+<tr><td>Exception Handling</td><td>14 (API guide), 30</td><td>@RestControllerAdvice + @ExceptionHandler for a consistent global error response</td></tr>
+</table>
+</div>
+
+<!-- 57. INTERVIEW Q&A -->
+<div class="section">
+<h1>57. Interview Questions &amp; Answers (Basic → Advanced → Scenario Based)</h1>
+
+<div class="qa"><div class="q">Q1. What problem does Spring solve, and why was it created?</div>
+<div class="a">Spring was created as a lightweight alternative to heavyweight EJB, using Dependency Injection and plain POJOs to provide enterprise features (transactions, AOP) without requiring an EJB container or framework-specific base classes — making applications simpler to build and unit test.</div></div>
+
+<div class="qa"><div class="q">Q2. What is the difference between Spring, Spring MVC, and Spring Boot?</div>
+<div class="a">Spring (Core) provides the IoC container and dependency injection; Spring MVC is a web framework built on top of Spring Core; Spring Boot is a convention-over-configuration layer on top of both, adding auto-configuration, starter dependencies, and embedded servers — they're layered, not competing.</div></div>
+
+<div class="qa"><div class="q">Q3. Explain the three types of Dependency Injection and which is recommended.</div>
+<div class="a">Constructor, setter, and field injection. Constructor injection is recommended — it makes dependencies explicit and immutable (final fields), fails fast at startup if something's missing, and makes unit testing trivial without needing Spring or reflection.</div></div>
+
+<div class="qa"><div class="q">Q4. Walk through the Spring Bean lifecycle.</div>
+<div class="a">Instantiate (constructor called) → Populate Properties (DI happens) → Aware interfaces invoked → @PostConstruct/InitializingBean (custom init logic) → bean is ready and in use → @PreDestroy/DisposableBean during shutdown for cleanup.</div></div>
+
+<div class="qa"><div class="q">Q5. What's the difference between singleton and prototype bean scope, and what's a common gotcha?</div>
+<div class="a">Singleton creates exactly one shared instance per container (the default); prototype creates a new instance every time it's requested. The gotcha: injecting a prototype bean into a singleton via normal injection only creates it once at singleton-creation time — you need ObjectProvider or a scoped proxy to actually get fresh instances per use.</div></div>
+
+<div class="qa"><div class="q">Q6. Explain AOP and how Spring implements it.</div>
+<div class="a">AOP lets you define cross-cutting concerns (logging, auditing, transactions) once as an "Aspect" and apply them declaratively via Pointcuts, instead of repeating the logic in every method. Spring implements this via runtime proxies wrapping your beans — calling a method actually calls the proxy first, which runs the aspect logic, then delegates to your real method.</div></div>
+
+<div class="qa"><div class="q">Q7. Walk through the complete Spring MVC request flow.</div>
+<div class="a">A request hits DispatcherServlet (Front Controller) → HandlerMapping determines which controller method handles it → the Controller executes (calling the service layer, populating the Model) → it returns a logical view name → ViewResolver resolves it to an actual View → the View renders using Model data → DispatcherServlet sends the final response.</div></div>
+
+<div class="qa"><div class="q">Q8. How does Spring Boot's auto-configuration actually work?</div>
+<div class="a">At startup, Spring Boot inspects the classpath and conditionally registers beans (via @ConditionalOnClass, @ConditionalOnMissingBean, etc.) that a typical use case would need — e.g., seeing a JPA starter and a DB driver auto-configures a DataSource and EntityManagerFactory. Defining your own bean of the same type automatically disables the auto-configured one.</div></div>
+
+<div class="qa"><div class="q">Q9. What are Spring Profiles and why are they important?</div>
+<div class="a">Profiles let the exact same built artifact run with different configuration per environment (application-dev.yml, application-prod.yml) activated via --spring.profiles.active — critical for the "build once, promote everywhere" CI/CD principle, avoiding rebuilding the artifact per environment.</div></div>
+
+<div class="qa"><div class="q">Q10. Explain @Transactional propagation, specifically REQUIRED vs REQUIRES_NEW.</div>
+<div class="a">REQUIRED (the default) joins an existing transaction if one is active, or creates a new one if not — if the outer transaction rolls back, everything inside it rolls back too. REQUIRES_NEW always suspends any existing transaction and starts an independent one that commits/rolls back on its own — useful for audit logs that must persist even if the main business transaction later fails.</div>
+<div class="scenario">Real scenario: Logging a loan approval audit record with REQUIRES_NEW ensures the audit trail survives even if a later risk check causes the main approval transaction to roll back.</div></div>
+
+<div class="qa"><div class="q">Q11. Why doesn't Spring roll back a transaction for a checked exception by default, and how do you fix it?</div>
+<div class="a">Spring's default rollback rule only covers unchecked exceptions (RuntimeException/Error) — checked exceptions require explicitly specifying rollbackFor = YourCheckedException.class on @Transactional, otherwise the transaction commits even though an exception was thrown, a common real production bug.</div></div>
+
+<div class="qa"><div class="q">Q12. What are the transaction isolation levels, and what problem does each prevent?</div>
+<div class="a">READ_UNCOMMITTED prevents nothing; READ_COMMITTED prevents dirty reads; REPEATABLE_READ additionally prevents non-repeatable reads; SERIALIZABLE prevents all three anomalies (dirty reads, non-repeatable reads, phantom reads) at the cost of the most locking/performance overhead.</div></div>
+
+<div class="qa"><div class="q">Q13. How do you unit test a Spring service without starting the full application context?</div>
+<div class="a">Use plain JUnit 5 + Mockito — create @Mock objects for dependencies, @InjectMocks the real service class, and stub behavior with when()/thenReturn(). No Spring context is loaded at all, making these tests extremely fast.</div></div>
+
+<div class="qa"><div class="q">Q14. What's the difference between @WebMvcTest and @SpringBootTest?</div>
+<div class="a">@WebMvcTest loads only the web/MVC layer (a "slice") for fast controller-focused testing with MockMvc, requiring @MockBean for service dependencies. @SpringBootTest loads the full real application context, suitable for true integration tests that need real bean wiring and database interaction (often paired with Testcontainers).</div></div>
+
+<div class="qa"><div class="q">Q15. Why use Testcontainers instead of an in-memory database like H2 for tests?</div>
+<div class="a">H2 can behave subtly differently from your real production database (SQL dialect quirks, feature support gaps), hiding real bugs until production. Testcontainers spins up the actual database engine (e.g., real PostgreSQL) in a disposable Docker container per test run, giving much higher confidence the tests reflect real behavior.</div></div>
+
+<div class="qa"><div class="q">Q16. How does Spring's caching abstraction work, and what's the danger of the default cache provider?</div>
+<div class="a">@Cacheable/@CachePut/@CacheEvict declaratively cache method results by key. The default Simple (ConcurrentHashMap) provider is per-JVM-instance — in a multi-replica deployment, each pod has its own separate cache, causing inconsistent results depending on which pod serves a request. Production multi-instance services must use a shared external cache like Redis.</div></div>
+
+<div class="qa"><div class="q">Q17. What are real use cases for Redis beyond simple caching?</div>
+<div class="a">Rate limiting via atomic counters with TTL, session/token storage shared across instances, distributed locks (preventing duplicate concurrent processing across pods), sorted-set-based leaderboards, and lightweight Pub/Sub for ephemeral real-time notifications.</div></div>
+
+<div class="qa"><div class="q">Q18. What is the difference between JPA and Hibernate?</div>
+<div class="a">JPA is a specification (interfaces/annotations like @Entity, EntityManager); Hibernate is a concrete implementation of that specification. Spring Boot's default underlying JPA implementation is Hibernate, but you're coding against the JPA API layer.</div></div>
+
+<div class="qa"><div class="q">Q19. Why did the Java web stack evolve from Servlets → Struts → Spring → Spring Boot?</div>
+<div class="a">Each layer solved the previous layer's pain: Servlets enabled dynamic HTTP handling but mixed HTML and Java code; Struts added MVC structure but required heavy XML; Spring introduced lightweight DI to replace heavyweight EJB; Spring MVC added a cleaner web framework on Spring Core; Spring Boot eliminated remaining manual configuration via auto-configuration and embedded servers.</div></div>
+
+<div class="qa"><div class="q">Q20. Describe a real production issue you've debugged involving Spring/Spring Boot and how you resolved it.</div>
+<div class="a">Example: a LazyInitializationException appeared intermittently in production when a controller tried to access a lazily-loaded JPA relationship after the transactional service method had already returned and closed the session. Fixed by mapping to DTOs entirely within the transactional service method boundary, ensuring all needed data is fetched while the session is still open.</div></div>
+</div>
+
+<!-- 58. FINAL SUMMARY -->
+<div class="section">
+<h1>58. Final Summary &amp; Cheat Sheet</h1>
+<div class="box">
+<p><b>The journey:</b> Core Java → Servlets/JSP (dynamic but messy) → JDBC (functional but boilerplate-heavy) → Hibernate/JPA (ORM solves mapping pain) → Spring Framework (lightweight DI replaces heavyweight EJB) → Spring MVC (clean web framework) → Spring Boot (auto-configuration, embedded servers, "just run it").</p>
+<p><b>Spring Core:</b> IoC container manages bean creation/wiring/lifecycle via Dependency Injection (prefer constructor injection), with AOP handling cross-cutting concerns declaratively.</p>
+<p><b>Spring MVC:</b> DispatcherServlet as Front Controller, routing through HandlerMapping to Controllers, rendering via ViewResolver (JSP/Thymeleaf) or returning JSON directly (@RestController).</p>
+<p><b>Spring Boot:</b> Auto-configuration + starters + embedded Tomcat eliminate nearly all manual setup; Profiles/YAML externalize environment-specific config; Actuator provides production-ready operational endpoints.</p>
+<p><b>Transactions:</b> @Transactional (via AOP proxies) manages atomicity within one database; Propagation controls nested transaction behavior; Isolation controls concurrent-transaction visibility; distributed operations across microservices use the Saga pattern instead of a single distributed transaction.</p>
+<p><b>Testing:</b> JUnit 5 + Mockito for fast isolated unit tests, MockMvc for controller-layer slice tests, @SpringBootTest + Testcontainers for true integration tests against real database/cache engines.</p>
+<p><b>Caching/Redis:</b> @Cacheable family for declarative caching; Redis as the mandatory shared backend for any multi-instance production deployment, also powering rate limiting, distributed locks, and session storage.</p>
+</div>
+
+<h2>58.1 Quick Cheat Sheet</h2>
+<table>
+<tr><th>Term</th><th>One-Line Meaning</th></tr>
+<tr><td>IoC Container</td><td>Manages bean creation, wiring, and lifecycle (ApplicationContext)</td></tr>
+<tr><td>Dependency Injection</td><td>Container provides dependencies instead of code manually creating them</td></tr>
+<tr><td>Bean</td><td>An object managed by the Spring container</td></tr>
+<tr><td>AOP</td><td>Cross-cutting logic (logging, transactions) applied via proxies</td></tr>
+<tr><td>DispatcherServlet</td><td>Spring MVC's single Front Controller handling every request</td></tr>
+<tr><td>Auto Configuration</td><td>Classpath-driven, overridable, conditional bean setup in Spring Boot</td></tr>
+<tr><td>Starter</td><td>Curated dependency bundle for a common use case</td></tr>
+<tr><td>Profile</td><td>Environment-specific configuration set, same artifact everywhere</td></tr>
+<tr><td>Actuator</td><td>Built-in production-ready health/metrics/ops endpoints</td></tr>
+<tr><td>@Transactional</td><td>Declarative transaction boundary via AOP proxy</td></tr>
+<tr><td>Propagation</td><td>How a transaction relates to an already-active one</td></tr>
+<tr><td>Isolation</td><td>How much concurrent transactions can see of each other's changes</td></tr>
+<tr><td>MockMvc</td><td>Fast, in-process Spring MVC layer testing without a real server</td></tr>
+<tr><td>Testcontainers</td><td>Real, disposable Docker-based dependencies for integration tests</td></tr>
+<tr><td>@Cacheable</td><td>Declaratively caches a method's return value</td></tr>
+<tr><td>Redis</td><td>Shared, distributed in-memory store — mandatory cache backend for multi-instance apps</td></tr>
+</table>
+
+<div class="tip">Use this guide alongside the Git/GitHub/GitLab/Bitbucket guide, the CI/CD guide, the Docker &amp; Kubernetes guide, the Microservices guide, the Observability &amp; Monitoring guide, and the API Development guide — together they cover the complete real-world Java full-stack developer journey from foundational Java web history, through building production-grade Spring Boot services, to deploying, securing, and observing them reliably at scale.</div>
+</div>
+
+</body>
+</html>
+
+

@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Struts/JSP Monolith to React + Spring Boot Microservices Migration — Complete Enterprise Guide</title>
+<style>
+  @page { size: A4; margin: 18mm 15mm 18mm 15mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Arial, sans-serif; color: #1a1a1a; font-size: 11.5px; line-height: 1.55; }
+  a { text-decoration: none; color: #455a64; }
+  h1, h2, h3, h4 { color: #37474f; font-family: Arial, sans-serif; page-break-after: avoid; }
+  h1 { font-size: 22px; border-bottom: 3px solid #37474f; padding-bottom: 6px; margin-top: 0; }
+  h2 { font-size: 17px; border-bottom: 1px solid #cfd8dc; padding-bottom: 4px; margin-top: 26px; }
+  h3 { font-size: 14px; color: #b03a2e; margin-top: 18px; }
+  h4 { font-size: 12.5px; color: #444; margin-top: 12px; }
+  .section { page-break-before: always; }
+  .cover { page-break-after: always; text-align: center; padding-top: 76px; }
+  .cover h1 { font-size: 26px; border: none; }
+  .cover h3 { color: #333; font-weight: normal; font-size: 14px; margin-top: 12px;}
+  .cover .tag { margin-top: 34px; font-size: 13px; color: #666; }
+  .toc { page-break-after: always; }
+  .toc ol { line-height: 1.7; font-size: 10.6px; }
+  code, pre { font-family: Consolas, "Courier New", monospace; }
+  code { background: #f1f1f1; padding: 1px 5px; border-radius: 3px; color: #a4141d; }
+  pre { background: #1e1e1e; color: #d4d4d4; padding: 10px 12px; border-radius: 6px; overflow-x: auto; font-size: 10.3px; line-height: 1.45; page-break-inside: avoid; white-space: pre-wrap; word-wrap: break-word; }
+  pre .c1 { color: #6a9955; }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0 16px 0; font-size: 11px; }
+  th, td { border: 1px solid #e6e6e6; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #f5f5f5; color: #37474f; }
+  tr:nth-child(even) { background: #f9fafc; }
+  .box { background: #f8f9fb; border: 1px solid #cdd6e6; border-radius: 6px; padding: 10px 14px; margin: 10px 0; }
+  .warn { background: #fff4e5; border: 1px solid #f0c36d; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .tip { background: #e8f6ee; border: 1px solid #7fc79a; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .qa { border-left: 3px solid #37474f; padding-left: 10px; margin: 10px 0 16px 0; page-break-inside: avoid; }
+  .qa .q { font-weight: bold; color: #37474f; }
+  .qa .a { margin-top: 4px; }
+  .qa .scenario { margin-top: 4px; font-style: italic; color: #555; }
+  .diagram { background: #fff; border: 1px dashed #90a4ae; border-radius: 8px; padding: 16px; margin: 14px 0; page-break-inside: avoid; }
+  .diagram .title { font-weight: bold; color: #37474f; margin-bottom: 10px; text-align:center; }
+  .flow-row { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+  .node { border: 2px solid #37474f; background: #eceff1; border-radius: 6px; padding: 8px 12px; font-weight: bold; text-align: center; font-size: 11px; min-width: 90px; }
+  .node.alt { border-color: #b03a2e; background: #fdeceb; }
+  .node.green { border-color: #1e8449; background: #eafaf1; }
+  .node.gray { border-color: #666; background: #eee; }
+  .node.purple { border-color: #8e44ad; background: #f5eefc; }
+  .arrow { font-size: 20px; color: #37474f; font-weight: bold; }
+  .arrow-down { font-size: 20px; color: #37474f; text-align: center; }
+  .pagebreak { page-break-before: always; }
+  ul, ol { margin-top: 4px; }
+  li { margin-bottom: 3px; }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover">
+  <h1>Struts/JSP Monolith → React + Spring Boot Microservices</h1>
+  <h3>The Complete Enterprise Migration Guide</h3>
+  <h3>Docker • Kubernetes (AKS) • Azure • Kafka • CI/CD • Observability • Security</h3>
+  <h3>End-to-End Phases, Team Roles, Migration Patterns, System Design</h3>
+  <h3>Real-Time Challenges, Advantages &amp; Disadvantages, Production Issues, Interview Q&amp;A</h3>
+  <div class="tag">A practical, simple-language, end-to-end reference for real enterprise modernization projects and interview preparation</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+<h1>Table of Contents</h1>
+<ol>
+<li>Introduction — Why This Migration Guide Matters</li>
+<li>The Legacy System — Struts/JSP Monolith Architecture (Before)</li>
+<li>Why Migration Is Needed — Real Business &amp; Technical Drivers</li>
+<li>The Target Architecture — React + Spring Boot Microservices on AKS/Azure (After)</li>
+<li>Migration Phases Overview — The Complete End-to-End Roadmap</li>
+<li>Phase 1: Assessment &amp; Discovery</li>
+<li>Phase 2: Team Involvement &amp; Roles (Business, Architecture, Development, QA, DBA, DevOps)</li>
+<li>Migration Pattern Deep Dive — The Strangler Fig Pattern</li>
+<li>Migration Pattern Deep Dive — Database per Service &amp; Saga Pattern</li>
+<li>Phase 3: Service Decomposition Strategy</li>
+<li>Phase 4: Database Migration Strategy</li>
+<li>Phase 5: API Migration (Struts Actions → REST APIs)</li>
+<li>Phase 6: Kafka Adoption for Event-Driven Communication</li>
+<li>Phase 7: Frontend Migration — JSP to React</li>
+<li>Phase 8: Containerization (Docker)</li>
+<li>Phase 9: Kubernetes Deployment (AKS)</li>
+<li>Phase 10: Azure Services Selection</li>
+<li>Phase 11: CI/CD Setup</li>
+<li>Phase 12: Observability &amp; Monitoring Setup</li>
+<li>Phase 13: Security Implementation</li>
+<li>Phase 14: Production Cutover Strategy</li>
+<li>Rollback Strategies</li>
+<li>System Design — Where to Apply Each Pattern (Decision Framework)</li>
+<li>Real-Time Challenges During Migration</li>
+<li>Advantages &amp; Disadvantages of the Migration</li>
+<li>Common Production Issues After Migration &amp; Solutions</li>
+<li>Real-World Migration Scenarios</li>
+<li>Interview Questions &amp; Solutions</li>
+<li>Final Summary &amp; Cheat Sheet</li>
+</ol>
+</div>
+
+<!-- 1. INTRODUCTION -->
+<div class="section">
+<h1>1. Introduction — Why This Migration Guide Matters</h1>
+
+<h2>1.1 The Scenario This Guide Covers</h2>
+<div class="box">A large organization has an aging Struts/JSP monolithic web application — built years ago, still running the core business, but increasingly difficult to change, scale, and hire developers for. The organization decides to modernize it to a React frontend, Spring Boot microservices backend, deployed on Docker/Kubernetes (AKS) in Azure. This exact scenario is one of the most common real-world enterprise projects a Java developer will encounter mid-career.</div>
+
+<h2>1.2 Why This Is Genuinely Hard (Not Just "Rewrite the Code")</h2>
+<div class="warn">A real migration like this isn't a coding exercise — it's a multi-month (often multi-year) organizational program involving business stakeholders, architects, multiple development teams, QA, DBAs, and DevOps, all coordinating around a system that must KEEP RUNNING and serving real customers throughout the entire process. Understanding this full complexity — not just the target technology — is what this guide covers.</div>
+
+<h2>1.3 How This Guide Is Structured</h2>
+<ul>
+<li><b>Sections 2-4:</b> Understand the starting point (legacy architecture), the real reasons to migrate, and the target end-state architecture.</li>
+<li><b>Sections 5-22:</b> Walk through the complete end-to-end migration roadmap, phase by phase, including the core migration patterns (Strangler Fig, Database per Service, Saga) woven in at the right points.</li>
+<li><b>Section 23:</b> A system design decision framework — when to use which pattern.</li>
+<li><b>Sections 24-27:</b> Real-time challenges, honest advantages/disadvantages, production issues, and real-world scenarios.</li>
+<li><b>Sections 28-29:</b> Interview questions with full solutions, and a final cheat sheet.</li>
+</ul>
+</div>
+
+<!-- 2. LEGACY ARCHITECTURE -->
+<div class="section">
+<h1>2. The Legacy System — Struts/JSP Monolith Architecture (Before)</h1>
+
+<h2>2.1 What a Typical Struts/JSP Application Looks Like</h2>
+<div class="diagram">
+<div class="title">Legacy Struts/JSP Monolith Architecture</div>
+<div class="flow-row"><div class="node">User's Browser</div></div>
+<div class="arrow-down">↓ full page requests</div>
+<div class="flow-row"><div class="node purple">Apache Tomcat (external, self-managed application server)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">Struts ActionServlet (Front Controller)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node alt">Struts Action Classes (business logic + control flow mixed together)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">JSP Pages (HTML + embedded Java scriptlets — the view layer)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node gray">Raw JDBC or an early Hibernate version, hitting ONE large shared Oracle/DB2 database</div></div>
+</div>
+
+<h2>2.2 Real Characteristics of This Legacy System</h2>
+<table>
+<tr><th>Characteristic</th><th>Real Impact</th></tr>
+<tr><td>One massive WAR file deployment</td><td>Every single change, no matter how small, requires rebuilding and redeploying the ENTIRE application</td></tr>
+<tr><td>Business logic scattered across Action classes and JSP scriptlets</td><td>No clean separation of concerns (recap: Spring &amp; Spring Boot guide, Section 2) — hard to test, hard to reason about</td></tr>
+<tr><td>One shared database for everything</td><td>Tables from unrelated business areas are tightly coupled — a schema change anywhere risks breaking something elsewhere</td></tr>
+<tr><td>Manual or semi-automated deployment</td><td>Deployments are risky, infrequent (often monthly or quarterly), and require significant manual verification</td></tr>
+<tr><td>Tightly coupled to a specific application server version</td><td>Upgrading Java/Tomcat versions is a large, risky undertaking, often deferred for years</td></tr>
+<tr><td>No automated test coverage (common in older codebases)</td><td>Every change carries real regression risk, discovered only through manual QA</td></tr>
+</table>
+
+<h2>2.3 A Real Struts Action Class (What Developers Actually Maintain Today)</h2>
+<pre>public class TransferFundsAction extends Action {
+    public ActionForward execute(ActionMapping mapping, ActionForm form,
+                                   HttpServletRequest request, HttpServletResponse response) {
+        TransferForm transferForm = (TransferForm) form;
+        <span class="c1">// Business logic, validation, and control flow ALL mixed together here</span>
+        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);   <span class="c1">// raw JDBC, manual connection management</span>
+        <span class="c1">// ... 200+ lines of mixed logic ...</span>
+        request.setAttribute("result", result);
+        return mapping.findForward("success");   <span class="c1">// manually wired navigation, defined in struts-config.xml</span>
+    }
+}
+</pre>
+<div class="tip">This exact class is precisely the kind of code a modernization project needs to decompose — the business logic buried inside needs to be extracted into a clean Spring Boot Service layer, and the JDBC code replaced with Spring Data JPA (JDBC/Hibernate/JPA guide, full detail).</div>
+</div>
+
+<!-- 3. WHY MIGRATION NEEDED -->
+<div class="section">
+<h1>3. Why Migration Is Needed — Real Business &amp; Technical Drivers</h1>
+
+<h2>3.1 Business Drivers</h2>
+<table>
+<tr><th>Driver</th><th>Real Impact</th></tr>
+<tr><td>Slow time-to-market</td><td>New features take months due to the monolith's size/risk — competitors with modern architectures ship faster</td></tr>
+<tr><td>Rising infrastructure cost</td><td>Aging on-premises hardware needs expensive refresh cycles; cloud offers better cost efficiency at scale</td></tr>
+<tr><td>Talent/hiring difficulty</td><td>Struts is a legacy framework — hiring and retaining developers skilled in it is increasingly hard and expensive</td></tr>
+<tr><td>Scalability limits</td><td>The monolith must be scaled as ONE unit, even if only one small part actually needs more capacity</td></tr>
+<tr><td>Customer expectations</td><td>Users expect modern, responsive UIs (React-style SPAs) — JSP-rendered pages feel dated</td></tr>
+</table>
+
+<h2>3.2 Technical Drivers</h2>
+<table>
+<tr><th>Driver</th><th>Real Impact</th></tr>
+<tr><td>Vendor/framework end-of-life risk</td><td>Struts has had serious historical security vulnerabilities (e.g., CVE-2017-5638) — an unmaintained framework is a real security liability</td></tr>
+<tr><td>Deployment risk and downtime</td><td>Deploying the entire monolith for one small fix risks breaking unrelated functionality</td></tr>
+<tr><td>No independent team ownership</td><td>Multiple teams working in the same codebase causes merge conflicts and coordination overhead</td></tr>
+<tr><td>Poor observability</td><td>Legacy systems often lack modern distributed tracing/metrics, making production issues hard to diagnose</td></tr>
+</table>
+
+<h2>3.3 The Honest Counter-Question — Is Migration Always the Right Call?</h2>
+<div class="warn">A responsible architect must also ask: is a full migration genuinely justified, or would targeted modernization (e.g., just upgrading Struts version, adding better monitoring) solve the immediate pain more cheaply? Full microservices migrations are expensive and risky — Section 25 (Advantages &amp; Disadvantages) covers this honestly. This guide assumes the organization has already made the considered decision to migrate, and focuses on doing it well.</div>
+</div>
+
+<!-- 4. TARGET ARCHITECTURE -->
+<div class="section">
+<h1>4. The Target Architecture — React + Spring Boot Microservices on AKS/Azure (After)</h1>
+
+<h2>4.1 The Full Target State Architecture</h2>
+<div class="diagram">
+<div class="title">Target Architecture — Modernized</div>
+<div class="flow-row"><div class="node">User</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">React SPA (Azure Static Web App / served via AKS)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">Azure Front Door + API Management</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node alt">AKS — Spring Boot Microservices (each independently deployable)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">Kafka / Event Hub (asynchronous event-driven communication)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node gray">Database per Service (Azure SQL / PostgreSQL / Cosmos DB)</div></div>
+<div class="arrow-down">↓ cross-cutting</div>
+<div class="flow-row">
+<div class="node">Key Vault / Entra ID</div><div class="node">Azure Monitor / App Insights</div><div class="node purple">Azure DevOps CI/CD</div>
+</div>
+</div>
+<div class="tip">This is EXACTLY the same full cloud-native architecture already covered in complete depth in the AWS/Azure Cloud Architecture guide and the Traditional/Hybrid/Full Cloud guide — this migration guide's unique focus is the JOURNEY from the legacy state (Section 2) to this target state, not the target architecture in isolation.</div>
+
+<h2>4.2 What Changes, Concretely, for Each Layer</h2>
+<table>
+<tr><th>Layer</th><th>Before (Legacy)</th><th>After (Target)</th></tr>
+<tr><td>Frontend</td><td>JSP pages, full page reloads</td><td>React SPA, API-driven, no full page reloads (Section 14)</td></tr>
+<tr><td>Backend</td><td>One Struts monolith</td><td>Multiple independent Spring Boot microservices (Section 10)</td></tr>
+<tr><td>Data Access</td><td>Raw JDBC / early Hibernate</td><td>Spring Data JPA, database per service (Section 11)</td></tr>
+<tr><td>Communication</td><td>In-process method calls</td><td>REST APIs + Kafka events (Sections 12-13)</td></tr>
+<tr><td>Deployment</td><td>Manual WAR deployment to Tomcat</td><td>Docker containers on AKS, automated CI/CD (Sections 15-18)</td></tr>
+<tr><td>Infrastructure</td><td>On-premises servers</td><td>Azure managed services (Section 17)</td></tr>
+<tr><td>Observability</td><td>Basic log files</td><td>Full distributed tracing/metrics/dashboards (Section 19)</td></tr>
+</table>
+</div>
+
+<!-- 5. MIGRATION PHASES OVERVIEW -->
+<div class="section">
+<h1>5. Migration Phases Overview — The Complete End-to-End Roadmap</h1>
+
+<h2>5.1 The Full Real Migration Roadmap</h2>
+<div class="diagram">
+<div class="title">End-to-End Migration Roadmap</div>
+<div class="flow-row"><div class="node">1. Assessment &amp; Discovery</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">2. Team Formation &amp; Planning</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">3. Service Decomposition Design</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node alt">4. Database Migration Strategy</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">5. API Migration (Strangler Fig, incremental)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">6. Kafka Adoption</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">7. Frontend Migration to React</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node alt">8. Containerization &amp; Kubernetes Deployment</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">9. CI/CD, Observability, Security Setup</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">10. Production Cutover (Phased, per Strangler Fig)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">11. Decommission Legacy System</div></div>
+</div>
+
+<h2>5.2 Real Timeline Expectations</h2>
+<div class="box">A migration of this scale for a genuinely large enterprise monolith typically takes <b>12-36 months</b>, executed incrementally (never a "big bang" — Section 21's rollback strategies explain why), with the legacy and new systems running in parallel for much of that period. Organizations that expect this to take "a few sprints" are setting themselves up for a failed, rushed migration.</div>
+</div>
+
+<!-- 6. PHASE 1 ASSESSMENT -->
+<div class="section">
+<h1>6. Phase 1: Assessment &amp; Discovery</h1>
+
+<h2>6.1 What Happens in This Phase</h2>
+<div class="box">Before writing a single line of new code, the organization must deeply understand what it's actually migrating — the monolith's real business capabilities, hidden dependencies, data flows, and technical debt. Rushing this phase is one of the single biggest causes of real migration project failure.</div>
+
+<h2>6.2 Real Assessment Activities</h2>
+<ul>
+<li><b>Codebase analysis:</b> map every Struts Action to the business capability it implements — often using static analysis tools to find hidden dependencies between modules.</li>
+<li><b>Database analysis:</b> identify which tables belong to which business domain, and where cross-domain foreign keys/joins create tight coupling that will need to be untangled (Section 11).</li>
+<li><b>Traffic/usage analysis:</b> which features are actually used heavily (migrate/optimize first) versus rarely used (candidates for simple rehosting or even retirement).</li>
+<li><b>Dependency mapping:</b> external systems, batch jobs, and integrations the monolith touches that must keep working throughout the migration.</li>
+<li><b>Risk assessment:</b> which business capabilities are the highest-risk to migrate (core revenue-generating flows) versus lowest-risk (internal admin tools).</li>
+</ul>
+
+<h2>6.3 Real Output of This Phase</h2>
+<div class="tip">The Assessment phase should produce a concrete <b>Domain Map</b> — a documented breakdown of the monolith into candidate business capabilities/bounded contexts (exactly the Domain-Driven Design exercise from the Microservices guide, Section 9.3) — which becomes the direct input to Service Decomposition (Section 10) and the migration wave planning (Section 20's sequencing).</div>
+</div>
+
+<!-- 7. PHASE 2 TEAM ROLES -->
+<div class="section">
+<h1>7. Phase 2: Team Involvement &amp; Roles (Business, Architecture, Development, QA, DBA, DevOps)</h1>
+
+<h2>7.1 Why This Is Genuinely a Cross-Functional Program, Not Just a Dev Task</h2>
+<div class="box">A migration of this scale touches every part of the organization — the mistake many failed migrations make is treating it as a purely engineering initiative without the necessary business and operational partnership.</div>
+
+<h2>7.2 Real Team Roles and Responsibilities</h2>
+<table>
+<tr><th>Team</th><th>Real Responsibilities in This Migration</th></tr>
+<tr><td>Business Stakeholders</td><td>Prioritize which business capabilities/modules migrate first based on business value/risk; approve any temporary feature freezes during risky cutover windows; own the final go/no-go decision for cutover (Section 20)</td></tr>
+<tr><td>Architecture Team</td><td>Owns the target architecture design (Section 4), service decomposition boundaries (Section 10), and technology standards applied consistently across all new microservices</td></tr>
+<tr><td>Development Teams</td><td>Implement the new Spring Boot microservices and React frontend, working domain-by-domain per the migration wave plan</td></tr>
+<tr><td>QA Team</td><td>Builds automated regression test suites (often the FIRST real investment, since legacy systems often lack them) to safely validate that migrated functionality behaves identically to the legacy system</td></tr>
+<tr><td>DBA Team</td><td>Plans and executes the database migration/splitting strategy (Section 11), including data synchronization during the parallel-running period</td></tr>
+<tr><td>DevOps/Platform Team</td><td>Builds the CI/CD pipelines, Kubernetes infrastructure, and observability platform that every migrated service will use (Sections 15-19)</td></tr>
+<tr><td>Security Team</td><td>Reviews the new architecture's security posture, ensures compliance requirements carry over correctly (Section 19)</td></tr>
+</table>
+
+<h2>7.3 Real Governance Structure</h2>
+<div class="diagram">
+<div class="title">Real Migration Program Governance</div>
+<div class="flow-row"><div class="node purple">Steering Committee (Business + Senior Architecture leadership) — approves major decisions/budget</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">Migration Program Lead (coordinates across all teams, tracks the roadmap)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+<div class="node">Domain Team 1 (e.g., Accounts)</div><div class="node">Domain Team 2 (e.g., Orders)</div><div class="node">Platform/DevOps Team (shared foundation)</div>
+</div>
+</div>
+<div class="tip"><b>Real scenario:</b> "Our migration program ran a weekly cross-functional sync involving one representative from each team (Business, Architecture, Dev, QA, DBA, DevOps) — this single recurring meeting caught more real cross-team blockers early than any amount of documentation ever could, because database schema changes, new API contracts, and QA test coverage gaps all surfaced and got resolved in the SAME room, not discovered weeks later."</div>
+</div>
+
+<!-- 8. STRANGLER FIG DEEP DIVE -->
+<div class="section">
+<h1>8. Migration Pattern Deep Dive — The Strangler Fig Pattern</h1>
+
+<h2>8.1 Recap and Why It's THE Central Pattern for This Entire Migration</h2>
+<div class="box">Already introduced conceptually in the Microservices guide (Section 9) — the Strangler Fig Pattern incrementally routes traffic for specific features away from the legacy monolith to new microservices, one capability at a time, while the legacy system keeps running for everything not yet migrated. This is THE foundational pattern underlying this entire guide's migration approach, because it avoids the catastrophic risk of a "big bang" cutover.</div>
+
+<h2>8.2 Applying Strangler Fig to This Specific Struts/JSP Migration</h2>
+<div class="diagram">
+<div class="title">Strangler Fig Applied — Step by Step for This Migration</div>
+<div class="flow-row"><div class="node">Step 0: All traffic → Struts Monolith</div></div>
+<div class="arrow-down">↓ introduce a routing layer (reverse proxy / API Gateway) in front of everything</div>
+<div class="flow-row"><div class="node purple">Routing Layer introduced — still 100% to Monolith</div></div>
+<div class="arrow-down">↓ Step 1: migrate ONE low-risk capability (e.g., "Customer Profile") to a new Spring Boot service</div>
+<div class="flow-row">
+<div class="node gray">Monolith (everything else)</div><div class="node green">NEW Customer Profile Microservice</div>
+</div>
+<div class="arrow-down">↓ routing layer sends /profile/* to the new service, everything else still to the monolith</div>
+<div class="flow-row"><div class="node">Repeat for each subsequent capability, in order of risk (lowest first)</div></div>
+<div class="arrow-down">↓ eventually</div>
+<div class="flow-row"><div class="node purple">Final State: Monolith fully "strangled" — decommissioned entirely</div></div>
+</div>
+
+<h2>8.3 Real Routing Layer Implementation</h2>
+<pre><span class="c1"># Real Azure API Management routing rule during migration — path-based cutover</span>
+Path /profile/*   → NEW Customer Profile Microservice (AKS)
+Path /orders/*    → NEW Order Microservice (AKS)          <span class="c1"># migrated in a later wave</span>
+Path /*           → LEGACY Struts Monolith (still running, unmigrated features)
+</pre>
+<div class="box">This single routing configuration change is literally how a capability "moves" from legacy to modern — no risky data cutover event, no customer-facing downtime, just a routing rule update that can be instantly reverted if something goes wrong (Section 21's rollback strategy).</div>
+
+<h2>8.4 Why This Specific Order Matters — Migration Wave Sequencing</h2>
+<table>
+<tr><th>Wave</th><th>What Migrates</th><th>Why This Order</th></tr>
+<tr><td>Wave 1 (Pilot)</td><td>A small, low-risk, low-traffic module (e.g., a static content/FAQ page)</td><td>Validates the entire pipeline (CI/CD, AKS, monitoring) end to end with minimal business risk</td></tr>
+<tr><td>Wave 2</td><td>Read-heavy, less critical features (e.g., "View Profile," reporting screens)</td><td>Builds real confidence handling genuine production traffic, still relatively low risk if something goes wrong</td></tr>
+<tr><td>Wave 3+</td><td>Core, high-value, high-traffic business capabilities (e.g., checkout, fund transfer)</td><td>Tackled only once the team has multiple successful migrations' worth of real, proven experience</td></tr>
+</table>
+</div>
+
+<!-- 9. DATABASE PER SERVICE SAGA DEEP DIVE -->
+<div class="section">
+<h1>9. Migration Pattern Deep Dive — Database per Service &amp; Saga Pattern</h1>
+
+<h2>9.1 The Core Migration Challenge These Patterns Solve</h2>
+<div class="warn">The legacy monolith has ONE shared database where a "Customer Profile" update and an "Order" creation could easily happen in a single local ACID transaction. Once split into separate microservices with separate databases (Section 11), that single transaction no longer exists — Database per Service and Saga together are how real migrations solve this without sacrificing data correctness.</div>
+
+<h2>9.2 Database per Service — Applied to This Migration</h2>
+<div class="diagram">
+<div class="title">Splitting the Monolith's Shared Database</div>
+<div class="flow-row"><div class="node gray">BEFORE: One Shared Oracle/DB2 Database<br/>(customer, order, payment, inventory tables, all joined freely)</div></div>
+<div class="arrow-down">↓ split by bounded context (Section 6.3's Domain Map)</div>
+<div class="flow-row">
+<div class="node green">Customer DB</div><div class="node green">Order DB</div><div class="node green">Payment DB</div><div class="node green">Inventory DB</div>
+</div>
+</div>
+<div class="box">Full detail on WHY this pattern matters (independent deployability, no cross-service coupling through shared tables) is already covered in the Microservices guide (Section 27) — this section focuses on the MIGRATION-SPECIFIC challenge: how do you actually SPLIT an existing, populated, live production database without data loss or extended downtime (Section 11 covers the real strategies for this).</div>
+
+<h2>9.3 Saga Pattern — Applied to a Real Migrated Workflow</h2>
+<div class="box">Consider "Place Order" — in the legacy monolith, this was one local transaction: create the order row, decrement inventory, and record the payment, all in one commit. After migration, these are THREE separate microservices with separate databases — the Saga pattern (Microservices guide, Section 22) replaces that single transaction with a sequence of local transactions plus compensating actions.</div>
+<div class="diagram">
+<div class="title">Saga — Migrated "Place Order" Workflow</div>
+<div class="flow-row"><div class="node green">1. Order Service: create order (PENDING)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">2. Inventory Service: reserve stock</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node alt">3. Payment Service: charge payment — FAILS</div></div>
+<div class="arrow-down">↓ compensating transactions trigger</div>
+<div class="flow-row">
+<div class="node gray">Inventory Service: release reserved stock</div><div class="node gray">Order Service: mark order CANCELLED</div>
+</div>
+</div>
+
+<h2>9.4 The Real Migration-Specific Risk — Dual Writes During the Transition</h2>
+<div class="warn">During the parallel-running period (Strangler Fig, Section 8), some capabilities may still write to the legacy shared database WHILE new microservices write to their own separate databases — this dual-write period is a genuinely risky time requiring careful synchronization (often via Change Data Capture, CDC) to keep both representations of the data consistent until the legacy path is fully retired for that capability.</div>
+</div>
+
+<!-- 10. PHASE 3 SERVICE DECOMPOSITION -->
+<div class="section">
+<h1>10. Phase 3: Service Decomposition Strategy</h1>
+
+<h2>10.1 How Real Teams Decide Service Boundaries</h2>
+<div class="box">Using the Domain Map from the Assessment phase (Section 6.3), the Architecture team applies Domain-Driven Design principles (Microservices guide, Section 9.3) to identify natural "bounded contexts" — business capabilities that have their own data, their own business rules, and change for their own independent reasons.</div>
+
+<h2>10.2 Real Decomposition Example for This Migration</h2>
+<table>
+<tr><th>Legacy Struts Module</th><th>New Microservice(s)</th><th>Why This Boundary</th></tr>
+<tr><td>CustomerProfileAction, CustomerSearchAction</td><td>Customer Service</td><td>Owns customer identity/profile data exclusively</td></tr>
+<tr><td>OrderCreateAction, OrderHistoryAction, OrderCancelAction</td><td>Order Service</td><td>Owns the order lifecycle end to end</td></tr>
+<tr><td>PaymentProcessAction, RefundAction</td><td>Payment Service</td><td>Isolated for PCI-DSS compliance scope reduction (fewer services touching card data)</td></tr>
+<tr><td>InventoryCheckAction, StockUpdateAction</td><td>Inventory Service</td><td>High-frequency, independent scaling needs during sales events</td></tr>
+<tr><td>ReportGenerationAction (rarely used, complex)</td><td>Kept in a "Legacy Reporting" service, migrated LAST or retired</td><td>Low business value relative to migration effort/risk — a real, honest prioritization call</td></tr>
+</table>
+
+<h2>10.3 Common Real Decomposition Mistakes</h2>
+<div class="warn">
+<ul>
+<li><b>Decomposing by technical layer instead of business capability</b> (e.g., a "Validation Service" or a "Database Access Service") — this creates chatty, tightly-coupled services rather than genuinely independent ones.</li>
+<li><b>Making services too fine-grained too early</b> ("nanoservices") — creating excessive operational overhead for boundaries that don't yet have proven independent scaling/team-ownership needs.</li>
+<li><b>Ignoring existing team structure</b> (Conway's Law, Microservices guide Section 40.2) — service boundaries that don't align with how teams are actually organized cause ongoing coordination friction.</li>
+</ul>
+</div>
+</div>
+
+<!-- 11. PHASE 4 DATABASE MIGRATION STRATEGY -->
+<div class="section">
+<h1>11. Phase 4: Database Migration Strategy</h1>
+
+<h2>11.1 The Central Challenge — Splitting a Live, Populated Database</h2>
+<div class="box">Unlike a brand-new microservices project starting with empty databases, THIS migration must split years of real, live production data out of one shared Oracle/DB2 database into multiple independent databases, without data loss and with minimal downtime.</div>
+
+<h2>11.2 Real Database Migration Approaches</h2>
+<table>
+<tr><th>Approach</th><th>How It Works</th><th>Real Trade-Off</th></tr>
+<tr><td>Big Bang Database Split</td><td>Take a full downtime window, migrate all data at once to the new split databases</td><td>Simpler to reason about, but requires real downtime and is high-risk if something goes wrong mid-migration</td></tr>
+<tr><td>Change Data Capture (CDC)-Based Sync</td><td>Use a CDC tool (e.g., Debezium) to continuously replicate changes from the legacy database into the new per-service databases in near-real-time, running in parallel</td><td>Enables zero/minimal downtime, but adds real complexity in schema transformation logic and consistency verification</td></tr>
+<tr><td>Dual-Write (Application-Level)</td><td>The application itself writes to both the old and new databases during the transition</td><td>Simpler infrastructure-wise, but risks the two databases drifting out of sync if not implemented very carefully (Section 9.4)</td></tr>
+</table>
+
+<h2>11.3 Real CDC-Based Migration Flow</h2>
+<div class="diagram">
+<div class="title">CDC-Based Database Migration (Near-Zero Downtime)</div>
+<div class="flow-row"><div class="node gray">Legacy Shared Database (still receiving live writes from the monolith)</div></div>
+<div class="arrow-down">↓ Debezium reads the database's transaction log in real time</div>
+<div class="flow-row"><div class="node purple">CDC Pipeline (Debezium → Kafka)</div></div>
+<div class="arrow-down">↓ transforms/routes changes to the correct new schema</div>
+<div class="flow-row"><div class="node green">New Customer DB</div></div>
+<div class="arrow-down">↓ once verified consistent and stable</div>
+<div class="flow-row"><div class="node alt">Cut the Customer Service over to READ/WRITE its own new database exclusively, CDC pipeline decommissioned for that domain</div></div>
+</div>
+
+<h2>11.4 Real Data Validation Before Cutover</h2>
+<div class="box">Before trusting a newly split database, real teams run automated reconciliation scripts comparing row counts, checksums, and sample record-level comparisons between the legacy source and the new target database — any discrepancy is investigated and resolved BEFORE that service is allowed to become the source of truth.</div>
+</div>
+
+<!-- 12. PHASE 5 API MIGRATION -->
+<div class="section">
+<h1>12. Phase 5: API Migration (Struts Actions → REST APIs)</h1>
+
+<h2>12.1 The Real Transformation Pattern</h2>
+<div class="box">Every Struts Action class (Section 2.3) must be decomposed into: a clean REST Controller (HTTP concerns), a Service layer (extracted business logic, now properly @Transactional), and a Repository (Spring Data JPA replacing raw JDBC) — exactly the layered architecture from the Spring &amp; Spring Boot guide, Section 11.</div>
+
+<h2>12.2 Real Before/After Example</h2>
+<pre><span class="c1">// BEFORE — legacy Struts Action (Section 2.3), everything mixed together</span>
+public class TransferFundsAction extends Action {
+    public ActionForward execute(...) {
+        <span class="c1">// 200+ lines: validation, JDBC, business rules, navigation, all mixed</span>
+    }
+}
+
+<span class="c1">// AFTER — properly decomposed Spring Boot layers</span>
+@RestController
+@RequestMapping("/api/v1/accounts")
+public class TransferController {
+    private final TransferService transferService;
+
+    @PostMapping("/transfer")
+    public ResponseEntity&lt;TransferResponse&gt; transfer(@Valid @RequestBody TransferRequest request) {
+        return ResponseEntity.ok(transferService.transfer(request));   <span class="c1">// thin controller, HTTP concerns only</span>
+    }
+}
+
+@Service
+@RequiredArgsConstructor
+public class TransferService {
+    private final AccountRepository accountRepository;
+
+    @Transactional
+    public TransferResponse transfer(TransferRequest request) {
+        <span class="c1">// clean, testable business logic, Spring Data JPA instead of raw JDBC</span>
+    }
+}
+</pre>
+
+<h2>12.3 Real API Contract Compatibility During Migration</h2>
+<div class="warn">Since the React frontend (Section 14) and the new API must work TOGETHER, and often the legacy JSP frontend still needs to keep working for not-yet-migrated features, real teams often design the new REST APIs with careful attention to API versioning (API Development guide, Section 10) so both old and new frontends can coexist safely during the transition.</div>
+
+<h2>12.4 Real Contract Testing</h2>
+<div class="box">Before cutting a Struts Action over to its new REST API equivalent, real teams write Consumer-Driven Contract tests (API Development guide, Section 39.3) comparing the new API's actual response shape against what the frontend genuinely expects — catching subtle behavioral differences (e.g., a slightly different error message format) before they reach real users.</div>
+</div>
+
+<!-- 13. PHASE 6 KAFKA ADOPTION -->
+<div class="section">
+<h1>13. Phase 6: Kafka Adoption for Event-Driven Communication</h1>
+
+<h2>13.1 Why Kafka Becomes Necessary After Decomposition</h2>
+<div class="box">In the monolith, "when an order is placed, update inventory and notify the customer" was just sequential method calls within one process. After decomposition (Section 10), these are separate services — Kafka provides the asynchronous, decoupled communication mechanism replacing those in-process calls (full pattern detail: Microservices guide, Section 24).</div>
+
+<h2>13.2 Real Kafka Adoption Rollout Strategy</h2>
+<ol>
+<li><b>Introduce Kafka infrastructure early</b> (often during Phase 1-2), even before the first business event flows through it — validate the platform itself first.</li>
+<li><b>Start with non-critical events</b> — e.g., audit logging or notification triggers — where a temporary issue with the event pipeline has low business impact.</li>
+<li><b>Gradually adopt Kafka for core business events</b> (order placed, payment completed) only once the team has real operational confidence in the platform.</li>
+<li><b>Maintain synchronous REST fallbacks initially</b> for the most critical flows during early adoption, only fully committing to async-only once proven stable.</li>
+</ol>
+
+<h2>13.3 Real Migrated Event Flow</h2>
+<div class="diagram">
+<div class="title">Migrated "Place Order" Event Flow</div>
+<div class="flow-row"><div class="node green">Order Service (new microservice)</div></div>
+<div class="arrow-down">↓ publishes OrderPlacedEvent</div>
+<div class="flow-row"><div class="node purple">Kafka Topic: order-events</div></div>
+<div class="arrow-down">↓ consumed independently by</div>
+<div class="flow-row">
+<div class="node">Inventory Service (new)</div><div class="node">Notification Service (new)</div><div class="node gray">Legacy Reporting Module (still consuming via a bridge/adapter, not yet migrated)</div>
+</div>
+</div>
+<div class="tip"><b>Real scenario:</b> "During our migration's middle phase, our new Order Service published events to Kafka, but our NOT-YET-migrated legacy reporting module (still running in the monolith) needed that same data — we built a small adapter service that consumed the Kafka events and wrote them into the legacy database's expected format, letting the old reporting module keep working unmodified until it was its own turn to be migrated."</div>
+</div>
+
+<!-- 14. PHASE 7 FRONTEND MIGRATION -->
+<div class="section">
+<h1>14. Phase 7: Frontend Migration — JSP to React</h1>
+
+<h2>14.1 The Real Challenge — Two Frontends Coexisting</h2>
+<div class="box">Since backend capabilities migrate incrementally (Strangler Fig, Section 8), the frontend often must ALSO support a transition period where some pages are still legacy JSP and others are the new React SPA — real teams handle this via a routing layer that directs users to the correct frontend based on which feature they're accessing.</div>
+
+<h2>14.2 Real Frontend Migration Approaches</h2>
+<table>
+<tr><th>Approach</th><th>How It Works</th><th>Real Trade-Off</th></tr>
+<tr><td>Page-by-Page Replacement</td><td>Each JSP page is replaced by an equivalent React page/route as its backend capability migrates</td><td>Simple mental model, but users may experience jarring navigation between old-look and new-look pages during the transition</td></tr>
+<tr><td>Micro-Frontend Approach</td><td>React components are embedded WITHIN existing JSP pages incrementally, sharing the same overall page shell</td><td>Smoother visual transition for users, but adds real integration complexity (shared styling, routing coordination)</td></tr>
+<tr><td>Full Frontend Cutover First</td><td>Build the complete new React SPA against a mix of new and (temporarily) legacy-proxied APIs, replacing the ENTIRE frontend at once</td><td>Cleanest user experience, but requires the React app to work correctly against not-yet-fully-migrated backend capabilities</td></tr>
+</table>
+<div class="tip">Most real enterprise migrations use <b>Page-by-Page Replacement</b> combined with the same Strangler Fig routing layer used for the backend (Section 8.3) — as each backend capability migrates, its corresponding JSP page is simultaneously replaced with a new React page calling the new REST API.</div>
+
+<h2>14.3 Real React Structure for This Migration</h2>
+<pre>customer-portal/
+├── src/
+│   ├── pages/
+│   │   ├── ProfilePage.tsx      <span class="c1"># NEW — replaces legacy customerProfile.jsp</span>
+│   │   ├── OrderHistoryPage.tsx <span class="c1"># NEW — replaces legacy orderHistory.jsp</span>
+│   │   └── LegacyRedirect.tsx   <span class="c1"># redirects not-yet-migrated routes back to the legacy JSP app</span>
+│   └── api/
+│       └── generated-client/    <span class="c1"># typed client generated from the new services' OpenAPI specs</span>
+</pre>
+
+<h2>14.4 Real Data Fetching Differences (JSP vs React)</h2>
+<table>
+<tr><th>Aspect</th><th>Legacy JSP</th><th>New React</th></tr>
+<tr><td>Rendering</td><td>Server-side rendered, full page reload per navigation</td><td>Client-side rendered, API calls for data, no full page reload</td></tr>
+<tr><td>State management</td><td>Session-based (server-side HttpSession)</td><td>Client-side state (React Context/Redux), stateless JWT-based auth (Web/Network guide, Section 7)</td></tr>
+<tr><td>Form handling</td><td>Struts ActionForm + server-side validation</td><td>React form libraries + client-side validation, backed by Spring Boot's Bean Validation (API Development guide, Section 15)</td></tr>
+</table>
+</div>
+
+<!-- 15. PHASE 8 CONTAINERIZATION -->
+<div class="section">
+<h1>15. Phase 8: Containerization (Docker)</h1>
+
+<h2>15.1 What Gets Containerized</h2>
+<div class="box">Every new Spring Boot microservice and the new React frontend get their own Dockerfile (full detail: Docker &amp; Kubernetes guide, Sections 8-9) — the legacy Struts monolith is typically NOT containerized in most real migrations (not worth the investment for a system being actively decommissioned), and instead continues running on its existing Tomcat infrastructure until fully retired.</div>
+
+<h2>15.2 Real Dockerfile for a Migrated Service</h2>
+<pre><span class="c1"># Exactly the same multi-stage pattern from the Docker & Kubernetes guide, Section 8.2</span>
+FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
+COPY src ./src
+RUN mvn clean package -DskipTests -B
+
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+COPY --from=build /app/target/customer-service-*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
+</pre>
+
+<h2>15.3 Real Decision — Should the Legacy Monolith Also Be Containerized?</h2>
+<table>
+<tr><th>Option</th><th>When It Makes Sense</th></tr>
+<tr><td>Containerize the legacy monolith too</td><td>If the migration will take YEARS and the organization wants consistent deployment tooling across old and new systems during the long transition</td></tr>
+<tr><td>Leave the legacy monolith on its existing infrastructure</td><td>If the migration timeline is shorter, or the effort to containerize a system being actively decommissioned isn't worth the investment</td></tr>
+</table>
+<div class="tip"><b>Real scenario:</b> "Our organization chose to containerize even the legacy Struts monolith (a straightforward Tomcat + WAR Docker image, no code changes) purely to standardize our deployment pipeline and get it running on the SAME Kubernetes cluster as our new services — this let us use the SAME routing layer (Ingress) for the Strangler Fig pattern, rather than maintaining two completely separate infrastructure stacks during the transition."</div>
+</div>
+
+<!-- 16. PHASE 9 KUBERNETES DEPLOYMENT -->
+<div class="section">
+<h1>16. Phase 9: Kubernetes Deployment (AKS)</h1>
+
+<h2>16.1 Real AKS Cluster Setup for This Migration</h2>
+<div class="box">A single AKS cluster typically hosts BOTH the legacy monolith (if containerized, Section 15.3) and all new microservices, using separate namespaces for isolation — exactly the namespace-per-environment/team pattern from the Docker &amp; Kubernetes guide, Section 19.3, applied here as namespace-per-migration-phase.</div>
+
+<h2>16.2 Real Ingress Configuration Implementing the Strangler Fig Routing</h2>
+<pre>apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: { name: migration-routing-ingress, namespace: prod }
+spec:
+  rules:
+  - host: app.company.com
+    http:
+      paths:
+      - path: /profile
+        pathType: Prefix
+        backend: { service: { name: customer-service, port: { number: 80 } } }   <span class="c1"># NEW microservice</span>
+      - path: /orders
+        pathType: Prefix
+        backend: { service: { name: order-service, port: { number: 80 } } }      <span class="c1"># NEW microservice</span>
+      - path: /
+        pathType: Prefix
+        backend: { service: { name: legacy-monolith, port: { number: 8080 } } }  <span class="c1"># everything else still legacy</span>
+</pre>
+<div class="tip">This single Ingress resource IS the Strangler Fig routing layer in Kubernetes-native form — migrating a new capability is literally adding one new path rule pointing to the new service, with zero changes needed to the legacy monolith itself.</div>
+
+<h2>16.3 Real Resource Planning During Migration</h2>
+<div class="box">Early in the migration, new microservices handle only a small fraction of total traffic — real teams start with conservative resource requests/limits and modest HPA min/max ranges, scaling these up progressively as each new service takes on more real traffic through subsequent migration waves (Docker &amp; Kubernetes guide, Section 20.1).</div>
+</div>
+
+<!-- 17. PHASE 10 AZURE SERVICES -->
+<div class="section">
+<h1>17. Phase 10: Azure Services Selection</h1>
+
+<h2>17.1 Real Azure Service Mapping for This Migration</h2>
+<table>
+<tr><th>Need</th><th>Azure Service Chosen</th><th>Why</th></tr>
+<tr><td>Container orchestration</td><td>AKS</td><td>Runs both legacy (if containerized) and new microservices consistently</td></tr>
+<tr><td>Container registry</td><td>ACR</td><td>Stores all Docker images built during the migration</td></tr>
+<tr><td>Frontend hosting</td><td>Azure Static Web Apps (for the new React app)</td><td>Global CDN-backed hosting, matches the target architecture (Section 4)</td></tr>
+<tr><td>New service databases</td><td>Azure SQL Database / PostgreSQL Flexible Server</td><td>Managed relational databases for each newly split service (Section 11)</td></tr>
+<tr><td>Event streaming</td><td>Event Hub (Kafka-compatible endpoint)</td><td>Supports Kafka adoption (Section 13) without operating Kafka brokers directly</td></tr>
+<tr><td>Secrets/config</td><td>Key Vault</td><td>Centralizes credentials for BOTH legacy and new systems during the transition period</td></tr>
+<tr><td>Identity</td><td>Entra ID</td><td>Unified identity for new services; may need to bridge with legacy authentication initially</td></tr>
+</table>
+
+<h2>17.2 Real Legacy Database Hosting Decision</h2>
+<div class="box">The legacy shared database is often migrated to Azure (e.g., "lift and shift" via Rehost, per the Traditional/Hybrid/Cloud guide's 6 R's, Section 20) EARLY in the program, even before application code migrates — this gets the organization onto Azure's infrastructure/networking foundation immediately, and the CDC-based database splitting (Section 11.3) can then happen entirely within Azure rather than across an on-premises-to-cloud boundary.</div>
+</div>
+
+<!-- 18. PHASE 11 CICD SETUP -->
+<div class="section">
+<h1>18. Phase 11: CI/CD Setup</h1>
+
+<h2>18.1 Real Pipeline Strategy During Migration</h2>
+<div class="box">Each new microservice gets its OWN independent Azure DevOps pipeline (exactly the standardized template pattern from the CI/CD guide, Section 20 and the AWS/Azure guide, Section 32.3) — while the legacy monolith typically keeps its EXISTING deployment process initially, since investing in modernizing a system being actively decommissioned is rarely worth the effort, UNLESS the migration timeline is very long.</div>
+
+<h2>18.2 Real Pipeline Stages for a Newly Migrated Service</h2>
+<pre>trigger: { branches: { include: [ main ] }, paths: { include: [ customer-service/* ] } }
+stages:
+- stage: Build
+  jobs: [ { job: BuildTest, steps: [ Maven build, unit tests, SonarQube quality gate ] } ]
+- stage: Docker
+  jobs: [ { job: DockerBuild, steps: [ Docker build, Trivy security scan, push to ACR ] } ]
+- stage: DeployDev
+  jobs: [ { deployment: Deploy, environment: 'Development', steps: [ KubernetesManifest deploy ] } ]
+- stage: DeployProd
+  jobs: [ { deployment: Deploy, environment: 'Production', steps: [ KubernetesManifest deploy ] } ]  <span class="c1"># approval-gated</span>
+</pre>
+<div class="tip">This is EXACTLY the real Azure DevOps pipeline pattern already covered in complete depth in the CI/CD guide (Section 17.5) — nothing migration-specific changes about the pipeline mechanics themselves, only that this pipeline now exists PER newly migrated service, growing in number as the migration progresses through its waves.</div>
+</div>
+
+<!-- 19. PHASE 12 OBSERVABILITY -->
+<div class="section">
+<h1>19. Phase 12: Observability &amp; Monitoring Setup</h1>
+
+<h2>19.1 Why Observability Must Be Established EARLY, Not Late</h2>
+<div class="warn">A very common real migration mistake is deferring observability setup until "later" — without it, comparing the NEW system's behavior/performance against the legacy system's during the critical parallel-running period (Strangler Fig, Section 8) becomes guesswork instead of data-driven confidence.</div>
+
+<h2>19.2 Real Observability Needs Specific to a Migration</h2>
+<table>
+<tr><th>Need</th><th>Real Approach</th></tr>
+<tr><td>Compare new microservice performance against the legacy baseline</td><td>Track the SAME business-level metrics (e.g., "order creation latency") on both systems side by side during the transition</td></tr>
+<tr><td>Trace a request that crosses BOTH legacy and new systems</td><td>Propagate a correlation ID even through the legacy monolith (often requiring a small code addition to the otherwise-frozen legacy codebase) so traces remain connected end to end</td></tr>
+<tr><td>Detect a migrated capability behaving incorrectly compared to the legacy version</td><td>Run the new service in "shadow mode" initially — receiving real traffic copies but not serving the actual response — comparing its output against the legacy system's real response before fully cutting over</td></tr>
+</table>
+
+<h2>19.3 Real Shadow Mode Testing Pattern</h2>
+<div class="diagram">
+<div class="title">Shadow Mode — Validating a New Service Before Real Cutover</div>
+<div class="flow-row"><div class="node">Real user request</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">Routing Layer sends the REAL response from Legacy Monolith to the user</div></div>
+<div class="arrow-down">↓ simultaneously, a COPY of the request is sent to</div>
+<div class="flow-row"><div class="node green">NEW Microservice (response compared/logged, but NEVER shown to the real user)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node alt">Automated comparison flags any discrepancy for investigation, BEFORE this capability is trusted for real cutover</div></div>
+</div>
+<div class="tip"><b>Real scenario:</b> "Before cutting over our Order History feature, we ran the new Order Service in shadow mode for two full weeks — comparing its responses against the legacy JSP page's output for every real production request. This caught a subtle date-formatting discrepancy and a pagination edge-case bug BEFORE any real customer ever saw the new service's actual response, turning what could have been a customer-facing incident into a quiet pre-launch fix."</div>
+</div>
+
+<!-- 20. PHASE 13 SECURITY -->
+<div class="section">
+<h1>20. Phase 13: Security Implementation</h1>
+
+<h2>20.1 Real Security Challenges Unique to a Migration</h2>
+<table>
+<tr><th>Challenge</th><th>Real Solution</th></tr>
+<tr><td>Legacy system uses server-side sessions; new system uses stateless JWTs</td><td>Build a bridging authentication layer during the transition — often the API Gateway/APIM validates the SAME identity provider's token for both old and new systems, or a shim translates between session cookies and JWTs</td></tr>
+<tr><td>Legacy Struts framework has known historical vulnerabilities</td><td>Prioritize migrating (or at minimum, patching/isolating) internet-facing legacy components with known CVEs, even ahead of their "natural" migration wave order if the risk is severe</td></tr>
+<tr><td>New microservices need Managed Identity/RBAC; legacy uses hardcoded/shared credentials</td><td>New services adopt Managed Identity from day one (AWS/Azure guide, Section 9.5); legacy credentials are rotated and secured in Key Vault even if not fully modernized</td></tr>
+<tr><td>Expanded attack surface — many new microservices instead of one monolith</td><td>Enforce API Gateway-level authentication/rate-limiting centrally (API Development guide, Section 21) so every new service inherits consistent security posture automatically</td></tr>
+</table>
+
+<h2>20.2 Real Authentication Bridging Pattern</h2>
+<div class="diagram">
+<div class="title">Bridging Legacy Session Auth and New JWT Auth</div>
+<div class="flow-row"><div class="node">User logs in (once)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">Identity Provider issues BOTH a legacy session cookie AND a JWT simultaneously</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+<div class="node gray">Requests to legacy monolith use the session cookie</div><div class="node green">Requests to new microservices use the JWT</div>
+</div>
+</div>
+<div class="tip">This dual-token approach lets a single login work seamlessly across BOTH legacy and new systems during the entire transition period, without forcing users to log in twice or the legacy system to be rewritten to understand JWTs.</div>
+</div>
+
+<!-- 21. PHASE 14 PRODUCTION CUTOVER -->
+<div class="section">
+<h1>21. Phase 14: Production Cutover Strategy</h1>
+
+<h2>21.1 The Real Cutover Process Per Capability</h2>
+<ol>
+<li><b>Shadow mode validation</b> (Section 19.3) — run the new service against real traffic copies, comparing output, for a defined observation period.</li>
+<li><b>Canary cutover</b> — route a small percentage (e.g., 5%) of REAL traffic to the new service, closely monitoring error rates/latency (Docker &amp; Kubernetes guide, Section 16.5).</li>
+<li><b>Gradual ramp-up</b> — increase to 25% → 50% → 100% over hours/days, only proceeding if metrics remain healthy at each stage.</li>
+<li><b>Full cutover</b> — 100% of traffic for this capability now goes to the new microservice; the legacy code path remains dormant but available for a defined rollback window (Section 22).</li>
+<li><b>Legacy code retirement</b> — after a sufficient stable period (often 1-3 months), the legacy code for this specific capability is finally removed.</li>
+</ol>
+
+<h2>21.2 Real Cutover Decision Criteria</h2>
+<table>
+<tr><th>Metric</th><th>Real Threshold for Proceeding</th></tr>
+<tr><td>Error rate</td><td>New service's error rate must be equal to or better than the legacy baseline</td></tr>
+<tr><td>Latency (p95/p99)</td><td>New service's latency must be within an agreed acceptable range of the legacy baseline</td></tr>
+<tr><td>Data consistency</td><td>Zero discrepancies found during the shadow mode comparison period for this capability</td></tr>
+<tr><td>Business sign-off</td><td>Business stakeholders formally approve the cutover for customer-facing, high-value capabilities</td></tr>
+</table>
+</div>
+
+<!-- 22. ROLLBACK STRATEGIES -->
+<div class="section">
+<h1>22. Rollback Strategies</h1>
+
+<h2>22.1 Why Rollback Planning Is Non-Negotiable</h2>
+<div class="warn">Every single cutover step (Section 21) MUST have a pre-planned, tested rollback path BEFORE it's executed in production — "we'll figure out rollback if something goes wrong" is exactly the kind of thinking that turns a minor issue into a major incident.</div>
+
+<h2>22.2 Real Rollback Mechanisms Per Layer</h2>
+<table>
+<tr><th>Layer</th><th>Real Rollback Mechanism</th></tr>
+<tr><td>Traffic routing (Strangler Fig)</td><td>Revert the Ingress/APIM routing rule back to the legacy monolith — typically a near-instant configuration change (Section 16.2)</td></tr>
+<tr><td>New microservice deployment</td><td>Kubernetes rollout undo to the previous stable version (Docker &amp; Kubernetes guide, Section 21.4)</td></tr>
+<tr><td>Database (if already cut over)</td><td>If CDC-based sync (Section 11.3) is still active/reversible, fall back to the legacy database as source of truth; if not, this is why data reconciliation validation (Section 11.4) must happen BEFORE fully retiring the legacy database</td></tr>
+<tr><td>Frontend</td><td>Revert the frontend routing to serve the legacy JSP page again for the affected feature</td></tr>
+</table>
+
+<h2>22.3 Real Rollback Decision Framework</h2>
+<div class="diagram">
+<div class="title">Real Rollback Trigger Decision</div>
+<div class="flow-row"><div class="node alt">Error rate/latency exceeds threshold, OR a data consistency issue is detected</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node">Immediate: revert traffic routing to legacy (fast, low-risk action)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node purple">Investigate root cause with the new service OFFLINE from real traffic, no pressure/rush</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row"><div class="node green">Fix, re-validate via shadow mode again, re-attempt cutover</div></div>
+</div>
+<div class="tip"><b>Real scenario:</b> "During our Payment Service cutover, a canary at 5% traffic revealed a subtle currency rounding discrepancy compared to the legacy system — we reverted the APIM routing rule back to 100% legacy within two minutes of the alert firing, with zero customer impact, then spent the next week fixing and re-validating the rounding logic in shadow mode before successfully re-attempting the cutover."</div>
+</div>
+
+<!-- 23. SYSTEM DESIGN DECISION FRAMEWORK -->
+<div class="section">
+<h1>23. System Design — Where to Apply Each Pattern (Decision Framework)</h1>
+
+<h2>23.1 A Practical Decision Framework for This Migration</h2>
+<table>
+<tr><th>System Design Question</th><th>Decision Framework</th></tr>
+<tr><td>Should this capability be its own microservice?</td><td>Does it have its own data, its own business rules, and a genuine reason to scale/deploy independently? If not, keep it grouped with a related capability rather than over-decomposing.</td></tr>
+<tr><td>Should this operation be synchronous (REST) or asynchronous (Kafka)?</td><td>Does the caller need an IMMEDIATE answer to proceed (e.g., "is this account valid?")? Use REST. Is it a side effect that can tolerate a short delay (e.g., "send a confirmation email")? Use Kafka.</td></tr>
+<tr><td>Does this cross-service operation need a Saga?</td><td>Does it span multiple services' databases and require all-or-nothing correctness? Use Saga with compensating transactions. Is it read-only or single-service? No Saga needed.</td></tr>
+<tr><td>Should we use CDC or dual-write for database migration?</td><td>Is minimizing downtime critical and is engineering capacity available for CDC's added complexity? Use CDC. Is a short, well-communicated maintenance window acceptable? A simpler Big Bang split may suffice.</td></tr>
+<tr><td>Should this capability go through shadow mode before cutover?</td><td>Is it a high-traffic, high-business-value, or complex-logic capability? Always shadow-test. Is it a low-risk, simple, low-traffic feature? Shadow mode may be a lower priority, faster direct canary may suffice.</td></tr>
+<tr><td>Pessimistic or optimistic locking for a migrated inventory/balance operation?</td><td>Is this a high-contention, high-value operation (large fund transfer)? Consider pessimistic locking. Is contention genuinely rare? Optimistic locking with retry is usually more scalable (JDBC/JPA guide, Section 17).</td></tr>
+</table>
+
+<h2>23.2 Real System Design Interview Framing</h2>
+<div class="tip">When asked in an interview to "design the migration of a legacy monolith," structure your answer around: (1) Assessment first, never skip it, (2) Strangler Fig for incremental, low-risk cutover, (3) Database per Service + Saga for the resulting distributed data challenge, (4) Shadow mode + canary + clear rollback triggers for EVERY cutover step, and (5) observability established EARLY, not as an afterthought — this demonstrates real, practiced migration judgment, not just knowledge of the target technology stack.</div>
+</div>
+
+<!-- 24. REAL TIME CHALLENGES -->
+<div class="section">
+<h1>24. Real-Time Challenges During Migration</h1>
+<table>
+<tr><th>Challenge</th><th>Why It's Genuinely Hard</th><th>Real Mitigation</th></tr>
+<tr><td>Keeping the legacy system stable while migrating</td><td>The legacy codebase still needs bug fixes and even occasional new features during the (long) migration period, competing for the same developers' time</td><td>Dedicate a small, separate "legacy maintenance" team distinct from the migration team, or apply strict feature-freeze policies for lower-priority legacy areas</td></tr>
+<tr><td>Data consistency during the parallel-running period</td><td>Two representations of the same data (legacy shared DB, new per-service DBs) must stay consistent for weeks/months</td><td>CDC-based synchronization (Section 11.3) with automated reconciliation checks running continuously, not just once</td></tr>
+<tr><td>Team morale and fatigue over a multi-year program</td><td>Migration work can feel like "unglamorous plumbing" compared to building new features, causing attrition risk</td><td>Celebrate and visibly communicate each successful migration wave; rotate developers between migration work and new feature work where possible</td></tr>
+<tr><td>Hidden business logic buried in JSP scriptlets</td><td>Years of undocumented edge-case handling accumulated directly in view-layer code, easy to miss during decomposition</td><td>Extensive automated regression testing (Section 7.2) comparing old vs new behavior across a wide range of real historical inputs</td></tr>
+<tr><td>Scope creep — "since we're rewriting it, let's also redesign the business process"</td><td>Mixing a technical migration with simultaneous business process changes multiplies risk and makes shadow-mode comparison (Section 19.3) meaningless (comparing different behaviors, not verifying equivalence)</td><td>Enforce a strict rule: migrate behavior AS-IS first, then separately propose/implement business process improvements afterward, as their own initiative</td></tr>
+<tr><td>Underestimating the database migration effort</td><td>Splitting a decade-old, organically-grown shared schema is almost always harder and slower than initially estimated</td><td>Allocate significant, realistic time and senior DBA involvement specifically for Section 11's database splitting work — a very common source of real schedule overruns</td></tr>
+</table>
+</div>
+
+<!-- 25. ADVANTAGES DISADVANTAGES -->
+<div class="section">
+<h1>25. Advantages &amp; Disadvantages of the Migration</h1>
+
+<h2>25.1 Real Advantages</h2>
+<ul>
+<li>Independent deployability — teams ship features without coordinating a monolith-wide release.</li>
+<li>Independent scalability — scale only the specific services under real load (e.g., Inventory Service during a sale).</li>
+<li>Modern, responsive React UI improves customer experience and developer productivity.</li>
+<li>Improved security posture — retiring an outdated framework with known historical vulnerabilities.</li>
+<li>Better observability — full distributed tracing/metrics versus legacy basic log files.</li>
+<li>Easier hiring — modern tech stack (Spring Boot, React, Kubernetes) is far easier to recruit developers for than legacy Struts.</li>
+<li>Cloud elasticity — auto-scaling and pay-as-you-go infrastructure versus fixed on-premises capacity.</li>
+</ul>
+
+<h2>25.2 Real Disadvantages / Honest Costs</h2>
+<ul>
+<li>Very high upfront investment — significant time, budget, and organizational focus over 1-3+ years.</li>
+<li>Real operational risk during the transition — running two systems in parallel is genuinely more complex than running one.</li>
+<li>Distributed systems complexity introduced where none existed before (network latency, partial failures, eventual consistency — Microservices guide, Section 6.2).</li>
+<li>Requires significant new skill investment across the whole organization (Kubernetes, Kafka, cloud-native patterns).</li>
+<li>Risk of scope creep and schedule overrun if not tightly governed (Section 24).</li>
+<li>Short-term productivity dip — teams learning new patterns/tools are initially slower than they were in the familiar (if painful) legacy system.</li>
+</ul>
+
+<h2>25.3 The Honest Bottom Line</h2>
+<div class="tip"><b>Interview one-liner:</b> "A migration like this trades short-term pain (cost, risk, complexity) for long-term agility (faster feature delivery, independent scaling, better talent retention) — it's the right call when the legacy system's ongoing cost/risk clearly exceeds the migration's cost/risk, and a poor call when done simply because microservices are 'trendy' without that honest cost-benefit analysis having actually been done."</div>
+</div>
+
+<!-- 26. COMMON PRODUCTION ISSUES -->
+<div class="section">
+<h1>26. Common Production Issues After Migration &amp; Solutions</h1>
+<table>
+<tr><th>Issue</th><th>Cause</th><th>Real Solution</th></tr>
+<tr><td>A migrated feature is slower than the legacy version</td><td>Added network hops (API Gateway → microservice → database) versus the monolith's in-process calls; possible N+1 query issues in the newly written JPA code</td><td>Profile via distributed tracing (Observability guide) to find the actual slow hop; check for N+1 problems (JDBC/JPA guide, Section 13); add caching for read-heavy data</td></tr>
+<tr><td>Data discrepancy discovered between legacy and new systems post-cutover</td><td>A CDC/dual-write synchronization gap not caught during shadow mode validation</td><td>Immediately roll back this capability's traffic routing (Section 22), investigate and fix the sync gap, re-validate via a longer shadow mode period before re-attempting cutover</td></tr>
+<tr><td>Users experience session/login issues during the transition</td><td>The legacy session vs new JWT authentication bridge (Section 20.2) has an edge case not handled correctly</td><td>Verify the identity provider issues BOTH token types consistently; add explicit fallback/re-authentication handling for edge cases (e.g., session expiry timing mismatches)</td></tr>
+<tr><td>A migrated microservice cascades failures to unrelated features</td><td>Missing circuit breakers/timeouts on a newly introduced inter-service call not present in the original monolith's in-process design</td><td>Apply the full resilience pattern set (Microservices guide, Section 40) — this is a NEW failure mode introduced specifically by decomposition, and must be explicitly designed for</td></tr>
+<tr><td>Kafka consumer lag grows unexpectedly after a new capability's cutover</td><td>The new consumer's processing logic is slower than the actual event production rate at real traffic volume</td><td>Scale consumer instances, increase topic partitions for parallelism, or optimize the consumer's processing logic (SQL/Spring Batch guide parallels)</td></tr>
+<tr><td>Business team reports "the new system behaves differently" for an edge case</td><td>An undocumented legacy business rule (buried in old JSP scriptlets) wasn't captured during Assessment/decomposition</td><td>This is exactly why shadow mode (Section 19.3) and extensive regression testing exist — investigate, restore correct behavior, add a regression test for this specific case going forward</td></tr>
+</table>
+</div>
+
+<!-- 27. REAL WORLD SCENARIOS -->
+<div class="section">
+<h1>27. Real-World Migration Scenarios</h1>
+
+<div class="tip"><b>Scenario 1 — The Successful Phased Migration:</b> "A large retail bank migrated its Struts-based online banking portal over 30 months, using Strangler Fig with 12 distinct migration waves. Each wave included assessment, shadow mode validation, canary cutover, and a mandatory 4-week stability observation period before the next wave began. By the end, all core banking features (Accounts, Cards, Loans — the very domains covered throughout this documentation set) ran as independent Spring Boot microservices on AKS, with the original Struts monolith fully decommissioned and zero customer-facing outages attributed to the migration itself."</div>
+
+<div class="tip"><b>Scenario 2 — A Cautionary Tale of Rushed Migration:</b> "A different organization attempted to migrate a similarly-sized system in just 6 months, skipping shadow mode testing to 'save time' and cutting over multiple high-risk capabilities simultaneously. A subtle data consistency bug in the payment flow (missed without shadow mode comparison) caused a real production incident affecting thousands of customers, requiring an emergency full rollback to the legacy system and a 4-month program pause to rebuild proper validation processes before re-attempting — a costly lesson in why the phases and safeguards in this guide exist."</div>
+
+<div class="tip"><b>Scenario 3 — Steel Manufacturing ERP Modernization (Cross-Reference):</b> "A steel manufacturer (see the Enterprise Domain Handbook, Section 3) modernized its legacy Struts-based production planning system using this exact same playbook — Assessment identified the Production Planning and Quality Management modules as the highest-value, lowest-risk starting point (Wave 1), while the deeply legacy-integrated MRP/ERP financial modules were deliberately migrated last, given their tight coupling to the existing SAP system and lower urgency."</div>
+</div>
+
+<!-- 28. INTERVIEW QUESTIONS SOLUTIONS -->
+<div class="section">
+<h1>28. Interview Questions &amp; Solutions</h1>
+
+<div class="qa"><div class="q">Q1. How would you approach migrating a legacy Struts/JSP monolith to microservices, end to end?</div>
+<div class="a">Start with a thorough Assessment phase to build a domain map, form a cross-functional team (business, architecture, dev, QA, DBA, DevOps), apply the Strangler Fig pattern for incremental cutover starting with low-risk capabilities, use Database per Service with CDC-based splitting and Saga for distributed transactions, validate every capability via shadow mode before a gradual canary cutover, and maintain clear rollback triggers at every step — establishing observability and CI/CD early, not as an afterthought.</div></div>
+
+<div class="qa"><div class="q">Q2. Why is a "big bang" migration approach considered risky, and what's the alternative?</div>
+<div class="a">A big bang cutover replaces the entire system at once, with no way to isolate or safely roll back a single problematic capability if something goes wrong — the Strangler Fig pattern instead migrates one capability at a time, each independently validated and reversible, keeping blast radius small for any single issue.</div></div>
+
+<div class="qa"><div class="q">Q3. How do you handle a distributed transaction that used to be a single local transaction in the monolith?</div>
+<div class="a">Replace it with the Saga pattern — break the operation into a sequence of local transactions across the now-separate services, each with a defined compensating action to undo it if a later step fails, trading strict atomicity for eventual consistency with guaranteed rollback logic.</div></div>
+
+<div class="qa"><div class="q">Q4. What is shadow mode testing, and why is it valuable during a migration specifically?</div>
+<div class="a">Running the new service against a copy of real production traffic without actually serving its response to users, comparing its output against the legacy system's real response — this catches subtle behavioral discrepancies (formatting differences, edge-case bugs) before real customers are ever exposed to the new system, which is especially valuable when migrating undocumented legacy business logic.</div></div>
+
+<div class="qa"><div class="q">Q5. How would you migrate a shared database used by a monolith into separate databases per microservice, with minimal downtime?</div>
+<div class="a">Use Change Data Capture (CDC, e.g., Debezium) to continuously replicate changes from the legacy database into the new per-service databases in near-real-time while the legacy system keeps running, run automated reconciliation checks to verify consistency, and only cut a service over to read/write its own new database once fully validated.</div></div>
+
+<div class="qa"><div class="q">Q6. What role does each team (Business, Architecture, Dev, QA, DBA, DevOps) play in a migration like this?</div>
+<div class="a">Business prioritizes and approves cutover decisions; Architecture designs the target state and service boundaries; Dev implements the new services; QA builds regression coverage validating behavioral equivalence; DBA plans and executes the database splitting strategy; DevOps builds the CI/CD, Kubernetes, and observability foundation every migrated service depends on.</div></div>
+
+<div class="qa"><div class="q">Q7. How do you handle authentication when the legacy system uses server-side sessions and the new system uses JWT?</div>
+<div class="a">Have a single identity provider issue BOTH a legacy session cookie and a JWT at login time, so requests to the still-running legacy monolith use the session cookie while requests to new microservices use the JWT — allowing one login to work seamlessly across both systems throughout the transition.</div></div>
+
+<div class="qa"><div class="q">Q8. What's your rollback plan if a newly migrated capability starts failing in production?</div>
+<div class="a">Immediately revert the Strangler Fig routing rule (Ingress/APIM) back to the legacy monolith — a fast, low-risk action — taking the new service out of the real traffic path entirely, then investigate and fix the root cause offline before re-validating via shadow mode and re-attempting a canary cutover.</div></div>
+
+<div class="qa"><div class="q">Q9. What are the real disadvantages of this kind of migration that you'd communicate honestly to stakeholders?</div>
+<div class="a">Very high upfront cost and multi-year timeline, real operational complexity from running two systems in parallel, genuinely new distributed-systems failure modes (network partial failures, eventual consistency) that didn't exist in the monolith, and a short-term productivity dip while teams learn new tools and patterns — all weighed against the long-term agility, scalability, and talent-retention benefits.</div></div>
+
+<div class="qa"><div class="q">Q10. Describe a real production issue that could occur specifically because of this migration, and how you'd resolve it.</div>
+<div class="a">A migrated feature becomes noticeably slower than its legacy equivalent due to added network hops between the new microservices, or an N+1 query issue in newly written JPA code — resolved by using distributed tracing to pinpoint exactly which hop is slow, then applying the appropriate fix (JOIN FETCH/Entity Graph for N+1, caching for read-heavy data, or circuit breakers/timeouts if the issue is a downstream dependency).</div></div>
+</div>
+
+<!-- 29. FINAL SUMMARY -->
+<div class="section">
+<h1>29. Final Summary &amp; Cheat Sheet</h1>
+<div class="box">
+<p><b>The legacy state:</b> a Struts/JSP monolith with mixed business logic, raw JDBC, one shared database, manual deployments, and mounting technical/security debt.</p>
+<p><b>The target state:</b> React + Spring Boot microservices, database per service, Kafka-driven event communication, containerized on AKS, deployed via Azure DevOps CI/CD, secured with Key Vault/Entra ID, and observed via Azure Monitor/Application Insights.</p>
+<p><b>The core migration patterns:</b> Strangler Fig (incremental, reversible capability-by-capability cutover), Database per Service with CDC-based splitting (solving the shared-database problem), and Saga (replacing the monolith's local transactions across newly independent services).</p>
+<p><b>The non-negotiable safeguards:</b> thorough upfront Assessment, cross-functional team governance, shadow mode validation before every cutover, canary-based gradual traffic ramp-up, and a clear, tested rollback plan at every single step.</p>
+<p><b>The honest trade-off:</b> significant upfront cost, risk, and complexity in exchange for long-term agility, scalability, security, and talent-retention benefits — the right call when a genuine cost-benefit analysis supports it, not simply because modern technology is more exciting to work with.</p>
+</div>
+
+<h2>29.1 Quick Cheat Sheet</h2>
+<table>
+<tr><th>Term</th><th>One-Line Meaning</th></tr>
+<tr><td>Strangler Fig Pattern</td><td>Incrementally route traffic away from the monolith, one capability at a time</td></tr>
+<tr><td>Domain Map</td><td>The output of Assessment — business capabilities mapped to future service boundaries</td></tr>
+<tr><td>CDC (Change Data Capture)</td><td>Real-time database replication enabling near-zero-downtime data splitting</td></tr>
+<tr><td>Saga Pattern</td><td>Sequence of local transactions + compensations replacing a lost distributed transaction</td></tr>
+<tr><td>Shadow Mode</td><td>Running a new service against real traffic copies without serving its response, to validate behavior</td></tr>
+<tr><td>Canary Cutover</td><td>Gradually ramping real traffic percentage to a newly migrated service</td></tr>
+<tr><td>Migration Wave</td><td>A batch of capabilities migrated together, ordered from lowest to highest risk</td></tr>
+<tr><td>Dual-Write Risk</td><td>The danger of legacy and new databases drifting out of sync during transition</td></tr>
+<tr><td>Authentication Bridge</td><td>Issuing both a legacy session cookie and a JWT so one login works across both systems</td></tr>
+<tr><td>Rollback Trigger</td><td>A predefined metric threshold that automatically/manually reverts a cutover</td></tr>
+</table>
+
+<div class="tip">Use this guide alongside the Microservices guide, the Docker &amp; Kubernetes guide, the CI/CD guide, the AWS/Azure Cloud Architecture guide, the Observability &amp; Monitoring guide, and the Enterprise Domain Handbook — together they cover the complete real-world journey of taking a legacy Java enterprise system and modernizing it into a production-grade, cloud-native microservices architecture.</div>
+</div>
+
+</body>
+</html>
+

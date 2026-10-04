@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Git, GitHub, GitLab &amp; Bitbucket — Complete Guide for Java Full Stack Developers</title>
+<style>
+  @page { size: A4; margin: 18mm 15mm 18mm 15mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #1a1a1a;
+    font-size: 11.5px;
+    line-height: 1.55;
+  }
+  h1, h2, h3, h4 { color: #bf360c; font-family: Arial, sans-serif; page-break-after: avoid; }
+  h1 { font-size: 22px; border-bottom: 3px solid #bf360c; padding-bottom: 6px; margin-top: 0; }
+  h2 { font-size: 17px; border-bottom: 1px solid #ffccbc; padding-bottom: 4px; margin-top: 26px; }
+  h3 { font-size: 14px; color: #b03a2e; margin-top: 18px; }
+  h4 { font-size: 12.5px; color: #444; margin-top: 12px; }
+  .section { page-break-before: always; }
+  .cover { page-break-after: always; text-align: center; padding-top: 140px; }
+  .cover h1 { font-size: 34px; border: none; }
+  .cover h3 { color: #333; font-weight: normal; font-size: 18px; margin-top: 20px;}
+  .cover .tag { margin-top: 60px; font-size: 13px; color: #666; }
+  .toc { page-break-after: always; }
+  .toc ol { line-height: 2; }
+  code, pre { font-family: Consolas, "Courier New", monospace; }
+  code { background: #f1f1f1; padding: 1px 5px; border-radius: 3px; color: #a4141d; }
+  pre {
+    background: #1e1e1e; color: #d4d4d4; padding: 10px 12px; border-radius: 6px;
+    overflow-x: auto; font-size: 11px; line-height: 1.5; page-break-inside: avoid;
+  }
+  pre .c1 { color: #6a9955; } /* comment */
+  table { border-collapse: collapse; width: 100%; margin: 10px 0 16px 0; font-size: 11px; }
+  th, td { border: 1px solid #bbb; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #bf360c; color: white; }
+  tr:nth-child(even) { background: #f4f7fc; }
+  .box { background: #f8f9fb; border: 1px solid #cdd6e6; border-radius: 6px; padding: 10px 14px; margin: 10px 0; }
+  .warn { background: #fff4e5; border: 1px solid #f0c36d; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .tip { background: #e8f6ee; border: 1px solid #7fc79a; border-radius: 6px; padding: 8px 12px; margin: 10px 0; }
+  .qa { border-left: 3px solid #bf360c; padding-left: 10px; margin: 10px 0 16px 0; page-break-inside: avoid; }
+  .qa .q { font-weight: bold; color: #bf360c; }
+  .qa .a { margin-top: 4px; }
+  .qa .scenario { margin-top: 4px; font-style: italic; color: #555; }
+  /* Diagram styling (pure CSS box/arrow diagrams, no external JS needed) */
+  .diagram { background: #fff; border: 1px dashed #ff8a65; border-radius: 8px; padding: 16px; margin: 14px 0; page-break-inside: avoid; }
+  .diagram .title { font-weight: bold; color: #bf360c; margin-bottom: 10px; text-align:center; }
+  .flow-row { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+  .node { border: 2px solid #bf360c; background: #fbe9e7; border-radius: 6px; padding: 8px 12px; font-weight: bold; text-align: center; font-size: 11px; min-width: 90px; }
+  .node.alt { border-color: #b03a2e; background: #fdeceb; }
+  .node.green { border-color: #1e8449; background: #eafaf1; }
+  .node.gray { border-color: #666; background: #eee; }
+  .arrow { font-size: 20px; color: #bf360c; font-weight: bold; }
+  .arrow-down { font-size: 20px; color: #bf360c; text-align: center; }
+  .branch-lane { display:flex; align-items:center; margin:4px 0; }
+  .lane-label { width: 90px; font-weight:bold; font-size: 10.5px; }
+  .commit { width: 16px; height:16px; border-radius:50%; background:#bf360c; margin: 0 10px; position:relative; flex-shrink:0;}
+  .commit.orange{background:#e67e22;} .commit.green{background:#1e8449;} .commit.red{background:#c0392b;} .commit.purple{background:#8e44ad;}
+  .lane-line { flex:1; border-top: 3px solid #ccc; position:relative; height:1px; display:flex; align-items:center; }
+  footer-note { font-size: 10px; color: #888; }
+  .pagebreak { page-break-before: always; }
+  ul, ol { margin-top: 4px; }
+  li { margin-bottom: 3px; }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover">
+  <h1>Git, GitHub, GitLab &amp; Bitbucket</h1>
+  <h3>The Complete End-to-End Guide for Java Full Stack Developers</h3>
+  <h3>Branching Strategies • Cherry-Pick • Rebase • Merge Conflicts • PR vs MR • CI/CD • Organization Governance</h3>
+  <h3>With Real-Time Spring Boot + React Scenarios, Flow Diagrams and Interview Q&amp;A</h3>
+  <div class="tag">A practical, simple-language reference for interview preparation and daily real-world use</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+<h1>Table of Contents</h1>
+<ol>
+<li>Before Git vs After Git — Why Version Control Exists</li>
+<li>Git vs GitHub vs GitLab vs Bitbucket</li>
+<li>Git Architecture — Working Directory, Staging, Local &amp; Remote Repo</li>
+<li>Installing Git &amp; First-Time Setup</li>
+<li>Real-Time Project Setup — Spring Boot (Backend) + React (Frontend)</li>
+<li>Core Git Commands with Real Examples</li>
+<li>Understanding Branches</li>
+<li>Git Branching Strategies Used in Real Companies</li>
+<li>Merge vs Rebase — Deep Dive with Diagrams</li>
+<li>Git Cherry-Pick — Why and When (Real Hotfix Scenario)</li>
+<li>Git Stash — Saving Work in Progress</li>
+<li>Reset vs Revert vs Checkout vs Restore</li>
+<li>Handling Merge Conflicts Step by Step (Java + React Example)</li>
+<li>Tags &amp; Release Management</li>
+<li>Git Hooks — Automating Quality Checks</li>
+<li>.gitignore for Java Full Stack Projects</li>
+<li>Working with Remotes — Fetch vs Pull, Forking</li>
+<li>Pull Request vs Merge Request — Who Approves &amp; How</li>
+<li>CI/CD Integration with Git (GitHub Actions / GitLab CI)</li>
+<li>Organization-Level Git Governance (Top-Down)</li>
+<li>A Real Week in the Life of a Java Full Stack Developer</li>
+<li>Common Git Issues &amp; How to Fix Them</li>
+<li>Git Best Practices for Full Stack Teams</li>
+<li>Git Command Cheat Sheet</li>
+<li>Interview Questions &amp; Answers (Basic → Advanced → Scenario Based)</li>
+<li>Final Summary</li>
+</ol>
+</div>
+
+<!-- 1. BEFORE / AFTER GIT -->
+<div class="section">
+<h1>1. Before Git vs After Git</h1>
+<h2>1.1 Life Before Version Control</h2>
+<p>Imagine a Java full stack team of 6 developers building an e-commerce app (Spring Boot backend + React frontend) without Git:</p>
+<ul>
+<li>Developers email each other zip files like <code>OrderService_final_v2_fixed.zip</code>, <code>OrderService_final_FINAL.zip</code>.</li>
+<li>Two developers edit <code>OrderController.java</code> at the same time; one overwrites the other's work.</li>
+<li>There is no history — nobody knows who changed what, or why a bug was introduced.</li>
+<li>To go back to yesterday's working version, someone must remember to keep a manual backup.</li>
+<li>Deploying to production means manually copying files to a server — very risky and error prone.</li>
+<li>Code review is done by reading printed code or screen-sharing — no structured process.</li>
+</ul>
+<div class="warn"><b>Real pain:</b> A developer accidentally deletes a working <code>application.yml</code> config a day before release, and there is no way to recover it. The whole team stays late to rebuild it from memory.</div>
+
+<h2>1.2 Life After Git</h2>
+<ul>
+<li>Every change is tracked with an author, timestamp, and message — full history forever.</li>
+<li>Multiple developers work on the same files in parallel using <b>branches</b>, without blocking each other.</li>
+<li>Any file or the entire project can be restored to any previous point in seconds.</li>
+<li>Code changes go through <b>Pull Requests / Merge Requests</b> with mandatory review and automated tests before reaching production.</li>
+<li>Git works completely offline (it is distributed) — you can commit, view history, and branch without internet; you only need internet to <code>push</code>/<code>pull</code> to share with the team.</li>
+<li>Combined with GitHub/GitLab/Bitbucket, it becomes a full collaboration and deployment platform: issues, CI/CD pipelines, code owners, security scanning, and release management.</li>
+</ul>
+
+<div class="diagram">
+<div class="title">Before Git vs After Git</div>
+<div class="flow-row">
+  <div class="node alt">Email / USB<br>zip files</div>
+  <div class="arrow">→</div>
+  <div class="node gray">Manual merge<br>by eye</div>
+  <div class="arrow">→</div>
+  <div class="node alt">Lost work /<br>overwritten code</div>
+</div>
+<div class="flow-row">
+  <div class="node green">Git Local Repo</div>
+  <div class="arrow">→</div>
+  <div class="node green">Branch per feature</div>
+  <div class="arrow">→</div>
+  <div class="node green">Pull Request Review</div>
+  <div class="arrow">→</div>
+  <div class="node green">CI/CD + Merge</div>
+</div>
+</div>
+
+<h2>1.3 What Git Actually Is</h2>
+<p>Git is a <b>Distributed Version Control System (DVCS)</b> created by Linus Torvalds in 2005. "Distributed" means every developer has a full copy of the entire project history on their own laptop — not just the latest files.</p>
+</div>
+
+<!-- 2. GIT vs GITHUB vs GITLAB vs BITBUCKET -->
+<div class="section">
+<h1>2. Git vs GitHub vs GitLab vs Bitbucket</h1>
+<div class="box"><b>Simple analogy:</b> Git is the engine (the version control tool itself, runs on your machine). GitHub, GitLab, and Bitbucket are cloud garages/showrooms that host your Git repositories online and add collaboration features like Pull Requests, CI/CD, issue tracking, and access control.</div>
+
+<table>
+<tr><th>Feature</th><th>Git</th><th>GitHub</th><th>GitLab</th><th>Bitbucket</th></tr>
+<tr><td>What it is</td><td>Version control tool (CLI)</td><td>Hosting platform + collaboration</td><td>Hosting platform + built-in DevOps</td><td>Hosting platform (Atlassian ecosystem)</td></tr>
+<tr><td>Owner</td><td>Open source (Linux Foundation)</td><td>Microsoft</td><td>GitLab Inc.</td><td>Atlassian</td></tr>
+<tr><td>Review terminology</td><td>—</td><td>Pull Request (PR)</td><td>Merge Request (MR)</td><td>Pull Request (PR)</td></tr>
+<tr><td>Built-in CI/CD</td><td>—</td><td>GitHub Actions</td><td>GitLab CI/CD (very mature, built-in)</td><td>Bitbucket Pipelines</td></tr>
+<tr><td>Issue tracking</td><td>—</td><td>GitHub Issues</td><td>GitLab Issues</td><td>Jira (tight integration)</td></tr>
+<tr><td>Best known for</td><td>—</td><td>Open source community, largest ecosystem</td><td>Single DevOps platform (plan→deploy→monitor)</td><td>Enterprise teams already using Jira/Confluence</td></tr>
+<tr><td>Typical company use</td><td>Everywhere</td><td>Startups, product companies, OSS</td><td>Enterprises wanting one integrated tool</td><td>Enterprises using Atlassian suite</td></tr>
+</table>
+
+<div class="tip"><b>Real time:</b> In many Java full stack teams you will see: code in GitHub/GitLab/Bitbucket, tickets in Jira, CI/CD pipeline auto-triggered on every push, and Slack/Teams notification on PR/MR events.</div>
+</div>
+
+<!-- 3. ARCHITECTURE -->
+<div class="section">
+<h1>3. Git Architecture</h1>
+<p>Git has four conceptual areas a file moves through:</p>
+
+<div class="diagram">
+<div class="title">Git Areas — How a file travels</div>
+<div class="flow-row">
+  <div class="node">Working Directory<br><small>(edit files)</small></div>
+  <div class="arrow">git add →</div>
+  <div class="node">Staging Area<br><small>(index)</small></div>
+  <div class="arrow">git commit →</div>
+  <div class="node green">Local Repository<br><small>(.git)</small></div>
+  <div class="arrow">git push →</div>
+  <div class="node alt">Remote Repository<br><small>(GitHub/GitLab/Bitbucket)</small></div>
+</div>
+<div class="flow-row">
+  <div class="node gray">git pull / fetch ←— pulls changes back from Remote into Local, then merges into Working Directory</div>
+</div>
+</div>
+
+<h2>3.1 Real Example</h2>
+<pre>
+# You edit OrderController.java in your IDE  → Working Directory
+git add OrderController.java                 <span class="c1"># → Staging Area</span>
+git commit -m "Add validation to order API"  <span class="c1"># → Local Repository (.git)</span>
+git push origin feature/order-validation     <span class="c1"># → Remote Repository (GitHub)</span>
+</pre>
+<p>Each commit is identified by a unique SHA-1 hash (e.g., <code>a3f5e21</code>). Git stores commits as a linked chain — each commit points to its parent, forming the project history graph.</p>
+</div>
+
+<!-- 4. INSTALL -->
+<div class="section">
+<h1>4. Installing Git &amp; First-Time Setup</h1>
+<pre>
+<span class="c1"># Windows: download from git-scm.com, or</span>
+winget install --id Git.Git -e
+
+<span class="c1"># Verify</span>
+git --version
+
+<span class="c1"># One-time global identity (used in every commit you make)</span>
+git config --global user.name "Priya Sharma"
+git config --global user.email "priya.sharma@company.com"
+
+<span class="c1"># Recommended defaults</span>
+git config --global init.defaultBranch main
+git config --global core.editor "code --wait"
+git config --global pull.rebase false
+</pre>
+</div>
+
+<!-- 5. REAL PROJECT SETUP -->
+<div class="section">
+<h1>5. Real-Time Project Setup — Java Full Stack</h1>
+<p>Typical repo layout for a Spring Boot + React project (can be one mono-repo or two separate repos):</p>
+<pre>
+ecommerce-app/
+ ├── backend/            <span class="c1"># Spring Boot (Java, Maven/Gradle)</span>
+ │    ├── src/main/java/com/company/order/
+ │    ├── pom.xml
+ │    └── application.yml
+ ├── frontend/            <span class="c1"># React</span>
+ │    ├── src/
+ │    ├── package.json
+ │    └── .env
+ ├── .gitignore
+ └── README.md
+</pre>
+<pre>
+git init
+git remote add origin https://github.com/company/ecommerce-app.git
+git add .
+git commit -m "Initial project skeleton: Spring Boot + React"
+git branch -M main
+git push -u origin main
+</pre>
+<div class="tip"><b>Real time note:</b> Larger companies (Amazon, banks, etc.) often keep backend and frontend in <b>separate repositories</b> with independent pipelines, versioning and deployments. Startups often prefer a single <b>mono-repo</b> for simplicity.</div>
+</div>
+
+<!-- 6. CORE COMMANDS -->
+<div class="section">
+<h1>6. Core Git Commands with Real Examples</h1>
+<table>
+<tr><th>Command</th><th>Purpose</th><th>Real example</th></tr>
+<tr><td><code>git clone &lt;url&gt;</code></td><td>Copy a remote repo to your machine</td><td><code>git clone https://github.com/company/ecommerce-app.git</code></td></tr>
+<tr><td><code>git status</code></td><td>See changed/staged/untracked files</td><td>Before every commit</td></tr>
+<tr><td><code>git add &lt;file&gt;</code></td><td>Move change to staging area</td><td><code>git add OrderService.java</code></td></tr>
+<tr><td><code>git commit -m "msg"</code></td><td>Save a snapshot with message</td><td><code>git commit -m "JIRA-231: fix null pointer in order total"</code></td></tr>
+<tr><td><code>git push</code></td><td>Upload local commits to remote</td><td><code>git push origin feature/order-total-fix</code></td></tr>
+<tr><td><code>git pull</code></td><td>fetch + merge remote changes</td><td><code>git pull origin develop</code></td></tr>
+<tr><td><code>git fetch</code></td><td>Download remote changes without merging</td><td>used before rebase</td></tr>
+<tr><td><code>git log --oneline --graph</code></td><td>View commit history visually</td><td>Debugging release history</td></tr>
+<tr><td><code>git diff</code></td><td>Show unstaged changes</td><td>Reviewing your own change before commit</td></tr>
+<tr><td><code>git branch</code></td><td>List / create branches</td><td><code>git branch feature/payment-gateway</code></td></tr>
+<tr><td><code>git checkout -b &lt;name&gt;</code> / <code>git switch -c &lt;name&gt;</code></td><td>Create + move to new branch</td><td><code>git switch -c feature/JIRA-231-order-fix</code></td></tr>
+<tr><td><code>git merge &lt;branch&gt;</code></td><td>Combine another branch into current</td><td><code>git merge feature/order-fix</code></td></tr>
+<tr><td><code>git rebase &lt;branch&gt;</code></td><td>Replay commits on top of another branch</td><td><code>git rebase develop</code></td></tr>
+<tr><td><code>git cherry-pick &lt;hash&gt;</code></td><td>Apply one specific commit elsewhere</td><td><code>git cherry-pick 9af31bc</code></td></tr>
+<tr><td><code>git stash</code></td><td>Temporarily shelve uncommitted work</td><td>Switching branch urgently for a hotfix</td></tr>
+<tr><td><code>git reset</code></td><td>Move HEAD/undo commits</td><td><code>git reset --soft HEAD~1</code></td></tr>
+<tr><td><code>git revert &lt;hash&gt;</code></td><td>Undo a commit safely with a new commit</td><td>Undo a bad commit already pushed to main</td></tr>
+<tr><td><code>git tag</code></td><td>Mark a release point</td><td><code>git tag -a v1.2.0 -m "Release 1.2.0"</code></td></tr>
+</table>
+</div>
+
+<!-- 7. BRANCHES -->
+<div class="section">
+<h1>7. Understanding Branches</h1>
+<p>A branch is simply a movable pointer to a commit. Creating a branch is instant and cheap — this is what makes Git branching-friendly compared to older tools like SVN.</p>
+<div class="diagram">
+<div class="title">Branch = pointer to a commit</div>
+<div class="branch-lane"><span class="lane-label">main</span><div class="lane-line"><div class="commit"></div><div class="commit"></div><div class="commit green"></div></div></div>
+<div class="branch-lane"><span class="lane-label">feature/x</span><div class="lane-line" style="margin-left:40px;"><div class="commit orange"></div><div class="commit orange"></div></div></div>
+</div>
+<p>Real example: a developer picks up JIRA ticket <code>JIRA-231</code> to fix an order total bug.</p>
+<pre>
+git checkout develop
+git pull origin develop
+git switch -c feature/JIRA-231-order-total-fix
+<span class="c1"># ... edit OrderService.java, OrderServiceTest.java ...</span>
+git add .
+git commit -m "JIRA-231: fix order total rounding bug"
+git push -u origin feature/JIRA-231-order-total-fix
+<span class="c1"># then open a Pull Request / Merge Request into develop</span>
+</pre>
+</div>
+
+<!-- 8. BRANCHING STRATEGIES -->
+<div class="section">
+<h1>8. Git Branching Strategies Used in Real Companies</h1>
+
+<h2>8.1 Git Flow (used in regulated / release-based products, e.g., banking, insurance)</h2>
+<div class="diagram">
+<div class="title">Git Flow</div>
+<div class="branch-lane"><span class="lane-label">main</span><div class="lane-line"><div class="commit green"></div><div class="commit green"></div></div></div>
+<div class="branch-lane"><span class="lane-label">release/1.2</span><div class="lane-line"><div class="commit purple"></div><div class="commit purple"></div></div></div>
+<div class="branch-lane"><span class="lane-label">develop</span><div class="lane-line"><div class="commit"></div><div class="commit"></div><div class="commit"></div></div></div>
+<div class="branch-lane"><span class="lane-label">feature/*</span><div class="lane-line"><div class="commit orange"></div><div class="commit orange"></div></div></div>
+<div class="branch-lane"><span class="lane-label">hotfix/*</span><div class="lane-line"><div class="commit red"></div></div></div>
+</div>
+<ul>
+<li><b>main</b> — always production-ready, tagged with version numbers.</li>
+<li><b>develop</b> — integration branch where finished features accumulate.</li>
+<li><b>feature/*</b> — one branch per ticket/feature, branched from develop, merged back to develop.</li>
+<li><b>release/*</b> — cut from develop when preparing a release, only bug fixes allowed, merged into both main and develop.</li>
+<li><b>hotfix/*</b> — cut from main to fix urgent production bugs, merged into both main and develop.</li>
+</ul>
+<div class="tip"><b>Real scenario:</b> Production has a critical bug in payment rounding on a Friday evening. Team creates <code>hotfix/payment-rounding</code> from <code>main</code>, fixes it, tests it, merges to <code>main</code> (deployed immediately) AND to <code>develop</code> (so the fix isn't lost in the next release).</div>
+
+<h2>8.2 GitHub Flow (used in fast-moving SaaS/product teams with continuous deployment)</h2>
+<div class="diagram">
+<div class="title">GitHub Flow — simple &amp; continuous</div>
+<div class="flow-row">
+  <div class="node green">main<br>(always deployable)</div>
+</div>
+<div class="flow-row">
+  <div class="node orange" style="border-color:#e67e22;background:#fef5e7;">feature branch</div>
+  <div class="arrow">→ PR + review + CI →</div>
+  <div class="node green">merge to main</div>
+  <div class="arrow">→</div>
+  <div class="node alt">auto-deploy</div>
+</div>
+</div>
+<p>Only one long-lived branch: <code>main</code>. Every change is a short-lived feature branch merged via PR after review + passing CI, then deployed immediately (or automatically).</p>
+
+<h2>8.3 GitLab Flow (middle ground — environment branches)</h2>
+<p>Adds environment branches on top of GitHub Flow: <code>main → pre-production → production</code>, so each merge is promoted stage by stage instead of deploying straight to prod.</p>
+
+<h2>8.4 Trunk-Based Development (used by Google, Meta-scale teams, high maturity CI/CD)</h2>
+<ul>
+<li>Everyone commits to <code>main</code> (trunk) directly or via very short-lived branches (a few hours).</li>
+<li>Unfinished features are hidden behind <b>feature flags</b> instead of long branches.</li>
+<li>Requires strong automated testing and CI, since main is always deploying.</li>
+</ul>
+
+<h2>8.5 Which strategy for which real-world team?</h2>
+<table>
+<tr><th>Team type</th><th>Recommended strategy</th><th>Why</th></tr>
+<tr><td>Banking/insurance, scheduled releases</td><td>Git Flow</td><td>Needs release branches, strict QA sign-off, hotfix path</td></tr>
+<tr><td>SaaS product, deploys many times a day</td><td>GitHub Flow</td><td>Simple, fast, PR + CI gate before merge</td></tr>
+<tr><td>Enterprise with staged environments</td><td>GitLab Flow</td><td>Clear promotion across dev → staging → prod</td></tr>
+<tr><td>Large-scale, mature CI/CD, feature flags</td><td>Trunk-Based</td><td>Avoids long-lived branch merge pain at scale</td></tr>
+</table>
+
+<h2>8.6 Example: Real Java Full Stack Sprint Using Git Flow</h2>
+<pre>
+<span class="c1"># 1. Start feature from develop</span>
+git checkout develop && git pull
+git switch -c feature/JIRA-410-add-cart-api
+
+<span class="c1"># 2. Work on backend (Spring Boot) + frontend (React) in same branch</span>
+git add backend/src/main/java/com/company/cart/CartController.java
+git add frontend/src/components/Cart.jsx
+git commit -m "JIRA-410: add cart REST API and Cart UI"
+
+<span class="c1"># 3. Push and open Pull/Merge Request into develop</span>
+git push -u origin feature/JIRA-410-add-cart-api
+
+<span class="c1"># 4. After 2 approvals + CI green -> squash merge into develop</span>
+
+<span class="c1"># 5. Release day: cut release branch</span>
+git checkout develop && git pull
+git switch -c release/1.4.0
+
+<span class="c1"># 6. QA finds a bug on release branch, fix directly there</span>
+git commit -m "fix: cart total tax calculation for release 1.4.0"
+
+<span class="c1"># 7. Release approved -> merge to main and tag</span>
+git checkout main && git merge --no-ff release/1.4.0
+git tag -a v1.4.0 -m "Release 1.4.0"
+git push origin main --tags
+
+<span class="c1"># 8. Merge back to develop so the fix is not lost</span>
+git checkout develop && git merge --no-ff release/1.4.0
+</pre>
+</div>
+
+<!-- 9. MERGE VS REBASE -->
+<div class="section">
+<h1>9. Merge vs Rebase — Deep Dive</h1>
+<h2>9.1 Merge</h2>
+<p>Combines two branch histories and creates a new "merge commit" with two parents. History is preserved exactly as it happened.</p>
+<div class="diagram">
+<div class="title">git merge feature into main</div>
+<div class="branch-lane"><span class="lane-label">main</span><div class="lane-line"><div class="commit"></div><div class="commit"></div><div class="commit green" style="margin-left:60px;">M</div></div></div>
+<div class="branch-lane"><span class="lane-label">feature</span><div class="lane-line"><div class="commit orange"></div><div class="commit orange"></div></div></div>
+</div>
+<pre>
+git checkout main
+git merge feature/JIRA-410-add-cart-api
+<span class="c1"># Creates a merge commit; both histories are kept, non-destructive</span>
+</pre>
+
+<h2>9.2 Rebase</h2>
+<p>Moves (replays) your branch commits on top of another branch's latest commit, producing a straight, linear history — as if you started your work after the latest change.</p>
+<div class="diagram">
+<div class="title">git rebase main (while on feature branch)</div>
+<div class="branch-lane"><span class="lane-label">before</span><div class="lane-line"><div class="commit"></div><div class="commit"></div></div></div>
+<div class="branch-lane"><span class="lane-label">feature</span><div class="lane-line" style="margin-left:40px;"><div class="commit orange"></div><div class="commit orange"></div></div></div>
+<div class="branch-lane"><span class="lane-label">after</span><div class="lane-line"><div class="commit"></div><div class="commit"></div><div class="commit orange"></div><div class="commit orange"></div></div></div>
+</div>
+<pre>
+git checkout feature/JIRA-410-add-cart-api
+git fetch origin
+git rebase origin/develop
+<span class="c1"># resolve conflicts if any, then:</span>
+git rebase --continue
+git push --force-with-lease origin feature/JIRA-410-add-cart-api
+</pre>
+
+<h2>9.3 When to use which (real team rules)</h2>
+<table>
+<tr><th>Situation</th><th>Use</th><th>Reason</th></tr>
+<tr><td>Merging a finished feature branch into develop/main via PR</td><td>Merge (often squash merge)</td><td>Keeps a clear "feature merged" point, safe for shared branches</td></tr>
+<tr><td>Updating your own feature branch with latest develop before opening a PR</td><td>Rebase</td><td>Clean linear history, easy to review, no noisy merge commits</td></tr>
+<tr><td>Branch already pushed and others are using it</td><td>Merge, not rebase</td><td>Rebase rewrites history — dangerous for shared/public branches</td></tr>
+<tr><td>Need very clean history for open-source project</td><td>Rebase + squash</td><td>One clean commit per feature</td></tr>
+</table>
+<div class="warn"><b>Golden Rule:</b> Never rebase a branch that other people are also working on / have already pulled — it rewrites commit hashes and breaks their history.</div>
+</div>
+
+<!-- 10. CHERRY-PICK -->
+<div class="section">
+<h1>10. Git Cherry-Pick — Why and When</h1>
+<p><code>git cherry-pick</code> takes one specific commit from one branch and applies it onto another branch, without merging the entire branch.</p>
+<div class="diagram">
+<div class="title">Cherry-pick one commit from release into main</div>
+<div class="branch-lane"><span class="lane-label">release/1.4</span><div class="lane-line"><div class="commit purple"></div><div class="commit red">✔</div><div class="commit purple"></div></div></div>
+<div class="branch-lane"><span class="lane-label">main</span><div class="lane-line"><div class="commit green"></div><div class="commit red" style="margin-left:80px;">✔ copy</div></div></div>
+</div>
+
+<h3>Why we use it (real reasons)</h3>
+<ul>
+<li>A critical hotfix commit exists on <code>release/1.4</code> but must also go to <code>main</code> immediately, without pulling in unfinished release-branch changes.</li>
+<li>You accidentally committed a small fix to the wrong branch and need it on the correct one.</li>
+<li>Backporting a bug fix to an older supported version branch (e.g., <code>release/1.3</code> still used by a client).</li>
+<li>Picking a single useful commit from a colleague's experimental/abandoned branch.</li>
+</ul>
+
+<h3>Real scenario (Java full stack)</h3>
+<p>QA finds a critical NullPointerException in <code>PaymentService.java</code> already fixed on <code>release/1.4</code> (commit <code>9af31bc</code>), but <code>main</code> is already live in production and cannot take the whole unfinished release branch.</p>
+<pre>
+git log release/1.4 --oneline           <span class="c1"># find the commit hash, e.g. 9af31bc</span>
+git checkout main
+git pull origin main
+git cherry-pick 9af31bc
+<span class="c1"># resolve conflicts if any</span>
+git push origin main
+</pre>
+<div class="tip">If cherry-picking a merge commit, use <code>git cherry-pick -m 1 &lt;hash&gt;</code> to tell Git which parent line to follow.</div>
+</div>
+
+<!-- 11. STASH -->
+<div class="section">
+<h1>11. Git Stash — Saving Work in Progress</h1>
+<p>Stash temporarily shelves uncommitted changes so you can switch branches cleanly, then bring them back later.</p>
+<h3>Real scenario</h3>
+<p>You are mid-way through editing <code>InventoryService.java</code> for a new feature when your manager asks you to urgently fix a production bug on <code>main</code>.</p>
+<pre>
+git stash push -m "WIP: inventory reorder feature"
+git checkout main
+git pull
+git switch -c hotfix/stock-count-bug
+<span class="c1"># fix, commit, push, PR ...</span>
+git checkout feature/inventory-reorder
+git stash list
+git stash pop      <span class="c1"># restores your WIP changes</span>
+</pre>
+</div>
+
+<!-- 12. RESET/REVERT/CHECKOUT -->
+<div class="section">
+<h1>12. Reset vs Revert vs Checkout vs Restore</h1>
+<table>
+<tr><th>Command</th><th>What it does</th><th>Safe on shared/pushed branch?</th><th>Real example</th></tr>
+<tr><td><code>git reset --soft HEAD~1</code></td><td>Undo last commit, keep changes staged</td><td>No (rewrites history)</td><td>Combine last 2 commits before pushing</td></tr>
+<tr><td><code>git reset --mixed HEAD~1</code></td><td>Undo commit, keep changes unstaged</td><td>No</td><td>Redo commit message/content</td></tr>
+<tr><td><code>git reset --hard HEAD~1</code></td><td>Completely discard last commit and changes</td><td>No — destructive</td><td>Throw away a bad local experiment</td></tr>
+<tr><td><code>git revert &lt;hash&gt;</code></td><td>Create a NEW commit that undoes an old commit</td><td>Yes — safe, preferred for shared branches</td><td>Undo a bad commit already merged to main in production</td></tr>
+<tr><td><code>git checkout &lt;file&gt;</code></td><td>Discard local changes in a file (old syntax)</td><td>Local only</td><td>Discard accidental edit</td></tr>
+<tr><td><code>git restore &lt;file&gt;</code></td><td>Modern replacement for discarding file changes</td><td>Local only</td><td><code>git restore application.yml</code></td></tr>
+</table>
+<div class="warn"><b>Real rule used in every company:</b> Never <code>reset --hard</code> or force-push on <code>main</code>/<code>develop</code>. To undo something already pushed and shared, always use <code>git revert</code>.</div>
+</div>
+
+<!-- 13. MERGE CONFLICTS -->
+<div class="section">
+<h1>13. Handling Merge Conflicts — Step by Step</h1>
+<p>A conflict happens when Git cannot automatically decide how to combine changes because two branches edited the same lines differently.</p>
+<h3>Real example: two developers edit application.yml</h3>
+<pre>
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+server:
+  port: 8080
+=======
+server:
+  port: 9090
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature/JIRA-512-new-port
+</pre>
+<h3>Resolution steps</h3>
+<ol>
+<li><code>git status</code> — see which files are in conflict.</li>
+<li>Open each conflicted file, find the <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> / <code>=======</code> / <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> markers.</li>
+<li>Decide the correct final content (talk to the other developer if unsure), delete the markers.</li>
+<li><code>git add &lt;file&gt;</code> to mark it resolved.</li>
+<li><code>git commit</code> (if merging) or <code>git rebase --continue</code> (if rebasing).</li>
+<li>Run tests locally before pushing.</li>
+</ol>
+<div class="tip">Also common in Java projects: conflicts in <code>pom.xml</code> dependency versions, and in React projects: conflicts in <code>package-lock.json</code> — for lock files, usually safest to delete and regenerate with <code>npm install</code> after resolving <code>package.json</code>.</div>
+</div>
+
+<!-- 14. TAGS -->
+<div class="section">
+<h1>14. Tags &amp; Release Management</h1>
+<p>Tags mark a specific commit as a release point, typically using Semantic Versioning: <code>MAJOR.MINOR.PATCH</code> (e.g., <code>v2.3.1</code>).</p>
+<pre>
+git tag -a v2.3.0 -m "Release 2.3.0 - Add cart and checkout APIs"
+git push origin v2.3.0
+git tag                     <span class="c1"># list all tags</span>
+git checkout v2.3.0         <span class="c1"># inspect exact code that was released</span>
+</pre>
+<p>In GitHub/GitLab, tags are used to auto-trigger release pipelines that build a Docker image, e.g. <code>myapp:2.3.0</code>, and deploy it to production.</p>
+</div>
+
+<!-- 15. HOOKS -->
+<div class="section">
+<h1>15. Git Hooks — Automating Quality Checks</h1>
+<p>Hooks are scripts that run automatically at certain Git events, stored in <code>.git/hooks/</code> (or shared via tools like Husky for Node/React projects).</p>
+<table>
+<tr><th>Hook</th><th>Triggered</th><th>Real Java full stack use</th></tr>
+<tr><td><code>pre-commit</code></td><td>Before a commit is created</td><td>Run Checkstyle/Spotless on Java, ESLint on React code</td></tr>
+<tr><td><code>commit-msg</code></td><td>After message is written</td><td>Enforce conventional commit format: <code>feat:</code>, <code>fix:</code>, <code>JIRA-123:</code></td></tr>
+<tr><td><code>pre-push</code></td><td>Before push to remote</td><td>Run unit tests (<code>mvn test</code> / <code>npm test</code>) — block push if failing</td></tr>
+</table>
+<pre>
+<span class="c1">#!/bin/sh  (.git/hooks/pre-commit)</span>
+mvn -q -f backend/pom.xml checkstyle:check
+cd frontend && npx eslint src/ --max-warnings=0
+</pre>
+</div>
+
+<!-- 16. GITIGNORE -->
+<div class="section">
+<h1>16. .gitignore for Java Full Stack Projects</h1>
+<pre>
+<span class="c1"># --- Java / Maven / Gradle (backend) ---</span>
+target/
+build/
+*.class
+.mvn/
+*.iml
+.idea/
+
+<span class="c1"># --- Node / React (frontend) ---</span>
+node_modules/
+build/
+dist/
+.env
+.env.local
+
+<span class="c1"># --- OS / IDE ---</span>
+.DS_Store
+.vscode/
+*.log
+</pre>
+<div class="warn">Never commit secrets: <code>.env</code>, <code>application-secrets.yml</code>, API keys, DB passwords. Use a secrets manager (Vault, AWS Secrets Manager) or CI/CD environment variables instead.</div>
+</div>
+
+<!-- 17. REMOTES -->
+<div class="section">
+<h1>17. Working with Remotes — Fetch vs Pull, Forking</h1>
+<table>
+<tr><th>Command</th><th>Behavior</th></tr>
+<tr><td><code>git fetch</code></td><td>Downloads new commits from remote but does NOT touch your working files/branch</td></tr>
+<tr><td><code>git pull</code></td><td><code>git fetch</code> + <code>git merge</code> (or rebase, if configured) — updates your current branch immediately</td></tr>
+</table>
+<div class="tip"><b>Real time habit:</b> Senior developers often prefer <code>git fetch</code> then review incoming changes (<code>git log origin/main</code>) before merging, especially on critical branches.</div>
+
+<h3>Forking workflow (common in open source and some enterprises)</h3>
+<ol>
+<li>Fork the company/OSS repo into your own account.</li>
+<li>Clone your fork, add the original as <code>upstream</code>: <code>git remote add upstream https://github.com/company/repo.git</code></li>
+<li>Create a feature branch, commit, push to your fork.</li>
+<li>Open a Pull Request from your fork's branch into the original repo.</li>
+<li>Periodically sync: <code>git fetch upstream && git rebase upstream/main</code></li>
+</ol>
+</div>
+
+<!-- 18. PR vs MR -->
+<div class="section">
+<h1>18. Pull Request vs Merge Request — Who Approves &amp; How</h1>
+<h2>18.1 Are they different?</h2>
+<p>Functionally they are the same concept with different names: a request to merge your branch into a target branch, after review. <b>GitHub and Bitbucket</b> call it a <b>Pull Request (PR)</b>. <b>GitLab</b> calls it a <b>Merge Request (MR)</b>.</p>
+
+<div class="diagram">
+<div class="title">PR / MR Lifecycle</div>
+<div class="flow-row">
+  <div class="node">Push feature branch</div>
+  <div class="arrow">→</div>
+  <div class="node">Open PR/MR<br>target: develop</div>
+  <div class="arrow">→</div>
+  <div class="node">CI Pipeline runs<br>build+tests+lint</div>
+</div>
+<div class="flow-row">
+  <div class="node">Code Review by<br>Reviewer(s)</div>
+  <div class="arrow">→</div>
+  <div class="node alt">Changes requested?</div>
+  <div class="arrow">→</div>
+  <div class="node">Developer updates<br>commits</div>
+</div>
+<div class="flow-row">
+  <div class="node green">Approved +<br>CI Green</div>
+  <div class="arrow">→</div>
+  <div class="node green">Merge (squash /<br>merge commit)</div>
+  <div class="arrow">→</div>
+  <div class="node alt">Branch deleted<br>+ CD deploy</div>
+</div>
+</div>
+
+<h2>18.2 Who approves?</h2>
+<table>
+<tr><th>Role</th><th>Responsibility</th></tr>
+<tr><td>Code Owner / Tech Lead</td><td>Mandatory approver for critical modules (defined in <code>CODEOWNERS</code> file)</td></tr>
+<tr><td>Senior Developer / Peer Reviewer</td><td>Reviews code quality, logic, tests, naming, design patterns</td></tr>
+<tr><td>QA / Automated CI</td><td>Must pass build, unit tests, code coverage, security scan before merge is allowed</td></tr>
+<tr><td>Repository Maintainer/Admin</td><td>Can override or merge in emergencies (used rarely, tracked)</td></tr>
+</table>
+<p>Enforced via <b>Branch Protection Rules</b> (GitHub) / <b>Protected Branches</b> (GitLab, Bitbucket):</p>
+<ul>
+<li>Require at least N approvals (commonly 1–2) before merge is allowed.</li>
+<li>Require status checks (CI build/tests) to pass.</li>
+<li>Require CODEOWNERS approval for specific critical folders (e.g., <code>/backend/payment/**</code>).</li>
+<li>Disallow direct pushes and force-pushes to <code>main</code>/<code>develop</code>.</li>
+<li>Require branches to be up to date before merging.</li>
+</ul>
+<pre>
+<span class="c1"># CODEOWNERS file example</span>
+/backend/src/main/java/com/company/payment/  @priya-lead @finance-team
+/frontend/src/components/checkout/           @rahul-frontend-lead
+*                                             @default-reviewers-team
+</pre>
+
+<h2>18.3 Real Scenario</h2>
+<p>A developer opens a PR titled <code>JIRA-410: Add cart API</code> targeting <code>develop</code>. GitHub automatically requests review from the CODEOWNERS of <code>/backend/cart/</code>. GitHub Actions runs <code>mvn test</code> and <code>npm test</code>. One reviewer requests a change ("add null check for empty cart"). Developer pushes a fix commit. CI reruns, passes. Reviewer approves. Branch protection requires 2 approvals + green CI — once satisfied, the "Squash and merge" button becomes enabled.</p>
+</div>
+
+<!-- 19. CI/CD -->
+<div class="section">
+<h1>19. CI/CD Integration with Git</h1>
+<p>CI/CD pipelines are triggered automatically by Git events (push, PR/MR open, tag creation).</p>
+<div class="diagram">
+<div class="title">Typical Java Full Stack Pipeline</div>
+<div class="flow-row">
+  <div class="node">git push</div>
+  <div class="arrow">→</div>
+  <div class="node">Build: mvn package<br>+ npm run build</div>
+  <div class="arrow">→</div>
+  <div class="node">Unit + Integration<br>Tests</div>
+</div>
+<div class="flow-row">
+  <div class="node">Static analysis<br>(SonarQube, ESLint)</div>
+  <div class="arrow">→</div>
+  <div class="node">Build Docker Image</div>
+  <div class="arrow">→</div>
+  <div class="node alt">Deploy to<br>Dev/Staging/Prod</div>
+</div>
+</div>
+<h3>Example: GitHub Actions (backend)</h3>
+<pre>
+name: backend-ci
+on:
+  pull_request:
+    branches: [ develop, main ]
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { java-version: '17', distribution: 'temurin' }
+      - run: mvn -f backend/pom.xml clean verify
+</pre>
+<h3>Example: GitLab CI (frontend)</h3>
+<pre>
+stages: [build, test, deploy]
+build_frontend:
+  stage: build
+  script:
+    - cd frontend && npm ci && npm run build
+test_frontend:
+  stage: test
+  script:
+    - cd frontend && npm test -- --watchAll=false
+</pre>
+</div>
+
+<!-- 20. ORG GOVERNANCE -->
+<div class="section">
+<h1>20. Organization-Level Git Governance (Top-Down)</h1>
+<div class="diagram">
+<div class="title">Organization Structure</div>
+<div class="flow-row"><div class="node green">Organization<br>(e.g. github.com/company)</div></div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+  <div class="node">Team: Backend</div>
+  <div class="node">Team: Frontend</div>
+  <div class="node">Team: DevOps</div>
+  <div class="node">Team: QA</div>
+</div>
+<div class="arrow-down">↓</div>
+<div class="flow-row">
+  <div class="node alt">Repo: order-service</div>
+  <div class="node alt">Repo: ecommerce-ui</div>
+  <div class="node alt">Repo: infra-scripts</div>
+</div>
+</div>
+
+<h2>20.1 Roles &amp; Permission Levels</h2>
+<table>
+<tr><th>Role</th><th>GitHub term</th><th>GitLab term</th><th>Typical rights</th></tr>
+<tr><td>Highest admin</td><td>Owner</td><td>Owner</td><td>Manage billing, members, delete org/repos, all settings</td></tr>
+<tr><td>Repo admin</td><td>Admin (repo role)</td><td>Maintainer</td><td>Manage branch protection, merge without restriction, manage settings</td></tr>
+<tr><td>Contributor</td><td>Write</td><td>Developer</td><td>Push branches, open PR/MR, cannot change repo settings</td></tr>
+<tr><td>Reviewer only</td><td>Triage</td><td>Reporter</td><td>Comment, review, manage issues, no code push</td></tr>
+<tr><td>Read-only</td><td>Read</td><td>Guest</td><td>View code only</td></tr>
+</table>
+
+<h2>20.2 Governance Controls Used by Real Organizations</h2>
+<ul>
+<li><b>Branch protection rules</b> on <code>main</code>/<code>develop</code>: required reviews, required CI checks, no force-push.</li>
+<li><b>CODEOWNERS</b> to force domain experts to review critical code (payment, auth, security modules).</li>
+<li><b>SSO / SAML</b> login enforced at organization level, sometimes with IP allow-listing.</li>
+<li><b>Audit logs</b> — who pushed, who approved, who changed settings, retained for compliance (banking/healthcare).</li>
+<li><b>Repository visibility rules</b> — private by default; public repos require an approval process.</li>
+<li><b>Secret scanning &amp; dependency scanning</b> enabled org-wide (e.g., GitHub Advanced Security, GitLab Ultimate).</li>
+<li><b>Merge strategy locked</b> at repo/org level (e.g., force "Squash and merge" only, to keep history clean).</li>
+</ul>
+</div>
+
+<!-- 21. WEEK IN LIFE -->
+<div class="section">
+<h1>21. A Real Week in the Life of a Java Full Stack Developer</h1>
+<table>
+<tr><th>Day</th><th>Activity</th><th>Git commands used</th></tr>
+<tr><td>Monday</td><td>Pick JIRA-512, create feature branch, build backend endpoint</td><td><code>git pull</code>, <code>git switch -c feature/JIRA-512</code>, <code>git add</code>, <code>git commit</code></td></tr>
+<tr><td>Tuesday</td><td>Build matching React component, test integration locally</td><td><code>git commit</code>, <code>git push</code></td></tr>
+<tr><td>Wednesday</td><td>Rebase onto latest develop before opening PR; resolve conflict in <code>pom.xml</code></td><td><code>git fetch</code>, <code>git rebase origin/develop</code>, <code>git add</code>, <code>git rebase --continue</code></td></tr>
+<tr><td>Wednesday PM</td><td>Open PR, CI runs, reviewer requests changes</td><td><code>git commit --amend</code> or new commit, <code>git push --force-with-lease</code></td></tr>
+<tr><td>Thursday</td><td>Urgent prod bug reported — stash current work, hotfix</td><td><code>git stash</code>, <code>git switch main</code>, <code>git switch -c hotfix/...</code>, <code>git cherry-pick</code> fix into <code>develop</code></td></tr>
+<tr><td>Thursday PM</td><td>Back to feature work</td><td><code>git switch feature/JIRA-512</code>, <code>git stash pop</code></td></tr>
+<tr><td>Friday</td><td>PR approved, squash merged, release cut and tagged, deployed via CI/CD</td><td><code>git tag -a v2.4.0</code>, <code>git push --tags</code></td></tr>
+</table>
+</div>
+
+<!-- 22. COMMON ISSUES -->
+<div class="section">
+<h1>22. Common Git Issues &amp; How to Fix Them</h1>
+<table>
+<tr><th>Issue</th><th>Cause</th><th>Fix</th></tr>
+<tr><td>"Detached HEAD" state</td><td>Checked out a commit/tag directly instead of a branch</td><td><code>git switch -c temp-fix</code> to save work, or <code>git switch main</code> to go back</td></tr>
+<tr><td>Merge conflict on pull</td><td>Same lines changed both locally and remotely</td><td>Resolve markers manually, <code>git add</code>, <code>git commit</code></td></tr>
+<tr><td>Accidentally committed to <code>main</code></td><td>Forgot to create a feature branch</td><td><code>git branch feature/oops</code> then <code>git reset --hard origin/main</code> on main</td></tr>
+<tr><td>"Updates were rejected because the remote contains work you do not have"</td><td>Remote has new commits you don't have locally</td><td><code>git pull --rebase</code> then push again</td></tr>
+<tr><td>Push rejected — large file / secret detected</td><td>Committed a large binary or a credential file</td><td>Remove file with <code>git rm --cached</code>, use <code>git filter-repo</code>/BFG to purge history, add to <code>.gitignore</code></td></tr>
+<tr><td>"Permission denied (publickey)"</td><td>SSH key not set up or not added to GitHub/GitLab account</td><td><code>ssh-keygen -t ed25519</code>, add public key to your Git host account, test with <code>ssh -T git@github.com</code></td></tr>
+<tr><td>Diverged branches (both ahead and behind)</td><td>Local and remote both have new commits</td><td><code>git pull --rebase</code> (or merge), resolve conflicts, push</td></tr>
+<tr><td>Accidentally deleted a branch with unmerged work</td><td>Ran <code>git branch -D</code> too early</td><td><code>git reflog</code> to find the last commit hash, then <code>git checkout -b recovered-branch &lt;hash&gt;</code></td></tr>
+<tr><td>Wrong commit message already pushed</td><td>Typo, wrong ticket number</td><td>If not shared yet: <code>git commit --amend</code> + <code>push --force-with-lease</code>; if shared, leave it or add a follow-up commit</td></tr>
+<tr><td>".gitignore not working" for already-tracked file</td><td>File was committed before being ignored</td><td><code>git rm --cached &lt;file&gt;</code>, commit, then it respects .gitignore going forward</td></tr>
+<tr><td>"Your branch and 'origin/main' have diverged" after a force-push by a teammate</td><td>Someone rewrote shared branch history (amend/rebase) that others already pulled</td><td>Agree on force-push etiquette (only on personal feature branches); affected teammates run <code>git fetch</code> + <code>git reset --hard origin/&lt;branch&gt;</code> after confirming no local-only work is lost</td></tr>
+<tr><td>Cloning a large repo is extremely slow</td><td>Full history includes large binary files never cleaned up</td><td>Use <code>git clone --depth 1</code> for a shallow clone when full history isn't needed, or migrate large assets to Git LFS</td></tr>
+</table>
+</div>
+
+<!-- 23. BEST PRACTICES -->
+<div class="section">
+<h1>23. Git Best Practices for Full Stack Teams</h1>
+<ul>
+<li>One feature/bugfix = one branch, named consistently: <code>feature/JIRA-123-short-desc</code>, <code>hotfix/...</code>.</li>
+<li>Small, frequent commits with clear messages (conventional commits: <code>feat:</code>, <code>fix:</code>, <code>chore:</code>, <code>refactor:</code>).</li>
+<li>Always <code>git pull --rebase</code> or fetch+rebase before starting new work to avoid unnecessary merge commits.</li>
+<li>Never commit secrets, credentials, or environment files.</li>
+<li>Keep PRs/MRs small (&lt; 400 lines changed where possible) — easier and faster to review.</li>
+<li>Write meaningful PR descriptions: what changed, why, how tested, screenshots for UI.</li>
+<li>Use draft PRs for work-in-progress visibility without triggering full review.</li>
+<li>Protect <code>main</code>/<code>develop</code> with required reviews and passing CI.</li>
+<li>Delete branches after merge to keep the repo clean.</li>
+<li>Tag every production release for traceability and easy rollback.</li>
+</ul>
+</div>
+
+<!-- 24. CHEAT SHEET -->
+<div class="section">
+<h1>24. Git Command Cheat Sheet</h1>
+<table>
+<tr><th>Category</th><th>Commands</th></tr>
+<tr><td>Setup</td><td><code>git init</code>, <code>git clone</code>, <code>git config</code></td></tr>
+<tr><td>Basic workflow</td><td><code>git status</code>, <code>git add</code>, <code>git commit</code>, <code>git push</code>, <code>git pull</code></td></tr>
+<tr><td>Branching</td><td><code>git branch</code>, <code>git switch -c</code>, <code>git checkout -b</code>, <code>git merge</code>, <code>git rebase</code></td></tr>
+<tr><td>Inspect</td><td><code>git log</code>, <code>git diff</code>, <code>git show</code>, <code>git blame</code>, <code>git reflog</code></td></tr>
+<tr><td>Undo</td><td><code>git reset</code>, <code>git revert</code>, <code>git restore</code>, <code>git checkout --</code></td></tr>
+<tr><td>Advanced</td><td><code>git cherry-pick</code>, <code>git stash</code>, <code>git bisect</code>, <code>git tag</code>, <code>git rebase -i</code></td></tr>
+<tr><td>Remote</td><td><code>git remote -v</code>, <code>git fetch</code>, <code>git push -u</code>, <code>git push --force-with-lease</code></td></tr>
+<tr><td>Cleanup</td><td><code>git branch -d/-D</code>, <code>git rm --cached</code>, <code>git gc</code></td></tr>
+</table>
+</div>
+
+<!-- 25. INTERVIEW Q&A -->
+<div class="section">
+<h1>25. Interview Questions &amp; Answers</h1>
+
+<h2>25.1 Basic Level</h2>
+
+<div class="qa"><div class="q">Q1. What is Git and why is it called "distributed"?</div>
+<div class="a">A: Git is a distributed version control system. Unlike centralized systems (SVN), every developer has a full copy of the repository including complete history on their local machine, so most operations (commit, branch, log, diff) work offline.</div></div>
+
+<div class="qa"><div class="q">Q2. Difference between Git and GitHub?</div>
+<div class="a">A: Git is the version control tool itself. GitHub is a cloud platform that hosts Git repositories and adds collaboration features (Pull Requests, Issues, Actions/CI-CD, access control).</div></div>
+
+<div class="qa"><div class="q">Q3. What is the difference between <code>git fetch</code> and <code>git pull</code>?</div>
+<div class="a">A: <code>fetch</code> downloads remote commits but does not change your working branch. <code>pull</code> = <code>fetch</code> + <code>merge</code> (or rebase), immediately updating your current branch.</div></div>
+
+<div class="qa"><div class="q">Q4. What is the staging area (index)?</div>
+<div class="a">A: An intermediate area where changes are placed with <code>git add</code> before being permanently saved with <code>git commit</code>. It lets you commit only part of your changes.</div></div>
+
+<div class="qa"><div class="q">Q5. What does <code>.gitignore</code> do?</div>
+<div class="a">A: Tells Git which files/folders to never track (e.g., <code>target/</code>, <code>node_modules/</code>, <code>.env</code>), keeping the repo clean and secrets safe.</div></div>
+
+<h2>25.2 Intermediate Level</h2>
+
+<div class="qa"><div class="q">Q6. Difference between merge and rebase?</div>
+<div class="a">A: Merge combines two histories with a new merge commit, preserving exact history (non-destructive). Rebase replays your commits on top of another branch, producing linear history but rewriting commit hashes (should not be done on shared/pushed branches).</div></div>
+
+<div class="qa"><div class="q">Q7. What is cherry-pick and when do you use it?</div>
+<div class="a">A: Applies one specific commit from another branch onto the current branch. Used for backporting a hotfix to a release branch or main without merging the whole source branch.</div>
+<div class="scenario">Real world: A fix merged into <code>develop</code> is needed urgently in production; instead of merging all of develop (which has unfinished features), you cherry-pick just that one commit into <code>main</code>.</div></div>
+
+<div class="qa"><div class="q">Q8. Difference between <code>git reset</code> and <code>git revert</code>?</div>
+<div class="a">A: <code>reset</code> moves the branch pointer and can rewrite/discard history (dangerous on shared branches). <code>revert</code> creates a brand-new commit that undoes changes, safe to use on shared/production branches because history isn't rewritten.</div></div>
+
+<div class="qa"><div class="q">Q9. What is a detached HEAD state?</div>
+<div class="a">A: Happens when you checkout a specific commit or tag instead of a branch. Any new commits made there aren't attached to a branch and can be lost unless you create a new branch from that point.</div></div>
+
+<div class="qa"><div class="q">Q10. What is git stash used for?</div>
+<div class="a">A: Temporarily saves uncommitted changes so you can switch branches cleanly (e.g., to handle an urgent hotfix), then restore your work later with <code>git stash pop</code>.</div></div>
+
+<div class="qa"><div class="q">Q11. What is a fast-forward merge?</div>
+<div class="a">A: When the target branch has no new commits since the feature branch was created, Git simply moves the pointer forward instead of creating a merge commit.</div></div>
+
+<div class="qa"><div class="q">Q12. What is <code>git rebase -i</code> (interactive rebase) used for?</div>
+<div class="a">A: To clean up local commit history before pushing/opening a PR — squash multiple small commits into one, reorder commits, edit or drop commits, fix commit messages.</div></div>
+
+<h2>25.3 Advanced / Scenario-Based (Real World)</h2>
+
+<div class="qa"><div class="q">Q13. Your PR has 15 messy "WIP" commits. How do you clean it up before review?</div>
+<div class="a">A: Use <code>git rebase -i HEAD~15</code>, mark commits to <code>squash</code>/<code>fixup</code> into one, write one clean commit message, then <code>git push --force-with-lease</code> (safe force push, only if branch is yours alone).</div></div>
+
+<div class="qa"><div class="q">Q14. Production is broken from a bad merge to main. What do you do?</div>
+<div class="a">A: Prefer <code>git revert &lt;merge-commit-hash&gt; -m 1</code> to safely create a new commit undoing the bad merge without rewriting shared history, then redeploy immediately. Avoid <code>reset --hard</code> + force-push on main.</div></div>
+
+<div class="qa"><div class="q">Q15. Two developers changed the same lines in <code>OrderService.java</code> — how do you resolve on merge?</div>
+<div class="a">A: Git marks conflict with <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>/<code>=======</code>/<code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>. Discuss with the other developer, manually pick/combine the correct logic, remove markers, run tests, <code>git add</code>, then commit or continue the merge/rebase.</div></div>
+
+<div class="qa"><div class="q">Q16. You need a fix from a colleague's still-unfinished branch, but not the whole branch. What do you do?</div>
+<div class="a">A: <code>git cherry-pick &lt;commit-hash&gt;</code> from their branch onto yours or into main, avoiding the unfinished parts.</div></div>
+
+<div class="qa"><div class="q">Q17. What's the difference between Pull Request and Merge Request, and who typically approves them?</div>
+<div class="a">A: Same concept — GitHub/Bitbucket call it PR, GitLab calls it MR: a request to merge a branch after review. Approved by designated reviewers/code owners (per <code>CODEOWNERS</code>) plus required passing CI checks, enforced through branch protection rules; repo admins/maintainers can merge once conditions are met.</div></div>
+
+<div class="qa"><div class="q">Q18. How do branch protection rules and CODEOWNERS work together at an organization level?</div>
+<div class="a">A: Branch protection defines the merge gate for a branch (min approvals, required CI checks, no force-push). CODEOWNERS maps specific paths (e.g. <code>/payment/**</code>) to required reviewers, so critical code always gets domain-expert review before it can merge.</div></div>
+
+<div class="qa"><div class="q">Q19. You accidentally pushed an API key to a public repo. What now?</div>
+<div class="a">A: Immediately rotate/revoke the exposed key, remove it from history using <code>git filter-repo</code> or BFG Repo-Cleaner, force-push the cleaned history, and add the file to <code>.gitignore</code>. Rotating the credential is the most important step — history rewrite alone is not enough since it may already be cached/forked.</div></div>
+
+<div class="qa"><div class="q">Q20. Difference between Git Flow and Trunk-Based Development — when would you pick each?</div>
+<div class="a">A: Git Flow uses long-lived develop/release/hotfix branches, good for scheduled releases (banking, enterprise). Trunk-based development commits frequently to main using short branches and feature flags, suited to teams with strong CI/CD and multiple daily deployments (e.g., SaaS/product companies).</div></div>
+
+<div class="qa"><div class="q">Q21. How would you set up Git so backend and frontend teams don't block each other, but still integrate smoothly?</div>
+<div class="a">A: Separate feature branches per ticket for each team, merged into a shared <code>develop</code> branch through PRs/MRs gated by CI (backend runs <code>mvn test</code>, frontend runs <code>npm test</code>), with an integration environment auto-deployed from develop for cross-team testing before release.</div></div>
+
+<div class="qa"><div class="q">Q22. What is <code>git bisect</code> and when have you used it?</div>
+<div class="a">A: A binary-search tool to find which commit introduced a bug by marking known good/bad commits; Git automatically checks out midpoints until the exact breaking commit is found. Useful in real projects to trace regressions across hundreds of commits quickly.</div></div>
+
+</div>
+
+<!-- 26. SUMMARY -->
+<div class="section">
+<h1>26. Final Summary</h1>
+<table>
+<tr><th>Aspect</th><th>Before Git</th><th>After Git (+ GitHub/GitLab/Bitbucket)</th></tr>
+<tr><td>Collaboration</td><td>Zip files / email / shared folders</td><td>Branches + Pull/Merge Requests</td></tr>
+<tr><td>History</td><td>None or manual backups</td><td>Full history, every change traceable</td></tr>
+<tr><td>Code review</td><td>Ad-hoc, undocumented</td><td>Structured PR/MR review with approvals</td></tr>
+<tr><td>Release process</td><td>Manual file copy to servers</td><td>Tags + automated CI/CD pipelines</td></tr>
+<tr><td>Recovery from mistakes</td><td>Often impossible</td><td><code>revert</code>, <code>reflog</code>, tags — almost always recoverable</td></tr>
+<tr><td>Governance</td><td>None</td><td>Org roles, branch protection, CODEOWNERS, audit logs</td></tr>
+</table>
+<div class="box">
+<b>Key takeaway for interviews:</b> Be ready to explain not just <i>what</i> a command does, but <i>why</i> and <i>when</i> a real team uses it — e.g., rebase for clean local history vs merge for shared branches, cherry-pick for targeted hotfixes, revert instead of reset on production branches, and how PR/MR approval gates protect an organization's codebase.
+</div>
+</div>
+
+</body>
+</html>
